@@ -1,0 +1,114 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PREAMBOLO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt, a4paper]{book}
+
+% --- Lingua e Codifica ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+
+% --- Matematica ---
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+% --- Grafica e Layout ---
+\usepackage{graphicx}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{fancyhdr} % Per personalizzare header e footer
+\setlength{\headheight}{14.5pt}
+\usepackage{hyperref} % Per link interni (es. tabella dei contenuti, riferimenti)
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\usepackage{wrapfig} 
+\usepackage{caption} 
+
+\captionsetup{labelfont=bf} % Aggiunge il grassetto all'etichetta della didascalia
+
+\usepackage{draftwatermark}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+
+\usepackage{lmodern} % Font moderno opzionale
+\SetWatermarkText{\sffamily\bfseries\textcolor{gray!10}{github.com/elisabettagnello}}
+\SetWatermarkScale{40}
+\SetWatermarkColor{gray!10}
+\SetWatermarkAngle{45}
+
+% Definizione della palette sequenziale (Viridis-like)
+\definecolor{colorA}{HTML}{003f5c} % 1 - Blu Profondo
+\definecolor{colorB}{HTML}{2f4b7c} % 2 - Indaco
+\definecolor{colorC}{HTML}{665191} % 3 - Viola Bluastro
+\definecolor{colorD}{HTML}{a05195} % 4 - Magenta Scuro
+\definecolor{colorE}{HTML}{d45087} % 5 - Rosso Porpora
+\definecolor{colorF}{HTML}{f95d6a} % 6 - Arancio-Rosso
+\definecolor{colorG}{HTML}{ff7c43} % 7 - Arancio Brillante
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CONFIGURAZIONE STILE PAGINA (FANCYHDR)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancy}
+\fancyhf{} % Pulisce tutti i campi di header e footer
+\fancyhead[LE,RO]{\nouppercase{\leftmark}} % Titolo del capitolo in alto a sinistra (pagine pari) e destra (pagine dispari)
+\fancyfoot[C]{\thepage} % Numero di pagina al centro del footer
+\renewcommand{\headrulewidth}{0.4pt} % Linea sotto l'header
+\renewcommand{\footrulewidth}{0.4pt} % Linea sopra il footer
+
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+\usepackage{titlesec}
+
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries} % stile del titolo
+  {}               
+  {0pt}                      % spazio
+  {\Huge}                     % stile applicato al titolo vero e proprio
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% INIZIO DEL DOCUMENTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+% --- Pagina del Titolo (da personalizzare) ---
+\title{Statistical Mechanics and Critical Phenomena}
+\author{Autore: Agnello Elisabetta}
+\date{anno: 2025/2026}
+\maketitle
+
+% --- Indice ---
+\frontmatter % Numerazione romana per le pagine iniziali (indice)
+\tableofcontents
+
+\mainmatter 
+
+% --- INCLUSIONE DEI CAPITOLI ---
+
+\include{lezione_01}
+\include{lezione_02}
+\include{lezione_03}
+\include{lezione_04}
+\include{lezione_05}
+\include{lezione_06}
+\include{lezione_07}
+\include{lezione_08}
+\include{lezione_09}
+\include{lezione_10}
+\include{lezione_11}
+\include{lezione_12}
+\include{lezione_13}
+\include{lezione_14}
+\include{lezione_15}
+\include{lezione_16}
+\include{lezione_17}
+\include{lezione_18}
+\include{lezione_19}
+\include{lezione_20}
+
+\end{document}
