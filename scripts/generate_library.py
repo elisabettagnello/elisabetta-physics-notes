@@ -3,9 +3,7 @@ import datetime
 
 # --- DATI DA INSERIRE ---
 AUTHOR_NAME = "Elisabetta Agnello"
-ROLE_DESC = "M.Sc. Student in Statistical Physics & Complex Systems | Co-Founder @ Sheep"
 GITHUB_USER = "elisabettagnello"
-REPO_NAME = "elisabetta-physics-notes"
 SHEEP_LINK = "https://sheeptechnologies.com"
 EMAIL_LINK = "agnelloe24@gmail.com"
 
@@ -75,7 +73,6 @@ def generate_index():
 
     # 3. Sostituisci i segnaposto
     final_html = html_content.replace("{{AUTHOR_NAME}}", AUTHOR_NAME) \
-                             .replace("{{ROLE_DESC}}", ROLE_DESC) \
                              .replace("{{GITHUB_USER}}", GITHUB_USER) \
                              .replace("{{GITHUB_LINK}}", GITHUB_LINK) \
                              .replace("{{SHEEP_LINK}}", SHEEP_LINK) \
