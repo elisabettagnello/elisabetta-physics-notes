@@ -191,7 +191,7 @@ card_template = """
     <div class="card-body">
         <h3>{title}</h3>
         <div class="meta">
-            <span>📅 Ultimo aggiornamento: {date}</span>
+            <span>📅 Ultimo agg: {date}</span>
         </div>
         <a href="pdfs/{filename}" class="download-btn" target="_blank">Download PDF</a>
     </div>
@@ -216,6 +216,7 @@ def generate_index():
                    </div>"""
     
     for filename in sorted(files):
+        # Formattazione Titolo: "meccanica-statistica.pdf" -> "Meccanica Statistica"
         title = filename.replace("-", " ").replace("_", " ").replace(".pdf", "").title()
         
         # Recupera data modifica file (simulata o reale)
@@ -237,6 +238,7 @@ def generate_index():
     with open("public/index.html", "w", encoding="utf-8") as f:
         f.write(output_html)
     
+    print("✨ Libreria generata con nuovo design Modern UI!")
 
 if __name__ == "__main__":
     generate_index()
