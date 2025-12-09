@@ -1,4 +1,10 @@
 import os
+import datetime
+
+# Configurazione Design
+AUTHOR_NAME = "Elisabetta Agnello"
+ROLE_DESC = "M.Sc. Student in Statistical Physics & Complex Systems @ Sapienza | Co-Founder @ Sheep"
+GITHUB_LINK = "https://github.com/elisabettagnello"
 
 html_template = """
 <!DOCTYPE html>
@@ -6,32 +12,189 @@ html_template = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elisabetta's Physics Notes</title>
+    <title>Physics Notes | {author}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background: #f4f4f9; }
-        h1 { color: #333; text-align: center; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: transform 0.2s; }
-        .card:hover { transform: translateY(-5px); }
-        .btn { display: block; text-align: center; background: #007bff; color: white; padding: 10px; text-decoration: none; border-radius: 4px; margin-top: 10px; }
-        .preview { width: 100%; height: 150px; background-color: #eee; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; border-radius: 4px; }
+        :root {{
+            --primary: #2563eb; /* Royal Blue */
+            --primary-dark: #1e40af;
+            --bg-color: #f8fafc;
+            --text-main: #0f172a;
+            --text-secondary: #64748b;
+            --card-bg: #ffffff;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }}
+
+        * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+        
+        body {{
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }}
+
+        /* Hero Section */
+        header {{
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }}
+
+        .header-content {{ max-width: 800px; margin: 0 auto; }}
+        
+        h1 {{
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }}
+        
+        .role {{
+            font-size: 1.1rem;
+            color: #94a3b8;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }}
+
+        .github-btn {{
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 1px solid rgba(255,255,255,0.2);
+        }}
+        .github-btn:hover {{ background: rgba(255,255,255,0.2); transform: translateY(-1px); }}
+
+        /* Main Grid */
+        main {{
+            flex: 1;
+            max-width: 1200px;
+            margin: -40px auto 40px; /* Overlap effect */
+            padding: 0 20px;
+            width: 100%;
+        }}
+
+        .grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }}
+
+        /* Cards */
+        .card {{
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }}
+
+        .card:hover {{
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }}
+
+        .card-top {{
+            height: 140px;
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #0284c7;
+        }}
+
+        .card-body {{ padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }}
+
+        h3 {{ font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 600; color: #1e293b; }}
+        
+        .meta {{
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }}
+
+        .download-btn {{
+            margin-top: auto;
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }}
+
+        .download-btn:hover {{ background-color: var(--primary-dark); }}
+
+        /* Footer */
+        footer {{
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid #e2e8f0;
+        }}
     </style>
 </head>
 <body>
-    <h1>📚 Appunti Universitari di Fisica </h1>
-    <p style="text-align:center">Raccolta open source dei miei appunti universitari (Sapienza, Università di Roma).</p>
-    <div class="grid">
-        {cards}
-    </div>
+    <header>
+        <div class="header-content">
+            <h1>⚛️ Physics Notes Repository</h1>
+            <p class="role">{role}</p>
+            <a href="{github}" class="github-btn" target="_blank">
+                View on GitHub &rarr;
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div class="grid">
+            {cards}
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; {year} {author}. Open Source Educational Resources.</p>
+    </footer>
 </body>
 </html>
 """
 
 card_template = """
 <div class="card">
-    <div class="preview">📄 Anteprima</div>
-    <h3>{title}</h3>
-    <a href="pdfs/{filename}" class="btn" target="_blank">👁️ Leggi / Scarica PDF</a>
+    <div class="card-top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+    </div>
+    <div class="card-body">
+        <h3>{title}</h3>
+        <div class="meta">
+            <span>📅 Ultimo aggiornamento: {date}</span>
+        </div>
+        <a href="pdfs/{filename}" class="download-btn" target="_blank">Download PDF</a>
+    </div>
 </div>
 """
 
@@ -39,17 +202,41 @@ def generate_index():
     pdf_dir = "public/pdfs"
     cards = ""
     
+    # Crea cartella se non esiste
     if not os.path.exists(pdf_dir):
-        os.makedirs(pdf_dir)
+        os.makedirs(pdf_dir, exist_ok=True)
 
-    # Scansiona la cartella dei PDF
-    for filename in sorted(os.listdir(pdf_dir)):
-        if filename.endswith(".pdf"):
-            title = filename.replace("-", " ").replace(".pdf", "").title()
-            cards += card_template.format(title=title, filename=filename)
+    files = [f for f in os.listdir(pdf_dir) if f.endswith(".pdf")]
+    
+    # Se non ci sono file, mostra messaggio
+    if not files:
+        cards = """<div style="grid-column: 1/-1; text-align: center; padding: 4rem; background: white; border-radius: 12px;">
+                    <h3>Nessun appunto ancora pubblicato</h3>
+                    <p style="color: #64748b;">Carica un file .tex nella cartella src/ per iniziare.</p>
+                   </div>"""
+    
+    for filename in sorted(files):
+        title = filename.replace("-", " ").replace("_", " ").replace(".pdf", "").title()
+        
+        # Recupera data modifica file (simulata o reale)
+        file_path = os.path.join(pdf_dir, filename)
+        mod_time = os.path.getmtime(file_path)
+        date_str = datetime.datetime.fromtimestamp(mod_time).strftime('%d/%m/%Y')
+
+        cards += card_template.format(title=title, filename=filename, date=date_str)
+    
+    # Compila HTML finale
+    output_html = html_template.format(
+        author=AUTHOR_NAME,
+        role=ROLE_DESC,
+        github=GITHUB_LINK,
+        cards=cards,
+        year=datetime.datetime.now().year
+    )
     
     with open("public/index.html", "w", encoding="utf-8") as f:
-        f.write(html_template.replace("{cards}", cards))
+        f.write(output_html)
+    
 
 if __name__ == "__main__":
     generate_index()
