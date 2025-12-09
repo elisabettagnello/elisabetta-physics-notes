@@ -3,7 +3,7 @@ import datetime
 
 # --- CONFIGURAZIONE PROFILO ---
 AUTHOR_NAME = "Elisabetta Agnello"
-ROLE_DESC = "M.Sc. Student in Statistical Physics & Complex Systems @ Sapienza | Co-Founder @ Sheep"
+ROLE_DESC = "M.Sc. Student in Statistical Physics & Complex Systems @ Sapienza <\br> Co-Founder @ Sheep"
 GITHUB_USER = "elisabettagnello"
 REPO_NAME = "elisabetta-physics-notes"
 
@@ -299,7 +299,7 @@ html_template = """
         </main>
 
         <footer>
-            <p>Designed with ⚛️ by {author} &bull; <a href="{sheep_link}" target="_blank">Sheep Technologies</a></p>
+            <p>Designed by {author} &bull; <a href="{sheep_link}" target="_blank">Sheep</a></p>
         </footer>
     </div>
 </body>
