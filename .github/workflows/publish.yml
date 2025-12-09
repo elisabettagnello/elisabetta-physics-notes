@@ -4,8 +4,11 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: write
+
 jobs:
-  build_latex:
+  build_latex_and_site:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del codice
@@ -14,23 +17,37 @@ jobs:
       - name: Compila i file LaTeX
         uses: xu-cheng/latex-action@v3
         with:
+          # Cerca tutti i file main.tex in tutte le sottocartelle
           root_file: src/*/main.tex
-          # Questo permette di compilare tutti i main.tex nelle sottocartelle
-          # Latexmk gestisce in automatico bibtex, immagini e riferimenti
-          args: -pdf -file-line-error -interaction=nonstopmode
+          
+          # FONDAMENTALE: Dice al compilatore di entrare nella cartella prima di compilare.
+          # Questo risolve il problema degli \include e \input non trovati.
+          work_in_root_file_dir: true
+          
+          # Se ci sono errori lievi (warning), continua lo stesso
+          continue_on_error: true
+          
+          # -f forza la creazione del PDF anche in caso di errori
+          args: -pdf -file-line-error -interaction=nonstopmode -f
 
-      - name: Sposta i PDF e rinomina
+      - name: Prepara cartella pubblica
+        run: mkdir -p public/pdfs
+
+      - name: Sposta e rinomina i PDF
+        # Le virgolette qui sotto sono fondamentali per gestire gli spazi nei nomi delle cartelle
         run: |
-          mkdir -p public/pdfs
-          # Trova tutti i PDF generati e spostali
           find src -name "main.pdf" | while read file; do
-              folder=$(basename $(dirname "$file"))
+              folder=$(basename "$(dirname "$file")")
               mv "$file" "public/pdfs/${folder}.pdf"
           done
 
-      - name: Genera l'interfaccia Libreria (HTML)
-        run: |
-          python3 scripts/generate_library.py
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Genera Interfaccia Web
+        run: python3 scripts/generate_library.py
 
       - name: Pubblica su GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
