@@ -1,0 +1,283 @@
+\chapter{Lezione 9}
+\label{chap:lezione_09} 
+
+\begin{flushright}
+\textit{Data: 22/10/2025}
+\end{flushright}
+
+
+\section{Risoluzione Esatta di un Modello con Forze Deboli a Lungo Raggio}
+
+In questa sezione, risolveremo esattamente un modello in cui tutte le interazioni sono a lungo raggio, ma molto deboli. Dimostreremo che la soluzione esatta di questo modello coincide con le equazioni di campo medio (Mean Field, MF).
+
+Definiamo l'Hamiltoniana del modello a lungo raggio (Long Range, LR) come:
+
+\begin{equation}
+    H_{LR}[\sigma] = -\frac{1}{2N} \sum_{i,k} \sigma_i \sigma_k - h \sum_i \sigma_i
+\end{equation}
+
+Dove:
+\begin{itemize}
+    \item La somma $\sum_{i,k}$ è estesa a tutte le coppie di spin $i, k$, con $i, k = 1, \dots, N$.
+    \item $N$ è il numero totale di spin nel sistema, che coincide con il volume.
+    \item $h$ è il campo magnetico esterno.
+\end{itemize}
+
+
+La prima somma include anche i termini con $i=k$. Il termine $\sigma_i \sigma_i = \sigma_i^2 = 1$ (poiché $\sigma_i = \pm 1$). La somma dei termini $i=k$ è quindi $\sum_i \sigma_i^2 = N$. Questo contribuisce all'energia totale con un termine $-\frac{1}{2N} \cdot N = -1/2$, che è una costante. Essendo una costante, è irrilevante per la fisica del sistema e possiamo trascurarla o includerla senza che cambi i risultati.
+
+Il fattore $1/2$ nella formula serve a contare correttamente le coppie. La somma su $i,k$ conta due volte ogni coppia. Dividendo per 2, contiamo ogni coppia una sola volta.
+
+\subsubsection{La necessità di un accoppiamento debole}
+
+L'aspetto cruciale di questo modello è l'accoppiamento $J = 1/N$. Questa è un'interazione molto debole.
+
+Consideriamo cosa succederebbe se $J$ fosse di ordine 1, $J = \mathcal{O}(1)$, nel limite termodinamico $N \to +\infty$.
+L'energia è data dalla somma $\sum_{i,k} \sigma_i \sigma_k$, questa somma contiene $N^2$ termini.
+La densità di energia (energia per spin) si ottiene normalizzando per $N$:
+$$ \frac{E}{N} \propto \frac{1}{N} \sum_{i,k} \sigma_i \sigma_k \propto \frac{N^2}{N} \propto N $$
+Se $J = \mathcal{O}(1)$, la densità di energia divergerebbe linearmente con $N$ quando $N \to \infty$. Il modello non sarebbe ben definito termodinamicamente, poiché la densità di energia non sarebbe una quantità intensiva (cioè di ordine 1).
+
+Per avere un modello ben definito nel limite termodinamico, abbiamo bisogno che la densità di energia sia intensiva. Per ottenere ciò, l'accoppiamento $J$ deve scalare come $1/N$.
+In questo modo, la densità di energia diventa:
+$$ \frac{E}{N} \propto \frac{1}{N} \left( \frac{1}{N} \sum_{i,k} \sigma_i \sigma_k \right) \propto \frac{1}{N^2} \cdot N^2 \propto 1 $$
+Con $J = 1/N$, la densità di energia è di ordine 1 e il modello è ben definito. Questo descrive un sistema in cui ogni spin interagisce con tutti gli altri, ma con un'interazione che diventa infinitamente debole al crescere del sistema.
+
+\subsection{Trasformazione di Hubbard-Stratonovich}
+
+Per risolvere il modello, useremo un'identità integrale nota (una versione della trasformazione di Hubbard-Stratonovich), basata sull'integrale Gaussiano:
+\begin{tcolorbox}[colback=red!15,  
+                  colframe=red!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+    \int_{-\infty}^{+\infty} d x \, e^{-Ax^2 \pm Bx} = \sqrt{\frac{\pi}{A}} e^{\frac{B^2}{4A}}
+\end{equation}
+\end{tcolorbox}
+
+
+Riscriviamo questa identità per isolare il termine esponenziale:
+$$ e^{\frac{B^2}{4A}} = \sqrt{\frac{A}{\pi}} \int_{-\infty}^{+\infty} d x \, e^{-Ax^2 + Bx} $$
+
+Applichiamo questo "trucco" al fattore di Boltzmann $e^{-\beta H}$. L'Hamiltoniana è 
+\begin{equation}
+   H = -\frac{1}{2N} \left (\sum_i \sigma_i \right)^2 - h \sum_i \sigma_i 
+\end{equation}
+dove abbiamo usato l'identità $(\sum_i \sigma_i)^2 = \sum_{i,k} \sigma_i \sigma_k$.
+
+Il fattore di Boltzmann contiene il termine $e^{\frac{\beta}{2N} (\sum_i \sigma_i)^2}$.
+Vogliamo usare l'identità per linearizzare questo termine quadratico. Identifichiamo i termini:
+\begin{itemize}
+    \item $\frac{B^2}{4A} = \frac{\beta}{2N} (\sum_i \sigma_i)^2$
+
+    \item $B = \beta \sum_i \sigma_i$
+    \item $A = \frac{N \beta}{2}$
+\end{itemize}
+Sostituendo questi valori nell'identità, otteniamo:
+$$ e^{\frac{\beta}{2N} (\sum_i \sigma_i)^2} = \sqrt{\frac{N\beta}{2\pi}} \int_{-\infty}^{+\infty} d \lambda \, e^{-\frac{N\beta\lambda^2}{2} + \beta\lambda \sum_i \sigma_i} $$
+
+
+Ora sostituiamo questa espressione nel fattore di Boltzmann completo $e^{-\beta H}$:
+$$ e^{-\beta H} = e^{\frac{\beta}{2N} (\sum_i \sigma_i)^2 + \beta h \sum_i \sigma_i} = e^{\frac{\beta}{2N} (\sum_i \sigma_i)^2} \cdot e^{\beta h \sum_i \sigma_i} $$
+
+\begin{equation}
+    e^{-\beta H} = \sqrt{\frac{N\beta}{2\pi}} \int_{-\infty}^{+\infty} d \lambda \, e^{-\frac{N\beta\lambda^2}{2} + \beta\lambda \sum_i \sigma_i} \cdot e^{\beta h \sum_i \sigma_i}
+\end{equation}
+
+Combinando i termini nell'esponenziale dentro l'integrale:
+
+\begin{equation}
+    e^{-\beta H} = \sqrt{\frac{N\beta}{2\pi}} \int_{-\infty}^{+\infty} d \lambda \, e^{-\frac{N\beta\lambda^2}{2} + \beta(\lambda+h) \sum_i \sigma_i}
+\end{equation}
+
+Questa espressione sembra molto più complicata di quella da cui siamo partiti. Tuttavia, ha un vantaggio cruciale: l'esponente è ora \textbf{lineare} nelle variabili di spin $\sigma_i$. Il termine quadratico $(\sum_i \sigma_i)^2$ è sparito, a costo di introdurre una nuova variabile di integrazione $\lambda$.
+
+Il termine $\sum_i \beta(\lambda+h)\sigma_i$ è \textbf{fattorizzato}: può essere scritto come un prodotto di termini che dipendono da un singolo spin, $\prod_i e^{\beta(\lambda+h)\sigma_i}$. Questo ci permetterà di calcolare la somma sugli stati degli spin.
+
+\subsection{Calcolo della Funzione di Partizione Z}
+
+La funzione di partizione è data dalla somma su tutte le configurazioni di spin $\{\sigma_i = \pm 1\}$:
+
+\begin{equation}
+    Z = \sum_{\{\sigma_i = \pm 1\}} e^{-\beta H[\sigma]}
+\end{equation}
+
+Sostituiamo l'espressione integrale per $e^{-\beta H}$:
+
+\begin{equation}
+    Z = \sum_{\{\sigma_i\}} \left[ \sqrt{\frac{N\beta}{2\pi}} \int_{-\infty}^{+\infty} d \lambda \, e^{-\frac{N\beta\lambda^2}{2}} \cdot e^{\beta(\lambda+h) \sum_i \sigma_i} \right]
+\end{equation}
+
+Poiché l'integrale in $d\lambda$ non dipende dalle $\sigma_i$ (e viceversa), possiamo scambiare l'ordine di somma e integrazione:
+
+\begin{equation}
+    Z = \sqrt{\frac{N\beta}{2\pi}} \int_{-\infty}^{+\infty} d \lambda \, e^{-\frac{N\beta\lambda^2}{2}} \left[ \sum_{\{\sigma_i = \pm 1\}} e^{\beta(\lambda+h) \sum_i \sigma_i} \right]
+\end{equation}
+
+Concentriamoci sulla somma tra parentesi quadre. Grazie alla fattorizzazione, possiamo scriverla come:
+$$ \sum_{\{\sigma_i\}} \prod_{i=1}^N e^{\beta(\lambda+h) \sigma_i} = \prod_{i=1}^N \left[ \sum_{\sigma_i = \pm 1} e^{\beta(\lambda+h) \sigma_i} \right] $$
+
+Calcoliamo la somma per un singolo spin $i$:
+$$ \sum_{\sigma_i = \pm 1} e^{\beta(\lambda+h) \sigma_i} = e^{\beta(\lambda+h)(+1)} + e^{\beta(\lambda+h)(-1)} = 2 \cosh(\beta(\lambda+h)) $$
+Questo risultato è identico per tutti gli $N$ spin. Il prodotto totale è quindi:
+
+\begin{equation}
+    \left[ \sum_{\sigma_i = \pm 1} e^{\beta(\lambda+h) \sigma_i} \right]^N = [2 \cosh(\beta(\lambda+h))]^N
+\end{equation}
+
+Sostituiamo questo risultato nell'espressione per $Z$:
+
+\begin{equation}
+    Z = \sqrt{\frac{N\beta}{2\pi}} \int_{-\infty}^{+\infty} d \lambda \, e^{-\frac{N\beta\lambda^2}{2}} \cdot [2 \cosh(\beta(\lambda+h))]^N
+\end{equation}
+
+Raggruppiamo tutti i termini che dipendono da $N$ nell'esponenziale:
+$$ (2 \cosh(\beta(\lambda+h)))^N = e^{N \log(2 \cosh(\beta(\lambda+h)))} $$
+
+\begin{equation}
+    Z = \sqrt{\frac{N\beta}{2\pi}} \int_{-\infty}^{+\infty} d \lambda \, e^{-\frac{N\beta\lambda^2}{2} + N \log(2 \cosh(\beta(\lambda+h)))}
+\end{equation}
+
+Mettiamo in evidenza $-N\beta$ nell'esponente:
+
+\begin{equation}
+    Z = \sqrt{\frac{N\beta}{2\pi}} \int_{-\infty}^{+\infty} d \lambda \, e^{-N\beta \left[ \frac{\lambda^2}{2} - \frac{1}{\beta} \log(2 \cosh(\beta(\lambda+h))) \right]}
+\end{equation}
+
+\subsection{Metodo del Punto di Sella}
+
+Abbiamo ridotto la funzione di partizione a un integrale della forma:
+$$ \int d \lambda \, e^{-N\beta A(\lambda)} $$
+dove abbiamo definito una "azione efficace" $A(\lambda)$:
+
+\begin{equation}
+    A(\lambda) = \frac{\lambda^2}{2} - \frac{1}{\beta} \log(2 \cosh(\beta(\lambda+h)))
+\end{equation}
+
+Siamo interessati al limite termodinamico $N \to \infty$. Il fattore $N$ che moltiplica l'esponente è molto grande. Questo ci permette di usare il \textbf{metodo del punto di sella}.
+
+L'idea è che, per $N$ molto grande, l'integrale sarà completamente dominato dal valore $\lambda^*$ che \textbf{minimizza} la funzione $A(\lambda)$.
+Qualsiasi valore $\lambda \neq \lambda^*$ darà $A(\lambda) > A(\lambda^*)$, e il suo contributo all'integrale sarà $e^{-N\beta A(\lambda)}$, che è esponenzialmente soppresso (tende a zero molto rapidamente) rispetto al contributo del minimo $e^{-N\beta A(\lambda^*)}$.
+
+L'energia libera di Helmoltz per spin, $f$, è data da $f = -\frac{1}{\beta N} \log Z$.
+
+Nel limite $N \to \infty$, possiamo approssimare $Z$ con il valore dell'integrando calcolato al punto di sella (minimo di $A(\lambda)$), trascurando il pre-fattore $\sqrt{N}$ e i contributi delle fluttuazioni quadratiche (che danno termini di ordine $\mathcal{O}(\log N)/N$ o $\mathcal{O}(1/N)$):
+
+\begin{equation}
+    f = \min_{\lambda} A(\lambda) + \mathcal{O} (1/N)
+\end{equation}
+
+\noindent Per trovare il minimo di $A(\lambda)$, dobbiamo calcolare la derivata prima e porla uguale a zero:
+
+\begin{align}
+    \frac{d}{d \lambda} & \left[ \frac{\lambda^2}{2} - \frac{1}{\beta} \log(2 \cosh(\beta(\lambda+h))) \right] = 0 \\
+ \lambda &- \frac{1}{\beta} \cdot \frac{1}{2 \cosh(\beta(\lambda+h))} \cdot (2 \sinh(\beta(\lambda+h))) \cdot \beta = 0 \\
+ \lambda& - \frac{\sinh(\beta(\lambda+h))}{\cosh(\beta(\lambda+h))} = 0
+\end{align}  
+
+Otteniamo quindi l'equazione:
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+    \lambda = \tanh(\beta(\lambda+h))
+\end{equation}
+\end{tcolorbox}
+
+
+Questa è esattamente l'equazione di campo medio (M.F.E.) che abbiamo derivato in precedenza, a condizione di identificare la variabile di integrazione $\lambda$ con la magnetizzazione $m$:
+
+\begin{equation}
+    \lambda = m
+\end{equation}
+
+\paragraph{Conclusione:}
+Abbiamo dimostrato che l'approssimazione di campo medio (M.F.A.) non è solo un'approssimazione, ma è la soluzione \textbf{esatta} per il modello con interazioni a raggio infinito ($J \propto 1/N$).
+
+La ragione fisica profonda di questo risultato è che, in questo modello, le correlazioni spin-spin connesse sono soppresse. Si può dimostrare che:
+\begin{equation}
+    \langle \sigma_i \sigma_j \rangle^c = \langle \sigma_i \sigma_j \rangle - \langle \sigma_i \rangle \langle \sigma_j \rangle = \mathcal{O}\left (\frac{1}{N} \right)
+\end{equation}
+Poiché le interazioni sono deboli e "diluite" su tutto il sistema, ogni spin sente solo l'effetto medio (il campo medio) di tutti gli altri, e le correlazioni (fluttuazioni) tra coppie di spin diventano trascurabili nel limite termodinamico. Questo è lo stesso motivo per cui la M.F.A. diventa esatta in modelli a corto raggio nel limite di dimensionalità $D \to \infty$.
+
+\section{Validità della M.F.A. e Funzioni di Correlazione}
+
+Ora vogliamo capire quando la M.F.A. è un'approssimazione "sensata" per modelli più realistici (ad esempio, a corto raggio). Per farlo, studieremo le \textbf{funzioni di correlazione}.
+
+\subsubsection{Il paradosso della stima delle correlazioni}
+
+Sorge un problema concettuale: l'approssimazione di campo medio si basa sull'assunzione che gli spin non siano correlati, cioè che $\langle \sigma_i \sigma_j \rangle^c = 0$ per $i \neq j$.
+Come possiamo allora usare un'approssimazione che per definizione impone correlazioni nulle per \emph{stimare} le correlazioni del modello originale?
+
+La risposta è sottile. Dobbiamo distinguere tra due quantità:
+\begin{enumerate}
+    \item La funzione di correlazione calcolata \emph{all'interno} dell'approssimazione MF: $\langle \sigma_i \sigma_j \rangle_c^{MF}$. Questa è zero per definizione.
+    \item Una stima della funzione di correlazione del modello \emph{originale}, ottenuta usando la soluzione MF.
+\end{enumerate}
+
+\subsubsection{Fluctuation-Dissipation Theorem (FDT)}
+
+Nel modello esatto (teoria "True"), esiste una relazione fondamentale (il Teorema di Fluttuazione-Dissipazione, FDT) che lega le correlazioni alla risposta del sistema a una perturbazione (risposta lineare).
+
+La funzione di correlazione connessa è la derivata seconda dell'energia libera:
+\begin{equation}
+    \langle \sigma_i \sigma_k \rangle_c^{(True)} = -\frac{1}{\beta} \frac{\partial}{\partial h_k} \left( \frac{\partial F}{\partial h_i} \right) = \frac{1}{\beta} \frac{\partial \langle \sigma_i \rangle}{\partial h_k} = \frac{1}{\beta} \frac{\partial m_i}{\partial h_k}
+\end{equation}
+
+Questa identità \textbf{non è vera all'interno dell'approssimazione di campo medio}. 
+
+In M.F.A. si ha: $\langle \sigma_i \sigma_k \rangle_c^{MF} = 0$ (lato sinistro) , $\frac{1}{\beta} \frac{\partial m_i}{\partial h_k}\Big|_{MF} \neq 0$ (lato destro)
+
+
+
+\subsubsection{Strategia di Stima}
+
+La nostra strategia sarà quella di usare il termine di risposta lineare calcolato in M.F.A. come nostra \textbf{stima} della vera funzione di correlazione:
+
+\begin{equation}
+    \langle \sigma_i \sigma_k \rangle_c^{(True)} \approx \frac{\partial m_i}{\partial h_k}\Big|_{MF} \cdot \frac{1}{\beta}
+\end{equation}
+
+Questa è una stima migliore (e non banale) rispetto a $\langle \sigma_i \sigma_k \rangle_c^{MF} = 0$.
+
+\subsubsection{Giustificazione Variazionale}
+
+Perché questa è una stima migliore? Consideriamo un argomento variazionale.
+
+Sia $P_{eq}^T$ la vera distribuzione di probabilità di equilibrio e $P_{eq}^A$ la distribuzione approssimata (es. quella fattorizzata di campo medio).
+Definiamo la "distanza" tra le due $\delta P = |P_{eq}^T - P_{eq}^A|$. Assumiamo che l'approssimazione sia buona, quindi $\delta P = \mathcal{O}(\epsilon)$ con $\epsilon$ piccolo.
+
+\begin{enumerate}
+    \item Stima di $\langle \sigma_i \sigma_j \rangle_c$: Questa è un'aspettativa lineare sulla distribuzione $P$.
+    $$ \langle \sigma_i \sigma_j \rangle_c^T = \langle \sigma_i \sigma_j \rangle_c^A + \mathcal{O}(\epsilon) $$
+    L'errore sulla correlazione calcolata direttamente è $\mathcal{O}(\epsilon)$. 
+    
+    Nel nostro caso $\langle \sigma_i \sigma_j \rangle_c^A = 0$, quindi $\langle \sigma_i \sigma_j \rangle_c^T = \mathcal{O}(\epsilon)$.
+
+    \item Stima dell'Energia Libera $F$:  La vera distribuzione $P_{eq}^T$ è il minimo di $F[P]$:
+    \begin{equation}
+        \frac{\delta F[P]}{\delta P} \Big|_{P = P_{eq}^T} = 0
+    \end{equation}
+    A causa di questa proprietà variazionale, quando calcoliamo $F$ usando la distribuzione approssimata $P_{eq}^A$ (che è "vicina" a $P_{eq}^T$), l'errore che commettiamo non è $\mathcal{O}(\epsilon)$, ma $\mathcal{O}(\epsilon^2)$:
+    \begin{equation}
+        F[P_{eq}^T] = F[P_{eq}^A] + \mathcal{O}(\epsilon^2)
+    \end{equation}
+    I termini lineari in $\epsilon$ si cancellano proprio perché siamo in un punto stazionario.
+\end{enumerate}
+
+
+La quantità fisica che ci interessa stimare è la funzione di correlazione del sistema reale $\langle \sigma_i \sigma_k \rangle_c^{(True)}$. Questa, nella teoria esatta, è legata alla derivata seconda dell'energia libera reale $F[P_{eq}^T]$.
+La nostra stima (la risposta lineare calcolata in campo medio $\frac{\partial m_i}{\partial h_k}|_{MF}$) è invece legata alla derivata seconda dell'energia libera \emph{approssimata} $F[P_{eq}^A]$.
+
+Il punto cruciale è che, grazie al principio variazionale, $F[P_{eq}^A]$ è una stima molto più accurata di $F[P_{eq}^T]$ (con un errore $\mathcal{O}(\epsilon^2)$) rispetto a quanto lo sia la stima diretta della correlazione $\langle \sigma_i \sigma_k \rangle_c^A$ (che ha un errore $\mathcal{O}(\epsilon)$).
+
+Poiché $F[P_{eq}^A]$ è una stima così precisa dell'energia libera reale, ci aspettiamo che anche le sue derivate seconde (ovvero la nostra stima $\frac{\partial m_i}{\partial h_k}|_{MF}$) siano una stima della correlazione reale \emph{molto migliore} rispetto alla stima diretta (che è 0 e ha un errore maggiore).
+
+Per questa ragione, procederemo calcolando $\frac{\partial m_i}{\partial h_k}|_{MF}$ e analizzeremo il suo comportamento per testare i limiti di validità dell'approssimazione di campo medio.

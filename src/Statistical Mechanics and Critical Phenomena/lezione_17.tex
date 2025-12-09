@@ -1,0 +1,209 @@
+\chapter{Lezione 17}
+\label{chap:lezione_17}
+
+\begin{flushright}
+\textit{Data: 19/11/2025}
+\end{flushright}
+
+\section{Teoria di Landau-Ginzburg}
+
+Nelle lezioni precedenti abbiamo discusso il modello Gaussiano, che corrisponde essenzialmente alla teoria di Campo Medio. Tuttavia, sappiamo che il Campo Medio fallisce nel descrivere correttamente gli esponenti critici per dimensioni inferiori alla dimensione critica superiore ($D < 4$).
+Siamo interessati a capire le transizioni di fase nel mondo reale (tipicamente in $D=3$). Dobbiamo quindi formulare una teoria matematica che vada oltre il modello Gaussiano, modificando l'argomento della funzione di partizione.
+
+L'idea è modificare l'azione aggiungendo un termine di interazione.
+La scelta del termine da aggiungere non è arbitraria, ma dettata da principi di simmetria e rilevanza.
+Potremmo chiederci: perché aggiungiamo un termine $\varphi^4$ e non, ad esempio, $\varphi^3$?
+\begin{itemize}
+    \item \textbf{Simmetria:} Il modello di Ising possiede una simmetria globale di inversione di spin ($Z_2$), ovvero l'Hamiltoniana è invariante per $\sigma_i \to -\sigma_i$. Nella teoria di campo, questo corrisponde a $\varphi(x) \to -\varphi(x)$. Un termine cubico $\varphi^3$ non è invariante sotto questa trasformazione (è dispari), quindi romperebbe esplicitamente la simmetria, cambiando la classe di universalità della teoria. Dobbiamo mantenere la simmetria originale del problema.
+    \item \textbf{Rilevanza:} Potremmo aggiungere potenze superiori come $\varphi^6$, $\varphi^8$, ecc. Tuttavia, come vedremo nel contesto del Gruppo di Rinormalizzazione, questi termini di ordine superiore risultano essere \textit{irrilevanti} vicino al punto critico in dimensione $D=4$ o inferiore. Non modificano cioè gli esponenti critici.
+\end{itemize}
+Il primo termine non banale che rispetta la simmetria e che possiamo aggiungere è quindi il termine quartico $\varphi^4$.
+
+\noindent Introduciamo l'\textbf{Hamiltoniana Effettiva} (o Azione) di Landau-Ginzburg:
+
+\hfill 
+
+\begin{tcolorbox}[colback=colorD!5, colframe=colorD!75!colorA, coltitle=white, title=\textbf{Azione di Landau-Ginzburg}]
+\begin{equation}
+\label{eq:hamiltoniana_eff}
+\color{black}{\beta H_{eff}[\varphi]} \equiv \int d^D x \left\{ \color{colorA}{\frac{\mu \cdot \varphi^2}{2}} \color{black}+ \color{colorD}{\frac{1}{2}\sum_{\nu=1}^{D}(\partial_{\nu}\varphi)^2} \color{black}+ \color{colorE}{\frac{g\cdot \varphi^4}{4!}} \color{black}+ \color{colorF}{h(x)\varphi(x)} \color{black}+  \color{colorG}\frac{(\Delta \varphi)^2}{2\Lambda^2} \color{black}\right\}
+\end{equation}
+\end{tcolorbox}
+
+ 
+\noindent Analizziamo nel dettaglio i termini:
+
+\begin{itemize}
+    \item \textbf{Funzionale Integrale:} La notazione implica che stiamo integrando su tutto lo spazio $d^D x$. Il campo $\varphi(x)$ è una variabile che dipende dalla posizione.
+    
+    \item \textbf{\color{colorA}Termine di Massa ($\frac{\mu}{2}\varphi^2$):} Il parametro $\mu$ gioca il ruolo di una "massa quadrata" ($m^2$).
+    Rappresenta la distanza dalla temperatura critica. Nelle lezioni precedenti, avevamo visto che il termine di massa era legato a $1 - 2D\beta J$. Quindi $\mu \sim (T - T_c)$.
+    
+    \item \textbf{\color{colorD}Termine Cinetico ($\frac{1}{2}(\partial \varphi)^2$):} Questo termine coinvolge le derivate spaziali ($\nabla \varphi$). Deriva dall'interazione tra primi vicini sul reticolo ($\varphi_i - \varphi_j$) e penalizza le configurazioni in cui il campo varia rapidamente nello spazio. È il termine che genera le correlazioni spaziali (propagatore).
+    
+    \item \textbf{\color{colorE}Termine di Interazione ($\frac{g}{4!}\varphi^4$):} È il termine che rende la teoria non Gaussiana. $g$~ è la costante di accoppiamento.
+    Affinché la teoria sia ben definita, deve essere $g > 0$. Se fosse $g < 0$, il potenziale andrebbe a $-\infty$ per grandi $\varphi$ e l'integrale funzionale divergerebbe, rendendo la teoria instabile.
+    Consideriamo questo termine come una perturbazione: se $g$ è piccolo, speriamo di poter usare la teoria delle perturbazioni.
+
+    \item \textbf{\color{colorF}{Termine di Campo Esterno ($h(x)\varphi(x)$):}}
+    Accoppiamento con una \textbf{sorgente esterna} $h(x)$, usata per polarizzare il sistema.
+    
+    \item \textbf{\color{colorG}Termine di Regolarizzazione (Cutoff):} 
+    Questo termine agisce come un cutoff ultravioletto $\Lambda$. Serve a "proibire" le funzioni che oscillano troppo velocemente a corte distanze. Senza di esso, certe quantità (come l'energia interna in $D \ge 2$) divergerebbero.
+\end{itemize}
+
+La funzione di partizione è l'integrale funzionale su tutte le configurazioni del campo:
+\begin{equation}
+Z = \int \mathcal{D} \varphi \; e^{-\beta H_{eff}[\varphi]}
+\end{equation}
+
+\subsection{Analisi dei Minimi e Rottura di Simmetria}
+
+Possiamo analizzare il potenziale classico $V(\varphi) = \frac{\mu}{2}\varphi^2 + \frac{g}{4!}\varphi^4$ per capire lo stato fondamentale del sistema (trascurando momentaneamente le fluttuazioni):
+
+\begin{itemize}
+    \item \textbf{Fase Simmetrica:}
+    Se $\mu > 0$ (e $g>0$), il potenziale ha un unico minimo globale in $\varphi = 0$.
+    Il valore di aspettazione del campo è nullo $\langle \varphi \rangle = 0$. Questa corrisponde alla fase disordinata ad alta temperatura ($T > T_c$).
+    
+    \item \textbf{Fase a Simmetria Rotta:}
+    Se $\mu < 0$, l'origine $\varphi = 0$ diventa un massimo locale (instabile).
+    Il potenziale assume la forma a "doppia buca" (double well) e si formano due nuovi minimi globali degeneri in:
+    \begin{equation}
+    \varphi_0 = \pm \sqrt{-\frac{6\mu}{g}}
+    \end{equation}
+    Il sistema sceglierà spontaneamente uno di questi due minimi, acquisendo un valore di aspettazione non nullo $\langle \varphi \rangle \neq 0$ (magnetizzazione spontanea). Questa è la fase ordinata a bassa temperatura ($T < T_c$).
+\end{itemize}
+
+\subsection{Relazione con il Modello di Ising}
+Il modello di Landau-Ginzburg può essere visto come una generalizzazione del modello di Ising.
+Consideriamo un potenziale della forma $g(\varphi^2 - 1)^2$. A meno di costanti, questo corrisponde a termini $\varphi^4$ e $-\varphi^2$.
+Se prendiamo il limite $g \to \infty$, costringiamo il campo a stare esattamente sul minimo del potenziale, ovvero $\varphi^2 = 1 \implies \varphi = \pm 1$.
+In questo limite, recuperiamo le variabili discrete di Ising.
+Con $g$ finito, permettiamo al modulo dello spin di fluttuare attorno al valore di equilibrio ("spin morbidi").
+
+\subsection{Formulazione su Reticolo e Analisi Dimensionale}
+
+È fondamentale capire la relazione tra la teoria di campo continuo e il reticolo sottostante, specialmente per quanto riguarda le dimensioni fisiche dei parametri e le divergenze.
+
+\noindent Sul reticolo, esiste una lunghezza minima $a$ (passo del reticolo). \textbf{Non possiamo sondare distanze minori di $a$.
+Questo fornisce una regolarizzazione naturale: il reticolo agisce come un cutoff ultravioletto.}
+Possiamo identificare:
+\begin{equation}
+    a \sim \frac{1}{\Lambda}
+\end{equation}
+dove $\Lambda$ è il cutoff in momento. Mandare $a \to 0$ equivale a mandare $\Lambda \to \infty$.
+
+\subsubsection{Divergenze dell'Energia}
+Se calcoliamo l'energia interna $U$ nel modello Gaussiano ($g=0$) con un cutoff $\Lambda$, troviamo:
+\begin{itemize}
+    \item In $D=2$: $U \sim \log \Lambda$
+    \item In $D=3$: $U \sim \Lambda$ (divergenza lineare)
+\end{itemize}
+Queste divergenze non sono problematiche per la fisica critica finché $g=0$, poiché rappresentano solo uno shift costante dell'energia. Tuttavia, quando accendiamo l'interazione $g$, la gestione di queste divergenze diventa più sottile.
+
+\subsubsection{Riscalamento dei Campi}
+Scriviamo l'Hamiltoniana effettiva discretizzata sul reticolo.
+Tenendo conto della dipendenza esplicita dal passo reticolare $a$, l'espressione è:
+
+\begin{equation}
+H_{eff, lattice}[\varphi_i] = a^D \left[ \frac{1}{2a^2} \sum_{ik} J_{ik} (\varphi_i - \varphi_k)^2 + \sum_i \left( \frac{\mu}{2}\varphi_i^2 + \frac{g}{4!}\varphi_i^4 + h_i\varphi_i \right) \right]
+\end{equation}
+
+Per semplificare l'espressione e cancellare il fattore $a^{D-2}$ che emerge dal termine cinetico (combinando $a^D$ e $1/a^2$), ridefiniamo i campi:
+
+\begin{equation}
+\Psi_i \equiv a^{\frac{D-2}{2}} \varphi_i
+\end{equation}
+
+Se poniamo $h=0$ per semplicità, sostituendo la nuova variabile $\Psi_i$ nell'Hamiltoniana, otteniamo una forma in cui i coefficienti sono riscalati:
+
+\begin{equation}
+H_{eff, lat}[\{\Psi_i\}] = \frac{1}{2} \sum_{ik} J_{ik} (\Psi_i - \Psi_k)^2 + \sum_i \left( \frac{M}{2}\Psi_i^2 + \frac{\lambda}{4!}\Psi_i^4 \right)
+\end{equation}
+
+Dove abbiamo definito i nuovi parametri adimensionali del reticolo:
+
+\begin{equation}
+M = \mu a^2 \quad \text{e} \quad \lambda = g a^{4-D}
+\end{equation}
+
+Eseguiamo ora l'analisi dimensionale. Partiamo dal principio che l'Hamiltoniana Effettiva deve essere adimensionale e definiamo la dimensione della lunghezza come $[L] = -1$ (o equivalentemente la dimensione dell'impulso come $[p] = 1$):
+
+\begin{itemize}
+    \item La massa quadrata ha dimensione $[\mu] = 2$.
+    \item Il passo del reticolo ha dimensione $[a] = [L] = -1 = [\Lambda^{-1}]$.
+    \item Il cutoff ha dimensione $[\Lambda] = [p] = 1$.
+    \item I parametri riscalati sono adimensionali: $[M] = [\lambda] = 0$.
+    \item La dimensione del campo $\Psi$ risulta $[\Psi] = 0$, mentre $[\varphi] = \frac{D-2}{2}$.
+    \item Dalla relazione per $\lambda$, ricaviamo $[g] = 4 - D$
+\end{itemize}
+
+
+\subsection{Il Problema del Parametro Adimensionale}
+
+Per fare teoria delle perturbazioni, abbiamo bisogno di un parametro di espansione \textit{adimensionale}.
+La costante $g$ ha dimensione fisica $4-D$. Dobbiamo renderla adimensionale dividendola per una scala di massa appropriata elevata alla potenza giusta.
+Vicino al punto critico, l'unica scala di massa fisica del sistema è la "massa rinormalizzata" o la distanza dal punto critico $(\mu - \mu_c)$.
+Costruiamo il parametro adimensionale $u$:
+
+\begin{equation}
+u \propto \frac{g}{(\mu - \mu_c)^{\frac{4-D}{2}}}
+\end{equation}
+
+Analizziamo il comportamento di questo parametro $u$ quando ci avviciniamo alla transizione di fase ($\mu \to \mu_c$):
+
+\begin{itemize}
+    \item \textbf{Caso $D > 4$:} L'esponente $\frac{4-D}{2}$ è negativo.
+    Quando $\mu \to \mu_c$, $u \to 0$.
+    Il parametro di accoppiamento effettivo svanisce. La teoria delle perturbazioni funziona benissimo vicino al punto critico e la teoria diventa essenzialmente Gaussiana (Campo Medio è esatto).
+    
+    \item \textbf{Caso $D < 4$:} L'esponente $\frac{4-D}{2}$ è positivo.
+    Quando $\mu \to \mu_c$, $u \to \infty$.
+    \textbf{Il parametro di accoppiamento effettivo diverge.}
+\end{itemize}
+
+Questa è una conclusione drammatica: per quanto piccola possa essere la costante di accoppiamento $g$ che inseriamo nella teoria, l'accoppiamento \textit{effettivo} che controlla le fluttuazioni a grandi distanze esplode vicino al punto critico in dimensione $D < 4$.
+Questo significa che la teoria delle perturbazioni naive fallirà inevitabilmente proprio nella regione fisica che ci interessa.
+Questa osservazione è la motivazione principale per l'introduzione del \textbf{Gruppo di Rinormalizzazione} (RG), che ci permetterà di "risommare" queste divergenze e definire una teoria efficace sensata.
+
+\section{Teoria delle Perturbazioni}
+
+Abbiamo visto dall'analisi dimensionale che la costante di accoppiamento efficace diverge vicino al punto critico per $D < 4$, rendendo problematica l'applicazione diretta della teoria delle perturbazioni.
+Tuttavia, il punto di partenza obbligato per qualsiasi analisi è l'espansione perturbativa per piccoli valori di $g$.
+Espandiamo la teoria assumendo che $g$ sia piccolo e verifichiamo cosa succede.
+
+L'idea centrale è quella di considerare il termine quartico nell'azione come una piccola perturbazione rispetto alla teoria libera (Gaussiana).
+Vogliamo calcolare la funzione di correlazione a due punti completa $G(x)$:
+
+\begin{equation}
+G(x) = \langle \varphi(0)\varphi(x) \rangle
+\end{equation}
+
+Nella teoria di Landau-Ginzburg, il valore di aspettazione di un generico funzionale dei campi è dato dal rapporto di due integrali funzionali.
+Possiamo scrivere esplicitamente questo rapporto separando la parte Gaussiana dell'azione ($S_0$) dalla parte di interazione ($S_{int} = \int d^D x \frac{g}{4!} \varphi^4$):
+
+\begin{equation}
+\langle \varphi(0)\varphi(x) \rangle = \frac{\int \mathcal{D}\varphi \, e^{-H[\varphi]} \varphi(0)\varphi(x)}{\int \mathcal{D}\varphi \, e^{-H[\varphi]}}
+\end{equation}
+
+Procediamo espandendo in serie di Taylor il fattore esponenziale contenente il termine di interazione $g$:
+\begin{equation}
+e^{-\int d^D z \frac{g}{4!} \varphi^4(z)} = \sum_{m=0}^{\infty} \frac{1}{m!} \left( -\frac{g}{4!} \int d^D z \, \varphi^4(z) \right)^m
+\end{equation}
+
+In questo modo, stiamo "portando giù" il termine di interazione dall'esponente, trasformandolo in un prodotto di campi all'interno dell'integrale.
+Sostituendo questa espansione sia al numeratore che al denominatore, l'espressione completa per la funzione di correlazione diventa:
+
+\begin{equation}
+G(x) = \lim_{V\rightarrow\infty} \frac{\sum_{m=0}^{\infty} \frac{(-g/4!)^{m}}{m!} \left\langle \left[ \int d^{D}z \, \varphi^{4}(z) \right]^{m} \varphi(x)\varphi(0) \right\rangle_{0}}{\sum_{m=0}^{\infty} \frac{(-g/4!)^{m}}{m!} \left\langle \left[ \int d^{D}z \, \varphi^{4}(z) \right]^{m} \right\rangle_{0}}
+\end{equation}
+
+È fondamentale chiarire la notazione introdotta: il simbolo $\langle \dots \rangle_0$ indica il \textbf{valore di aspettazione calcolato nella teoria Gaussiana} (ovvero con $g=0$).
+Questo passaggio è cruciale perché riduce il problema del calcolo di un integrale funzionale con un'azione complessa (quartica) al calcolo di una serie infinita di integrali che sono puramente Gaussiani.
+I termini all'interno delle parentesi $\langle \dots \rangle_0$ sono ora semplicemente prodotti di campi (momenti) di ordine sempre più alto.
+
+In pratica, abbiamo riscritto la teoria interagente come una somma infinita di termini calcolabili usando le proprietà della teoria libera.
+Tutti questi integrali sono ora fattibili perché sappiamo calcolare esattamente i momenti di una distribuzione Gaussiana (usando il Teorema di Wick).
+Il nostro lavoro nelle prossime lezioni sarà proprio quello di calcolare questi termini, ordine per ordine in $g$, e analizzare il loro comportamento.
+

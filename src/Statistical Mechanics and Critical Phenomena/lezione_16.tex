@@ -1,0 +1,217 @@
+\chapter{Lezione 16}
+\label{chap:lezione_16}
+
+\begin{flushright}
+\textit{Data: 17/11/2025}
+\end{flushright}
+
+\section{Espansione ad Alta T e Variabili di Link}
+
+Riprendiamo l'analisi del modello di Ising nell'espansione ad alta temperatura. Abbiamo visto che la funzione di partizione può essere scritta esattamente utilizzando la variabile duale $t = \tanh (\beta)$:
+
+\begin{equation}
+Z_{Ising} = \sum_{\{\sigma=\pm 1\}} e^{\beta \sum_{\langle i,j \rangle} \sigma_i \sigma_j}
+\end{equation}
+
+Utilizzando l'identità $e^{\beta \sigma_i \sigma_j} = \cosh (\beta) (1 + t \sigma_i \sigma_j)$, possiamo fattorizzare il termine $\cosh( \beta)$ per ogni legame ($N_L$ è il numero totale di legami):
+
+\begin{equation}
+Z_{Ising} = (\cosh( \beta))^{N_L} \sum_{\{\sigma=\pm 1\}} \prod_{\langle i,j \rangle} (1 + t \sigma_i \sigma_j)
+\end{equation}
+
+Quando espandiamo il prodotto, otteniamo una somma di termini. Poiché dobbiamo sommare sulle configurazioni di spin $\sigma = \pm 1$, sopravvivono solo i termini in cui ogni variabile di spin appare con una potenza pari. I termini con potenze dispari si annullano nella somma.
+Questo ci porta a una rappresentazione grafica in termini di cammini chiusi.
+
+Possiamo formalizzare questo concetto introducendo delle variabili di occupazione dei link, $n_{ik} \in \{0, 1\}$, per ogni coppia di vicini $\langle i,k \rangle$:
+\begin{itemize}
+    \item $n_{ik}=1$: il link è presente nel grafico (contributo $t$).
+    \item $n_{ik}=0$: il link è assente (contributo $1$).
+\end{itemize}
+
+La funzione di partizione diventa una somma su queste variabili di link:
+
+\begin{equation}
+Z_{Ising} = (\cosh( \beta))^{N_L} \sum_{\{n_{ik}=0,1\}} t^{\sum_{\langle i,k \rangle} n_{ik}} \delta_{\text{constraint}}
+\end{equation}
+
+Il vincolo ($\delta_{\text{constraint}}$) impone che in ogni sito $i$, la somma delle variabili di link incidenti $n_i$ sia un numero pari:
+
+\begin{equation}
+n_i = \sum_{k} n_{ik} \quad \text{deve essere pari}
+\end{equation}
+
+Questo assicura che i grafici contribuenti siano formati da linee chiuse (loop).
+
+\subsection{Contributi all'Energia Libera}
+
+Il primo contributo non banale (diverso da 1) proviene dal loop chiuso più piccolo possibile. Su un reticolo ipercubico, non è possibile formare triangoli ($t^3$), quindi il primo termine\footnote{Nel caso monodimensionale ($D=1$), sebbene non esistano loop locali, se si assumono condizioni al contorno periodiche (spazio non piatto), esiste un unico cammino chiuso che avvolge l'intero volume $V$. Questo genera un contributo di ordine $t^V$, che tuttavia diventa trascurabile nel limite termodinamico.} è il quadrato (plaquette) di ordine $t^4$:
+
+\begin{equation}
+t^4 (\sigma_1 \sigma_2)(\sigma_2 \sigma_3)(\sigma_3 \sigma_4)(\sigma_4 \sigma_1) \to t^4 \sigma_1^2 \sigma_2^2 \sigma_3^2 \sigma_4^2 = t^4
+\end{equation}
+
+Calcoliamo l'energia libera per sito $f(\beta)$. Ricordiamo che $f = -\frac{1}{\beta N} \log Z$.
+Separando il contributo del termine $(\cosh( \beta))^{N_L}$ (dove $N_L = DN$) e il contributo dei loop:
+
+\begin{equation}
+f(\beta) = -\frac{1}{\beta N} \log Z = -\frac{D}{\beta} \log(\cosh( \beta)) + \tilde{f}(\beta)
+\end{equation}
+
+Per valutare $\tilde{f}(\beta)$ all'ordine più basso, contiamo i modi per formare una placchetta quadrata di 4 passi ($t^4$) partendo da un sito dato e tornando all'origine:
+\begin{enumerate}
+    \item Scelta della prima direzione: abbiamo $D$ direzioni possibili.
+    \item Scelta della seconda direzione: abbiamo $D-1$ direzioni (non possiamo tornare subito indietro).
+    \item \textbf{Fattore di simmetria:} Dobbiamo dividere per 2. Questo fattore $1/2$ tiene conto del fatto che il cammino può essere percorso in due sensi (orario e antiorario), che rappresentano lo stesso oggetto geometrico nella somma sulla funzione di partizione.
+\end{enumerate}
+Il fattore combinatorio corretto risulta quindi $\frac{D(D-1)}{2}$. L'energia libera corretta all'ordine $t^4$ risulta:
+
+\begin{equation}
+f(\beta) \approx -\frac{1}{\beta} \left( D \log(\cosh( \beta)) + \frac{D(D-1)}{2} t^4 \right)
+\end{equation}
+
+Questo calcolo mostra come le fluttuazioni (i loop) modifichino l'energia libera rispetto alla semplice approssimazione di campo medio.
+
+
+\noindent Per studiare il comportamento critico con precisione, si espande la funzione in serie di potenze di $t^2$ ad ordini molto elevati:
+
+\begin{equation}
+f(t^2) = \sum_{n=0}^{\infty} f_n t^2
+\end{equation}
+
+Assumiamo che la singolarità più vicina all'origine nel piano complesso $t^2$ sia la temperatura critica $t_c^2$, e che la funzione abbia una singolarità del tipo:
+
+\begin{equation}
+(t^2 - t_c^2)^\omega
+\end{equation}
+
+ 
+Utilizzando teoremi standard sulle serie di potenze, possiamo determinare la posizione della singolarità $t_c$ dal rapporto dei coefficienti:
+
+\begin{equation}
+t_c^2 = \lim_{n \to \infty} \frac{f_n}{f_{n+1}}
+\end{equation}
+ 
+Inoltre, possiamo stimare l'esponente critico $\omega$ analizzando la curvatura dei rapporti:
+
+\begin{equation}
+\omega = \lim_{n \to \infty} \left( -n^2 \left( \frac{f_n}{f_{n+1}} - \frac{f_{n-1}}{f_n} \right) \right) t_c^{-2} - 1
+\end{equation}
+
+Questa tecnica richiede il calcolo di un numero finito ma elevato di termini.
+Per esempio, come citato nel libro di Parisi ("Statistical Field Theory"), per il reticolo cubico semplice ($D=3$) si sono calcolati termini fino al 18° ordine ($t^{18}$).
+
+
+\section{Dal Reticolo alla Teoria di Campo (Continuo)}
+
+Esaminiamo ora il passaggio dal reticolo discreto alla teoria di campo continuo. Questo passaggio è fisicamente giustificato solo vicino al punto critico, dove la lunghezza di correlazione $\xi$ diverge ($\xi \gg a$, con $a$ passo del reticolo).
+
+Possiamo visualizzare questo limite immaginando la struttura del sistema in termini di domini di spin. Immaginiamo di avere delle "gocce" (droplets) di spin positivi in un mare di spin negativi, e viceversa.
+\begin{itemize}
+    \item Se la lunghezza di correlazione è piccola (ordine 1), avremo piccole gocce isolate.
+    \item Avvicinandoci al punto critico, la dimensione tipica di queste gocce cresce.
+    \item Nel limite del continuo, stiamo essenzialmente "sfocando" (smoothing) la visione microscopica: non guardiamo più il singolo spin che scatta su e giù, ma la magnetizzazione media locale su scale di lunghezza comparabili a $\xi$.
+\end{itemize}
+In questo limite, \textbf{Le variabili di spin discrete $\sigma_i$ possono essere sostituite da un campo continuo $\varphi(x)$ che varia lentamente nello spazio ("smooth"):}
+
+\begin{equation}
+\sigma_i \to \varphi(x)
+\end{equation}
+
+Analizziamo il propagatore (funzione di correlazione a due punti) nello spazio dei momenti (trasformata di Fourier):
+
+\begin{equation}
+\langle \sigma_j \sigma_l \rangle \sim \int d^D k \frac{e^{-i(j-l)\cdot k}}{1 - 2\beta J \sum_{\mu} \cos k_\mu}
+\end{equation}
+
+Espandiamo il denominatore per piccoli momenti $k$ (che corrispondono a grandi distanze):
+Ricordando che $\cos k_\mu \approx 1 - \frac{k_\mu^2}{2}$, il denominatore diventa:
+
+\begin{equation}
+1 - 2\beta J D + \beta J k^2 + O(k^4)
+\end{equation}
+
+dove $k^2 = \sum k_\mu^2$.
+
+Questa espressione ha la struttura tipica di un \textbf{propagatore massivo}:
+\begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Propagatore}]
+\begin{equation}
+ \sim \frac{1}{m^2 + k^2}
+\end{equation}
+\end{tcolorbox}
+
+
+Qui identifichiamo un \textbf{termine di "massa"} $m^2$:
+\begin{equation}
+m^2 \propto \frac{1 - 2D\beta J}{\beta J} \propto (T - T_c)
+\end{equation}
+Si vede chiaramente che la massa si annulla alla temperatura critica di campo medio: $2D\beta_c J = 1$
+
+Esattamente a $T=T_c$, il propagatore si comporta come: 
+
+\begin{equation}
+    \frac{1}{k^2}
+\end{equation}
+
+
+\subsection{Derivazione dell'Azione nel Continuo}
+
+Costruiamo l'azione (o Hamiltoniana efficace) nel continuo espandendo i termini reticolari.
+Il termine di somma sugli spin diventa un integrale spaziale:
+\begin{equation}
+\sum_i \varphi_i^2 \to \int d^D x \, \varphi^2(x)
+\end{equation}
+
+Il termine di interazione tra primi vicini $\sum_{\langle i,k \rangle} \sigma_i J_{ik} \sigma_k$ richiede un'attenzione particolare. Vogliamo capire come questo termine generi le derivate spaziali nel continuo.
+
+Raggruppiamo i termini dei vicini di un sito in posizione $\vec{0}$ sottraendo il campo centrale $\varphi_{0,0}$:
+\begin{equation}
+(\varphi_{0,1} - \varphi_{0,0}) + (\varphi_{0,-1} - \varphi_{0,0}) + (\varphi_{1,0} - \varphi_{0,0}) + (\varphi_{-1,0} - \varphi_{0,0})
+\end{equation}
+
+Eseguiamo l'espansione di Taylor per i vicini lungo l'asse $y$ (siti $0,1$ e $0,-1$):
+\begin{align}
+\varphi_{0,1} &= \varphi_{0,0} + \frac{\partial \varphi}{\partial y} + \frac{1}{2} \frac{\partial^2 \varphi}{\partial y^2} + \dots \\
+\varphi_{0,-1} &= \varphi_{0,0} - \frac{\partial \varphi}{\partial y} + \frac{1}{2} \frac{\partial^2 \varphi}{\partial y^2} + \dots
+\end{align}
+
+Sommando questi contributi, i termini di derivata prima si cancellano e rimangono le derivate seconde:
+\begin{equation}
+(\varphi_{0,1} - \varphi_{0,0}) + (\varphi_{0,-1} - \varphi_{0,0}) \approx 2 \left( \frac{1}{2} \frac{\partial^2 \varphi}{\partial y^2} \right) = \frac{\partial^2 \varphi}{\partial y^2}
+\end{equation}
+
+Sommando su tutte le $D$ direzioni spaziali, ricostruiamo l'operatore Laplaciano $\nabla^2$.
+
+Sostituendo questo risultato nell'espressione della funzione di partizione, l'integrale funzionale assume la forma esatta:
+
+L'azione gaussiana nel continuo assume quindi la forma:
+
+\begin{equation}
+S_{Gauss}[\varphi] =  \int d^D x \left( -(1-2D\beta) \frac{\varphi(x)^2}{2} + \frac{\beta}{2} \varphi(x) \nabla^2 \varphi(x) \right) 
+\end{equation}
+
+
+dove il termine $\varphi \nabla^2 \varphi$ rappresenta il termine cinetico che, integrando per parti, corrisponde al classico $-(\nabla \varphi)^2$
+
+
+\section{Il Modello $\varphi^4$ (Ginzburg-Landau)}
+
+Il modello gaussiano derivato sopra è un'approssimazione valida solo se le fluttuazioni sono puramente quadratiche (\textbf{teoria libera}). Questa teoria è "particolarmente noiosa" dal punto di vista della fisica critica. Essendo un'approssimazione quadratica, essa riproduce esattamente gli esponenti critici della teoria di Campo Medio, che sappiamo essere errati per dimensioni $D~<~4$. Sappiamo, infatti, che il modello di Ising ha una transizione di fase non banale che il modello gaussiano non cattura completamente in bassa dimensione ($D<4$).
+Per descrivere una teoria fisica realistica, dobbiamo modificare l'azione aggiungendo un termine di interazione che rispetti la simmetria $\varphi \to -\varphi$. Aggiungiamo un termine quartico.  L'azione completa diventa:
+
+\begin{equation}
+S[\varphi] = \int d^D x \left( \frac{1}{2} (\nabla \varphi)^2 + \frac{1}{2} m^2 \varphi^2 + g \varphi^4 \right)
+\end{equation}
+
+Questo è il \textbf{modello di Ginzburg-Landau}. 
+
+Il problema principale è che non sappiamo risolvere esattamente questa teoria interagente.
+La nostra strategia sarà quella di trattare $g$ come un parametro piccolo ed eseguire un'\textbf{espansione perturbativa} in $g$.
+\begin{itemize}
+    \item Se $g=0$, torniamo alla teoria gaussiana risolubile.
+    \item Espandendo per piccoli $g$, calcoliamo le correzioni agli esponenti di campo medio.
+\end{itemize}
+Questo approccio perturbativo sarà la base per l'applicazione del Gruppo di Rinormalizzazione.
+
+
+
+

@@ -1,0 +1,137 @@
+\chapter{Lezione 4}
+\label{chap:lezione_04} 
+
+\begin{flushright}
+\textit{Data: 08/10/2025}
+\end{flushright}
+
+\section{Teorema di Fluttuazione-Dissipazione (FDT)}
+
+Il \textbf{Teorema di Fluttuazione-Dissipazione} (FDT) è alla base della \textbf{teoria della risposta lineare} ed è di fondamentale importanza perché mette in connessione due regimi fisici apparentemente molto diversi.
+
+Da un lato, abbiamo le \textbf{osservabili statiche} di un sistema all'equilibrio. Queste sono quantità che possono essere misurate "scattando una fotografia" del sistema in un dato istante e calcolando, per esempio, le funzioni di correlazione tra le sue componenti. Il sistema è in quiete, non perturbato dall'esterno, e si analizza il suo comportamento intrinseco.
+
+Dall'altro lato, abbiamo la \textbf{risposta dinamica} del sistema a una perturbazione esterna. In questo caso, agiamo attivamente sul sistema, ad esempio applicando un piccolo campo magnetico, e misuriamo come il sistema reagisce a tale sollecitazione. Questo è un processo dinamico che, seppur per una piccola perturbazione, porta il sistema fuori dal suo stato di equilibrio.
+
+Il teorema FDT stabilisce una relazione di uguaglianza tra queste due grandezze. In sostanza, ci dice che la risposta lineare del sistema (cioè la risposta a piccole perturbazioni) è proporzionale alle sue fluttuazioni termodinamiche all'equilibrio.
+
+\subsubsection{Dimostrazione:}
+
+Consideriamo un sistema la cui Hamiltoniana totale $H$ sia composta da una parte imperturbata $H_0$ e da una piccola perturbazione $H_1$, modulata da un parametro $\lambda$:
+
+\begin{equation}
+    H = H_0 + \lambda H_1
+\end{equation}
+
+Definiamo il valore di aspettazione di un'osservabile generica $A$ in presenza della perturbazione (indicato con l'apice $(\lambda)$) come:
+
+\begin{equation}
+    \langle A \rangle^{(\lambda)} = \frac{\int [dc] e^{-\beta(H_0 + \lambda H_1)} A}{\int [dc] e^{-\beta(H_0 + \lambda H_1)}}
+\end{equation}
+
+dove l'integrale è esteso a tutte le possibili configurazioni $[dc]$ del sistema e la funzione di partizione è: $Z(\lambda) = \int [dc] e^{-\beta(H_0 + \lambda H_1)}$
+
+Ora vogliamo calcolare come questo valore di aspettazione varia al variare dell'intensità della perturbazione $\lambda$, ovvero calcoliamo la derivata $\frac{d\langle A \rangle^{(\lambda)}}{d\lambda}$. 
+
+Applicando la regola di derivazione di un quoziente, otteniamo due termini, uno proveniente dalla derivata del numeratore e uno dalla derivata del denominatore:
+
+\begin{equation}
+    \frac{d\langle A \rangle^{(\lambda)}}{d\lambda} = \frac{d}{d\lambda} \left( \frac{N(\lambda)}{Z(\lambda)} \right) = \frac{N'(\lambda)Z(\lambda) - N(\lambda)Z'(\lambda)}{Z(\lambda)^2}
+\end{equation}
+
+Calcoliamo le derivate del numeratore $N(\lambda)$ e del denominatore $Z(\lambda)$ rispetto a $\lambda$:
+\begin{align*}
+    N'(\lambda) &= \frac{d}{d\lambda} \int [dc] e^{-\beta(H_0 + \lambda H_1)} A = \int [dc] (-\beta H_1) e^{-\beta H} A \\
+    Z'(\lambda) &= \frac{d}{d\lambda} \int [dc] e^{-\beta(H_0 + \lambda H_1)} = \int [dc] (-\beta H_1) e^{-\beta H}
+\end{align*}
+
+Sostituendo e riorganizzando i termini:
+\begin{align*}
+    \frac{d\langle A \rangle^{(\lambda)}}{d\lambda} &= \frac{1}{Z(\lambda)} \int [dc] (-\beta H_1) e^{-\beta H} A - \frac{\int [dc] e^{-\beta H} A}{Z(\lambda)} \frac{\int [dc] (-\beta H_1) e^{-\beta H}}{Z(\lambda)} \\
+    &= -\beta \left( \frac{\int [dc] e^{-\beta H} A H_1}{Z(\lambda)} - \frac{\int [dc] e^{-\beta H} A}{Z(\lambda)} \frac{\int [dc] e^{-\beta H} H_1}{Z(\lambda)} \right) \\
+    &= -\beta \left( \langle A H_1 \rangle^{(\lambda)} - \langle A \rangle^{(\lambda)} \langle H_1 \rangle^{(\lambda)} \right)
+\end{align*}
+
+L'espressione tra parentesi è, per definizione, la \textbf{funzione di correlazione connessa} tra l'osservabile $A$ e la perturbazione $H_1$, che denotiamo con $C_{A,H_1}^{c}$. Riorganizzando l'equazione, otteniamo la forma finale del teorema:
+
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+    -\frac{1}{\beta} \frac{d\langle A \rangle^{(\lambda)}}{d\lambda} = \langle A H_1 \rangle^{(\lambda)} - \langle A \rangle^{(\lambda)} \langle H_1 \rangle^{(\lambda)} = C_{A,H_1}^{c}(\lambda)
+\end{equation}
+\end{tcolorbox}
+
+
+Questo risultato è notevole:
+\begin{itemize}
+    \item Il termine a sinistra, $\frac{d\langle A \rangle^{(\lambda)}}{d\lambda}$, rappresenta la \textbf{risposta} del sistema. Misura quanto l'osservabile $A$ cambia in risposta a una variazione infinitesima della perturbazione.
+    \item Il termine a destra, $C_{A,H_1}^{c}$, è una \textbf{funzione di correlazione all'equilibrio}. Misura le fluttuazioni congiunte di $A$ e $H_1$ nel sistema imperturbato (se calcolata per $\lambda \to 0$).
+\end{itemize}
+
+Il teorema FDT ci permette quindi di calcolare la suscettibilità di un sistema a una perturbazione esterna semplicemente studiando le sue correlazioni interne all'equilibrio.
+
+\newpage
+\section{Rottura Spontanea di Simmetria}
+
+Introduciamo ora il concetto di \textbf{rottura spontanea di simmetria} utilizzando come esempio un sistema ferromagnetico.
+
+
+Un materiale ferromagnetico esibisce un comportamento che dipende fortemente dalla temperatura.
+\begin{itemize}
+    \item Ad \textbf{alte temperature} ($T > T_c$), il sistema si trova in una fase \textbf{paramagnetica}. L'agitazione termica è dominante e gli spin magnetici dei singoli atomi sono orientati in modo casuale. La magnetizzazione totale media del sistema, in assenza di un campo magnetico esterno ($h=0$), è nulla: $\langle m \rangle = 0$.
+    \item A \textbf{basse temperature} ($T < T_c$), al di sotto di una temperatura critica detta \textbf{Temperatura di Curie} ($T_c$), il sistema subisce una transizione di fase. Anche in assenza di un campo magnetico esterno ($h=0$), gli spin tendono ad allinearsi spontaneamente, dando origine a una \textbf{magnetizzazione spontanea} non nulla: $\langle m \rangle \neq 0$.
+\end{itemize}
+
+Quando il sistema viene raffreddato al di sotto di $T_c$, la magnetizzazione può orientarsi in una direzione (es. "su", con $m > 0$) o nella direzione opposta (es. "giù", con $m < 0$). Entrambe le configurazioni, che chiameremo $c$ e $\tilde{c}$, sono fisicamente stabili ed energeticamente equivalenti. In particolare, vale che $E[c] = E[\tilde{c}]$ e $m_c = -m_{\tilde{c}}$.
+
+Se il sistema si trova in uno stato con magnetizzazione positiva, è possibile invertirla applicando un piccolo campo magnetico esterno per un breve istante e poi rimuovendolo. Il sistema si assesterà nella nuova configurazione stabile con magnetizzazione negativa. Entrambi questi stati sono stabili nel tempo. Il sistema può trovarsi in (almeno) due stati stabili, caratterizzati unicamente dal segno della magnetizzazione ma per il resto identici nelle loro proprietà fisiche.
+
+\subsection{Il Paradosso della Simmetria}
+Consideriamo l'Hamiltoniana di Ising, che descrive un modello base di ferromagnetismo:
+\begin{equation}
+    H = -J \sum_{\langle i,j \rangle} \sigma_i \sigma_j - h \sum_i \sigma_i
+\end{equation}
+dove $\sigma_i = \pm 1$ sono gli spin, $J>0$ è l'accoppiamento ferromagnetico, e $h$ è il campo magnetico esterno.
+
+In assenza di campo esterno ($h=0$), l'Hamiltoniana è:
+\begin{equation}
+    H = -J \sum_{\langle i,j \rangle} \sigma_i \sigma_j
+\end{equation}
+Questa Hamiltoniana possiede una simmetria globale: è \textbf{invariante} rispetto alla trasformazione che inverte tutti gli spin simultaneamente, $\sigma_i \to -\sigma_i$ per ogni sito $i$. Infatti, il prodotto $\sigma_i \sigma_j$ non cambia segno se entrambi gli spin vengono invertiti.
+
+Qui sorge il paradosso. La teoria, descritta dall'Hamiltoniana, è perfettamente simmetrica. Tuttavia, l'osservazione sperimentale di un sistema fisico reale al di sotto di $T_c$ ci mostra uno \textbf{stato fisico non simmetrico}: il sistema sceglie una direzione di magnetizzazione preferenziale (o positiva o negativa). In questo caso, si dice che la simmetria dell'Hamiltoniana è stata \textbf{rotta spontaneamente}.
+
+Il problema teorico è il seguente: la probabilità di equilibrio di una configurazione $c$ è data dalla distribuzione di Boltzmann:
+\begin{equation}
+    P_{eq}[c] = \frac{1}{Z} e^{-\beta H[c]}
+\end{equation}
+Se l'Hamiltoniana $H[c]$ è invariante per inversione di spin, allora anche la distribuzione di probabilità $P_{eq}[c]$ dovrebbe esserlo. Come può una distribuzione di probabilità simmetrica generare uno stato osservato che è palesemente asimmetrico?
+
+
+La chiave per risolvere questa apparente contraddizione risiede nel considerare il volume del sistema.
+
+\begin{itemize}
+    \item \textbf{Volume Finito ($V < \infty$)}: In un sistema di dimensioni finite, non esistono transizioni di fase "nette" (singolarità matematiche). Il sistema è sempre \textbf{ergodico}, il che significa che, dato abbastanza tempo, può esplorare tutte le sue configurazioni possibili. Se il sistema si trova nello stato con magnetizzazione positiva, esiste sempre una probabilità non nulla (sebbene molto piccola) che una fluttuazione termica lo porti a "saltare" nello stato a magnetizzazione negativa. In una simulazione Monte Carlo, si osserverebbe che la magnetizzazione fluttua attorno a $+m$ per un lungo periodo, per poi passare a fluttuare attorno a $-m$, e così via. La distribuzione di probabilità complessiva rimane simmetrica. Tuttavia, il tempo caratteristico per questa transizione, $\tau^*$, cresce esponenzialmente con il volume del sistema: $\tau^* \sim e^V$.
+
+    \item \textbf{Limite Termodinamico ($V \to \infty$)}: Quando consideriamo il limite di un sistema infinitamente grande, che è quello in cui le transizioni di fase sono definite rigorosamente, il tempo di transizione $\tau^*$ diverge: $\tau^* \to \infty$. Questo significa che la probabilità di passare da uno stato di magnetizzazione all'altro diventa esattamente zero.
+
+In questo limite, si verifica il fenomeno della \textbf{rottura dell'ergodicità}. Lo spazio delle fasi del sistema si decompone in componenti ergodiche disgiunte. Se il sistema parte da una configurazione casuale, finirà (con probabilità 50/50) in una delle due "valli" (quella con magnetizzazione positiva o quella negativa) e vi rimarrà intrappolato per sempre.
+
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+Quindi, sebbene l'Hamiltoniana rimanga simmetrica, nel limite termodinamico il sistema fisico reale si trova confinato in uno stato che non possiede tale simmetria, per cui si verifica una rottura spontanea della simmetria.
+\end{tcolorbox} 
+
+L'applicazione di un campo magnetico anche infinitesimale è sufficiente a selezionare uno dei due stati, rompendo la degenerazione energetica e determinando l'orientamento della magnetizzazione.
+
+\end{itemize}

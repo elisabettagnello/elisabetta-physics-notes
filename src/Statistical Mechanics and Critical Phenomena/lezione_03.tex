@@ -1,0 +1,224 @@
+\chapter{Lezione 3}
+\label{chap:lezione_03} 
+
+\begin{flushright}
+\textit{Data: 06/10/2025}
+\end{flushright}
+
+
+\section{Introduzione ai Funzionali}
+
+In fisica, in particolare nello studio dei sistemi a molti gradi di libertà come quelli della meccanica statistica, ci troviamo spesso a che fare con distribuzioni di probabilità che dipendono da un numero estremamente grande di variabili. Quando questo numero tende all'infinito, è utile trattare queste dipendenze come se fossero funzioni continue. L'analisi funzionale è il campo della matematica che fornisce gli strumenti per operare su queste "funzioni di funzioni".
+
+Mentre una \textbf{funzione} è un'applicazione che associa un numero a un altro numero (o un punto in uno spazio a un punto in un altro), secondo la notazione:
+
+\begin{equation}
+    f(\cdot): x \rightarrow y \quad \text{tale che} \quad y = f(x)
+\end{equation}
+
+un \textbf{funzionale} è un'applicazione che associa un numero a un'intera funzione. Useremo una notazione con parentesi quadre per distinguerli:
+
+\begin{equation}
+    F[\cdot]: g(\cdot) \rightarrow \varphi \quad \text{tale che} \quad \varphi = F[g]
+\end{equation}
+
+Un funzionale, quindi, "prende in input" una funzione $g(x)$ e "restituisce in output" un singolo valore numerico $\varphi$ che in qualche modo caratterizza la funzione stessa.
+
+
+Alcuni esempi:
+
+\begin{enumerate}
+    \item \textbf{Integrale definito}: Un esempio molto comune è l'integrale di una funzione $g(x)$ su un intervallo $[A, B]$. L'integrale è un funzionale perché associa alla funzione $g(x)$ un numero, ovvero l'area sottesa dalla curva.
+    \begin{equation}
+        F_{A,B}[g] = \int_{A}^{B} dx \, g(x)
+    \end{equation}
+
+    \item \textbf{Valore della funzione in un punto}: Un funzionale può anche essere semplicemente il valore che la funzione assume in un punto specifico $\overline{x}$.
+    \begin{equation}
+        F_{\overline{x}}[g] \equiv g(\overline{x})
+    \end{equation}
+    
+    \item \textbf{Valore massimo/minimo}: Un altro esempio è il funzionale che trova il valore massimo (o minimo) assunto dalla funzione $g(x)$ in un dato intervallo $[A, B]$.
+    \begin{equation}
+        F_{A,B}^{\max}[g] = \max_{A \le x \le B} \{g(x)\}
+    \end{equation}
+    
+    \item \textbf{Entropia di Shannon}: Un funzionale di grande importanza in meccanica statistica è l'entropia. Data una funzione $g(x)$, il seguente funzionale è definito come:
+    \begin{equation}
+        S[g] \equiv -\int_{-\infty}^{+\infty} dx \, g(x) \log(g(x))
+    \end{equation}
+    Questo funzionale assume il significato fisico di \textbf{entropia} a condizione che la funzione $g(x)$ sia una distribuzione di probabilità, ovvero che sia normalizzata a 1 e non negativa.
+\end{enumerate}
+
+\subsubsection{Funzioni "Well-Behaved":}
+
+È importante notare che i funzionali sono tipicamente definiti non per tutte le funzioni possibili, ma per una specifica classe di funzioni, dette \textit{"well-behaved"} (ben-comportate). La definizione di "well-behaved" dipende dal contesto e dal funzionale che si sta considerando. Per esempio:
+\begin{itemize}
+    \item Per l'integrale definito, potremmo richiedere che $g(x)$ sia una funzione limitata e misurabile, e che decresca abbastanza velocemente all'infinito affinché l'integrale converga.
+    \item Per il funzionale che calcola il massimo, è sufficiente che la funzione $g(x)$ sia continua nell'intervallo considerato, garantendo così l'esistenza del massimo per il teorema di Weierstrass.
+\end{itemize}
+In fisica, spesso si assume implicitamente di lavorare con funzioni sufficientemente regolari da rendere ben definite tutte le operazioni, senza specificare ogni volta in dettaglio lo spazio funzionale di appartenenza.
+
+\subsection{Derivata Funzionale}
+
+Così come per le funzioni ordinarie si definisce la derivata per quantificare la loro variazione, per i funzionali si introduce la \textbf{derivata funzionale}. Essa ci dice come cambia il valore di un funzionale $F[g]$ quando la sua funzione argomento $g(x)$ viene modificata di una piccola quantità infinitesima.
+
+La definizione formale si basa su un'analogia con lo sviluppo di Taylor. Consideriamo una piccola perturbazione della funzione $g(x)$, data da $\epsilon h(x)$, dove $\epsilon$ è un parametro piccolo e $h(x)$ è un'altra funzione "well-behaved". Lo sviluppo di $F[g + \epsilon h]$ al primo ordine in $\epsilon$ è:
+
+\begin{equation}
+    F[g(x) + \epsilon h(x)] = F[g(x)] + \epsilon \int dx \left( \frac{\delta F[g]}{\delta g(x)} \right) h(x) + O(\epsilon^2)
+\end{equation}
+
+Questa equazione definisce implicitamente la derivata funzionale di $F$ rispetto a $g(x)$, denotata con il simbolo $\frac{\delta F}{\delta g(x)}$. Essa è quella funzione che, integrata contro la perturbazione $h(x)$, dà la variazione lineare del funzionale.
+
+Per renderla esplicita, possiamo riarrangiare i termini e prendere il limite per $\epsilon \to 0$:
+
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+    \frac{F[g(x) + \epsilon h(x)] - F[g(x)]}{\epsilon} = \int dx \left( \frac{\delta F[g]}{\delta g(x)} \right) h(x) + O(\epsilon)
+\end{equation}
+\end{tcolorbox}
+
+
+
+\subsubsection{Esempio di Calcolo}
+Calcoliamo la derivata funzionale del funzionale "integrale definito" $F[g] = \int dx \, g(x)$.
+Partendo dal membro di sinistra dell'equazione precedente e usando la linearità dell'integrale:
+\begin{equation}
+    \frac{1}{\epsilon} \left( \int dx \, (g(x) + \epsilon h(x)) - \int dx \, g(x) \right) = \frac{1}{\epsilon} \int dx \, \epsilon h(x) = \int dx \, h(x)
+\end{equation}
+Confrontando questo risultato con il membro di destra della definizione, si ottiene:
+\begin{equation}
+    \int dx \, h(x) = \int dx \left( \frac{\delta F}{\delta g(x)} \right) h(x)
+\end{equation}
+Dato che questa uguaglianza deve valere per ogni scelta della funzione di perturbazione $h(x)$, ne consegue che gli integrandi devono essere uguali. Otteniamo quindi il risultato:
+\begin{equation}
+    \frac{\delta}{\delta g(x)} \left( \int dy \, g(y) \right) = 1
+\end{equation}
+
+\subsubsection{Regole di Derivazione Funzionale}
+Si possono dimostrare delle regole di derivazione analoghe a quelle per le derivate ordinarie. Due risultati utili sono i seguenti:
+\begin{equation}
+    \frac{\delta}{\delta g(x)} \int dy \, f(g(y)) = f'(g(x))
+\end{equation}
+\begin{equation}
+    \frac{\delta}{\delta g(x)} \int dy \, g^2(y) = 2g(x)
+\end{equation}
+Questi strumenti matematici sono fondamentali per controllare la variazione dei funzionali, un concetto che si rivelerà cruciale nello studio dei sistemi fisici.
+
+\newpage
+\section{Sistemi Magnetici e Transizioni di Fase}
+
+Le transizioni di fase sono fenomeni drammatici in cui le proprietà macroscopiche di un sistema cambiano bruscamente al variare di un parametro di controllo, come la temperatura. Un esempio paradigmatico è la \textbf{transizione ferromagnetica}:
+\begin{itemize}
+    \item Ad \textbf{alte temperature ($T > T_c$)}, un materiale magnetico si trova in una fase \textbf{paramagnetica}. I momenti magnetici microscopici (spin) sono orientati casualmente, e il materiale non presenta una magnetizzazione netta.
+    \item A una specifica \textbf{temperatura critica ($T_c$)}, accade qualcosa di drastico.
+    \item A \textbf{basse temperature ($T < T_c$)}, il sistema entra in una fase \textbf{ferromagnetica}. Gli spin tendono ad allinearsi spontaneamente, generando una magnetizzazione macroscopica non nulla, anche in assenza di un campo magnetico esterno.
+\end{itemize}
+Studieremo questo fenomeno per caratterizzare matematicamente e fisicamente cosa accade esattamente al punto critico.
+
+\subsection{Framework Generale}
+Per descrivere questi sistemi, adottiamo un formalismo molto generale.
+\begin{itemize}
+    \item \textbf{Gradi di libertà (C)}: Sono le variabili microscopiche che descrivono lo stato del sistema. Possono essere variabili discrete definite su un reticolo, $S_i$, o un campo continuo $\vec{S}(x)$ definito nello spazio.
+    \item \textbf{Spazio Esterno e Interno}: Le variabili vivono in uno \textbf{spazio esterno} (embedding space), che è lo spazio fisico (es. un reticolo tridimensionale). I valori che ogni variabile può assumere appartengono a uno \textbf{spazio interno} (es. $\{-1, +1\}$ per il modello di Ising, o $\mathbb{R}^3$ per spin vettoriali).
+    \item \textbf{Hamiltoniana ($H[C]$)}: È il funzionale che associa un'energia a ogni configurazione $C$ dei gradi di libertà. In generale, la separiamo in due parti: una parte, $H_0$, che descrive le interazioni interne del sistema, e una parte che descrive l'accoppiamento con un campo magnetico esterno $\vec{h}(x)$, che può variare da punto a punto nello spazio.
+    \begin{equation}
+        H[C] = H_0[C] - \int_V d^D x \, \vec{h}(x) \cdot \vec{S}(x)
+    \end{equation}
+    Il termine di interazione con il campo esterno tende ad allineare gli spin locali $\vec{S}(x)$ con il campo $\vec{h}(x)$. Nel caso discreto del modello di Ising su un reticolo, l'Hamiltoniana assume la forma:
+    \begin{equation}
+        H = -\sum_{\langle i,j \rangle} J \sigma_i \sigma_j - \sum_i h_i \sigma_i
+    \end{equation}
+    dove il primo termine (con $J>0$) favorisce l'allineamento di spin vicini (interazione ferromagnetica).
+\end{itemize}
+Questo formalismo, sebbene sviluppato per i magneti, è estremamente generale. Il concetto di \textbf{universalità} afferma che sistemi fisici microscopicamente molto diversi (superconduttori, magneti, etc.) possono esibire lo stesso comportamento critico vicino a una transizione di fase, descritto dalle stesse funzioni e dagli stessi esponenti critici.
+
+\subsection{Grandezze/Funzioni Fondamentali}
+
+\begin{itemize}
+    \item \textbf{Energia Libera ($F[\vec{h}(x)]$)}: È una delle grandezze termodinamiche centrali. È un funzionale del campo magnetico esterno ed è definita a partire dalla funzione di partizione $Z$:
+    \begin{equation}
+        F[\vec{h}(x)] = -\frac{1}{\beta} \log Z \quad \text{con} \quad Z = \int [dC] e^{-\beta H[C]}
+    \end{equation}
+    dove $\int [dC]$ indica l'integrazione/somma su tutte le possibili configurazioni dei gradi di libertà. Se il campo magnetico è uniforme, $h(x)=h$, si definisce la densità di energia libera $f(h) = F(h)/V$.
+    
+    \item \textbf{Magnetizzazione Locale ($m_\mu(x)$)}: È il valore di aspettazione della componente $\mu$-esima dello spin nel punto $x$.
+    \begin{equation}
+        m_\mu(x) \equiv \langle S_\mu(x) \rangle
+    \end{equation}
+    Può essere ottenuta come derivata funzionale dell'energia libera rispetto alla componente corrispondente del campo magnetico. Questa è una relazione fondamentale:
+    
+    \begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+        \begin{equation}
+        m_\mu(x) = - \frac{\delta F[\vec{h}(x)]}{\delta h_\mu(x)}
+        \end{equation}
+    \end{tcolorbox}
+
+    La dimostrazione segue direttamente dalla definizione di $F$ e dalle regole di derivazione funzionale.
+    
+    \item \textbf{Suscettività Magnetica ($\chi$)}: Misura la risposta della magnetizzazione a una variazione del campo magnetico. È una quantità sperimentalmente accessibile. Se il campo è spazialmente dipendente, si definisce una suscettività a due punti:
+
+    \begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+        \chi_{\mu\nu}(x, y) = \frac{\delta m_\mu(x)}{\delta h_\nu(y)} = - \frac{\delta^2 F[\vec{h}]}{\delta h_\nu(y) \delta h_\mu(x)}
+    \end{equation}
+\end{tcolorbox}
+
+    
+    Questa grandezza ci dice come una perturbazione del campo nel punto $y$ influenzi la magnetizzazione nel punto $x$. Per sistemi invarianti per traslazioni spaziali, $\chi(x, y)$ dipende solo dalla differenza $x-y$. Se il campo è uniforme, la suscettività è semplicemente $\chi_{\mu\nu} = \frac{\partial m_\mu}{\partial h_\nu}$.
+
+    \item \textbf{Funzione di Correlazione}: Data due osservabili $A$ e $B$, la loro funzione di correlazione è il valore di aspettazione del loro prodotto, $\langle AB \rangle$.
+    
+    \item \textbf{Funzione di Correlazione Connessa}: Di particolare importanza è la correlazione connessa (o cumulante del secondo ordine), definita come:
+
+    \begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+        \langle AB \rangle_c = \langle AB \rangle - \langle A \rangle \langle B \rangle
+    \end{equation}
+\end{tcolorbox}
+
+    
+    Questa grandezza misura la correlazione "genuina" tra le fluttuazioni di $A$ e $B$ attorno ai loro valori medi. Se non ci sono fluttuazioni nel sistema (cioè, la distribuzione di probabilità è una funzione delta di Dirac), allora $\langle AB \rangle = \langle A \rangle \langle B \rangle$ e la correlazione connessa è zero. La presenza di fluttuazioni termodinamiche, invece, può indurre correlazioni tra le osservabili, rendendo la funzione di correlazione connessa diversa da zero.
+\end{itemize}
+
+\subsubsection{Teorema di Fluttuazione-Dissipazione}
+Esiste una relazione profonda che collega la risposta di un sistema a una perturbazione esterna (una quantità "dissipativa" come la suscettività) alle correlazioni delle fluttuazioni interne del sistema all'equilibrio (una quantità "fluttuante"). Nel nostro caso, si può dimostrare che la suscettività magnetica è direttamente proporzionale alla funzione di correlazione connessa degli spin:
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+    \chi_{\mu\nu}(x, y) = \beta \langle S_\mu(x) S_\nu(y) \rangle_c
+\end{equation}
+\end{tcolorbox}
+
+
+Questo è un esempio del \textbf{teorema di fluttuazione-dissipazione} ed è un risultato centrale della meccanica statistica. Ci dice che misurando le correlazioni spontanee degli spin in un sistema all'equilibrio, possiamo prevedere come esso risponderà linearmente a un campo magnetico esterno.

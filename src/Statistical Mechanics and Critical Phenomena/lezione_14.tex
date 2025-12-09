@@ -1,0 +1,195 @@
+\chapter{Lezione 14}
+\label{chap:lezione_14}
+
+\begin{flushright}
+\textit{Data: 10/11/2025}
+\end{flushright}
+
+\section{Teorema dei Cluster Connessi}
+
+Riprendiamo il discorso iniziato nella lezione precedente riguardo l'espansione a bassa temperatura. In linea di principio, quando sviluppiamo la funzione di partizione, appaiono termini che scalano con potenze di $N$ diverse da 1 (come $N^2$, ecc.). Tuttavia, la densità di energia libera deve essere una quantità intensiva e ben definita nel limite termodinamico.
+
+La risoluzione di questo apparente paradosso risiede nel fatto che \textbf{tutti i termini che non scalano linearmente con $N$ (ad esempio $N^2$, $N^3$) si cancellano esattamente} nell'espressione finale. Questo garantisce che $f$ sia intensiva a tutti gli ordini della teoria delle perturbazioni.
+
+\subsection{Definizione e Contributo dei Cluster}
+Definiamo un \textbf{cluster} come un insieme di spin "flippati" connessi tra loro. Per "connessi" intendiamo che ogni spin del cluster è raggiungibile dagli altri attraverso passi tra primi vicini.
+Consideriamo il contributo di questi cluster allo sviluppo:
+\begin{itemize}
+    \item Un singolo cluster connesso fornisce un contributo di ordine $A \cdot N$, dove $A$ è una costante che racchiude tutta la parte non banale (dipendente dalla simmetria, dimensionalità, ecc.) e $N$ rappresenta il volume del sistema (ovvero il numero di modi in cui possiamo posizionare il cluster traslando il punto di partenza).
+    \item Consideriamo ora il caso di \textbf{copie separate (disconnesse)} dello stesso cluster. 
+    Se abbiamo $n$ copie separate, in quanti modi possiamo posizionarle?
+    In generale, per $n$ copie, il fattore combinatorio sarà:
+    \begin{equation}
+        \frac{N^n}{n!} A^n
+    \end{equation}
+    Il fattore $n!$ deriva dall'indistinguibilità delle copie identiche.
+\end{itemize}
+
+\subsection{Cancellazione dei Diagrammi Disconnessi}
+La funzione di partizione $Z$ può essere vista come la somma su tutte le possibili configurazioni di questi cluster. L'espansione a bassa temperatura di $Z$ (o meglio, della parte rilevante per $f$) assumerà la forma di una somma su $n$ (numero di copie) di questi termini:
+\begin{equation}
+    \sum_{n=0}^{\infty} \frac{(AN)^n}{n!} \longrightarrow e^{AN}
+\end{equation}
+Riconosciamo qui la serie di Taylor dell'esponenziale. Quando calcoliamo l'energia libera per sito $f_N$, prendiamo il logaritmo di $Z$:
+\begin{equation}
+    f_N \sim -\frac{1}{\beta N} \log(Z) \sim -\frac{1}{\beta N} \log\left( \sum_n \frac{(AN)^n}{n!} \right)
+\end{equation}
+Grazie all'esponenziazione dei diagrammi disconnessi, otteniamo:
+\begin{equation}
+    f_N \sim -\frac{1}{\beta N} \log(e^{AN}) = -\frac{1}{\beta N} (AN) = -\frac{A}{\beta}
+\end{equation}
+Il termine $N$ si semplifica. Questo risultato è noto come \textbf{Linked Cluster Theorem}.
+
+\begin{tcolorbox}[colback=colorA!10, colframe=colorB!60!colorA,  title=\textbf{Linked Cluster Theorem}]
+Solo i diagrammi connessi contribuiscono all'energia libera. I contributi dei diagrammi disconnessi si sommano in modo tale da ricostruire l'esponenziale dei diagrammi connessi, cancellandosi poi con il logaritmo. Se così non fosse, la teoria non sarebbe ben definita termodinamicamente.
+\end{tcolorbox}
+
+
+
+\section{Il Modello Gaussiano}
+
+Abbandoniamo il modello di Ising per introdurre un modello differente, ma cruciale per i nostri scopi futuri: il \textbf{Modello Gaussiano}.
+Questo modello ci servirà come "palestra" perché ci permetterà di fare calcoli esatti che nel modello di Ising sono impossibili, e scopriremo una connessione profonda con l'approssimazione di Campo Medio.
+
+\subsubsection{Definizione del Modello}
+Nel modello Gaussiano, le variabili di spin non sono più discrete ($\pm 1$) ma \textbf{reali continue}:
+\begin{equation}
+    \sigma_i \in (-\infty, +\infty)
+\end{equation}
+La differenza principale rispetto a un semplice rilassamento delle variabili di Ising sta nella distribuzione di probabilità a priori del singolo spin $\rho(\sigma)$.
+\begin{itemize}
+    \item \textbf{Ising:} La distribuzione è la somma di due delta: $\rho(\sigma) = \frac{1}{2}\delta(\sigma-1) + \frac{1}{2}\delta(\sigma+1)$.
+    \item \textbf{Gaussiano:} La distribuzione a priori è una gaussiana:
+    \begin{equation}
+        \rho(\sigma) d\sigma = \frac{e^{-\sigma^2/2}}{\sqrt{2\pi}} d\sigma
+    \end{equation}
+\end{itemize}
+Scegliamo la normalizzazione in modo che il momento secondo sia unitario, per assomigliare a Ising:
+\begin{equation}
+    \langle \sigma^2 \rangle = 1, \quad \langle \sigma^4 \rangle = 3, \quad \dots, \quad \langle \sigma^k \rangle = (k-1) \quad  \text{ (per k pari)}
+\end{equation}
+
+\subsubsection{Hamiltoniana e Funzione di Partizione}
+L'Hamiltoniana del sistema, in presenza di un campo esterno $h_i$, è:
+\begin{equation}
+    H[\sigma] = -\frac{1}{2} \sum_{i,k} \sigma_i J_{ik} \sigma_k - \sum_{i} h_i \sigma_i
+\end{equation}
+dove $J_{ik}$ è la matrice di adiacenza ($1$ se $|i-k|=1$, $0$ altrimenti).
+
+La funzione di partizione $Z$ si ottiene integrando su tutte le configurazioni, includendo il peso gaussiano a priori $e^{-\sigma_i^2/2}$:
+\begin{equation}
+    Z = \frac{1}{(2\pi)^{N/2}} \int \left(\prod_i d\sigma_i\right) \exp\left\{ \frac{\beta}{2} \sum_{ik} \sigma_i J_{ik} \sigma_k + \beta \sum_i h_i \sigma_i - \frac{1}{2} \sum_i \sigma_i^2 \right\} \equiv \int d\mu 
+\end{equation}
+Notiamo che il termine $-\frac{1}{2} \sum \sigma_i^2$ serve a garantire la convergenza dell'integrale (termine di massa).
+
+\noindent Identifichiamo con $\int d\mu $ la misura su cui integrare.
+
+\subsection{L'Integrale Gaussiano Multidimensionale}
+Per trattare questo problema in generale, introduciamo una notazione matriciale più compatta. Consideriamo l'integrale su variabili $x_i$ (che corrispondono ai nostri $\sigma_i$) governato da una matrice $A$ simmetrica e definita positiva:
+\begin{equation}
+    I = \int \left( \prod_i dx_i \right) \exp\left\{ -\left[ \frac{1}{2} \sum_{ik} x_i A_{ik} x_k + \sum_i b_i x_i \right] \right\}
+\end{equation}
+Attenzione ai segni: nel nostro caso fisico, la matrice $A$ corrisponderà a $(\mathbb{I} - \beta J)$. Affinché l'integrale converga, $A$ deve essere definita positiva (o almeno avere autovalori positivi).
+Il risultato noto di questo integrale è:
+\begin{equation}
+    I = \frac{(2\pi)^{N/2}}{\sqrt{\det A}} \exp\left\{ \frac{1}{2} \sum_{ik} b_i A_{ik}^{-1} b_k \right\}
+\end{equation}
+dove $A^{-1}$ è la matrice inversa tale che $\sum_k A_{ik}^{-1} A_{kj} = \delta_{ij}$.
+
+\vspace{0.5cm}
+
+\noindent Richiamo due identità matematiche che useremo:
+\begin{enumerate}
+    \item  Relazione tra determinante e traccia:
+    \begin{equation}
+        \det(A) = \exp\{ \text{Tr}(\log A) \}
+    \end{equation}
+    Dimostrazione rapida: $\det A = \prod \lambda_i$, quindi $\log \det A = \sum \log \lambda_i = \text{Tr}(\log A)$.
+    \item Derivata del logaritmo del determinante rispetto a un parametro reale $z$:
+    \begin{equation}
+        \frac{d}{dz} \log(A + z\mathbb{I}) = \frac{1}{A + z\mathbb{I}} 
+    \end{equation}
+    Questa sarà utile quando tratteremo la funzione di Green.
+\end{enumerate}
+
+
+
+\subsection{Calcolo delle Funzioni di Correlazione con il Metodo dei Campi Sorgente}
+
+Vogliamo calcolare la funzione di correlazione a due punti $\langle \sigma_i \sigma_k \rangle$ nel modello Gaussiano e dimostrare una proprietà cruciale.
+Definiamo la media:
+\begin{equation}
+    \langle \sigma_i \sigma_k \rangle \equiv \frac{\int d\mu \, \sigma_i \sigma_k}{\int d\mu}
+\end{equation}
+
+
+\noindent Utilizziamo il metodo del funzionale generatore. Definiamo dei "campi" fittizi $f_i = -\beta h_i$.
+La funzione di partizione in presenza di questi campi $f$ è:
+\begin{equation}
+    Z[f] = C \int [d\sigma] \exp\left\{ -\frac{1}{2} \sum_{ik} \sigma_i A_{ik} \sigma_k - \sum_i f_i \sigma_i \right\}
+\end{equation}
+Usando la formula dell'integrale gaussiano (con il completamento del quadrato), sappiamo che la soluzione esatta è:
+\begin{equation}
+    Z[f] = Z[f=0] \cdot \exp\left\{ \frac{1}{2} \sum_{ik} f_i A_{ik}^{-1} f_k \right\}
+\end{equation}
+
+Ora, per calcolare specificamente $\langle \sigma_l \sigma_m \rangle$ tra due siti $l$ e $m$, "accendiamo" il campo magnetico (sorgente) solo su questi due siti. Poniamo:
+\begin{itemize}
+    \item $f_l = x$
+    \item $f_m = y$
+    \item $f_k = 0$ per tutti gli altri $k$.
+\end{itemize}
+Assumiamo che $x$ e $y$ siano parametri piccoli.
+
+\subsubsection{Sviluppo del lato LHS (Definizione)}
+Sviluppiamo l'integrale originale per $x, y$ piccoli:
+\begin{align}
+    Z(x,y) &= C \int [d\sigma] e^{-\frac{\sigma A \sigma}{2}} e^{-x\sigma_l - y\sigma_m} \\
+           &\sim C \int [d\sigma] e^{-\frac{\sigma A \sigma}{2}} \left(1 - x\sigma_l + \frac{x^2 \sigma_l^2}{2} \dots\right) \left(1 - y\sigma_m + \frac{y^2 \sigma_m^2}{2} \dots\right)
+\end{align}
+Il termine che ci interessa è quello misto $xy$. Moltiplicando le parentesi:
+\begin{equation}
+    \dots + xy \sigma_l \sigma_m + \dots
+\end{equation}
+Integrando, questo termine diventa proporzionale a $xy \langle \sigma_l \sigma_m \rangle$. Quindi:
+\begin{equation}
+    Z(x,y) \sim Z(0) \left[ 1 + xy \langle \sigma_l \sigma_m \rangle + \dots \right]
+\end{equation}
+
+\subsubsection{Sviluppo del lato RHS (Soluzione Esatta)}
+Sostituiamo $f_l=x, f_m=y$ nella soluzione esatta esponenziale:
+\begin{equation}
+    \text{RHS} = Z(0) \exp\left\{ \frac{1}{2} (x^2 A_{ll}^{-1} + y^2 A_{mm}^{-1} + 2xy A_{lm}^{-1}) \right\}
+\end{equation}
+Abbiamo usato il fatto che $A_{lm}^{-1} = A_{ml}^{-1}$ (simmetria).
+Sviluppando l'esponenziale in serie di Taylor ($e^k \approx 1+k$):
+\begin{equation}
+    \text{RHS} \sim Z(0) \left[ 1 + \frac{1}{2} x^2 A_{ll}^{-1} + \frac{1}{2} y^2 A_{mm}^{-1} + xy A_{lm}^{-1} + \dots \right]
+\end{equation}
+
+\subsubsection{Confronto e Risultato}
+Confrontando i coefficienti del termine $xy$ nei due sviluppi, otteniamo immediatamente:
+\begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Funzione di Correlazione}]
+\begin{equation}
+    \langle \sigma_l \sigma_m \rangle = A_{lm}^{-1}
+\end{equation}
+Questo risultato è fondamentale: la funzione di correlazione del Modello Gaussiano coincide esattamente con quella calcolata nell'approssimazione di Campo Medio (Mean Field) per il modello di Ising (linearizzando la teoria). Possiamo dire che \textbf{la teoria di Campo Medio è la soluzione esatta del Modello Gaussiano}.
+\end{tcolorbox}
+
+
+\subsection{Funzioni di Correlazione di Ordine Superiore}
+Possiamo estendere questo metodo per calcolare funzioni a più punti, ad esempio la funzione a 4 punti:
+\begin{equation}
+    \langle \sigma_i \sigma_k \sigma_l \sigma_m \rangle
+\end{equation}
+Usando lo stesso metodo (o il Teorema di Wick), si trova che questa si decompone nella somma dei prodotti delle funzioni a due punti (contrazioni):
+\begin{equation}
+    \langle \sigma_i \sigma_k \sigma_l \sigma_m \rangle = A_{ik}^{-1} A_{lm}^{-1} + A_{il}^{-1} A_{km}^{-1} + A_{im}^{-1} A_{kl}^{-1}
+\end{equation}
+Ovvero:
+\begin{equation}
+    \langle \sigma_i \sigma_k \sigma_l \sigma_m \rangle = \langle \sigma_i \sigma_k \rangle \langle \sigma_l \sigma_m \rangle + \text{permutazioni}
+\end{equation}
+Questa funzione non contiene nuova fisica, è interamente determinata dalla funzione a due punti. Se si conosce il propagatore (la funzione a 2 punti), si conosce tutto. Questo è tipico delle teorie Gaussiane. Non c'è una vera interazione che modifichi la struttura delle correlazioni in modo non banale.
+
+Il modello Gaussiano, pur essendo risolubile ed educativo, ha questo limite: essendo una teoria di campo medio, in 3 dimensioni prevede esponenti critici che non corrispondono alla realtà sperimentale (che è dominata dalle fluttuazioni non gaussiane). Tuttavia, sarà il punto di partenza per la teoria perturbativa che svilupperemo.

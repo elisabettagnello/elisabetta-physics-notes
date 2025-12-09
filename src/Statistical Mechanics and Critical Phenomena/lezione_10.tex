@@ -1,0 +1,327 @@
+\chapter{Lezione 10}
+\label{chap:lezione_10} 
+
+\begin{flushright}
+\textit{Data: 27/10/2025}
+\end{flushright}
+
+
+\section{Matrice di Risposta}
+
+In questa sezione, analizzeremo il sistema in assenza di campo magnetico esterno, $h~=~0$, e a temperature superiori alla temperatura critica, $T > T_c$. In questo regime, la magnetizzazione spontanea è nulla, $m_s = 0$.
+
+L'obiettivo è calcolare la funzione di correlazione. Nella semplice teoria di campo medio, la funzione di correlazione $\langle \sigma_i \sigma_j \rangle$ è nulla. Tuttavia, siamo interessati a calcolare la \textbf{risposta} del sistema a una piccola perturbazione. Introdurremo un campo magnetico infinitesimo $h$ e studieremo la risposta lineare della magnetizzazione $m$, che sarà anch'essa piccola.
+
+Partiamo dall'equazione di campo medio per la magnetizzazione locale $m_i$:
+
+\begin{equation}
+m_i = \tanh \left[ \beta \left( \sum_k J_{ik} m_k + h_i \right) \right]
+\end{equation}
+
+
+Poiché $m$ e $h$ sono piccoli, possiamo linearizzare l'equazione. Utilizziamo l'espansione di Taylor per $\tanh(x) \approx x$ per $x \to 0$, trascurando i termini di ordine $O(m^3)$ e $O(h^3)$, e termini misti. L'equazione diventa:
+
+\begin{equation}
+m_i \approx \beta \left( \sum_k J_{ik} m_k + h_i \right)
+\end{equation}
+
+
+
+Vogliamo ora invertire questa relazione per esprimere il campo $h$ in funzione della magnetizzazione $m$. Riorganizziamo l'equazione lineare:
+
+\begin{equation}
+\frac{m_i}{\beta} - \sum_k J_{ik} m_k = h_i
+\end{equation}
+
+Possiamo riscrivere il lato sinistro introducendo la delta di Kronecker, $\delta_{ik}$, per raccogliere i termini sotto un'unica sommatoria:
+
+\begin{equation}
+h_i = \sum_k \left[ \frac{\delta_{ik}}{\beta} - J_{ik} \right] m_k
+\end{equation}
+
+
+Questa è un'equazione matriciale. Definiamo la matrice $B$:
+
+\begin{equation}
+B_{ik} \equiv \frac{\delta_{ik}}{\beta} - J_{ik}
+\end{equation}
+
+
+L'equazione che lega campo e magnetizzazione è quindi $h = Bm$. Per trovare la risposta della magnetizzazione al campo, dobbiamo calcolare la matrice inversa $A = B^{-1}$:
+
+\begin{equation}
+m_i = \sum_k (B^{-1})_{ik} h_k = \sum_k A_{ik} h_k
+\end{equation}
+
+
+La matrice $A_{ik}$ è la \textbf{matrice di risposta} (o suscettività) che stiamo cercando.
+
+\begin{equation}
+A_{ik} = (B^{-1})_{ik} = \left( \frac{\delta_{ik}}{\beta} - J_{ik} \right)^{-1}
+\end{equation}
+
+
+\subsection{Soluzione in Spazio di Fourier}
+
+Calcolare l'inversa di $B$, una matrice di dimensioni $N \times N$ (dove $N$ è il volume del sistema), è proibitivo nello spazio reale. Sfruttiamo la simmetria traslazionale del sistema per passare allo spazio di Fourier .
+
+
+\begin{itemize}
+    \item \textbf{Spazio Reale (x-Space):} Consideriamo un reticolo ipercubico in $D$ dimensioni .
+    \item \textbf{Spazio di Fourier (p-Space):} Lo spazio reciproco è la prima Zona di Brillouin (BZ), definita da $-\pi \le p_a \le \pi$ per ogni componente del momento $a = 1, \dots, D$ .
+\end{itemize}
+
+Assumiamo che le interazioni $J_{ik}$ dipendano solo dalla differenza $i-k$ (invarianza traslazionale). Consideriamo solo interazioni tra \textbf{primi vicini}:
+
+\begin{equation}
+J_{ik} = 
+\begin{cases}
+    1 & \text{se } |i-k|=1 \\
+    0 & \text{altrimenti}
+\end{cases}
+\end{equation}
+
+
+Data l'invarianza traslazionale, $B_{ik} = B(i-k)$. La sua trasformata di Fourier $\tilde{B}(p)$ è:
+
+\begin{equation}
+\tilde{B}(p) = \sum_l B(l) e^{-ip \cdot l} = \sum_l \left( \frac{\delta_{l,0}}{\beta} - J(l) \right) e^{-ip \cdot l}
+\end{equation}
+
+
+Calcoliamo i due termini separatamente:
+
+\begin{enumerate}
+    \item \textbf{Termine diagonale ($l=0$):}
+    Il termine $\frac{\delta_{l,0}}{\beta}$ contribuisce solo quando $l=0$.
+    $$ \sum_l \frac{\delta_{l,0}}{\beta} e^{-ip \cdot l} = \frac{1}{\beta} $$
+    
+
+    \item \textbf{Termine di interazione ($l \ne 0$):}
+    Il termine $-J(l)$ contribuisce solo quando $l$ connette primi vicini. Per un dato sito, ci sono $2D$ primi vicini (uno in direzione positiva e uno in negativa per ciascuna delle $D$ dimensioni).
+    $$ - \sum_l J(l) e^{-ip \cdot l} = - \sum_{a=1}^D \left( e^{-ip_a} + e^{ip_a} \right) $$
+    Ricordando la formula di Eulero $\cos(x) = (e^{ix} + e^{-ix})/2$, questo diventa:
+    $$ - 2 \sum_{a=1}^D \cos(p_a) $$
+    
+\end{enumerate}
+
+Combinando i due termini, otteniamo la trasformata di Fourier di $B$:
+
+\begin{equation}
+\tilde{B}(p) = \frac{1}{\beta} - 2 \sum_{a=1}^D \cos(p_a) = \frac{1}{\beta} \left( 1 - 2\beta \sum_{a=1}^D \cos(p_a) \right)
+\end{equation}
+
+
+\subsection{Funzione di Green e Funzione di Correlazione}
+
+Nello spazio di Fourier, l'inversione di una matrice diventa una semplice divisione. La trasformata della matrice di risposta $\tilde{A}(p)$ è:
+
+\begin{equation}
+\tilde{A}(p) = \left( \tilde{B}(p) \right)^{-1} = \frac{\beta}{1 - 2\beta \sum_{a=1}^D \cos(p_a)}
+\end{equation}
+
+Definiamo la \textbf{Funzione di Green} (libera) $\tilde{G}_0(p)$ come la parte del propagatore indipendente da $\beta$ :
+
+\begin{equation}
+\tilde{G}_0(p) = \left( 1 - 2\beta \sum_{a=1}^D \cos(p_a) \right)^{-1}
+\end{equation}
+
+
+Quindi $\tilde{A}(p) = \beta \tilde{G}_0(p)$. L'antitrasformata $A(l) = A(i-k)$ è data da :
+
+\begin{equation}
+A(l) = \int_{BZ} \frac{d^D p}{(2\pi)^D} e^{ip \cdot l} \tilde{A}(p) = \beta \int_{BZ} \frac{d^D p}{(2\pi)^D} e^{ip \cdot l} \tilde{G}_0(p)
+\end{equation}
+
+Questa matrice $A_{ik}$ è direttamente collegata alla funzione di correlazione spin-spin. Dalla teoria della risposta lineare (e dal Teorema Fluttuazione-Dissipazione), la suscettività $\chi_{ik} = \frac{\partial m_i}{\partial h_k}$ è proporzionale alla correlazione:
+
+\begin{equation}
+\langle \sigma_i \sigma_k \rangle_{h=0} = \frac{1}{\beta} \frac{\partial m_i}{\partial h_k} \Big|_{h=0} = \frac{A_{ik}}{\beta}
+\end{equation}
+
+
+Sostituendo l'espressione per $A_{ik}$ trovata sopra, i fattori $\beta$ si cancellano:
+
+\begin{equation}
+\langle \sigma_i \sigma_k \rangle = \int_{BZ} \frac{d^D p}{(2\pi)^D} e^{ip \cdot (i-k)} \tilde{G}_0(p)
+\end{equation}
+
+Questa è la nostra stima per la funzione di correlazione nella regione $T > T_c$ .
+
+\section{Energia Interna e Calore Specifico}
+
+\subsection{Energia Interna}
+
+L'energia interna (per sito) $u$ è definita come :
+
+\begin{equation}
+u = -\frac{1}{2} \sum_k \langle \sigma_l \sigma_k \rangle J_{lk}
+\end{equation}
+
+Assumendo l'energia per sito, la somma è sui vicini $k$ di un sito $l$ arbitrario.
+
+Sostituendo $\langle \sigma_l \sigma_k \rangle = A_{lk}/\beta$ :
+
+\begin{equation}
+u = -\frac{1}{2\beta} \sum_k A_{lk} J_{lk}
+\end{equation}
+
+
+Possiamo calcolare questa somma nello spazio di Fourier usando il teorema di Parseval. La somma $\sum_k A(l-k) J(l-k)$ (dove $l$ è fissato) è l'antitrasformata del prodotto delle trasformate, valutata in $l=0$:
+
+\begin{equation}
+u = -\frac{1}{2\beta} \int_{BZ} \frac{d^D p}{(2\pi)^D} \tilde{A}(p) \tilde{J}(-p)
+\end{equation}
+
+\noindent Sapendo che $\tilde{A}(p) = \beta \tilde{G}_0(p)$ e $\tilde{J}(p) = 2 \sum_a \cos(p_a)$ ed è una funzione pari, $\tilde{J}(-p)~=~\tilde{J}(p)$):
+
+\begin{equation}
+u = -\frac{1}{2\beta} \int_{BZ} \frac{d^D p}{(2\pi)^D} \left( \beta \tilde{G}_0(p) \right) \left( 2 \sum_{a=1}^D \cos(p_a) \right)
+\end{equation}
+
+Semplificando i fattori $2$ e $\beta$, otteniamo l'espressione per l'energia interna per sito:
+
+\begin{equation}
+u = - \int_{BZ} \frac{d^D p}{(2\pi)^D} \; \frac{\sum_{a=1}^D \cos(p_a)}{1 - 2\beta \sum_{a=1}^D \cos(p_a)}
+\end{equation}
+
+
+\subsection{Calore Specifico ($C_v$)}
+
+Il calore specifico è la derivata dell'energia rispetto alla temperatura:
+
+\begin{equation}
+C_v = \frac{du}{dT} = \frac{du}{d\beta} \frac{d\beta}{dT}
+\end{equation}
+
+
+Poiché $\beta = 1/T$ (usando $k_B=1$), $\frac{d\beta}{dT} = -1/T^2 = -\beta^2$. Quindi:
+
+\begin{equation}
+C_v = -\beta^2 \frac{du}{d\beta}
+\end{equation}
+
+
+Dobbiamo ora derivare $u$ rispetto a $\beta$. 
+
+
+\begin{equation}
+C_v = \frac{2\beta^2}{(2\pi)^D} \int_{BZ} d^D p \frac{\left(\sum_{a=1}^D \cos p_a\right)^2}{\left(1 - 2\beta \sum_{a=1}^D \cos p_a\right)^2}
+\end{equation}
+
+
+\subsection{Comportamento Critico (Vicino a $T_c$)}
+
+Analizziamo ora il comportamento di queste quantità quando ci si avvicina alla temperatura critica $T_c$ dall'alto ($T \to T_c^+$).
+La temperatura critica in campo medio è $\beta_c = \frac{1}{2D}$ .
+
+
+Avvicinandosi alla criticità, le lunghezze di correlazione $\xi$ diventano molto grandi . Nello spazio di Fourier, questo corrisponde a studiare il comportamento del sistema per \textbf{piccoli momenti $p \to 0$} .
+
+Analizziamo il denominatore $\text{Den}(p) = 1 - 2\beta \sum_{a=1}^D \cos(p_a)$, che appare in $\tilde{G}_0(p)$ e in tutti gli integrali .
+Espandiamo il coseno per piccoli $p_a$:
+
+\begin{equation}
+\cos(p_a) \approx 1 - \frac{p_a^2}{2} + O(p_a^4)
+\end{equation}
+
+
+Sostituendo nell'espressione del denominatore :
+
+\begin{equation}
+\text{Den}(p) \approx 1 - 2\beta \sum_{a=1}^D \left( 1 - \frac{p_a^2}{2} \right) = 1 - 2\beta D + 2\beta \sum_{a=1}^D \frac{p_a^2}{2}
+\end{equation}
+
+Definendo $p^2 = \sum_{a=1}^D p_a^2$, otteniamo:
+
+\begin{equation}
+\text{Den}(p) \approx \beta p^2 + (1 - 2D\beta)
+\end{equation}
+
+
+La funzione di Green $\tilde{G}_0(p)$ per piccoli momenti assume quindi la forma di un propagatore massivo (forma di Ornstein-Zernike) :
+
+\begin{equation}
+\tilde{G}_0(p) \approx \frac{1}{\beta p^2 + m^2}
+\end{equation}
+
+
+dove abbiamo introdotto un termine di "massa" (o gap) $m^2$:
+
+\begin{equation}
+m^2 = (1 - 2D\beta)
+\end{equation}
+
+
+La massa $m$ è legata all'inverso della lunghezza di correlazione, $m \sim \xi^{-1}$.
+
+Analizziamo il comportamento di $m^2$ vicino a $T_c$:
+
+\begin{equation}
+    m^2 = 1 - 2D\beta = 2D(\beta_c - \beta) = 2D \left( \frac{1}{T_c} - \frac{1}{T} \right) \approx \left(\frac{2D}{T_c^2}\right) (T - T_c)
+\end{equation}
+
+Quindi $m^2 \propto (T - T_c)$.
+
+\subsection{Decadimento della Correlazione}
+
+Possiamo ora distinguere due regimi fisici:
+
+\begin{itemize}
+    \item \textbf{Per $T > T_c$ (Fase disordinata)} :
+    Abbiamo $m^2 > 0$. Il propagatore ha una massa. L'antitrasformata di Fourier di $\frac{1}{p^2+m^2}$ nello spazio reale porta a una funzione di correlazione $\langle \sigma_0 \sigma_r \rangle$ che decade \textbf{esponenzialmente} con la distanza $r = |i-k|$ .
+    $$ \langle \sigma_0 \sigma_r \rangle \sim e^{-r/\xi} $$
+
+    \item \textbf{A $T = T_c$ (Punto critico)} :
+    Abbiamo $m^2 = 0$. Il gap di massa si chiude e la lunghezza di correlazione $\xi$ \textbf{diverge} ($\xi \to \infty$) .
+    Il propagatore diventa:
+    $$ \tilde{G}_0(p) \sim \frac{1}{p^2} $$
+    
+    L'antitrasformata di questa forma (un potenziale Coulombiano in D dimensioni) non è più un esponenziale, ma una \textbf{legge di potenza} (power law).
+    
+    Un'analisi dimensionale mostra:
+    $$ \langle \sigma_0 \sigma_r \rangle \sim \int d^D p e^{ip \cdot r} \frac{1}{p^2} \sim \frac{1}{r^{D-2}} $$
+    
+    Alla criticità, le correlazioni decadono lentamente e a lungo raggio.
+\end{itemize}
+
+\subsection{Analisi Dimensionale del Calore Specifico}
+
+Analizziamo ora la convergenza dell'integrale del calore specifico $C_v$ vicino a $T_c$. Usando l'approssimazione per piccoli $p$:
+
+\begin{equation}
+C_v \sim \int_{BZ} d^D p \frac{(\sum_a \cos p_a)^2}{(\beta p^2 + m^2)^2}
+\end{equation}
+
+
+Per $p \to 0$, il numeratore $\left(\sum_a \cos p_a\right)^2 \approx \left(\sum_a 1\right)^2 = D^2$, che è una costante.
+Nello spazio $D$-dimensionale, l'elemento di volume è $d^D p \sim p^{D-1} dp$. Ci focalizziamo sulla regione dei piccoli momenti (vicino all'origine) dove l'integrale può divergere:
+
+\begin{equation}
+C_v \sim \int_0^\Lambda dp \frac{p^{D-1}}{(p^2 + m^2)^2}
+\end{equation}
+
+
+Per determinare la convergenza, analizziamo il comportamento a $T=T_c$ (cioè $m=0$):
+
+\begin{equation}
+C_v(T_c) \sim \int_0^\Lambda dp \frac{p^{D-1}}{p^4} = \int_0^\Lambda dp \ p^{D-5}
+\end{equation}
+
+
+\begin{itemize}
+    \item \textbf{Caso $D > 4$ (Alta dimensione)}: l'integrale \textbf{converge} e il calore specifico $C_v$ è \textbf{finito} e costante alla transizione.
+
+    \item \textbf{Caso $D < 4$ (Bassa dimensione)}: l'integrale \textbf{diverge} a $p=0$ .
+    Questo significa che $C_v$ diverge a $T_c$. 
+
+    \begin{equation}
+        C_v \approx (1-2D \beta )^{D/2 -2}
+    \end{equation}
+
+    \item \textbf{Caso $D = 4$ (Dimensione critica)}:  il calore specifico ha una \textbf{divergenza logaritmica}
+    \begin{equation}
+        C_v \approx \log(1-2D \beta )
+    \end{equation}
+    
+\end{itemize}

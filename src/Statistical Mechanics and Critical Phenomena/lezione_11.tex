@@ -1,0 +1,383 @@
+\chapter{Lezione 11}
+\label{chap:lezione_11} 
+
+\begin{flushright}
+\textit{Data: 29/10/2025}
+\end{flushright}
+
+
+\section{Analisi del Calore Specifico}
+
+Riprendiamo l'analisi del calore specifico $C_v$ vicino alla temperatura critica $T_c$, studiando la convergenza dell'integrale che abbiamo trovato:
+
+\begin{equation}
+    C_v \sim \int_{BZ} d^D p \frac{(\sum \cos p_a)^2}{(1 - 2\beta \sum \cos p_a)^2}
+\end{equation}
+
+Ci siamo concentrati sulla regione dei piccoli momenti ($p \to 0$), che corrisponde a grandi lunghezze di correlazione, rilevanti vicino al punto di transizione di fase. 
+
+A $T=T_c$ (cioè $m=0$), il comportamento asintotico dell'integrale è:
+\begin{equation}
+   \int d^D p \; p^{-4} 
+\end{equation}
+
+
+L'analisi dimensionale mostra tre regimi distinti per la divergenza:
+
+\begin{itemize}
+    \item \textbf{Per $D > 4$ (Alta dimensione)}:
+    L'integrale converge. In questo regime, il calore specifico $C_v$ è \textbf{finito} e costante alla transizione. I termini che potrebbero divergere sono compensati e il risultato è regolare.
+
+    \item \textbf{Per $D < 4$ (Bassa dimensione)}:
+    L'integrale diverge per $p \to 0$. L'analisi di scala (studiando la dipendenza dalla distanza dal punto critico $m^2 \sim 1-2D\beta$) mostra che la divergenza segue una legge di potenza:
+    
+    \begin{equation}
+    C_v \sim (1 - 2D\beta)^{\frac{D-4}{2}}
+    \end{equation}
+    
+    Poiché $D<4$, l'esponente è negativo e $C_v$ diverge quando $\beta \to \beta_c$.
+
+    \item \textbf{Per $D = 4$ (Dimensione critica)}:
+    Questa è la "dimensione marginale". L'integrale produce una \textbf{divergenza logaritmica}:
+    
+    \begin{equation}
+    C_v \sim \log(1 - 2D\beta)
+    \end{equation}
+    
+\end{itemize}
+
+\section{Lunghezza di Correlazione $\xi$ e Esponente $\nu$}
+
+La teoria di campo medio (MFA) non cattura solo le divergenze, ma anche l'emergere di una scala di lunghezza fondamentale.
+
+\subsection{Decadimento Esponenziale e Divergenza di $\xi$}
+
+Lontano dalla criticità (per $T > T_c$), la funzione di correlazione $\langle \sigma_l \sigma_k \rangle$ (o $A_{lk}$) decade \textbf{esponenzialmente} con la distanza $l = |l-k|$:
+
+\begin{equation}
+\langle \sigma_l \sigma_k \rangle \propto e^{-l/\xi} \quad \text{per } l \to \infty
+\end{equation}
+
+
+dove $\xi$ è la \textbf{lunghezza di correlazione}. Questo è coerente con il propagatore che abbiamo trovato, $\tilde{G}_0(p) \sim \frac{1}{(p^2 + m^2)}$, dove $m^2$ agisce come una massa (o gap).
+
+Il calcolo mostra che $\xi$ stessa dipende dalla distanza dalla temperatura critica:
+
+\begin{equation}
+\xi \sim (1 - 2D\beta)^{-1/2} = \left(1 - \frac{\beta}{\beta_c}\right)^{-1/2}
+\end{equation}
+
+
+Questo risultato è fondamentale:
+\begin{itemize}
+    \item La lunghezza di correlazione $\xi$ \textbf{diverge} quando $\beta \to \beta_c$ (cioè $T \to T_c$).
+    \item La divergenza segue una \textbf{legge di potenza}.
+\end{itemize}
+
+Definiamo l'esponente critico $\nu$ tramite la relazione $\xi \sim |T - T_c|^{-\nu}$. Confrontando, troviamo che in teoria di campo medio:
+
+\begin{tcolorbox}[colback=yellow!30, colframe=yellow!50!orange, boxrule=0.8pt]
+\begin{equation}
+\nu_{MF} = \frac{1}{2}
+\end{equation}
+\end{tcolorbox}
+
+
+Il meccanismo della transizione di fase è quindi legato alla divergenza di $\xi$. Avvicinandosi a $T_c$, $\xi$ cresce. Esattamente a $T_c$, $\xi = \infty$ ; il decadimento esponenziale $e^{-l/\xi}$ scompare e lascia posto a un decadimento più lento, secondo una legge di potenza, che governa il punto critico.
+
+\subsection{Dimensione Critica Superiore e Universalità}
+
+L'analisi del calore specifico ci ha mostrato che $D=4$ è una dimensione speciale.
+
+\begin{itemize}
+    \item \textbf{Dimensione Critica Superiore ($D_c^u=4$)}
+    \begin{itemize}
+        \item Per $D > 4$, la teoria di campo medio è \textit{esatta}. Gli esponenti critici coincidono con quelli reali.
+        \item Per $D \le 4$, la MFA non è più esatta e gli esponenti reali differiscono (ad esempio in $D=2, 3$).
+    \end{itemize}
+
+    \item \textbf{Universalità}: Il concetto di \textbf{universalità} stabilisce che gli esponenti critici non dipendono dai dettagli microscopici del sistema (es. la forma esatta del reticolo o il valore di $J$), ma solo da tre proprietà fondamentali:
+    \begin{enumerate}
+        \item La \textbf{dimensionalità} $D$ del sistema.
+        \item Le \textbf{simmetrie} dell'Hamiltoniana (per il modello di Ising, è la simmetria $Z_2$ globale $\sigma_i \to -\sigma_i$).
+        \item La \textbf{natura della variabile elementare}. Ad esempio, il numero di componenti $n$ della variabile di spin (Ising $n=1$ , XY $n=2$ , Heisenberg $n=3$ ).
+    \end{enumerate}
+\end{itemize}
+
+\section{Limite $D \to \infty$ e Funzioni di Bessel}
+
+\begin{tcolorbox}[colback=colorE!10, colframe=colorE!50!colorD, boxrule=1pt]
+\textbf{Nota:} Il seguente calcolo non è parte del curriculum standard richiesto per l'esame, ma è riservato a chi aspira alla lode.
+\end{tcolorbox}
+
+Vogliamo ora dimostrare che la teoria di campo medio (MFA) è esatta nel limite $D \to \infty$. Questo limite è simile al modello "infinite-range" (dove tutti gli spin interagiscono con tutti).
+
+\textbf{Obiettivo:} Calcolare la funzione di correlazione $\langle \sigma_l \sigma_k \rangle$ a distanza $n = |l-k|$ \textit{fissa} , nel limite $D \to \infty$.
+
+Dimostreremo che $\langle \sigma_l \sigma_k \rangle \to 0$ per $n \ge 1$, implicando che gli spin diventano completamente scorrelati, che è l'assunzione di base della MFA.
+
+\subsection{Impostazione del Calcolo}
+
+Prendiamo il limite $D \to \infty$ mantenendo fissa la quantità $\tilde{\beta} = 2\beta D$.
+
+Per semplicità, scegliamo una separazione $n$ puramente lungo una direzione (ad es. l'asse $x$):
+\begin{equation}
+l - k = (n, 0, \dots, 0) \quad \implies \quad l_x - k_x = n, \ l_\alpha - k_\alpha = 0 \ \forall \alpha \ne x
+\end{equation}
+
+
+La funzione di correlazione $G_0(n) = \langle \sigma_l \sigma_k \rangle$ è l'antitrasformata di Fourier del propagatore $\tilde{G_0}(p)$:
+
+\begin{equation}
+G_0(n) = \int_{BZ} \frac{d^D p}{(2\pi)^D} \tilde{G_0}(p) e^{i p \cdot (l-k)} = \int_{BZ} \frac{d^D p}{(2\pi)^D} \; \frac{e^{i n p_x}}{1 - 2\beta \sum_{a=1}^D \cos(p_a)}
+\end{equation}
+
+
+Per calcolare l'integrale della funzione di Green $G_0(n)$, utilizziamo un'identità che trasforma il denominatore in un'esponenziale. Partiamo dalla definizione della funzione Gamma $\Gamma(\gamma)$:
+\begin{equation}
+\Gamma(\gamma) = \int_0^\infty dy \ y^{\gamma-1} e^{-y}
+\end{equation}
+
+Consideriamo l'identità: 
+\begin{equation}
+    A^{-\gamma} = \frac{1}{\Gamma(\gamma)} \int_0^\infty dz \ z^{\gamma-1} e^{-Az}
+\end{equation}
+
+Possiamo verificarla con la sostituzione $y = zA$:
+
+$$ \frac{1}{\Gamma(\gamma)} \int_0^\infty \left(\frac{dy}{A}\right) \left(\frac{y}{A}\right)^{\gamma-1} e^{-y}  = \frac{A^{-\gamma}}{\Gamma(\gamma)} \int_0^\infty dy \ y^{\gamma-1} e^{-y} = \frac{A^{-\gamma}}{\Gamma(\gamma)} \cdot \Gamma(\gamma) = A^{-\gamma} $$
+
+A noi serve il caso $\gamma=1$. Poiché $\Gamma(1) = 0! = 1$, l'identità si semplifica notevolmente:
+
+\begin{equation}
+\frac{1}{A} = \int_0^\infty d\mu \ e^{-A\mu}
+\label{1/A}
+\end{equation}
+
+
+Applichiamo l'identità integrale \ref{1/A} a $G_0(n)$:
+
+\begin{equation}
+G_0(n) = \int_{BZ} \frac{d^D p}{(2\pi)^D} e^{i n p_x} \left[ \int_0^\infty d\mu \ e^{-\mu (1 - 2\beta \sum_a \cos p_a)} \right]
+\end{equation}
+
+Sostituiamo $2\beta = \tilde{\beta}/D$ e invertiamo l'ordine di integrazione. L'esponenziale viene riorganizzato:
+
+\begin{equation}
+G_0(n) = \int_0^\infty d\mu \ e^{-\mu} \int_{BZ} \frac{d^D p}{(2\pi)^D} e^{\frac{\mu\tilde{\beta}}{D} \sum_a \cos(p_a) + i n p_x}
+\end{equation}
+
+L'integrale sullo spazio dei momenti $d^D p$ ora si fattorizza in $D$ integrali indipendenti, uno per ogni componente $p_a$.
+
+\subsection{Funzioni di Bessel Modificate}
+
+Questi integrali sono definizioni standard delle \textbf{funzioni di Bessel modificate} di ordine intero $I_n(z)$:
+
+\begin{equation}
+I_n(z) = \frac{1}{\pi} \int_0^\pi d\theta \ e^{z \cos\theta} \cos(n\theta)
+\end{equation}
+
+
+Utilizzando la simmetria e $e^{in\theta}$ , una forma equivalente è:
+\begin{equation}
+    I_n(z) = \frac{1}{2\pi} \int_{-\pi}^\pi d\theta \ e^{z \cos\theta + in\theta}
+\end{equation}
+
+
+Applichiamo questa definizione ai nostri $D$ integrali (ponendo $z = \mu\tilde{\beta}/D$):
+\begin{itemize}
+    \item Per le $D-1$ direzioni $\alpha \ne x$: 
+    \begin{equation}
+        \frac{1}{2\pi} \int_{-\pi}^\pi dp_\alpha \ e^{z \cos(p_\alpha)} = I_0(z)
+    \end{equation}
+    
+    \item Per la direzione $x$: 
+    \begin{equation}
+         \frac{1}{2\pi} \int_{-\pi}^\pi dp_x \ e^{z \cos(p_x) + i n p_x} = I_n(z)
+    \end{equation}
+   
+\end{itemize}
+
+$G_0(n)$ diventa:
+
+\begin{equation}
+G_0(n) = \int_0^\infty d\mu \ e^{-\mu} \left[ I_0\left(\frac{\mu\tilde{\beta}}{D}\right) \right]^{D-1} I_n\left(\frac{\mu\tilde{\beta}}{D}\right)
+\end{equation}
+
+
+\subsection{Espansione per $D \to \infty$}
+
+Per analizzare il limite $D \to \infty$, usiamo le espansioni in serie di Taylor delle funzioni di Bessel per argomento piccolo $z \to 0$ (poiché $z = \mu\tilde{\beta}/D \to 0$):
+
+\begin{itemize}
+    \item $I_0(z) = 1 + \frac{z^2}{4} + \mathcal{O}(z^4) \approx 1$ 
+    \item $I_n(z) = \frac{1}{\Gamma(n+1)} \left(\frac{z}{2}\right)^n + \mathcal{O}(z^{n+2})$ 
+\end{itemize}
+
+Sostituiamo queste approssimazioni nell'integrale:
+
+\begin{equation}
+G_0(n) \sim \int_0^\infty d\mu \ e^{-\mu}  \; 1^{D-1} \;  \frac{1}{\Gamma(n+1)} \left( \frac{\mu\tilde{\beta}}{2D} \right)^n 
+\end{equation}
+
+
+Portiamo fuori i termini costanti:
+
+\begin{equation}
+G_0(n) \sim \left( \frac{\tilde{\beta}}{2D} \right)^n \frac{1}{\Gamma(n+1)} \int_0^\infty d\mu \ e^{-\mu} \mu^n
+\end{equation}
+
+
+L'integrale rimanente è la definizione della funzione Gamma, $\int_0^\infty d\mu e^{-\mu} \mu^n = \Gamma(n+1)$.
+
+\begin{equation}
+G_0(n) \sim \left( \frac{\tilde{\beta}}{2D} \right)^n \frac{1}{\Gamma(n+1)} \cdot \Gamma(n+1)
+\end{equation}
+
+\begin{tcolorbox}[colback=yellow!30, colframe=yellow!50!orange, boxrule=0.8pt]
+\begin{equation}
+G_0(n) \sim \left( \frac{\tilde{\beta}}{2D} \right)^n \quad \text{per } D \to \infty
+\end{equation}
+\end{tcolorbox}
+
+
+Questo risultato mostra che la funzione di correlazione a distanza $n$ fissata decade come $(1/D)^n$. Per $n \ge 1$ e $D \to \infty$, $G_0(n) \to 0$. Gli spin sono correlati solo con se stessi ($n=0$) e diventano completamente scorrelati a qualsiasi distanza $n \ge 1$, confermando che la MFA è esatta in questo limite.
+
+\section{Decadimento Esponenziale lontano da $T_c$}
+
+
+Vogliamo ora dimostrare rigorosamente quanto affermato in precedenza: se non siamo al punto critico ($\beta \ne \beta_c$), le funzioni di correlazione decadono esponenzialmente con la distanza.
+
+\subsection{Teorema sulla Trasformata di Fourier}
+
+Utilizziamo un teorema fondamentale dell'analisi complessa sul comportamento asintotico delle trasformate di Fourier.
+
+\begin{tcolorbox}[colback=yellow!30, colframe=yellow!50!orange, boxrule=0.8pt]
+
+Data una funzione analitica $f(p)$, il comportamento asintotico (per $n \to \infty$) della sua antitrasformata $F(n) = \int dp f(p) e^{inp}$ è dominato dalla \textbf{singolarità} di $f(p)$ più vicina all'asse reale.
+
+Se la singolarità più vicina si trova in $p = ip_s$ (nel piano complesso):
+
+\begin{equation}
+F(n) = \int_{-\pi}^\pi dp f(p) e^{inp} \approx e^{-n p_s} \quad \text{per } n \to \infty
+\end{equation}
+
+
+Confrontando con il decadimento fisico $e^{-n/\xi}$ , identifichiamo:
+
+\begin{equation}
+\xi = \frac{1}{p_s}
+\end{equation}
+
+\end{tcolorbox}
+
+
+\subsection{Applicazione a $G_0(n)$}
+
+Dobbiamo trovare la singolarità di $\tilde{G_0}(p)$ più vicina all'asse reale. Riscriviamo $G_0(n)$ (con separazione $n$ solo lungo $x$):
+
+\begin{equation}
+G_0(n) = (2\pi)^{-D} \int_{-\pi}^\pi dp_x e^{in p_x} \left[ \int \left(\prod_{\mu=2}^D \frac{dp_\mu}{2\pi}\right) \frac{1}{1 - 2\beta (\cos p_x + \sum_{\mu=2}^D \cos p_\mu)} \right]
+\end{equation}
+
+
+Chiamiamo $p_x \equiv p$ e $g(p)$ la funzione tra parentesi quadre. Dobbiamo trovare la singolarità $p = ip_s$ di $g(p)$.
+Una singolarità in $g(p)$ si verifica quando il denominatore dell'integrando, $1 - 2\beta (\cos p + \sum \cos p_\mu)$, diventa zero.
+
+Intuitivamente, la singolarità più vicina all'asse reale ($p \in \mathcal{R}$) si avrà quando anche le altre variabili $p_\mu$ sono alle loro singolarità, cioè $p_\mu \to 0$.
+
+\subsubsection{Calcolo della Singolarità}
+
+Poniamo $p_\mu = 0$ per $\mu = 2, \dots, D$ e cerchiamo $p = ip_s$:
+
+\begin{equation}
+1 - 2\beta \left(\cos(ip_s) + \sum_{\mu=2}^D \cos(0)\right) = 0
+\end{equation}
+\begin{equation}
+1 - 2\beta \cos(ip_s) - 2\beta(D-1) = 0
+\end{equation}
+
+
+\noindent Risolviamo per $\cos(ip_s)$:
+\begin{equation}
+\cos(ip_s) =  \frac{1}{2\beta} - D + 1 = 1 + \frac{1 - 2\beta D}{2\beta}
+\end{equation}
+
+\noindent Poiché $\frac{1 - 2\beta D}{2\beta}$  è piccolo vicino a $T_c$, possiamo sfruttare la relazione $\arccos{(1+x)}~\approx~i~\sqrt{2x}$ per $x \to 0$:
+\begin{equation}
+ip_s =  \arccos \left ( 1 + \frac{1 - 2\beta D}{2\beta} \right) \approx i \sqrt{\frac{1 - 2\beta D}{\beta}}
+\end{equation}
+
+\begin{equation}
+p_s = \left(\frac{1 - 2\beta D}{\beta}\right)^{1/2} = \xi^{-1} \quad \quad \quad \quad \quad  \beta \to \beta_c
+\end{equation}
+
+
+\subsubsection{Verifica della Singolarità}
+
+Dobbiamo verificare che la scelta $p_\mu = 0$ per $\mu \ge 2$ identifichi davvero la singolarità più vicina all'asse reale.
+Ipotizziamo che i momenti nelle direzioni trasversali non siano nulli, ma piccoli, dell'ordine di $\epsilon$:
+\begin{equation}
+p_\mu = \mathcal{O}(\epsilon) \ne 0 \quad \text{per } \mu = 2, \dots, D
+\end{equation}
+
+L'equazione che definisce la singolarità diventa:
+\begin{equation}
+1 - 2\beta \left( \cos(i\tilde{p}_s) + \sum_{\mu=2}^D \cos p_\mu \right) = 0
+\end{equation}
+
+Espandiamo i coseni per piccoli argomenti, usando $\cos (\epsilon) \approx 1 - \frac{\epsilon^2}{2}$
+
+L'equazione si riscrive come:
+\begin{equation}
+1 - 2\beta \cos(i\tilde{p}_s) - 2\beta(D-1) + 2\beta \sum_{\mu=2}^D \frac{\epsilon^2}{2} = 0
+\end{equation}
+
+Poiché ci sono $D-1$ termini nella somma, l'ultimo termine diventa $\beta(D-1)\epsilon^2$.
+
+Riorganizzando i termini per isolare la parte dipendente da $\tilde{p}_s$:
+\begin{equation}
+2\beta \cos(i\tilde{p}_s) = 1 - 2\beta(D-1) + \beta \epsilon^2 (D-1)
+\end{equation}
+
+Risolvendo per $i\tilde{p}_s$ e utilizzando l'espansione dell'arcocoseno per argomenti vicini a 1, otteniamo l'espressione per la nuova singolarità $\tilde{p}_s$:
+
+\begin{equation}
+i\tilde{p}_s \sim i \sqrt{\frac{1}{\beta}\left(1 - \frac{\beta}{\beta_c}\right) + \epsilon^2(D-1)}
+\end{equation}
+
+Osserviamo il termine sotto radice.
+Il primo termine, $\frac{1}{\beta}(1 - \frac{\beta}{\beta_c})$, corrisponde alla singolarità originale $p_s^2$ (con $p_\mu=0$).
+Il secondo termine $\epsilon^2(D-1)$è \textbf{positivo} per $D > 1$.
+
+Questo implica che $|\tilde{p}_s| > |p_s|$. L'introduzione di un momento trasversale $\epsilon \ne 0$ sposta la singolarità \textit{più lontano} dall'asse reale rispetto al caso $p_\mu = 0$.
+Concludiamo quindi che la singolarità dominante (quella più vicina all'asse reale che determina il decadimento esponenziale) è proprio quella con tutti i momenti trasversali nulli, confermando il risultato precedente.
+
+\subsubsection{Conclusioni e Esponente $\nu$}
+
+Abbiamo determinato che la lunghezza di correlazione è data dall'inverso della singolarità dominante:
+
+\begin{equation}
+\xi = \frac{1}{p_s} = \left( \frac{1 - 2D\beta}{\beta} \right)^{-1/2}
+\end{equation}
+
+Analizziamo il comportamento vicino alla temperatura critica $T_c$. Poiché $1 - 2D\beta$ si annulla a $\beta_c$, questo termine è proporzionale alla distanza dalla temperatura critica:
+\begin{equation}
+1 - 2D\beta \propto (T - T_c)
+\end{equation}
+
+Di conseguenza, la lunghezza di correlazione diverge a $T_c$ come:
+\begin{equation}
+\xi \sim (T - T_c)^{-1/2}
+\end{equation}
+
+Confrontando questo risultato con la definizione dell'esponente critico $\nu$, data dalla relazione $\xi \sim |T - T_c|^{-\nu}$, otteniamo il valore per la teoria di campo medio:
+
+\begin{tcolorbox}[colback=yellow!30, colframe=yellow!50!orange, boxrule=0.8pt]
+\begin{equation}
+\nu_{MF} = \frac{1}{2}
+\end{equation}
+\end{tcolorbox}
+
+Questo calcolo mostra esplicitamente il meccanismo della transizione: avvicinandosi a $T_c$, la lunghezza di correlazione $\xi$ aumenta, i domini di spin correlati diventano sempre più grandi fino a divergere al punto critico, dove il decadimento esponenziale viene sostituito da un decadimento a legge di potenza.
+

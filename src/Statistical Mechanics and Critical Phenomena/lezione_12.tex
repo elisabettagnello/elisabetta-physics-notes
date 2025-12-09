@@ -1,0 +1,214 @@
+\chapter{Lezione 12}
+\label{chap:lezione_12} 
+
+\begin{flushright}
+\textit{Data: 03/11/2025}
+\end{flushright}
+
+\section{Validità di MFA e Fenomenologia delle Fluttuazioni}
+
+Abbiamo completato il lavoro di stima e calcolo degli esponenti critici nell'ambito della Teoria di Campo Medio (Mean Field Theory - MFA). È fondamentale ora discutere l'ambito di validità di questi risultati e come essi si confrontino con la realtà fisica in diverse dimensioni.
+Gli esponenti calcolati in MFA risultano essere \textit{esatti} quando la dimensione del sistema $D$ è maggiore di una certa dimensione critica superiore, che per il modello di Ising è $D_c = 4$.
+In dimensioni inferiori ($D < 4$, e in particolare per le dimensioni fisiche $D=3$ e $D=2$), la struttura qualitativa della transizione di fase rimane la stessa, ma i valori numerici degli esponenti cambiano a causa delle fluttuazioni che la teoria di campo medio trascura.
+
+Un parametro centrale in questa analisi è l'esponente $\nu$, che governa la divergenza della lunghezza di correlazione $\xi$. In approssimazione di campo medio, questo vale: $\nu_{MF} = \frac{1}{2}$
+
+
+La lunghezza di correlazione media diverge vicino alla temperatura critica $T_c$ secondo la legge:
+
+\begin{equation}
+\xi \sim |T-T_c|^{\nu} \quad \text{per } T \rightarrow T_c^{+}
+\end{equation}
+
+
+\subsection{Comportamento delle Funzioni di Correlazione}
+
+Lontano dal punto critico, o in fase disordinata, la funzione di correlazione $C(x)$ decade esponenzialmente con la distanza:
+
+\begin{equation}
+C(x) \sim e^{-x/\xi}
+\end{equation}
+
+Tuttavia, esattamente alla temperatura critica $T=T_c$, la lunghezza di correlazione $\xi$ diverge all'infinito. In questo regime, l'isotropia viene ripristinata ($T \sim T_0$) e le fluttuazioni implicano un decadimento più lento, di tipo a legge di potenza (power-law). La funzione di correlazione al punto critico si comporta come:
+
+\begin{equation}
+C(X)_{T=T_c} \sim \frac{1}{X^{A}}
+\end{equation}
+
+Dove l'esponente $A$ è legato alla dimensione dello spazio e alla cosiddetta \textbf{dimensione anomala} $\eta$. In termini più precisi, come vedremo, $A = D-2+\eta$.
+
+\subsection{Natura della Transizione di Fase}
+
+Analizziamo la natura della transizione nel diagramma di fase $(T, m)$.
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{pics/12.png}
+    \caption{Diagramma di fase $(T, m)$.}
+    \label{fig:fase T m}
+\end{figure}
+
+\begin{itemize}
+    \item Per $T < T_c$ e $h=0$, il sistema presenta una magnetizzazione spontanea $m \neq 0$. Passando attraverso $h=0$ (invertendo il campo), si ha una discontinuità nella magnetizzazione $m$. Questo identifica una \textbf{transizione di fase del primo ordine} in $m$.
+    \item A $T = T_c$, la magnetizzazione spontanea svanisce con continuità.
+\end{itemize}
+
+\begin{tcolorbox}[colback=yellow!30, colframe=yellow!50!orange, boxrule=0.8pt]
+Possiamo affermare che la \textbf{transizione di fase del secondo ordine} (che avviene a $T_c$) rappresenta il punto terminale di una linea di transizioni di fase del primo ordine.
+\end{tcolorbox}
+
+\vspace{0.5cm}
+
+\noindent Vicino alla temperatura critica, il parametro d'ordine (la magnetizzazione) diventa molto piccolo. Definiamo il salto di magnetizzazione attraverso la transizione del primo ordine come:
+
+\begin{equation}
+\delta_m = m_{+} - m_{-} = 2m_s \xrightarrow{T \rightarrow T_c^{-}} 0
+\end{equation}
+
+Contemporaneamente, la lunghezza di correlazione diverge:
+
+\begin{equation}
+\xi \xrightarrow{T \rightarrow T_c} \infty
+\end{equation}
+
+Questi due fenomeni sono intrinsecamente collegati: la scomparsa della barriera energetica tra gli stati (che porta a $\delta_m \to 0$) è associata all'aumento della scala su cui le fluttuazioni sono correlate.
+
+\subsection{Argomento della "Bolla" e Energia delle Fluttuazioni}
+
+Consideriamo il sistema a bassa temperatura. Immaginiamo di essere in una fase magnetizzata (ad esempio spin tutti up) e di creare una fluttuazione macroscopica, una "bolla" di raggio lineare $R$ con spin opposti (down).
+
+La differenza di energia libera associata alla creazione di questa bolla rispetto al sistema omogeneo è data da:
+
+\begin{equation}
+\Delta F = F_{bubble} - F_{homog}
+\end{equation}
+
+Questa differenza energetica è dominata dall'interfaccia tra la bolla e il resto del sistema. Gli spin all'interno della bolla sono "felici" (allineati tra loro), così come quelli fuori. \textbf{Il costo energetico si paga sul bordo, dove gli spin sono disallineati.}
+In una sfera $D$-dimensionale, la superficie scala come $R^{D-1}$. Il costo energetico è proporzionale alla superficie e alla magnetizzazione:
+
+\begin{equation}
+\Delta F \sim E_{bubble} - E_{no bubble} \propto R^{D-1} m_s^{\alpha}
+\end{equation}
+
+con $\alpha >0$.
+
+Definiamo una dimensione tipica $R_c$ per le bolle a una data temperatura $T$. Possiamo legare la dimensione critica della bolla alla magnetizzazione spontanea. Affinché le fluttuazioni siano rilevanti, il costo energetico deve essere comparabile all'energia termica. Dalla relazione precedente si evince una legge di scala:
+
+\begin{equation}
+R_c^{D-1} m_s^{\alpha} = \text{cost.}
+\end{equation}
+\begin{equation}
+R_c^{D-1}(m_s) \sim \tilde{m}^{-\frac{\alpha}{(D-1)}}
+\end{equation}
+
+Questo ci dice che quando ci avviciniamo al punto critico, dove la magnetizzazione spontanea tende a zero ($m_s \to 0$), la dimensione caratteristica delle fluttuazioni (la dimensione delle bolle o lunghezza di correlazione) deve divergere:
+
+\begin{equation}
+m_s \rightarrow 0 \implies  R_c \sim \xi \rightarrow \infty
+\end{equation}
+
+\subsection{Potenziale Efficace e Suscettività}
+
+Ritornando al potenziale termodinamico (energia libera di Gibbs o potenziale efficace) $\varphi(m, T)$, le condizioni di equilibrio e stabilità sono date dalle derivate:
+
+\begin{equation}
+\varphi'(m, T) = h
+\end{equation}
+
+Nel limite $m \to 0$ (vicino a $T_c$), la curvatura del potenziale si annulla:
+
+\begin{equation}
+\varphi''(m, T) = 0
+\end{equation}
+
+La suscettività magnetica $\chi$ è inversamente proporzionale alla curvatura del potenziale. Di conseguenza, al punto critico:
+
+\begin{equation}
+\chi \propto (\varphi'')^{-1} \rightarrow \infty
+\end{equation}
+
+Questo implica che ci sono correlazioni collegate su scale di lunghezza sempre maggiori quando ci si avvicina a $T_c$.
+A $T=T_c$, avendo $R_c = \infty$, le fluttuazioni non decadono più esponenzialmente ma seguono una legge di potenza.
+
+\section{Riepilogo degli Esponenti Critici (MFA)}
+
+Ricapitoliamo i valori degli esponenti critici derivati nell'approssimazione di campo medio validi per $D \ge D_c = 4$:
+
+\begin{tcolorbox}[colback=colorE!10, colframe=colorE!50!colorD, boxrule=1pt]
+
+\begin{enumerate}
+    \item \textbf{Lunghezza di correlazione} ($T \to T_c$):
+    \begin{equation}
+    \xi(T)_{h=0} \sim |T-T_c|^{-\nu} \quad \rightarrow \quad \nu_{MF} = \frac{1}{2}
+    \end{equation}
+    
+    \item \textbf{Funzione di correlazione al punto critico} ($T=T_c$):
+    \begin{equation}
+    G_0(n)_{T=T_c,\;  h=0} \simeq n^{-(D-2+\eta)} \quad \rightarrow \quad \eta_{MF} = 0
+    \end{equation}
+    $\eta$ è detta \textbf{dimensione anomala}. 
+    
+    \item \textbf{Magnetizzazione spontanea} ($T \to T_c^-$):
+    \begin{equation}
+    m(T)_{h=0} \sim |T-T_c|^{\beta} \quad \rightarrow \quad \beta_{MF} = 1/2
+    \end{equation}
+    
+    \item \textbf{Suscettività} ($T \to T_c$):
+    \begin{equation}
+    \chi(T) \simeq |T-T_c|^{-\gamma} \quad \rightarrow \quad \gamma_{MF} = 1
+    \end{equation}
+    
+    \item \textbf{Calore specifico} ($T \to T_c$):
+    \begin{equation}
+    C_v(T)_{h=0} \simeq |T-T_c|^{-\alpha}
+    \quad \rightarrow \quad
+    \alpha_{MF} = 4-D 
+    \end{equation}
+    
+    \item \textbf{Isoterma critica} ($T=T_c$):
+    \begin{equation}
+    m(h)_{T=T_c} \simeq |h|^{1/\delta} \quad \rightarrow \quad \delta_{MF} = 3
+    \end{equation}
+\end{enumerate}
+
+\end{tcolorbox}
+
+\newpage
+\section{Integrali Gaussiani}
+
+Per procedere oltre la teoria di campo medio e sviluppare la teoria delle perturbazioni, gli integrali gaussiani costituiranno la base fondamentale dei nostri calcoli. È essenziale padroneggiare la loro risoluzione sia in una che in $N$ dimensioni.
+
+\subsection{Integrale Gaussiano 1D}
+
+Consideriamo l'integrale gaussiano standard:
+\begin{equation}
+G \equiv \int_{-\infty}^{+\infty} dx \, e^{-x^2}
+\end{equation}
+
+Per calcolarlo, si utilizza il trucco di calcolare il suo quadrato, passando alle coordinate polari ($r, \theta$) nel piano, dove $r^2 = x^2 + y^2$:
+
+\begin{equation}
+G^2 = \left( \int_{-\infty}^{+\infty} dx \, e^{-x^2} \right)^2 = \int_{-\infty}^{+\infty} dx \int_{-\infty}^{+\infty} dy \, e^{-(x^2+y^2)}
+\end{equation}
+
+Cambiando variabili in coordinate polari ($dx dy = r dr d\theta$):
+\begin{equation}
+= \int_{0}^{\infty} r dr \int_{0}^{2\pi} d\theta \, e^{-r^2} = 2\pi \int_{0}^{\infty} r e^{-r^2} dr
+\end{equation}
+
+Notiamo che la derivata dell'esponente è $\frac{d}{dr} e^{-r^2} = -2r e^{-r^2}$, quindi l'integrale in $dr$ è immediato:
+\begin{equation}
+2\pi \left[ -\frac{1}{2} e^{-r^2} \right]_{0}^{\infty} = 2\pi \left( 0 - \left(-\frac{1}{2}\right) \right) = \pi
+\end{equation}
+
+Quindi:
+\begin{equation}
+G^2 = \pi \implies G = \sqrt{\pi}
+\end{equation}
+
+Generalizzando a un integrale con coefficienti $a$ e $b$:
+\begin{equation}
+\tilde{G} = \int_{-\infty}^{+\infty} dx \, e^{-ax^2 + bx} = \sqrt{\frac{\pi}{a}} e^{b^2/4a}
+\end{equation}
+

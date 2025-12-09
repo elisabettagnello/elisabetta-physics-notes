@@ -1,0 +1,289 @@
+\chapter{Lezione 7}
+\label{chap:lezione_07} 
+
+\begin{flushright}
+\textit{Data: 15/10/2025}
+\end{flushright}
+
+
+\section{Fenomeni Critici e Lunghezza di Correlazione}
+
+Quando la temperatura $T$ si avvicina alla temperatura critica $T_c$ da sopra o da sotto $T \to T_c^\pm$, la lunghezza di correlazione $\xi$ diverge $\xi \to +\infty$.
+
+La lunghezza di correlazione è definita tramite il decadimento esponenziale della funzione di correlazione connessa $\langle\sigma_{i}\sigma_{J}\rangle$ per grandi distanze $|x_{i}-x_{J}| \to +\infty$:
+\begin{equation}
+   \langle\sigma_{i}\sigma_{J}\rangle_{c}\sim e^{-\frac{|x_{i}-x_{J}|}{\xi}}  
+\end{equation}
+
+All'avvicinarsi della temperatura critica, $\xi$ cresce come una potenza della differenza di temperatura:
+\begin{equation}
+\xi \sim \frac{1}{|T-T_c|^{\nu}} \quad \text{o} \quad \xi \sim |T-T_{c}|^{-\nu}
+\end{equation}
+Esattamente alla temperatura critica $T=T_c$, il decadimento non è più esponenziale ma a \textbf{legge di potenza}:
+\begin{equation}
+\langle\sigma_{i}\sigma_{J}\rangle \approx \frac{1}{|x_{i}-x_{J}|^{\eta}}
+\end{equation}
+L'esponente $\nu$ è un \textbf{esponente critico}. È cruciale perché indica il tipo di singolarità fisica che si verifica al punto critico. 
+
+La fisica degli esponenti critici è universale. La temperatura critica invece non è universale,  $T_c$ dipende, ad esempio, dal tipo di reticolo (cubico semplice, cubico a facce centrate, esagonale, ecc.).
+
+\newpage
+\section{Equazioni del Campo Medio }
+
+Le equazioni del campo medio possono essere derivate minimizzando l'energia libera di un sistema. L'energia libera $F$ ha un termine di energia interna e un termine di entropia.
+
+L'entropia per una distribuzione di probabilità fattorizzata è data da:
+\begin{equation}
+S = -\sum_{i} \left\{ \frac{1+m_{i}}{2} \log\left(\frac{1+m_{i}}{2}\right) + \frac{1-m_{i}}{2} \log\left(\frac{1-m_{i}}{2}\right) \right\}
+\end{equation}
+La condizione per un punto stazionario è $\frac{dF}{dm_{i}}=0$, che è equivalente a:
+\begin{equation}
+-J \sum_{\langle k, i \rangle} m_{k} - h_{i} - \frac{1}{\beta} \frac{\partial S}{\partial m_{i}} = 0 \quad \text{o} \quad -\sum_{k} J_{ik} m_{k} - h_{i} - \frac{1}{\beta} \frac{\partial S}{\partial m_{i}} = 0
+\end{equation}
+dove $J_{ik}$ è l'accoppiamento tra spin $i$ e $k$, che è $J$ solo se $i$ e $k$ sono primi vicini, e $0$ altrimenti:
+\begin{equation}
+J_{ik} = \begin{cases} J & \text{se } |i-k|=1 \\ 0 & \text{altrimenti} \end{cases}
+\end{equation}
+
+\noindent Calcoliamo la derivata parziale dell'entropia rispetto a $m_i$ (considerando solo il contributo del sito $i$):
+\begin{equation}
+   - \frac{\partial S}{\partial m_{i}} = \frac{\partial}{\partial m_{i}} \left[ \frac{1+m_{i}}{2} \log\left(\frac{1+m_{i}}{2}\right) + \frac{1-m_{i}}{2} \log\left(\frac{1-m_{i}}{2}\right) \right] 
+\end{equation}
+
+
+Usando la regola di derivazione del prodotto :
+\begin{align}
+- \frac{\partial S}{\partial m_{i}}
+&= \frac{1}{2} \log\left(\frac{1+m_{i}}{2}\right) + \frac{1+m_{i}}{2} \cdot \frac{1}{2 \cdot \frac{1+m_{i}}{2}}   -\frac{1}{2} \log\left(\frac{1-m_{i}}{2}\right) + \frac{1-m_{i}}{2} \cdot \frac{1}{(-2) \cdot \frac{1-m_{i}}{2}} \nonumber  \\
+&= \frac{1}{2} \left[ \log\left(\frac{1+m_{i}}{2}\right) - \log\left(\frac{1-m_{i}}{2}\right) \right] \\ 
+& =\frac{1}{2} \log\frac{1+m_{i}}{1-m_{i}} \\
+&= \operatorname{arctanh}(m_{i}) \quad \quad \quad \quad \quad \quad \quad \quad\quad \quad \quad \quad \text{(vedi la sezione \ref{appendice1})}
+\end{align}
+
+
+
+
+Quindi, l'equazione per $m_i$ diventa:
+\begin{equation}
+-\sum_{k} J_{ik} m_{k} - h_{i} + \frac{1}{\beta} \operatorname{arctanh}(m_{i}) = 0
+\end{equation}
+Risolvendo per $m_i$, otteniamo le \textbf{equazioni del campo medio}:
+
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+m_{i} = \tanh\left[ \beta \left( \sum_{k} J_{ik} m_{k} + h_{i} \right) \right]
+\end{equation}
+\end{tcolorbox} 
+
+In campo medio, lo spin $\sigma_i$ sente un campo magnetico efficace dato da:
+
+\begin{equation}
+    h_{\text{eff}, i} = h_{i} + \sum_{k} J_{ik} m_{k}
+\end{equation}
+
+Questo campo effettivo dipende dalla magnetizzazione media dei vicini, non dagli spin stessi.
+
+\subsection{Dimostrazione dell'equivalenza con arctanh()} \label{appendice1}
+L'equivalenza con la funzione arcotangente iperbolica $\operatorname{arctanh}(m_i)$ si basa sulla definizione di $\tanh(x)$ e sulla sua inversione.
+Sia $y = \tanh(x)$:
+$$ y = \tanh(x) = \frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}  $$
+Ponendo $z \equiv e^{x}$, l'espressione diventa:
+$$ y = \frac{z-\frac{1}{z}}{z+\frac{1}{z}}  $$
+Moltiplicando numeratore e denominatore per $z$  si ottiene:
+$$ y = \frac{z^2-1}{z^2+1} \implies y(z^2+1) = z^2-1  $$
+Risolvendo per $z^2$:
+$$ z^2 y + y = z^2 - 1 \implies z^2(1-y) = 1+y \implies z^2 = \frac{1+y}{1-y}  $$
+Ricordando che $z = e^x$, si ha $z^2 = e^{2x}$.
+$$ e^{2x} = \frac{1+y}{1-y}  $$
+Prendendo il logaritmo naturale di entrambi i lati:
+$$ 2x = \log\left(\frac{1+y}{1-y}\right) \implies x = \frac{1}{2} \log\left(\frac{1+y}{1-y}\right)  $$
+Poiché $x = \operatorname{arctanh}(y)$, ponendo $y = m_i$, si ha:
+\begin{equation}
+-\frac{\partial S}{\partial m_{i}} = \frac{1}{2} \log\frac{1+m_{i}}{1-m_{i}} = \operatorname{arctanh}(m_{i}) 
+\end{equation}
+
+\newpage
+\section{Relazioni Esatte di Dobrushin, Lanford e Ruelle (DLR)}
+Il metodo DLR (Dobrushin, Lanford, Ruelle) è un metodo noto in fisica matematica, utile per dimostrare che sistemi statistici esistono nel limite termodinamico (infinito) e per controllare le interazioni su regioni sempre più ampie. Consente di collegare i valori di aspettazione di osservabili in una piccola regione con i valori di aspettazione in una regione più grande.
+
+
+Si parte dal valore di aspettazione dello spin $\sigma_i$:
+\begin{equation}
+\langle \sigma_{i} \rangle = \frac{1}{Z} \sum_{\{\sigma=\pm1\}} e^{-\beta H[\sigma]} \sigma_{i}
+\end{equation}
+Si divide l'Hamiltoniana $H[\sigma]$ in due parti:
+\begin{equation}
+H[\sigma] = H^{-}[\sigma^{-}] + \tilde{H}(\sigma_{i} + \text{vicini di } \sigma_{i} \equiv \tilde\sigma)
+\end{equation}
+\begin{itemize}
+    \item $\mathbf{H^{-}[\sigma^{-}]}$: Contiene tutti i contributi che \textbf{non contengono} $\sigma_i$. 
+    $\sigma^{-}$ indica l'insieme di tutti gli spin tranne $\sigma_i$
+    \item $\mathbf{\tilde{H}}$: Contiene tutti i contributi che \textbf{contengono} $\sigma_i$.
+\end{itemize}
+L'Hamiltoniana è $H = -\sum_{i, k} J_{ik} \sigma_i \sigma_k - \sum_i h_i \sigma_i$.
+Il termine $\tilde{H}$ sarà della forma:
+\begin{equation}
+     \tilde{H} = -\sigma_i \left( \sum_{k} J_{ik} \sigma_{k} + h_{i} \right) 
+\end{equation}
+
+dove la somma su $k$ è ristretta ai vicini di $i$.
+
+\noindent Sostituendo nell'espressione del valore di aspettazione e separando la somma su $\sigma_i = \pm 1$:
+\begin{equation}
+    \langle \sigma_{i} \rangle = \frac{1}{Z} \sum_{\{\sigma^{-} = \pm 1\}} e^{-\beta H^{-}[\sigma^{-}]} \left[ \sum_{\sigma_{i}=\pm 1} \sigma_{i} e^{-\beta \tilde{H}(\tilde\sigma)} \right]
+\end{equation}  
+Concentrandosi sul termine $\sum_{\sigma_{i}=\pm 1} \sigma_{i} e^{-\beta \tilde{H}(\sigma_{i}, \ldots)}$:
+
+\begin{equation}
+  \sum_{\sigma_{i}=\pm 1} \sigma_{i} \exp\left( \beta \sigma_{i} \left( \sum_{k} J_{ik} \sigma_{k} + h_{i} \right) \right)  
+  \label{eq: sum}
+\end{equation}
+ 
+Posto $X = \beta (\sum_{k} J_{ik} \sigma_{k} + h_{i})$, la somma in \ref{eq: sum} diventa:
+\begin{equation}
+    (+1) e^{X} + (-1) e^{-X} = 2 \sinh(X)
+\end{equation}  
+Similmente, la somma sui $\sigma_i$ nel denominatore $Z$ è:
+\begin{equation}
+    \sum_{\sigma_{i}=\pm 1} e^{-\beta \tilde{H}(\tilde \sigma)} = e^{X} + e^{-X} = 2 \cosh(X)
+\end{equation}
+
+Il rapporto $\frac{\sum_{\sigma_{i}=\pm 1} \sigma_{i} e^{-\beta \tilde{H}}}{\sum_{\sigma_{i}=\pm 1} e^{-\beta \tilde{H}}}$ è:
+\begin{equation}
+    \frac{2 \sinh(X)}{2 \cosh(X)} = \tanh(X)
+\end{equation}
+
+Quindi, l'espressione per $\langle \sigma_{i} \rangle$ diventa:
+\begin{equation}
+\langle \sigma_{i} \rangle = \left\langle \tanh\left( \beta \left( \sum_{k} J_{ik} \sigma_{k} + h_{i} \right) \right) \right\rangle
+\end{equation}
+Questa è una \textbf{relazione esatta}. Mette in relazione il valore di aspettazione dello spin $\sigma_i$ con una funzione del valore di aspettazione degli spin $\sigma_k$.
+
+\section{Approssimazione di Campo Medio}
+L'approssimazione di campo medio consiste nel sostituire gli spin $\sigma_k$ con i loro valori di aspettazione, ovvero le magnetizzazioni $m_k = \langle \sigma_k \rangle$:
+$$ \sigma_{k} \to \langle \sigma_{k} \rangle = m_{k} $$
+Questo è equivalente a fattorizzare la probabilità ($P[\sigma] \approx \prod_i P[\sigma_i]$). In questa approssimazione, la funzione $\tanh(\ldots)$ dipende ora solo da valori medi (numeri) e non da variabili stocastiche, quindi il valore di aspettazione $\langle \ldots \rangle$ non è più necessario.
+
+Sostituendo $\sigma_k \to m_k$:
+\begin{equation}
+\langle \sigma_{i} \rangle = m_{i} = \tanh\left( \beta \left( \sum_{k} J_{ik} m_{k} + h_{i} \right) \right)
+\end{equation}
+Si ottengono di nuovo le equazioni del campo medio.
+
+
+\subsection{Caso omogeneo e con campo magnetico costante }
+Nel caso omogeneo e isotropo, con campo magnetico costante ($h_i = h$) e accoppiamento solo con i primi vicini ($J_{ik} = 1$ per $k$ vicino a $i$ e $0$ altrimenti), la magnetizzazione media è uniforme:
+
+\begin{equation}
+   \langle \sigma_{i} \rangle = m_i = m
+\end{equation}
+
+Sia $D$ la dimensionalità del reticolo. Per un reticolo cubico semplice, ogni sito ha $2D$ primi vicini.
+
+L'energia interna media per sito è:
+\begin{equation}
+    \frac{\langle H \rangle}{N} = u = -D  m^2 - h m
+\end{equation}
+
+L'energia libera per unità di volume è:
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+f = -D m^{2} - h m + \frac{1}{\beta} \left( \frac{1+m}{2} \log\left(\frac{1+m}{2}\right) + \frac{1-m}{2} \log\left(\frac{1-m}{2}\right) \right)
+\end{equation}
+\end{tcolorbox} 
+
+
+L'equazione del campo medio diventa:
+\begin{equation}
+m = \tanh\left( \beta (2 D  m + h) \right)
+\end{equation}
+
+
+\subsection{Caso con campo magnetico nullo}
+Nel caso di campo magnetico esterno nullo ($h=0$):
+\begin{equation}
+m = \tanh(2 \beta D  m)
+\end{equation}
+Una soluzione è sempre \textbf{$m=0$}. La stabilità di $m=0$ dipende dalla temperatura.
+
+\subsection{Risoluzione grafica}
+Si intersecano le due curve $y=m$  e $y=\tanh(2 \beta D  m)$
+
+
+\begin{itemize}
+    \item \textbf{Alta Temperatura} ($T > T_c$, $\beta$ piccolo): 
+    
+    La pendenza $2 \beta D  < 1$. L'unica intersezione è in $m=0$.
+
+    \item \textbf{Temperatura Critica} ($T = T_c$, $\beta_c$): 
+    
+    La pendenza $2 \beta_c D  = 1$. Questo definisce $\beta_c$ e quindi $T_c$:
+    \begin{equation}
+    \beta_{c} = \frac{1}{2 D } \implies T_{c} = 2 D 
+    \end{equation}
+
+
+    \item \textbf{Bassa Temperatura} ($T < T_c$, $\beta$ grande): 
+    
+    La pendenza $2 \beta D  > 1$. 
+    Ci sono \textbf{tre intersezioni}: $m=0$ e due soluzioni non banali $m=m^+$ e $m=m^-$.
+\end{itemize}
+
+\begin{figure}[h!]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{pics/06.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{pics/07.png}
+    \end{minipage}
+    \hfill  
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{pics/08.png}
+    \end{minipage}
+    \caption{Soluzioni per m al variare della temperatura.}
+  
+\end{figure}
+
+
+\newpage
+\subsection{Stabilità  dell'Energia Libera}
+La stabilità delle soluzioni è determinata dal segno della derivata seconda dell'energia libera $f$. La soluzione stabile (minimo) richiede $f'' > 0$.
+La derivata prima è:
+$$ f' = \frac{df}{dm} = -2 D  m + \frac{1}{2\beta} \log\frac{1+m}{1-m} $$
+La derivata seconda ($f''$) è:
+\begin{equation}
+f'' = -2 D  + \frac{1}{\beta} \cdot \frac{1}{1-m^{2}}
+\end{equation}
+Valutando in $m=0$ (che è sempre una soluzione):
+\begin{equation}
+f''(m=0) = -2 D  + \frac{1}{\beta}
+\end{equation}
+\begin{itemize}
+    \item Per $T > T_c$ ($\beta < \beta_c$, $\frac{1}{\beta} > 2 D $): $f''(0) > 0$
+    
+    $m=0$ è un minimo (soluzione stabile)
+    
+    \item Per $T < T_c$ ($\beta > \beta_c$, $\frac{1}{\beta} < 2 D $): $f''(0) < 0$
+    
+    $m=0$ diventa un massimo (soluzione instabile)
+    
+    Le due nuove soluzioni $m^+$ e $m^-$ sono i minimi.
+\end{itemize}
+

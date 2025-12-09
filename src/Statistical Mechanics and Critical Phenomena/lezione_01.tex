@@ -1,0 +1,149 @@
+% File: lezione_01.tex
+\chapter{Lezione 1}
+\label{chap:lezione_01} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 29/09/2025}
+\end{flushright}
+\textit{Bibliografia: Giorgio Parisi - "Statistical Field Theory" , ch. 1}
+
+
+\section{Introduzione alla Meccanica Statistica}
+
+Iniziamo con una distinzione fondamentale tra due approcci allo studio dei sistemi a molte particelle: la termodinamica e la meccanica statistica.
+
+La \textbf{termodinamica} è una scienza \textbf{fenomenologica}. Questo significa che si basa sull'osservazione dei fenomeni macroscopici e sulla richiesta di consistenza matematica tra le quantità definite (come il calore, il lavoro, l'entropia), senza investigare la natura microscopica del sistema. Le leggi della termodinamica vengono derivate da principi generali e postulati matematici.
+
+La \textbf{meccanica statistica}, al contrario, ha un approccio "fondamentale". Essa si propone di derivare le proprietà macroscopiche di un sistema a partire da due punti principali:
+\begin{enumerate}
+    \item L'\textbf{Hamiltoniana} del sistema, che descrive le interazioni tra le particelle (o, più in generale, i gradi di libertà microscopici).
+    \item Il fatto che il numero di particelle è \textbf{molto grande} (tipicamente dell'ordine del numero di Avogadro, $N_A \approx 10^{23}$).
+\end{enumerate}
+Quindi, in meccanica statistica, le proprietà macroscopiche sono una conseguenza delle equazioni del moto dei singoli componenti microscopici del sistema.
+
+\subsection{Approccio Probabilistico e Distribuzione di Equilibrio}
+
+Dato il numero enorme di particelle, risolvere le equazioni del moto per ciascuna di esse è impraticabile e, in fondo, non è ciò che ci interessa. Anche se avessimo computer potentissimi, avremmo bisogno delle condizioni iniziali per $\approx 10^{23}$ particelle, un'informazione inaccessibile. Inoltre, siamo interessati al comportamento \textit{tipico} e \textit{macroscopico} del sistema, non alla traiettoria esatta di ogni singola particella.
+
+Per queste ragioni, si adotta un \textbf{approccio probabilistico}. L'obiettivo è determinare la distribuzione di probabilità di equilibrio del sistema nello spazio delle fasi. Lo stato microscopico di un sistema di $N$ particelle in 3 dimensioni è descritto da $3N$ coordinate generalizzate $q_i$ e $3N$ momenti coniugati $p_i$.
+
+\begin{equation}
+    \begin{matrix}
+        q_i & i=1, ..., 3N \\
+        p_i & i=1, ..., 3N
+    \end{matrix}
+\end{equation}
+
+Si assume che, per tempi sufficientemente lunghi ($t \to \infty$), il sistema raggiunga una \textbf{distribuzione di probabilità di equilibrio}, che indichiamo con $P_{eq}[q,p]$. Raggiungere l'equilibrio significa che le proprietà macroscopiche del sistema, che sono medie statistiche sulla distribuzione di probabilità, non cambiano più nel tempo. Questo non significa che le configurazioni microscopiche si "congelino"; le particelle continuano a muoversi, ma la loro distribuzione di probabilità rimane costante.
+
+Da questa distribuzione $P_{eq}$ si possono ricavare tutte le proprietà macroscopiche di interesse. Una distribuzione di probabilità deve soddisfare due proprietà fondamentali:
+\begin{enumerate}
+    \item Essere non-negativa: $P_{eq}[q,p] \ge 0 \quad \forall q,p$.
+    \item Essere normalizzata a uno:
+\end{enumerate}
+
+\begin{equation}
+    \int [dq \, dp] P_{eq}[q,p] = 1
+\end{equation}
+
+
+dove la notazione $[dq \, dp]$ indica l'integrazione su tutti i gradi di libertà dello spazio delle fasi.
+Il valore medio (o di aspettazione) di un'osservabile macroscopica $O$ all'equilibrio si può calcolare come media temporale a partire da un tempo $t_{eq}$ in cui il sistema ha raggiunto l'equilibrio:
+
+\begin{equation}
+    \langle O \rangle = \lim_{T \to \infty} \sum_{t=t_{eq}}^{T} \frac{1}{T-t_{eq}} O_t
+\end{equation}
+
+
+\subsection{La Distribuzione Canonica di Boltzmann}
+
+L'assunzione fondamentale della meccanica statistica è che la distribuzione di probabilità all'equilibrio per un sistema a contatto con un bagno termico a temperatura $T$ abbia la forma di \textbf{Boltzmann}:
+
+\begin{equation}
+    P_{eq}[q,p] = \frac{1}{Z} e^{-\beta H[q,p]}
+\end{equation}
+
+
+Questa è nota come \textbf{distribuzione canonica}. Analizziamo i termini:
+\begin{itemize}
+    \item $H[q,p]$ è l'Hamiltoniana del sistema.
+    \item $\beta$ è un parametro legato alla temperatura inversa: $\beta = 1/(k_B T)$, dove $k_B$ è la costante di Boltzmann. Per semplicità, nel corso si userà la convenzione $k_B \equiv 1$.
+    \item $Z$ è la \textbf{funzione di partizione}, un fattore di normalizzazione che garantisce che l'integrale della probabilità sia 1. È definita come:
+\end{itemize}
+
+\begin{equation}
+    Z = \int [dq \, dp] e^{-\beta H[q,p]}
+\end{equation}
+
+
+Nonostante sia un fattore di normalizzazione, la funzione di partizione è un oggetto di importanza cruciale, poiché contiene in sé la maggior parte dell'informazione fisica del sistema.
+
+\subsection{Insieme Canonico vs. Microcanonico}
+
+Sorge una questione fondamentale: le equazioni del moto (es. di Hamilton) conservano l'energia, quindi un sistema isolato dovrebbe evolvere mantenendo l'energia costante. La distribuzione di Boltzmann, invece, assegna una probabilità non nulla a configurazioni con energie diverse. Come si conciliano queste due visioni?
+
+La risposta risiede nel \textbf{limite termodinamico}, ovvero quando il volume del sistema $V \to \infty$. In questo limite, i valori di aspettazione calcolati con l'insieme \textbf{microcanonico} (energia fissata) e con l'insieme \textbf{canonico} (energia variabile) coincidono.
+
+\begin{equation}
+    \langle \cdot \rangle_{\text{microcanonico}} = \langle \cdot \rangle_{\text{canonico}} \quad \text{per } V \to \infty
+\end{equation}
+
+
+La distribuzione di probabilità per l'insieme microcanonico si scrive formalmente come:
+
+\begin{equation}
+    P_{eq}^{\mu can}[q,p] = \delta(H-E) \tilde{P}_{eq}^{\mu can}[q,p]
+\end{equation}
+
+
+dove la funzione delta di Dirac $\delta(H-E)$ forza l'energia del sistema a essere esattamente $E$, e il termine $\tilde{P}$ è una costante su questa superficie a energia costante.
+L'equivalenza degli insiemi nel limite termodinamico rende l'uso dell'insieme canonico, matematicamente più trattabile, un "trucco" di calcolo potente e giustificato.
+
+\section{Entropia}
+
+L'\textbf{entropia} è una misura del \textbf{disordine} di una distribuzione di probabilità.
+Consideriamo il comportamento di un sistema a diverse temperature:
+\begin{itemize}
+    \item A temperatura $T=0$ ($ \beta \to \infty $), la distribuzione di Boltzmann favorisce enormemente gli stati a energia più bassa. Il sistema si "congela" in una singola (o poche) configurazione stabile, quella che minimizza l'energia $U$.
+    \item A temperatura $T > 0$, il sistema può esplorare anche configurazioni a energia maggiore. Il principio guida non è più la minimizzazione della sola energia, ma della \textbf{energia libera} $F = U - TS$. L'entropia ($S$) entra in gioco, favorendo le situazioni in cui ci sono molte configurazioni accessibili.
+\end{itemize}
+
+Per definire l'entropia in modo formale, generalizziamo il nostro formalismo. Sia $\{c\}$ l'insieme di tutte le possibili configurazioni di un sistema. Per ogni configurazione, abbiamo:
+\begin{itemize}
+    \item Una \textbf{misura a priori} $d\mu[c]$, che definisce lo "spazio" in cui vivono le variabili. Ad esempio, per il modello di Ising, questa misura stabilisce che ogni spin può essere a priori $+1$ o $-1$ con uguale probabilità.
+    \item Una \textbf{Hamiltoniana} $H[c]$, che assegna un'energia a ogni configurazione.
+\end{itemize}
+La probabilità di Boltzmann per una configurazione $c$ si scrive come:
+
+\begin{equation}
+    dP_{\beta}[c] = d\mu[c] \frac{e^{-\beta H[c]}}{Z_{\beta}} = P_{\beta}[c] d\mu[c]
+\end{equation}
+
+
+con la funzione di partizione:
+
+\begin{equation}
+    Z_{\beta} = \int d\mu[c] e^{-\beta H[c]}
+\end{equation}
+
+
+Il valore di aspettazione di un'osservabile $A$ è:
+
+\begin{equation}
+    \langle A \rangle_{\beta} = \int d\mu[c] A[c] P_{\beta}[c]
+\end{equation}
+
+
+Data una generica distribuzione di probabilità $P[c]$, la sua \textbf{entropia} (di Gibbs-Shannon) è definita come:
+
+\begin{equation}
+    S[P] = - \int d\mu[c] P[c] \log P[c]
+\end{equation}
+
+
+Questa espressione può essere anche vista come il valore di aspettazione di $-\log P[c]$: 
+
+\begin{equation}
+    S[P] = - \langle \log P[c] \rangle
+\end{equation}
+

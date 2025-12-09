@@ -1,0 +1,359 @@
+\chapter{Lezione 2}
+\label{chap:lezione_02} 
+
+\begin{flushright}
+\textit{Data: 01/10/2025}
+\end{flushright}
+
+
+\section{Definizione di Entropia}
+
+Data una distribuzione di probabilità $P[c]$ per un sistema, l'entropia S è definita come il valore di aspettazione del logaritmo negativo della probabilità.
+
+\begin{equation}
+S[P] = - \int dc \, P[c] \log(P[c]) = -\langle \log P[c] \rangle
+\end{equation}
+
+Questa definizione si applica in generale, ma bisogna distinguere tra il caso di una variabile di probabilità continua e una discreta.
+
+\subsection{Caso Discreto}
+
+Consideriamo un sistema che può trovarsi in un numero finito M di configurazioni, indicizzate da $j = 1, ..., M$. La probabilità associata a ciascuna configurazione $j$ è $P_j$. Per esempio, nel modello di Boltzmann, questa probabilità assume la forma:
+
+\begin{equation}
+P_j = \frac{e^{-\beta H_j}}{Z}
+\end{equation}
+
+dove $H_j$ è l'Hamiltoniana della configurazione $j$, $\beta$ è un parametro legato alla temperatura e Z è la funzione di partizione, definita come:
+
+\begin{equation}
+Z = \sum_{j=1}^{M} e^{-\beta H_j}
+\end{equation}
+
+Il valore di aspettazione di un'osservabile A è dato da:
+
+\begin{equation}
+\langle A \rangle = \sum_{j=1}^{M} P_j A_j
+\end{equation}
+
+In questo contesto, la definizione di entropia diventa una sommatoria:
+
+\begin{equation}
+S[P] = - \sum_{j=1}^{M} P_j \log P_j
+\end{equation}
+
+\textbf{Una proprietà importante dell'entropia per una distribuzione di probabilità discreta è che essa è una quantità non-negativa} ($S \ge 0$). 
+
+Il valore minimo, $S=0$, si ottiene quando la probabilità è concentrata in un unico stato (una funzione delta), il che corrisponde a una conoscenza perfetta del sistema. In questo caso, per uno stato $k$, si ha $P_k=1$ e $P_j=0$ per $j \ne k$. Il termine $1 \log 1$ è zero, e per gli altri termini si considera il limite $\lim_{\epsilon \to 0} \epsilon \log \epsilon = 0$.
+
+\subsection{Caso Continuo}
+
+A differenza del caso discreto, \textbf{per una distribuzione di probabilità continua, l'entropia può assumere valori negativi.} Consideriamo come esempio una distribuzione Gaussiana:
+
+\begin{equation}
+P(x) = \frac{1}{\sqrt{2\pi A}} e^{-x^2 / 2A}
+\end{equation}
+
+Calcolando l'entropia per questa distribuzione, si ottiene:
+
+\begin{equation}
+S = -\frac{1}{2}(1 - \log(2\pi A))
+\end{equation}
+
+Si può notare che nel limite in cui $A \to 0$, la distribuzione Gaussiana tende a una funzione delta di Dirac, che rappresenta la massima conoscenza del sistema (la posizione è nota con certezza). In questo limite, l'entropia diverge a meno infinito:
+
+\begin{equation}
+\lim_{A \to 0} S = -\infty
+\end{equation}
+
+Questa differenza fondamentale evidenzia come, nel caso discreto, l'entropia sia più strettamente legata al conteggio del numero di stati accessibili.
+
+
+
+\subsection{Caso di L Stati Equiprobabili}
+
+Analizziamo un caso specifico per chiarire l'interpretazione fisica dell'entropia. Si consideri un sistema con M configurazioni totali, ma di cui solo un sottinsieme di L stati ($L \le M$) sia accessibile, e che questi L stati siano equiprobabili.
+La distribuzione di probabilità è quindi:
+
+\begin{equation}
+P_j =
+\begin{cases}
+\frac{1}{L} & \text{se } j \le L \\
+0 & \text{se } j > L
+\end{cases}
+\end{equation}
+
+Per calcolare l'entropia, si deve gestire il termine $\log(0)$ che non è definito. Si può regolarizzare il problema introducendo una probabilità molto piccola $\epsilon$ per gli stati inaccessibili, e ricalibrando le probabilità degli stati accessibili in modo che la somma totale sia 1. Tuttavia, è più semplice notare che nel calcolo della sommatoria $S = - \sum P_j \log P_j$, i termini con $P_j = 0$ non contribuiscono, poiché $\lim_{p \to 0} p \log p = 0$.
+Ci sono L termini identici nella sommatoria, ciascuno con $P_j = 1/L$. L'entropia risulta quindi:
+
+\begin{equation}
+S = - \sum_{j=1}^{L} \frac{1}{L} \log\left(\frac{1}{L}\right) = -L \left(\frac{1}{L} (-\log L)\right) = \log L
+\end{equation}
+
+Esaminiamo i casi limite:
+\begin{itemize}
+    \item \textbf{L = 1}: Un solo stato è accessibile. L'entropia è $S = \log 1 = 0$. Questo rappresenta il \textbf{massimo ordine}, poiché conosciamo con esattezza lo stato del sistema.
+    \item \textbf{L = M}: Tutti gli stati sono accessibili ed equiprobabili. L'entropia raggiunge il suo valore massimo, $S = \log M$. Questo rappresenta il \textbf{massimo disordine}.
+\end{itemize}
+
+In questo caso particolare, si nota una relazione diretta:
+
+\begin{equation}
+e^{S[P]} = L
+\end{equation}
+
+In generale, $e^{S[P]}$ può essere interpretato come una stima del \textbf{numero effettivo di configurazioni in cui il sistema può trovarsi con probabilità non trascurabile.}
+
+\subsection{Teorema di Shannon}
+
+L'entropia ha anche un'interpretazione profonda in termini di informazione. Consideriamo un sistema che può trovarsi in $M = 2^k$ configurazioni. Per comunicare in quale di queste configurazioni si trova il sistema, è necessario trasmettere un messaggio composto da $k$ bit. Se abbiamo N copie indipendenti di tale sistema, saranno necessari $N \times k$ bit per specificarne lo stato completo.
+
+Tuttavia, se conosciamo la distribuzione di probabilità P che governa gli stati del sistema, possiamo sfruttare questa conoscenza per comprimere l'informazione. Ad esempio, se la distribuzione è una funzione delta, sappiamo che il sistema sarà sempre in un unico stato, quindi l'informazione necessaria è minima. Se la distribuzione è uniforme, non è possibile alcuna compressione.
+
+Il \textbf{Teorema di Shannon} formalizza questa idea. Afferma che, dato un sistema descritto dalla distribuzione di probabilità P, il numero minimo di bit $B_N$ necessari per descrivere lo stato di N copie del sistema, tale che la probabilità di commettere un errore tenda a zero per $N \to \infty$, è dato da:
+
+\begin{equation}
+\lim_{N \to \infty} \frac{B_N}{N} = \frac{S[P]}{\log 2}
+\end{equation}
+
+Il $\log 2$ al denominatore serve a convertire l'entropia, tipicamente calcolata con il logaritmo naturale, in unità di bit (logaritmo in base 2). Questo teorema stabilisce che l'entropia è la misura dell'informazione (o, in modo complementare, dell'incertezza) contenuta in una distribuzione di probabilità.
+
+\newpage
+\section{Derivazione della Distribuzione di Boltzmann}
+
+La distribuzione di Boltzmann può essere ottenuta da un principio di massimizzazione. L'idea è quella di trovare la distribuzione di probabilità che massimizza l'entropia, sotto determinati vincoli fisici. Questo approccio si basa sull'assunzione che, data una certa informazione parziale sul sistema, la distribuzione più ragionevole da assumere è quella più "disordinata" (con entropia massima) compatibile con tale informazione.
+
+Assumiamo di avere un sistema con molti gradi di libertà e che l'unica informazione a nostra disposizione sia il valore medio dell'energia, $U = \langle E \rangle$. Cerchiamo quindi la distribuzione $P_j$ che massimizza $S[P] = -\sum_j P_j \log P_j$ soggetta a due vincoli:
+\begin{enumerate}
+    \item \textbf{Valore medio dell'energia fissato}: $\sum_{j} P_j E_j = U$
+    \item \textbf{Normalizzazione della probabilità}: $\sum_{j} P_j = 1$
+\end{enumerate}
+
+Questo è un problema di massimo vincolato, che può essere risolto con il metodo dei \textbf{moltiplicatori di Lagrange}. Definiamo una nuova funzione $\varphi$ che include l'entropia e i vincoli, pesati dai moltiplicatori $\lambda_1$ e $\lambda_2$:
+
+\begin{equation}
+\varphi[P] = S[P] + \lambda_1 \left(\sum_j P_j - 1\right) + \lambda_2 \left(\sum_j P_j E_j - U\right)
+\end{equation}
+Sostituendo l'espressione per S:
+\begin{equation}
+\varphi[P] = -\sum_j P_j \log P_j + \lambda_1 \left(\sum_j P_j - 1\right) + \lambda_2 \left(\sum_j P_j E_j - U\right)
+\end{equation}
+Per trovare il massimo, deriviamo $\varphi$ rispetto a una generica probabilità $P_k$ e poniamo la derivata uguale a zero:
+
+\begin{equation}
+\frac{\partial \varphi}{\partial P_k} = -(\log P_k + 1) + \lambda_1 + \lambda_2 E_k = 0
+\end{equation}
+
+Risolvendo per $\log P_k$, otteniamo:
+
+\begin{equation}
+\log P_k = \lambda_1 - 1 + \lambda_2 E_k
+\end{equation}
+
+E quindi la probabilità $P_k$ ha la forma:
+
+\begin{equation}
+P_k = e^{\lambda_1 - 1} e^{\lambda_2 E_k}
+\end{equation}
+
+I moltiplicatori di Lagrange vengono ora determinati imponendo i vincoli.
+Il moltiplicatore $\lambda_1$ è fissato dal vincolo di normalizzazione. Sostituendo l'espressione per $P_k$ in $\sum_k P_k = 1$:
+
+\begin{equation}
+e^{\lambda_1 - 1} \sum_k e^{\lambda_2 E_k} = 1 \implies e^{\lambda_1 - 1} = \frac{1}{\sum_k e^{\lambda_2 E_k}}
+\end{equation}
+
+Sostituendo questo risultato nell'espressione per $P_k$, si ottiene:
+
+\begin{equation}
+P_k = \frac{e^{\lambda_2 E_k}}{\sum_j e^{\lambda_2 E_j}}
+\end{equation}
+
+Il moltiplicatore $\lambda_2$ è fissato dal vincolo sull'energia media $U$. $\lambda_2$ deve essere tale che:
+
+\begin{equation}
+U = \frac{\sum_j E_j e^{\lambda_2 E_j}}{\sum_j e^{\lambda_2 E_j}}
+\end{equation}
+
+Identificando questa forma con la distribuzione di Boltzmann, si pone $\lambda_2 = -\beta$. La funzione al denominatore è la funzione di partizione $Z$. Si ottiene così la \textbf{distribuzione di Boltzmann}:
+
+\begin{equation}
+P_k = \frac{e^{-\beta E_k}}{Z}
+\end{equation}
+
+Questo dimostra che la distribuzione di Boltzmann è quella che massimizza l'incertezza (entropia) dato un valore medio fissato per l'energia.
+
+\vspace{0.5 cm}
+Un approccio alternativo, ma del tutto equivalente, consiste nel minimizzare l'energia libera, invece di massimizzare l'entropia. 
+
+\begin{equation}
+\Phi[P] = E[P] - \frac{1}{\beta}S[P]
+\end{equation}
+
+dove $E[P] = \sum_j P_j E_j$ è l'energia media e $S[P] = -\sum_j P_j \log P_j$ è l'entropia. 
+
+\vspace{1 cm}
+\section{Relazioni Termodinamiche Fondamentali}
+
+Si dimostrano ora alcune relazioni cruciali che legano le quantità statistiche (funzione di partizione, energia media) alle grandezze termodinamiche (energia libera, entropia).
+
+\subsubsection{Energia Libera e Funzione di Partizione}
+
+L'energia libera di Helmholtz, F, è definita termodinamicamente come $F = U - TS$. In meccanica statistica, si può definire un analogo $F = \langle E \rangle - \frac{1}{\beta} S$. Si dimostra che questa quantità è direttamente legata al logaritmo della funzione di partizione.
+
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+F = -\frac{1}{\beta} \log Z
+\end{equation}
+\end{tcolorbox}
+
+\vspace{0.5 cm}
+\textit{Dimostrazione:}
+Si parte dalla definizione $F = \langle E \rangle - \frac{1}{\beta}S$ e si sostituiscono le espressioni per $\langle E \rangle = \sum_j P_j E_j$ e $S = - \sum_j P_j \log P_j$.
+
+\begin{equation}
+F = \sum_j P_j E_j + \frac{1}{\beta} \sum_j P_j \log P_j
+\end{equation}
+
+Si utilizza l'espressione per la probabilità di Boltzmann, $P_j = Z^{-1} e^{-\beta E_j}$, e quindi $\log P_j = -\beta E_j - \log Z$.
+
+\begin{equation}
+\begin{split}
+F & = \sum_j \frac{e^{-\beta E_j}}{Z} E_j + \frac{1}{\beta} \sum_j \frac{e^{-\beta E_j}}{Z} (-\beta E_j - \log Z) \\
+& = \frac{1}{Z} \sum_j E_j e^{-\beta E_j} - \frac{1}{Z} \sum_j E_j e^{-\beta E_j} - \frac{\log Z}{\beta Z} \sum_j e^{-\beta E_j}
+\end{split}
+\end{equation}
+
+I primi due termini si cancellano. La somma $\sum_j e^{-\beta E_j}$ è per definizione Z.
+
+\begin{equation}
+F = - \frac{\log Z}{\beta Z} \cdot Z = -\frac{1}{\beta} \log Z
+\end{equation}
+
+Questa relazione è fondamentale perché mostra come tutte le proprietà termodinamiche del sistema possano essere derivate dalla funzione di partizione, che a sua volta dipende solo dalle proprietà microscopiche (i livelli energetici $E_j$).
+
+\vspace{1cm}
+
+\subsubsection{Entropia S}
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+S = \beta^2 \frac{\partial F}{\partial \beta}
+\end{equation}
+\end{tcolorbox}
+
+
+\textit{Dimostrazione:} 
+\begin{equation}
+    S[P_{eq}] = \beta^2 \frac{\partial F}{\partial \beta} = -\beta^2 \frac{\partial}{\partial \beta} (\frac{1}{\beta} \log Z) = \log Z - \beta \frac{\partial \log Z}{\partial \beta}
+\end{equation}
+
+
+
+\begin{equation}
+\begin{split}
+    S[P_{eq}] &= \log Z - \beta \frac{1}{Z} (-\int [dc] e^{-\beta H} H)
+  \\ &= \log Z + \beta U \\ &= -\beta F + \beta U = \beta (U-F)  \\ &= \beta T S = S
+\end{split}
+\end{equation}
+
+\vspace{1cm}
+\subsubsection{Energia Interna}
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+U = -\frac{\partial}{\partial \beta} \log Z
+\end{equation}
+\end{tcolorbox}
+
+
+\textit{Dimostrazione:}
+\begin{equation}
+U = E[P_{eq}] = -\frac{\partial}{\partial \beta} \log Z = F + \beta \frac{\partial F}{\partial \beta}
+\end{equation}
+
+
+
+
+\newpage
+\section{Corrispondenza tra Meccanica Statistica e Termodinamica}
+
+L'ultimo passo è stabilire una corrispondenza formale tra il parametro $\beta$ della meccanica statistica e la temperatura termodinamica T, e tra l'entropia statistica e quella termodinamica.
+Dalla termodinamica, il secondo principio stabilisce che per una trasformazione reversibile:
+
+\begin{equation}
+dS_{\text{termo}} = \frac{\delta Q}{T}
+\end{equation}
+
+Utilizzando il primo principio, $\delta Q = dU - \delta L$, si ha:
+
+\begin{equation}
+dS_{\text{termo}} = \frac{1}{T}(dU - \delta L)
+\end{equation}
+
+Mostreremo ora che in meccanica statistica vale una relazione analoga:
+\begin{equation}
+dS_{\text{stat}} = \beta(dU - \delta L)
+\end{equation}
+
+Se ciò è vero, si può identificare $\beta = 1/T$ e $S_{\text{stat}} = S_{\text{termo}}$.
+
+\vspace{0.5 cm}
+\textit{Dimostrazione:}
+
+Per introdurre il concetto di lavoro $\delta L$, si considera che l'Hamiltoniana del sistema dipenda da un parametro esterno $\lambda$, $H = H(\lambda)$. Il lavoro infinitesimo fatto sul sistema quando il parametro cambia da $\lambda$ a $\lambda + d\lambda$ è:
+
+\begin{equation}
+\delta L = \left\langle \frac{\partial H}{\partial \lambda} \right\rangle d\lambda
+\end{equation}
+
+Consideriamo ora una variazione infinitesima dei parametri del sistema, $\beta \to \beta + d\beta$ e $\lambda \to \lambda + d\lambda$. Calcoliamo la variazione corrispondente dell'energia libera $F = - \frac{1}{\beta} \log Z$.
+
+\begin{equation}
+d(\beta F) = d(- \log Z)
+\end{equation}
+
+
+Usando la regola della catena:
+
+\begin{equation}
+d(- \log Z) = \frac{\partial (- \log Z)}{\partial \beta} d\beta + \frac{\partial d(- \log Z)}{\partial \lambda} d\lambda
+\end{equation}
+
+Dalle relazioni precedenti sappiamo che $U=\frac{\partial (- \log Z)}{\partial \beta}$.
+
+Calcoliamo la derivata rispetto a $\lambda$:
+
+\begin{equation}
+\frac{\partial d(- \log Z)}{\partial \lambda}= \frac{1}{Z} \int dc \;  e^{- \beta H} \beta \frac{d H}{d \lambda} = \beta \left\langle \frac{\partial H}{\partial \lambda} \right\rangle
+\end{equation}
+
+Segue:
+\begin{equation}
+d(\beta F) = U d\beta + \beta \left\langle \frac{\partial H}{\partial \lambda} \right\rangle d\lambda = U d\beta + \beta \delta L
+\end{equation}
+
+Ora usiamo la relazione $S = \beta(U-F)$ e ne calcoliamo il differenziale:
+\begin{equation}
+dS = d(\beta U - \beta F) = \beta dU + U d\beta - (U d\beta + \beta \delta L) = \beta (dU - \delta L)
+\end{equation}
+
+
+
+

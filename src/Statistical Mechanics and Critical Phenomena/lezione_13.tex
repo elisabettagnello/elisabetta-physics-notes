@@ -1,0 +1,277 @@
+\chapter{Lezione 13}
+\label{chap:lezione_13}
+
+\begin{flushright}
+\textit{Data: 05/11/2025}
+\end{flushright}
+
+\section{Integrale Gaussiano}
+
+Iniziamo questa lezione completando la derivazione dell'integrale gaussiano $N$-dimensionale, argomento introdotto al termine della lezione precedente. Questo strumento matematico sarà fondamentale per la teoria delle perturbazioni che affronteremo in seguito.
+
+\subsubsection{Integrale Gaussiano 1D}
+
+Ricordiamo brevemente il risultato per l'integrale gaussiano in una dimensione. La forma base è:
+\begin{equation}
+    G = \int_{-\infty}^{+\infty} e^{-x^2} dx = \sqrt{\pi}
+\end{equation}
+Consideriamo la forma più generale, che include un fattore di scala $a > 0$ e un termine lineare $b$:
+\begin{equation}
+    \tilde{G} = \int_{-\infty}^{+\infty} \exp(-a x^2 + b x) dx
+    \label{eq:G_general_1D}
+\end{equation}
+Per risolvere questo integrale, utilizziamo il metodo del \textit{completamento del quadrato} all'esponente:
+\begin{equation}
+    -a x^2 + b x = -a \left( x^2 - \frac{b}{a} x \right) = -a \left( x - \frac{b}{2a} \right)^2 + \frac{b^2}{4a}
+\end{equation}
+Sostituendo nell'integrale \eqref{eq:G_general_1D}, il termine costante $e^{b^2/4a}$ può essere portato fuori:
+\begin{equation}
+    \tilde{G} = \exp\left(\frac{b^2}{4a}\right) \int_{-\infty}^{+\infty} \exp\left[ -a \left( x - \frac{b}{2a} \right)^2 \right] dx
+\end{equation}
+Effettuando il cambio di variabile $u = \sqrt{a}(x - b/2a)$, si ottiene il risultato noto:
+\begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Integrale Gaussiano 1D}]
+\begin{equation}
+    \int_{-\infty}^{+\infty} \exp(-a x^2 + b x) dx = \sqrt{\frac{\pi}{a}} \exp\left(\frac{b^2}{4a}\right)
+    \label{eq:G_1D_solution}
+\end{equation}
+\end{tcolorbox}
+
+\subsection{Integrale N-Dimensionale}
+
+Vogliamo ora risolvere l'estensione a $N$ dimensioni:
+\begin{equation}
+    I[\vec{J}\;] = \int_{-\infty}^{+\infty} dX_1 \cdots \int_{-\infty}^{+\infty} dX_N \exp\left( -\frac{1}{2} \vec{X}^{\;T} A \vec{X} + \vec{J}^{\;T} \vec{X} \right)
+    \label{eq:gaussian_integral_def}
+\end{equation}
+dove:
+\begin{itemize}
+    \item $\vec{X}$ è un vettore colonna di $N$ coordinate $(X_1, \dots, X_N)$.
+    \item $\vec{J}$ è un vettore colonna di $N$ termini "sorgente" $(J_1, \dots, J_N)$.
+    \item $A$ è una matrice $N \times N$ reale e simmetrica.
+\end{itemize}
+
+Poiché la matrice $A$ è reale e simmetrica, essa può essere diagonalizzata tramite una matrice ortogonale $\mathcal{O}$:
+\begin{equation}
+    A = \mathcal{O}^T D \mathcal{O}
+\end{equation}
+dove $D$ è la matrice diagonale contenente gli autovalori $D_{ii}$ e $\mathcal{O}$ è una matrice ortogonale di rotazione tale che $\mathcal{O}^T \mathcal{O} = I$ e $\det(\mathcal{O}) = 1$.
+
+Procediamo con un cambio di variabili, ruotando il sistema di coordinate per allinearlo agli autovettori di $A$:
+\begin{equation}
+    \vec{Y} = \mathcal{O} \vec{X} \quad \implies \quad \vec{X} = \mathcal{O}^T \vec{Y}
+\end{equation}
+
+Analizziamo come si trasformano i termini all'esponente:
+
+\begin{enumerate}
+    \item \textbf{Termine Quadratico:}
+    \begin{equation}
+        \vec{X}^T A \vec{X} = (\vec{Y}^T \mathcal{O}) (\mathcal{O}^T D \mathcal{O}) (\mathcal{O}^T \vec{Y}) = \vec{Y}^T (\mathcal{O} \mathcal{O}^T) D (\mathcal{O} \mathcal{O}^T) \vec{Y} = \sum_{i=1}^N D_{ii} Y_i^2
+    \end{equation}
+    
+    \item \textbf{Termine Lineare:}
+    \begin{equation}
+        \vec{J}^{\;T} \vec{X} = \vec{J}^{\;T} (\mathcal{O}^T \vec{Y}) = (\mathcal{O} \vec{J})^T \vec{Y}
+    \end{equation}
+    Definiamo il vettore sorgente ruotato come $\vec{J}' = \mathcal{O} \vec{J}$. Il termine lineare diventa quindi $\sum_{i=1}^N J'_i Y_i$.
+\end{enumerate}
+
+Poiché la trasformazione è una rotazione rigida ($\det \mathcal{O} = 1$), l'elemento di volume rimane invariato: $d^N X = d^N Y$.
+
+
+\noindent Sostituendo le nuove variabili nell'integrale originale, questo si \textbf{fattorizza} nel prodotto di $N$ integrali gaussiani indipendenti:
+\begin{equation}
+    I[\vec{J} \;] = \prod_{i=1}^N \left[ \int_{-\infty}^{+\infty} dY_i \exp\left( -\frac{1}{2} D_{ii} Y_i^2 + J'_i Y_i \right) \right]
+\end{equation}
+
+Utilizzando il risultato 1D (eq. \ref{eq:G_1D_solution}) con $a = D_{ii}/2$ e $b = J'_i$, otteniamo per ogni termine:
+\begin{equation}
+    \sqrt{\frac{\pi}{D_{ii}/2}} \exp\left( \frac{(J'_i)^2}{4(D_{ii}/2)} \right) = \sqrt{\frac{2\pi}{D_{ii}}} \exp\left( \frac{(J'_i)^2}{2 D_{ii}} \right)
+\end{equation}
+
+Il prodotto totale è quindi:
+\begin{equation}
+    I[\vec{J}\; ] = \left( \prod_{i=1}^N \sqrt{\frac{2\pi}{D_{ii}}} \right) \exp\left( \sum_{i=1}^N \frac{(J'_i)^2}{2 D_{ii}} \right)
+\end{equation}
+
+Ora dobbiamo riscrivere questo risultato in termini delle matrici originali $A$ e $\vec{J}$.
+\begin{itemize}
+    \item \textbf{Prefattore:} Il prodotto degli autovalori è il determinante: 
+    
+    \begin{equation}
+        \prod D_{ii} = \det(D) = \det(A)
+    \end{equation}
+    
+    Quindi il prefattore diventa $\sqrt{\frac{(2\pi)^N}{\det A}}$.
+    \item \textbf{Esponente:} La somma può essere scritta in forma matriciale come $\frac{1}{2} \vec{J}'^T D^{-1} \vec{J}'$. Sostituendo $\vec{J}' = \mathcal{O}\vec{J}$, otteniamo:
+    \begin{equation}
+        \frac{1}{2} (\mathcal{O}\vec{J})^T D^{-1} (\mathcal{O}\vec{J}) = \frac{1}{2} \vec{J}^{\;T} (\mathcal{O}^T D^{-1} \mathcal{O}) \vec{J}
+    \end{equation}
+    Riconosciamo che $\mathcal{O}^T D^{-1} \mathcal{O} = A^{-1}$ (l'inverso della matrice originale).
+\end{itemize}
+
+Otteniamo così la formula fondamentale per l'integrazione funzionale gaussiana:
+
+\begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Integrale Gaussiano N-Dimensionale}]
+\begin{equation}
+    \int d^N X \exp\left( -\frac{1}{2} \vec{X}^{\;T} A \vec{X} + \vec{J}^{\;T} \vec{X} \right) = \sqrt{\frac{(2\pi)^N}{\det(A)}} \exp\left( \frac{1}{2} \vec{J}^{\;T} A^{-1} \vec{J} \right)
+    \label{eq:gaussian_integral_result}
+\end{equation}
+\end{tcolorbox}
+
+\newpage
+\section{Espansione a Bassa Temperatura del Modello di Ising}
+
+Abbandoniamo momentaneamente gli integrali per introdurre un nuovo metodo di analisi: l'\textbf{espansione a bassa temperatura}.
+L'idea è studiare il comportamento del sistema vicino allo stato fondamentale ($T=0$), dove regna l'ordine perfetto, trattando la temperatura finita come una piccola perturbazione.
+
+\subsubsection{Setup del Modello}
+
+Consideriamo il modello di Ising definito su un \textbf{Reticolo Cubico Semplice} in $D$ dimensioni, composto da $N=L^D$ siti. Assumiamo Condizioni al Bordo Periodiche (PBC).
+Lo stato fondamentale è quello in cui tutti gli spin sono allineati. Senza perdere di generalità, assumiamo $\sigma_i = +1$ ovunque.
+
+L'energia dello stato fondamentale (con $K=0$ spin flippati) è:
+\begin{equation}
+    E_0 = - J \times (\text{Numero totale di link}) = -DNJ
+    \label{eq:E0}
+\end{equation}
+Per semplicità, nel seguito porremo $J=1$, quindi $E_0 = -DN$.
+
+\subsection{Calcolo delle Eccitazioni (K=0, 1, 2)}
+
+Un'espansione a bassa temperatura è un'espansione in termini di "eccitazioni" sopra lo stato fondamentale. Un'eccitazione corrisponde a un certo numero $K$ di spin invertiti.
+
+\subsubsection{K = 0 (Stato Fondamentale)}
+\begin{itemize}
+    \item \textbf{Configurazioni:} 1 (tutti spin $+1$).
+    \item \textbf{Energia:} $E_0 = -DN$.
+\end{itemize}
+
+\subsubsection{K = 1 (Uno spin invertito)}
+\begin{itemize}
+    \item \textbf{Configurazioni:} Ci sono $N$ modi possibili di scegliere quale spin invertire.
+    \item \textbf{Energia:} Invertendo uno spin $\sigma_i$ da $+1$ a $-1$, modifichiamo l'interazione con i suoi $2D$ primi vicini.
+    \begin{itemize}
+        \item Ogni link collegato a $\sigma_i$ passa da un'energia $-1$ (allineati) a $+1$ (disallineati). Il costo energetico per link è $\Delta E_{\text{link}} = 2$.
+    \item La variazione totale di energia è $\Delta E_1 = (2D \text{ link}) \times 2 = 4D$.
+    \item Energia totale: $E_1 = E_0 + 4D$.
+    \end{itemize}
+    
+\end{itemize}
+
+\newpage
+
+\subsubsection{K = 2 (Due spin invertiti)}
+Il numero totale di modi per scegliere due spin è dato dal coefficiente binomiale $\binom{N}{2}~=~\frac{N(N-1)}{2}$
+Dobbiamo distinguere due casi topologicamente diversi:
+
+\vspace{0.3cm}
+\noindent \textbf{Caso 1: Spin non adiacenti (Non Primi Vicini)}
+
+Se i due spin invertiti sono lontani tra loro, non interagiscono direttamente.
+\begin{itemize}
+    \item \textbf{Configurazioni:} $\binom{N}{2} - (\text{coppie adiacenti}) = \frac{N(N-1)}{2} - DN$.
+    \item \textbf{Energia:} Poiché sono isolati, il costo energetico è semplicemente la somma di due eccitazioni singole.
+    \begin{itemize}
+       \item $\Delta E_{2, non-adj} = 4D + 4D = 8D$.
+    \item Energia totale: $E_{2, non-adj} = E_0 + 8D$.
+    \end{itemize}
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent \textbf{Caso 2: Spin adiacenti (Primi Vicini)}
+
+I due spin invertiti si trovano uno accanto all'altro.
+\begin{itemize}
+    \item \textbf{Configurazioni:} Il numero di coppie di primi vicini corrisponde al numero totale di link nel reticolo, ovvero $DN$.
+    \item \textbf{Energia:} Se trattassimo gli spin come isolati, il costo sarebbe $8D$. Tuttavia, il link che connette i due spin invertiti ora collega due spin $-1$ e $-1$. Questo link è \textit{soddisfatto} (energia $-1$), non rotto. Rispetto al calcolo "isolato" (dove avremmo pagato per rompere quel link sia dal punto di vista del primo spin che del secondo), "risparmiamo" energia.
+    \begin{itemize}
+      \item Il costo energetico effettivo è: $\Delta E_{2, adj} = 8D - 4$.
+    \item Energia totale: $E_{2, adj} = E_0 + 8D - 4$.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Espansione della Funzione di Partizione}
+
+La funzione di partizione è $Z = \sum_{\{\sigma\}} e^{-\beta H(\sigma)}$. Raggruppiamo la somma in base al numero $K$ di spin invertiti:
+\begin{equation}
+    Z = Z_0 + Z_1 + Z_2 + \dots
+\end{equation}
+Sostituendo i termini calcolati:
+\begin{align}
+    Z_0 &= 1 \cdot e^{-\beta E_0} \\
+    Z_1 &= N \cdot e^{-\beta (E_0 + 4D)} = N e^{-\beta E_0} e^{-4\beta D} \\
+    Z_2 &= \underbrace{DN e^{-\beta (E_0 + 8D - 4)}}_{\text{Adiacenti}} + \underbrace{\left( \frac{N^2 - N - 2DN}{2} \right) e^{-\beta (E_0 + 8D)}}_{\text{Non Adiacenti}}
+\end{align}
+
+Raccogliamo $e^{-\beta E_0}$:
+\begin{equation}
+    Z = e^{-\beta E_0} \left[ 1 + N e^{-4\beta D} + DN e^{-8\beta D} e^{4\beta} + \left(\frac{N^2}{2} - \frac{N}{2} - DN\right) e^{-8\beta D} + \dots \right]
+\end{equation}
+
+Introduciamo il parametro di espansione piccolo per basse temperature:
+\begin{equation}
+    t \equiv e^{-4\beta}
+\end{equation}
+Possiamo riscrivere i termini esponenziali usando $t$:
+\begin{itemize}
+    \item $e^{-4\beta D} = t^D$
+    \item $e^{-8\beta D} = t^{2D}$
+    \item $e^{-8\beta D} e^{4\beta} = t^{2D} t^{-1} = t^{2D-1}$
+\end{itemize}
+
+L'espansione di $Z$ diventa:
+\begin{equation}
+    Z = e^{-\beta E_0} \left[ 1 + \underbrace{N t^D}_{C_1} + \underbrace{DN t^{2D-1} + \left(\frac{N^2}{2} - \frac{N}{2} - DN\right) t^{2D}}_{C_2} + \dots \right]
+    \label{eq:Z_in_t}
+\end{equation}
+
+\subsection{Densità di Energia Libera}
+
+La densità di energia libera è definita come $f = -\frac{1}{\beta N} \log Z$.
+\begin{align}
+    f &= -\frac{1}{\beta N} \left[ \log(e^{-\beta E_0}) + \log(1 + C_1 + C_2 + \dots) \right] \\
+    &= -\frac{1}{\beta N} \left[ -\beta E_0 + \log(1 + C_1 + C_2 + \dots) \right] \\
+    &= -D - \frac{1}{\beta N} \log(1 + C_1 + C_2 + \dots)
+\end{align}
+(Ricordando che $E_0 = -DN$).
+
+Per calcolare il logaritmo, utilizziamo l'espansione di Taylor $\log(1+x) \approx x - x^2/2$, dove $x = C_1 + C_2$. Dobbiamo mantenere i termini fino all'ordine $t^{2D}$.
+Notiamo che $C_1 \sim O(t^D)$, quindi $C_1^2 \sim O(t^{2D})$.
+\begin{equation}
+    \log(1 + C_1 + C_2) \approx C_1 + C_2 - \frac{1}{2} C_1^2
+\end{equation}
+
+Sostituiamo le espressioni di $C_1$ e $C_2$:
+\begin{itemize}
+    \item $C_1 = N t^D$
+    \item $C_2 = DN t^{2D-1} + \frac{N^2}{2} t^{2D} - \frac{N}{2} t^{2D} - DN t^{2D}$
+    \item $-\frac{1}{2} C_1^2 = -\frac{1}{2} (N t^D)^2 = -\frac{N^2}{2} t^{2D}$
+\end{itemize}
+
+Calcoliamo la somma all'interno del logaritmo:
+\begin{equation}
+    \text{Somma} = N t^D + DN t^{2D-1} + \textcolor{red}{\frac{N^2}{2} t^{2D}} - \frac{N}{2} t^{2D} - DN t^{2D} \textcolor{red}{- \frac{N^2}{2} t^{2D}}
+\end{equation}
+
+\begin{tcolorbox}[colback=colorA!10, colframe=colorB!60!colorA, title=\textbf{Cancellazione dei Termini Non Estensivi}]
+È cruciale notare che i termini proporzionali a $N^2$ (termini non estensivi) si cancellano esattamente:
+$$ \frac{N^2}{2} t^{2D} - \frac{N^2}{2} t^{2D} = 0 $$
+Questa cancellazione garantisce che l'energia libera sia una quantità estensiva (o che la densità $f$ sia intensiva e non dipenda da $N$). Questo risultato è una manifestazione del \textit{Linked Cluster Theorem}.
+\end{tcolorbox}
+
+Rimangono solo i termini proporzionali a $N$:
+\begin{equation}
+    \text{Somma} = N \left( t^D + D t^{2D-1} - \frac{1}{2} t^{2D} - D t^{2D} \right)
+\end{equation}
+
+Sostituendo nella formula di $f$ e dividendo per $N$, otteniamo il risultato finale per la densità di energia libera all'ordine $K=2$:
+
+\begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Energia Libera a Bassa Temperatura (K=2)}]
+\begin{equation}
+    f_{K=2} = -D - \frac{1}{\beta} \left[ t^D - \frac{1}{2} t^{2D} + D(t^{2D-1} - t^{2D}) \right]
+    \label{eq:f_low_T}
+\end{equation}
+dove $t = e^{-4\beta}$.
+\end{tcolorbox}
+

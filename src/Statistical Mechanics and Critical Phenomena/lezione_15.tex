@@ -1,0 +1,254 @@
+\chapter{Lezione 15}
+\label{chap:lezione_15}
+
+\begin{flushright}
+\textit{Data: 12/11/2025}
+\end{flushright}
+
+\section{Funzioni di Correlazione nel Modello Gaussiano}
+
+Abbiamo visto che nel Modello Gaussiano  la correlazione a due punti è data dall'inverso della matrice di interazione:
+\begin{equation}
+    \langle \sigma_i \sigma_k \rangle = A_{ik}^{-1}
+\end{equation}
+Tuttavia, se si conoscono le correlazioni a due corpi, in questo modello si conosce tutto.
+Infatti, una funzione di correlazione a $2n$ punti può essere espressa come somma di prodotti delle funzioni a due punti (Teorema di Wick). Ad esempio, per la funzione a 4 punti:
+\begin{equation}
+    \langle \sigma_i \sigma_j \sigma_k \sigma_m \rangle = A_{ij}^{-1} A_{km}^{-1} + A_{ik}^{-1} A_{jm}^{-1} + A_{im}^{-1} A_{jk}^{-1}
+\end{equation}
+
+
+\subsubsection{Rappresentazione Diagrammatica}
+
+Possiamo visualizzare questi termini usando dei diagrammi (precursori dei diagrammi di Feynman).
+Se rappresentiamo $\langle \sigma_i \sigma_k \rangle$ con una linea che unisce $i$ e $k$, il termine a 4 punti è rappresentato da coppie di linee disgiunte (es. una linea $i-j$ e una linea $k-m$).
+È fondamentale notare che le linee non si toccano, non c'è interazione o vertice dove si incrociano; sono semplicemente prodotti di propagatori indipendenti.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{pics/13.png}
+    \caption{Rappresentazione Diagrammatica.}
+\end{figure}
+
+In questo modello, l'unico diagramma "connesso" è il propagatore stesso (la funzione a due punti). Tutte le funzioni di ordine superiore sono date da diagrammi "disconnessi".
+
+\section{Funzioni di Correlazione Connesse}
+
+Per trattare teorie interagenti (non gaussiane), è necessario definire le \textbf{funzioni di correlazione connesse} in modo ricorsivo, sottraendo le parti che si fattorizzano.
+Definiamo:
+\begin{align}
+    \langle \sigma_i \rangle &\equiv \langle \sigma_i \rangle^c \\
+    \langle \sigma_i \sigma_j \rangle &= \langle \sigma_i \sigma_j \rangle^c + \langle \sigma_i \rangle^c \langle \sigma_j \rangle^c \\
+    \langle \sigma_i \sigma_j \sigma_k \rangle &= \langle \sigma_i \sigma_j \sigma_k \rangle^c + \langle \sigma_i \rangle^c \langle \sigma_j \sigma_k \rangle^c + 2 \text{ perm} + \langle \sigma_i \rangle^c \langle \sigma_j \rangle^c \langle \sigma_k \rangle^c
+\end{align}
+Da cui possiamo invertire per trovare la parte connessa a due punti:
+\begin{equation}
+    \langle \sigma_i \sigma_j \rangle^c = \langle \sigma_i \sigma_j \rangle - \langle \sigma_i \rangle^c \langle \sigma_j \rangle^c
+\end{equation}
+
+\subsubsection{Importanza delle Funzioni Connesse}
+Le funzioni connesse sono cruciali per tre motivi:
+\begin{enumerate}
+    \item \textbf{Proprietà di Clustering:} Soddisfano la proprietà di decadimento a grandi distanze. Ad esempio, nella fase ordinata dove $\langle \sigma_i \sigma_j \rangle \to m^2$ per distanze grandi, la parte connessa $\langle \sigma_i \sigma_j \rangle^c \to 0$.
+    \item \textbf{Diagrammi Connessi:} Negli approcci perturbativi, corrispondono esattamente alla somma dei soli diagrammi topologicamente connessi.
+    \item \textbf{Densità di Energia Libera:} Sono legate alle derivate dell'energia libera rispetto al campo esterno.
+    \begin{equation}
+        \langle \prod_{a=1}^N \sigma_{i_a} \rangle^c = \beta^{-N} \prod_{a=1}^N \frac{\partial}{\partial h_{i_a}} \log Z[h] = -\beta^{-(N-1)} \prod_a \frac{\partial}{\partial h_{i_a}} F[h]
+    \end{equation}
+   
+\end{enumerate}
+
+
+\subsubsection{Riepilogo: Modello Gaussiano}
+    \begin{itemize}
+        \item È semplice, risolubile e possiede esponenti di campo medio.
+        \item È esattamente risolubile per alte temperature, $\beta < \beta_c$.
+        \item Ha una transizione a $\beta_c = 1/(2D)$.
+        \item Il modello è mal definito per $\beta > \beta_c$ (bassa T), poiché la matrice di interazione  A non è più definita positiva.
+        \item \textbf{Obiettivo:} Il GM è il nostro punto di partenza per sviluppare una teoria delle perturbazioni (come il modello di Landau-Ginzburg) per teorie più realistiche e \textit{interagenti}. Useremo il Gruppo di Rinormalizzazione (RG) per calcolare gli esponenti critici per queste teorie interagenti.
+    \end{itemize}
+
+
+
+\section{Espansione ad Alta Temperatura del GM}
+\begin{tcolorbox}[colback=colorE!10, colframe=colorE!50!colorD, boxrule=1pt]
+\textbf{Nota:} Il seguente calcolo non è parte del curriculum standard richiesto per l'esame, ma è riservato a chi aspira alla lode.
+\end{tcolorbox}
+
+\noindent Analizziamo ora l'espansione ad alta temperatura, un argomento utile per comprendere la genesi delle correlazioni e introdurre concetti diagrammatici.
+A temperatura infinita ($\beta = 0$), il sistema è disordinato e non ci sono correlazioni: gli integrali si fattorizzano completamente.
+
+Consideriamo la funzione di correlazione a due punti:
+\begin{equation}
+ \langle \sigma_a \sigma_b \rangle = \frac{\int (\prod d\sigma_i) e^{-\sum \sigma_i^2/2} e^{\beta \sum J_{ik} \sigma_i \sigma_k} \sigma_a \sigma_b}{\int (\prod d\sigma_i) e^{-\sum \sigma_i^2/2} e^{\beta \sum J_{ik} \sigma_i \sigma_k}}
+\end{equation}
+Per $\beta$ piccolo, espandiamo l'esponenziale dell'interazione (Termine di Hopping) in serie di potenze:
+\begin{equation}
+ e^{\beta \sum J_{ik} \sigma_i \sigma_k} = 1 + \frac{\beta}{2} \sum_{ ik } J_{ik} \sigma_i \sigma_k + \frac{\beta^2}{2} \left( \frac{1}{2}\sum_{ ik } J_{ik} \sigma_i \sigma_k \right)^2 + \dots
+\end{equation}
+
+\noindent Integriamo questa espansione termine per termine rispetto alla misura Gaussiana 
+\begin{equation}
+   d\mu = (\prod_i e^{-\sigma_i^2/2} d\sigma_i) 
+\end{equation}
+
+Vale la regola fondamentale:
+\begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Regola di Integrazione}]
+L'integrale su $d\mu$ di qualsiasi termine contenente una potenza \textit{dispari} di qualsiasi $\sigma_i$ è zero. Un contributo non nullo si verifica solo quando tutte le variabili $\sigma$ nell'integrando sono "accoppiate" in potenze \textbf{pari}.
+\end{tcolorbox}
+
+\subsection{Analisi dei Termini}
+
+\subsubsection{Il Denominatore (Funzione di Partizione $Z$)}
+\begin{align*}
+    Z &= \int d\mu \left[ 1 + \beta \sum_{\langle ik \rangle} J_{ik} \sigma_i \sigma_k + \frac{\beta^2}{2!} \sum_{\langle ik \rangle} \sum_{\langle i'k' \rangle} J_{ik} J_{i'k'} \sigma_i \sigma_k \sigma_{i'} \sigma_{k'} + \dots \right] \\
+    Z &= Z_0 \left[ 1 + 0 + \frac{\beta^2}{2!} \sum_{\langle ik \rangle} \sum_{\langle i'k' \rangle} J_{ik} J_{i'k'} \langle \sigma_i \sigma_k \sigma_{i'} \sigma_{k'} \rangle_0 + \dots \right]
+\end{align*}
+dove $\langle \dots \rangle_0$ è l'integrale con la misura $H_0$ (cioè, il teorema di Wick).
+\begin{enumerate}
+    \item Il termine $O(\beta)$ è zero (potenze dispari).
+    \item Il termine $O(\beta^2)$ è non nullo solo se le quattro variabili $\sigma$ sono accoppiate. Questo accade quando i due legami (link) $\{i,k\}$ e $\{i',k'\}$ sono gli stessi.
+    Questo fornisce due possibilità:
+    
+        - $i=i'$ e $k=k'$
+        
+        - $i=k'$ e $k=i'$
+        
+    Questi due termini cancellano il fattore $1/2!$. Questo genera un diagramma a "doppia linea".
+    \item A $O(\beta^4)$, appare un nuovo tipo di diagramma non nullo: un \textbf{loop} o \textbf{Plaquette}, dove quattro legami diversi formano un percorso chiuso (es. $J_{ij} J_{jk} J_{kl} J_{li}$).
+\end{enumerate}
+Quindi, il denominatore è $Z = Z_0 (1 + O(\beta^2))$.
+
+\subsubsection{Il Numeratore}
+Vogliamo trovare il contributo non nullo di ordine più basso per $\langle \sigma_a \sigma_b \rangle$.
+\begin{align*}
+    \text{Num.} &= \int d\mu \, \sigma_a \sigma_b \left[ 1 + \beta \sum_{\langle ik \rangle} J_{ik} \sigma_i \sigma_k + \dots \right] \\
+    &= \int d\mu \, \sigma_a \sigma_b + \beta \sum_{\langle ik \rangle} J_{ik} \int d\mu \, \sigma_a \sigma_b \sigma_i \sigma_k + \dots
+\end{align*}
+\begin{enumerate}
+    \item Il termine $O(\beta^0)$ $\int d\mu \, \sigma_a \sigma_b = \langle \sigma_a \sigma_b \rangle_0 = \delta_{ab}$. Questo è zero se $a \neq b$.
+    \item Il termine $O(\beta^1)$ coinvolge $\langle \sigma_a \sigma_b \sigma_i \sigma_k \rangle_0$. Questo è non nullo se gli indici sono accoppiati. Gli accoppiamenti non nulli sono:
+    
+        - $a=i, b=k \implies \langle \sigma_i^2 \sigma_k^2 \rangle_0 = 1$
+        
+        - $a=k, b=i \implies \langle \sigma_k^2 \sigma_i^2 \rangle_0 = 1$
+    
+    L'integrale forza la somma $\sum_{\langle ik \rangle}$ a selezionare solo i termini dove $\{i,k\} = \{a,b\}$.
+\end{enumerate}
+
+    \begin{equation}
+        \text{Num.} = \beta (J_{ab} \cdot \langle \sigma_a^2 \sigma_b^2 \rangle_0 + J_{ba} \cdot \langle \sigma_a^2 \sigma_b^2 \rangle_0) = \beta (J_{ab} + J_{ba})
+    \end{equation}
+    
+\noindent  Se $a,b$ sono vicini (quindi $J_{ab} \neq 0$), questo termine è $\approx \beta J_{ab}$.
+
+\noindent Il termine non nullo di ordine più basso per $\langle \sigma_a \sigma_b \rangle$ con $a \neq b$ è $O(\beta^1)$, corrispondente a un singolo legame $J_{ab}$. Per un percorso di 3 legami (es. $a \to 1 \to 2 \to b$), il contributo di ordine più basso sarebbe $O(\beta^3)$.
+
+
+
+\section{Espansione ad Alta T nel Modello di Ising}
+
+Passiamo ora al Modello di Ising, dove $\sigma_i = \pm 1$. Qui la matematica cambia a causa dell'\textbf{Algebra Booleana}:
+\begin{equation}
+ \sigma_i^2 = 1, \quad \sigma_i^3 = \sigma_i, \quad \dots
+\end{equation}
+Segue che qualsiasi polinomio in $\sigma$ è al massimo di grado 1 (lineare): 
+\begin{equation}
+    f(\sigma) = C_0 + C_1 \sigma
+\end{equation}
+
+\subsection{Character Expansion}
+Sfruttando il fatto che $\sigma_i \sigma_j$ vale solo $\pm 1$, possiamo riscrivere l'esponenziale di Boltzmann in forma esatta (non è un'approssimazione per piccoli $\beta$, ma un'identità algebrica).
+Il trucco centrale è riscrivere il fattore di Boltzmann per un singolo legame: $e^{\beta J \sigma_i \sigma_j}$ deve essere anch'esso un polinomio lineare della forma $A + B(\sigma_i \sigma_j)$.
+Possiamo risolvere per $A$ e $B$ controllando i due possibili valori di $\sigma_i \sigma_j$:
+
+\begin{itemize}
+    \item \textbf{Caso 1:} $\sigma_i \sigma_j = +1 \implies A + B = e^{\beta J}$
+    \item \textbf{Caso 2:} $\sigma_i \sigma_j = -1 \implies A - B = e^{-\beta J}$
+\end{itemize}
+Risolvendo il sistema otteniamo:
+$A = \frac{e^{\beta J} + e^{-\beta J}}{2} = \cosh(\beta J)$
+$B = \frac{e^{\beta J} - e^{-\beta J}}{2} = \sinh(\beta J)$
+
+Questo fornisce l'identità esatta:
+\begin{equation}
+    e^{\beta J \sigma_i \sigma_j} = \cosh(\beta J) + \sinh(\beta J) \sigma_i \sigma_j
+\end{equation}
+
+\noindent Questa relazione è comunemente espressa come:
+\begin{equation}
+ e^{\beta \sigma_i \sigma_j} = c (1 + t \sigma_i \sigma_j)
+ \label{f: char}
+\end{equation}
+dove definiamo i parametri fondamentali:
+\begin{align*}
+    c &= \cosh(\beta) \\
+    s &= \sinh(\beta) \\
+    t &= \tanh(\beta)
+\end{align*}
+
+La \ref{f: char} è un'\textbf{espansione dei caratteri}. Stiamo espandendo in $t = \tanh(\beta)$, che è piccolo ad alta T (piccolo $\beta$).
+
+\subsection{Funzione di Partizione e Loop}
+
+Ora scriviamo $Z$ usando questa identità per tutti i legami $\langle ij \rangle$ sul reticolo:
+\begin{align}
+    Z_{\text{Ising}} &= \sum_{\{\sigma = \pm 1\}} \prod_{\langle ij \rangle} e^{\beta J \sigma_i \sigma_j} \\
+    &= \sum_{\{\sigma\}} \prod_{\langle ij \rangle} \left[ c (1 + t \sigma_i \sigma_j) \right] \\
+    &= c^{N_L} \sum_{\{\sigma\}} \prod_{\langle ij \rangle} (1 + t \sigma_i \sigma_j) \label{eq:z_expand}
+\end{align}
+dove $N_L$ è il numero totale di legami sul reticolo.
+
+Espandendo il prodotto nell'Eq. \ref{eq:z_expand}, otteniamo una somma di termini con potenze crescenti di $t$:
+\begin{equation}
+    \prod_{\langle ij \rangle} (1 + t \sigma_i \sigma_j) = 1 + \sum_{\langle ij \rangle} t (\sigma_i \sigma_j) + \sum_{\langle ij \rangle \neq \langle kl \rangle} t^2 (\sigma_i \sigma_j)(\sigma_k \sigma_l) + \dots
+\end{equation}
+
+\subsubsection*{Le Regole della Somma $\sum_{\{\sigma\}}$}
+
+Per valutare quali termini sopravvivono, usiamo le proprietà della traccia sugli spin $\sigma_k~\in~\{-1, +1\}$:
+\begin{itemize}
+    \item $\sum_{\sigma_k} 1 = 2$;
+    \item $\sum_{\sigma_k} \sigma_k = 0$ (poiché $1 + (-1) = 0$);
+    \item $\sum_{\sigma_k} \sigma_k^n = 0$ se $n$ è dispari, mentre vale $2$ se $n$ è pari.
+\end{itemize}
+
+\noindent \textbf{Criterio di Sopravvivenza:} Un termine nell'espansione sopravvive alla somma su $\{\sigma\}$ solo se \textit{tutti} gli spin coinvolti in quel termine appaiono con una potenza pari (es. $\sigma_k^2, \sigma_k^4$). Se anche un solo spin appare con potenza dispari, la somma su quello spin azzera l'intero termine. \hfill \\
+
+\noindent Analizziamo i contributi in base all'ordine di $t$ (numero di legami):
+
+\begin{description}
+    \item[Ordine $O(t^0)$:] Il termine costante \hfill \\
+    Corrisponde al grafico vuoto (nessun legame). Nessuno spin è presente ($\sigma^0$). La somma su tutti gli $N$ spin fornisce semplicemente il fattore $2^N$.
+    
+    \item[Ordine $O(t^1)$:] Un singolo legame \hfill \\
+    Il termine è $t \sigma_i \sigma_j$. Sia $\sigma_i$ che $\sigma_j$ appaiono una volta (potenza dispari). La somma è~$0$.
+    
+    \item[Ordine $O(t^2)$:] Due legami distinti \hfill \\
+    Consideriamo $t^2 (\sigma_i \sigma_j)(\sigma_k \sigma_l)$. Tutti e quattro gli spin appaiono alla prima potenza. La somma è $0$.
+    
+    \item[Ordine $O(t^3)$:] Cammino aperto \hfill \\
+    Consideriamo una catena di 3 legami: $t^3 (\sigma_1 \sigma_2)(\sigma_2 \sigma_3)(\sigma_3 \sigma_4)$. 
+    Gli spin interni sono al quadrato ($\sigma_2^2, \sigma_3^2$), ma gli estremi $\sigma_1$ e $\sigma_4$ sono dispari. Il termine svanisce.
+    
+    \item[Ordine $O(t^4)$:] Il primo contributo non banale 
+    Qui dobbiamo distinguere due casi geometrici:
+    \begin{itemize}
+        \item Cammini aperti: Svaniscono tutti perchè hanno estremi dispari.
+        \item \textbf{Loop Chiuso (Placchetta):} Un quadrato formato dai siti 1, 2, 3, 4.
+        Il termine è:
+        \[
+            t^4 (\sigma_1 \sigma_2)(\sigma_2 \sigma_3)(\sigma_3 \sigma_4)(\sigma_4 \sigma_1)
+        \]
+        Raggruppando gli spin, otteniamo:
+        \[
+            t^4 (\sigma_1^2) (\sigma_2^2) (\sigma_3^2) (\sigma_4^2) = t^4 (1)(1)(1)(1) = t^4
+        \]
+        Poiché non ci sono spin "spaiati", questo termine sopravvive. Sommando su tutte le configurazioni di spin otteniamo $t^4 \cdot 2^N$.
+    \end{itemize}
+\end{description}
+
+\noindent In conclusione, la funzione di partizione è una somma su tutte le possibili configurazioni a \textbf{loop chiusi} (poligoni) sul reticolo:
+\begin{equation}
+    Z_{\text{Ising}} = c^{N_L} 2^N \left( 1 + N_{\text{sq}} t^4 + N_{\text{rect}} t^6 + \dots \right)
+\end{equation}
+dove $N_{\text{sq}}$ è il numero di quadrati elementari (placchette) e $N_{\text{rect}}$ è il numero di rettangoli $2\times1$.
