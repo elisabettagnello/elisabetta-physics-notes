@@ -1,0 +1,40 @@
+name: Compile LaTeX and Build Library
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del codice
+        uses: actions/checkout@v3
+
+      - name: Compila i file LaTeX
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: src/*/main.tex
+          # Questo permette di compilare tutti i main.tex nelle sottocartelle
+          glob_root_file: true
+          # Latexmk gestisce in automatico bibtex, immagini e riferimenti
+          args: -pdf -file-line-error -interaction=nonstopmode
+
+      - name: Sposta i PDF e rinomina
+        run: |
+          mkdir -p public/pdfs
+          # Trova tutti i PDF generati e spostali
+          find src -name "main.pdf" | while read file; do
+              folder=$(basename $(dirname "$file"))
+              mv "$file" "public/pdfs/${folder}.pdf"
+          done
+
+      - name: Genera l'interfaccia Libreria (HTML)
+        run: |
+          python3 scripts/generate_library.py
+
+      - name: Pubblica su GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
