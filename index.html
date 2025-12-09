@@ -15,7 +15,7 @@
             --bg-deep: #050505;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --card-bg: rgba(255, 255, 255, 0.03); /* Più trasparente per far vedere il gradiente */
+            --card-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
         }
 
@@ -30,20 +30,16 @@
             overflow-x: hidden;
         }
 
-        /* --- NUOVO SFONDO "AURORA FLUIDA" --- */
+        /* --- SFONDO "AURORA FLUIDA" --- */
         #gradient-canvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -1;
-            /* Questo è il trucco: una sfocatura estrema che fonde le forme in un gradiente unico */
-            filter: blur(80px) saturate(1.2); 
-            opacity: 0.8;
-            transform: scale(1.2); /* Per evitare bordi sfocati bianchi */
+            /* Sfocatura estrema per fondere i colori */
+            filter: blur(80px) saturate(1.4); 
+            opacity: 0.75;
+            transform: scale(1.2);
         }
-        /* --- FINE SFONDO --- */
 
         .container {
             max-width: 1100px; margin: 0 auto; padding: 0 20px;
@@ -66,31 +62,49 @@
             font-size: 3rem; font-weight: 700;
             background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 25px; letter-spacing: -0.02em; line-height: 1.1;
+            margin-bottom: 35px; letter-spacing: -0.02em; line-height: 1.1;
             filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.3));
         }
 
+        /* --- NUOVO STILE PER IL BOX RUOLI UNIFICATO --- */
         .role-container {
-            display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; align-items: center;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
         }
 
-        .role-item {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            font-size: 1.15rem; color: #cbd5e1; font-weight: 400;
+        .combined-role-box {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Spazio tra le righe */
             background: rgba(255,255,255,0.03);
-            padding: 8px 24px; border-radius: 30px;
+            padding: 25px 35px;
+            border-radius: 24px;
             border: 1px solid var(--glass-border);
-            backdrop-filter: blur(4px);
-            /* Aggiunta transizione per effetto hover sottile */
-            transition: background 0.3s ease;
+            backdrop-filter: blur(6px);
+            transition: all 0.3s ease;
+            max-width: fit-content;
+        }
+
+        .combined-role-box:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .role-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            font-weight: 400;
+            text-align: left;
         }
         
-        .role-item:hover {
-            background: rgba(255,255,255,0.07);
-        }
-        
-        .role-sub { color: #94a3b8; font-size: 1.1rem; }
-        .role-icon { width: 20px; height: 20px; color: var(--primary-glow); }
+        .role-icon { width: 22px; height: 22px; color: var(--primary-glow); flex-shrink: 0; }
+        /* ----------------------------------------- */
+
 
         .social-links { 
             display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; 
@@ -183,7 +197,8 @@
 
         @media (max-width: 600px) {
             h1 { font-size: 2.2rem; }
-            .role-item { font-size: 1rem; padding: 6px 15px; }
+            .combined-role-box { padding: 20px; width: 100%; }
+            .role-row { font-size: 1rem; }
         }
     </style>
 </head>
@@ -198,14 +213,15 @@
             <h1>Elisabetta Agnello's Physics Notes Library</h1>
             
             <div class="role-container">
-                <div class="role-item">
-                    <svg class="role-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/></svg>
-                    <span>M.Sc. Student in Statistical Physics & Complex Systems @ Sapienza</span>
-                </div>
-                
-                <div class="role-item">
-                    <svg class="role-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg>
-                    <span>Co-Founder @ Sheep</span>
+                <div class="combined-role-box">
+                    <div class="role-row">
+                        <svg class="role-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/></svg>
+                        <span>M.Sc. Student in Statistical Physics & Complex Systems @ Sapienza</span>
+                    </div>
+                    <div class="role-row">
+                        <svg class="role-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg>
+                        <span>Co-Founder @ Sheep</span>
+                    </div>
                 </div>
             </div>
 
@@ -258,10 +274,8 @@
 
     <script>
         /**
-         * FLUID MESH GRADIENT
-         * Genera forme colorate giganti che si muovono lentamente (moto browniano)
-         * e reagiscono alla posizione del mouse come se fosse una lente gravitazionale o una luce.
-         * La magia avviene grazie al CSS `filter: blur(80px)` che fonde tutto.
+         * FLUID MESH GRADIENT v2
+         * Colori aggiornati: Magenta, Indaco, Blu.
          */
         const canvas = document.getElementById('gradient-canvas');
         const ctx = canvas.getContext('2d');
@@ -269,22 +283,27 @@
         let width, height;
         let mouse = { x: 0, y: 0, isActive: false };
 
-        // Configurazione delle "Macchie" (Blobs) che formano il gradiente
-        // Usiamo colori profondi e sofisticati: Indigo, Violet, Dark Blue, e un tocco di Ciano per il mouse.
+        // Configurazione delle "Macchie" con la nuova palette richiesta
         const blobs = [
-            { x: 0, y: 0, vx: 1, vy: 1, r: 600, color: '#1e1b4b' }, // Midnight Blue (Base enorme)
-            { x: 0, y: 0, vx: 0.5, vy: -0.5, r: 400, color: '#4c1d95' }, // Violet
-            { x: 0, y: 0, vx: -0.8, vy: 0.4, r: 450, color: '#312e81' }, // Indigo
-            { x: 0, y: 0, vx: -0.2, vy: -0.2, r: 500, color: '#0f172a' }, // Slate scuro (contrasto)
-            // Il "Cursore" - una luce più chiara e piccola che segue il mouse
-            { x: 0, y: 0, vx: 0, vy: 0, r: 300, color: '#4338ca', isMouse: true } 
+            // Base Blu profondo
+            { x: 0, y: 0, vx: 0.8, vy: 0.4, r: 600, color: '#1e3a8a' }, // Blue 900
+            // Magenta vibrante
+            { x: 0, y: 0, vx: -0.6, vy: -0.5, r: 450, color: '#d946ef' }, // Fuchsia 600
+            // Indaco intenso
+            { x: 0, y: 0, vx: -0.4, vy: 0.6, r: 500, color: '#4338ca' }, // Indigo 700
+            // Blu elettrico per contrasto
+            { x: 0, y: 0, vx: 0.3, vy: -0.3, r: 400, color: '#3b82f6' }, // Blue 500
+            // Sfondo scuro per profondità
+            { x: 0, y: 0, vx: -0.2, vy: 0.2, r: 700, color: '#0f172a' }, // Slate 900
+
+            // Il "Cursore" - Luce Indaco/Viola più chiara che segue il mouse
+            { x: 0, y: 0, vx: 0, vy: 0, r: 350, color: '#818cf8', isMouse: true } 
         ];
 
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             
-            // Inizializza posizioni casuali
             blobs.forEach(b => {
                 if(!b.isMouse) {
                     b.x = Math.random() * width;
@@ -295,7 +314,6 @@
 
         window.addEventListener('resize', resize);
         
-        // Tracciamento Mouse con easing
         window.addEventListener('mousemove', e => {
             mouse.x = e.clientX;
             mouse.y = e.clientY;
@@ -305,38 +323,33 @@
         function animate() {
             ctx.clearRect(0, 0, width, height);
             
-            // Background base (nero quasi totale)
+            // Background base scuro
             ctx.fillStyle = '#020617';
             ctx.fillRect(0, 0, width, height);
 
-            // Modalità di fusione per creare colori vibranti quando si sovrappongono
+            // Modalità di fusione 'screen' per colori vibranti
             ctx.globalCompositeOperation = 'screen';
 
             blobs.forEach(blob => {
                 if (blob.isMouse) {
-                    // La luce del mouse segue il cursore con un ritardo (easing)
                     if (mouse.isActive) {
                         blob.x += (mouse.x - blob.x) * 0.08;
                         blob.y += (mouse.y - blob.y) * 0.08;
                     } else {
-                        // Se il mouse è fermo o fuori, fluttua al centro
                         blob.x += (width/2 - blob.x) * 0.05;
                         blob.y += (height/2 - blob.y) * 0.05;
                     }
                 } else {
-                    // Moto fluido automatico
                     blob.x += blob.vx;
                     blob.y += blob.vy;
 
-                    // Rimbalzo morbido sui bordi (con margine ampio per non vedere stacchi)
-                    if (blob.x < -100 || blob.x > width + 100) blob.vx *= -1;
-                    if (blob.y < -100 || blob.y > height + 100) blob.vy *= -1;
+                    if (blob.x < -200 || blob.x > width + 200) blob.vx *= -1;
+                    if (blob.y < -200 || blob.y > height + 200) blob.vy *= -1;
                 }
 
-                // Disegna il gradiente radiale per ogni blob
                 const gradient = ctx.createRadialGradient(blob.x, blob.y, 0, blob.x, blob.y, blob.r);
                 gradient.addColorStop(0, blob.color);
-                gradient.addColorStop(1, 'rgba(0,0,0,0)'); // Sfumatura trasparente ai bordi
+                gradient.addColorStop(1, 'rgba(0,0,0,0)');
 
                 ctx.fillStyle = gradient;
                 ctx.beginPath();
