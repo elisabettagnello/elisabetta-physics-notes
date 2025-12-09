@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Notes | Elisabetta Agnello</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; /* Royal Blue */
+            --primary-dark: #1e40af;
+            --bg-color: #f8fafc;
+            --text-main: #0f172a;
+            --text-secondary: #64748b;
+            --card-bg: #ffffff;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .header-content { max-width: 800px; margin: 0 auto; }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+        
+        .role {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .github-btn {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .github-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-1px); }
+
+        /* Main Grid */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            margin: -40px auto 40px; /* Overlap effect */
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-top {
+            height: 140px;
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #0284c7;
+        }
+
+        .card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+
+        h3 { font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 600; color: #1e293b; }
+        
+        .meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .download-btn {
+            margin-top: auto;
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .download-btn:hover { background-color: var(--primary-dark); }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>⚛️ Physics Notes Repository</h1>
+            <p class="role">M.Sc. Student in Statistical Physics & Complex Systems @ Sapienza | Co-Founder @ Sheep</p>
+            <a href="https://github.com/elisabettagnello" class="github-btn" target="_blank">
+                View on GitHub &rarr;
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div class="grid">
+            <div style="grid-column: 1/-1; text-align: center; padding: 4rem; background: white; border-radius: 12px;">
+                    <h3>Nessun appunto ancora pubblicato</h3>
+                    <p style="color: #64748b;">Carica un file .tex nella cartella src/ per iniziare.</p>
+                   </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Elisabetta Agnello. Open Source Educational Resources.</p>
+    </footer>
+</body>
+</html>
