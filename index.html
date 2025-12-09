@@ -15,7 +15,7 @@
             --bg-color: #f8fafc;
             --text-main: #0f172a;
             --text-muted: #64748b;
-            --card-bg: rgba(255, 255, 255, 0.7);
+            --card-bg: rgba(255, 255, 255, 0.8);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,50 +29,52 @@
             overflow-x: hidden;
         }
 
-        /* --- SFONDO INTERATTIVO --- */
+        /* --- SFONDO INTERATTIVO MIGLIORATO --- */
         .interactive-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
             overflow: hidden;
             background-color: #f0f4f8;
+            /* Griglia più definita */
             background-image: 
-                linear-gradient(rgba(79, 70, 229, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(79, 70, 229, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
+                linear-gradient(rgba(99, 102, 241, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.07) 1px, transparent 1px);
+            background-size: 50px 50px;
         }
 
         .mouse-spotlight {
             position: absolute;
-            width: 800px; height: 800px;
-            background: radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, transparent 70%);
+            width: 1000px; height: 1000px; /* Luce più grande */
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 60%);
             transform: translate(-50%, -50%);
             pointer-events: none;
             mix-blend-mode: multiply;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.3s ease;
         }
 
+        /* Orbite più lente e grandi per eleganza */
         .orb-1 {
-            position: absolute; top: -100px; left: -100px;
-            width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 70%);
-            animation: float1 20s infinite ease-in-out; filter: blur(40px);
+            position: absolute; top: -150px; left: -150px;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, transparent 70%);
+            animation: float1 30s infinite ease-in-out; filter: blur(60px);
         }
 
         .orb-2 {
-            position: absolute; bottom: -100px; right: -100px;
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
-            animation: float2 25s infinite ease-in-out; filter: blur(40px);
+            position: absolute; bottom: -150px; right: -150px;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, transparent 70%);
+            animation: float2 35s infinite ease-in-out; filter: blur(60px);
         }
 
         @keyframes float1 {
             0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(300px, 200px) scale(1.2); }
+            50% { transform: translate(100px, 150px) scale(1.1); }
         }
         @keyframes float2 {
             0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-200px, -100px) scale(1.1); }
+            50% { transform: translate(-100px, -50px) scale(1.1); }
         }
 
         .container {
@@ -83,34 +85,61 @@
         header { padding: 80px 0 60px; text-align: center; }
 
         .avatar {
-            width: 100px; height: 100px; border-radius: 50%;
-            margin-bottom: 20px; border: 3px solid white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1); object-fit: cover;
+            width: 110px; height: 110px; border-radius: 50%;
+            margin-bottom: 25px; border: 4px solid white;
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.15); object-fit: cover;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .avatar:hover { transform: scale(1.1) rotate(5deg); }
+        .avatar:hover { transform: scale(1.05) rotate(3deg); }
 
         h1 {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 3rem; font-weight: 700;
-            background: linear-gradient(135deg, #1e293b 0%, #4f46e5 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #4f46e5 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 10px; letter-spacing: -0.03em;
+            margin-bottom: 15px; letter-spacing: -0.03em;
+            line-height: 1.1;
         }
 
-        .role { font-size: 1.1rem; color: var(--text-muted); font-weight: 400; max-width: 600px; margin: 0 auto 30px; line-height: 1.6; }
+        .role-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .role { 
+            font-size: 1.15rem; color: #334155; font-weight: 500; 
+        }
+        
+        .role-sub {
+            font-size: 1.1rem; color: #64748b; font-weight: 400;
+        }
+
+        .disclaimer {
+            font-size: 0.95rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto 35px;
+            line-height: 1.6;
+            background: rgba(255,255,255,0.5);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.6);
+        }
 
         .social-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
 
         .btn-social {
-            text-decoration: none; color: var(--text-main); background: rgba(255,255,255,0.8);
+            text-decoration: none; color: var(--text-main); background: rgba(255,255,255,0.9);
             padding: 10px 20px; border-radius: 99px; font-size: 0.9rem; font-weight: 600;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: all 0.2s;
             border: 1px solid rgba(255,255,255,0.5); backdrop-filter: blur(5px);
             display: inline-flex; align-items: center; gap: 8px;
         }
-        .btn-social:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); color: var(--primary); }
+        .btn-social:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); color: var(--primary); border-color: var(--primary-glow); }
 
+        /* Griglia Cards */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; padding-bottom: 80px; }
 
         .card {
@@ -118,7 +147,20 @@
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); backdrop-filter: blur(20px);
             transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;
         }
+        
         .card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px -5px rgba(79, 70, 229, 0.15); border-color: rgba(79, 70, 229, 0.3); }
+
+        /* --- FASCIA COLORATA IN ALTO (Ripristinata) --- */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .card:hover::before { opacity: 1; }
 
         .card-icon {
             width: 48px; height: 48px; background: white; border-radius: 14px;
@@ -143,9 +185,11 @@
 
         @media (prefers-color-scheme: dark) {
             :root { --bg-color: #0b1120; --text-main: #f1f5f9; --card-bg: rgba(30, 41, 59, 0.6); }
-            .interactive-bg { background-color: #0b1120; background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); }
-            .mouse-spotlight { background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%); mix-blend-mode: screen; }
+            .interactive-bg { background-color: #0b1120; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); }
+            .mouse-spotlight { background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 60%); mix-blend-mode: screen; }
             h1 { background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%); -webkit-background-clip: text; }
+            .role, .role-sub { color: #cbd5e1; }
+            .disclaimer { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: #94a3b8; }
             .card h3 { color: white; } .card-meta { color: #94a3b8; }
             .card { border-color: rgba(255,255,255,0.1); }
             .btn-social { background: rgba(255,255,255,0.05); color: white; border-color: rgba(255,255,255,0.1); }
@@ -164,17 +208,28 @@
     <div class="container">
         <header>
             <img src="https://github.com/elisabettagnello.png" alt="Profile" class="avatar">
-            <h1>Physics Notes Library</h1>
-            <p class="role">M.Sc. Student in Statistical Physics & Complex Systems | Co-Founder @ Sheep</p>
+            
+            <h1>Elisabetta Agnello's Physics Notes Library</h1>
+            
+            <div class="role-container">
+                <div class="role">M.Sc. Student in Statistical Physics & Complex Systems @ Sapienza</div>
+                <div class="role-sub">Co-Founder @ Sheep</div>
+            </div>
+
+            <p class="disclaimer">
+                Questi sono i miei appunti universitari condivisi in modalità open source. 
+                Non essendo materiale didattico ufficiale, potrebbero contenere inesattezze o errori di battitura.
+                Sentitevi liberi di contattarmi per eventuali revisioni!
+            </p>
             
             <div class="social-links">
                 <a href="https://sheeptechnologies.com" class="btn-social" target="_blank">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-                    Sheep Tech
+                    Check out my startup: Sheep
                 </a>
                 <a href="mailto:agnelloe24@gmail.com" class="btn-social">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    Contattami
+                    Personal Email
                 </a>
                 <a href="https://github.com/elisabettagnello" class="btn-social" target="_blank">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -204,7 +259,7 @@
         </main>
 
         <footer>
-            <p>Designed with by Elisabetta Agnello &bull; <a href="https://sheeptechnologies.com" target="_blank">Sheep</a></p>
+            <p>Designed by Elisabetta Agnello &bull; <a href="https://sheeptechnologies.com" target="_blank">Sheep</a></p>
         </footer>
     </div>
 
