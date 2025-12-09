@@ -16,7 +16,6 @@ jobs:
         with:
           root_file: src/*/main.tex
           # Questo permette di compilare tutti i main.tex nelle sottocartelle
-          glob_root_file: true
           # Latexmk gestisce in automatico bibtex, immagini e riferimenti
           args: -pdf -file-line-error -interaction=nonstopmode
 
