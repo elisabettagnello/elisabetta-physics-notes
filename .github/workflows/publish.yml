@@ -1,4 +1,4 @@
-name: Compile LaTeX and Build Library
+name: Manage Library and PDFs
 
 on:
   push:
@@ -8,7 +8,30 @@ permissions:
   contents: write
 
 jobs:
-  build_latex_and_site:
+  # JOB 1: Controlla cosa è cambiato
+  check_changes:
+    runs-on: ubuntu-latest
+    outputs:
+      latex_changed: ${{ steps.filter.outputs.latex }}
+      site_changed: ${{ steps.filter.outputs.site }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            latex:
+              - 'src/**/*.tex'
+              - 'src/**/*.png'
+              - 'src/**/*.jpg'
+            site:
+              - 'scripts/**'
+              - '.github/workflows/publish.yml'
+
+  # JOB 2: Compila LaTeX (SOLO se serve)
+  build_pdfs:
+    needs: check_changes
+    if: ${{ needs.check_changes.outputs.latex_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del codice
@@ -17,29 +40,63 @@ jobs:
       - name: Compila i file LaTeX
         uses: xu-cheng/latex-action@v3
         with:
-          # Cerca tutti i file main.tex in tutte le sottocartelle
           root_file: src/*/main.tex
-          
-          # FONDAMENTALE: Dice al compilatore di entrare nella cartella prima di compilare.
-          # Questo risolve il problema degli \include e \input non trovati.
           work_in_root_file_dir: true
-          
-          # Se ci sono errori lievi (warning), continua lo stesso
           continue_on_error: true
-          
-          # -f forza la creazione del PDF anche in caso di errori
           args: -pdf -file-line-error -interaction=nonstopmode -f
 
-      - name: Prepara cartella pubblica
+      - name: Prepara cartella PDF
         run: mkdir -p public/pdfs
 
       - name: Sposta e rinomina i PDF
-        # Le virgolette qui sotto sono fondamentali per gestire gli spazi nei nomi delle cartelle
         run: |
           find src -name "main.pdf" | while read file; do
               folder=$(basename "$(dirname "$file")")
               mv "$file" "public/pdfs/${folder}.pdf"
           done
+      
+      # Carica i PDF come "artefatto" temporaneo per passarli al prossimo job
+      - name: Upload PDFs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-pdfs
+          path: public/pdfs
+
+  # JOB 3: Genera Sito e Pubblica (SEMPRE, ma recupera i PDF)
+  deploy_site:
+    needs: [check_changes, build_pdfs]
+    # Esegue sempre, purché non sia fallito il controllo iniziale
+    if: always() && needs.check_changes.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del codice
+        uses: actions/checkout@v3
+
+      - name: Prepara cartella pubblica
+        run: mkdir -p public/pdfs
+
+      # CASO A: Se abbiamo ricompilato, scarica i NUOVI PDF
+      - name: Scarica nuovi PDF (se compilati)
+        if: needs.check_changes.outputs.latex_changed == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: compiled-pdfs
+          path: public/pdfs
+
+      # CASO B: Se NON abbiamo ricompilato, dobbiamo scaricare i VECCHI PDF dal sito esistente
+      # (Altrimenti pubblicheresti un sito senza PDF!)
+      - name: Recupera PDF esistenti (se LaTeX non è cambiato)
+        if: needs.check_changes.outputs.latex_changed != 'true'
+        run: |
+          # Clona la branch gh-pages dove sono salvati i PDF attuali
+          git clone --branch gh-pages --single-branch https://github.com/${{ github.repository }}.git old_site
+          # Copia i PDF vecchi nella cartella di pubblicazione
+          if [ -d "old_site/pdfs" ]; then
+            cp -r old_site/pdfs/* public/pdfs/
+          else
+            echo "Nessun PDF precedente trovato."
+          fi
+          rm -rf old_site
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -54,3 +111,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
+          # Mantiene la cronologia per evitare problemi
+          keep_files: false
