@@ -29,14 +29,13 @@
             overflow-x: hidden;
         }
 
-        /* --- SFONDO INTERATTIVO MIGLIORATO --- */
+        /* --- SFONDO INTERATTIVO --- */
         .interactive-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
             overflow: hidden;
             background-color: #f0f4f8;
-            /* Griglia più definita */
             background-image: 
                 linear-gradient(rgba(99, 102, 241, 0.07) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(99, 102, 241, 0.07) 1px, transparent 1px);
@@ -45,7 +44,7 @@
 
         .mouse-spotlight {
             position: absolute;
-            width: 1000px; height: 1000px; /* Luce più grande */
+            width: 1000px; height: 1000px;
             background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 60%);
             transform: translate(-50%, -50%);
             pointer-events: none;
@@ -53,7 +52,6 @@
             transition: opacity 0.3s ease;
         }
 
-        /* Orbite più lente e grandi per eleganza */
         .orb-1 {
             position: absolute; top: -150px; left: -150px;
             width: 700px; height: 700px;
@@ -104,16 +102,31 @@
         .role-container {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            margin-bottom: 20px;
+            gap: 8px; /* Spazio tra le due righe */
+            margin-bottom: 25px;
+            align-items: center;
         }
 
-        .role { 
-            font-size: 1.15rem; color: #334155; font-weight: 500; 
+        /* Stile comune per le righe dei ruoli */
+        .role-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px; /* Spazio tra icona e testo */
+            font-size: 1.15rem;
+            color: #334155;
+            font-weight: 500;
         }
         
         .role-sub {
-            font-size: 1.1rem; color: #64748b; font-weight: 400;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .role-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--primary); /* Colore icone */
         }
 
         .disclaimer {
@@ -139,7 +152,6 @@
         }
         .btn-social:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); color: var(--primary); border-color: var(--primary-glow); }
 
-        /* Griglia Cards */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; padding-bottom: 80px; }
 
         .card {
@@ -150,7 +162,6 @@
         
         .card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px -5px rgba(79, 70, 229, 0.15); border-color: rgba(79, 70, 229, 0.3); }
 
-        /* --- FASCIA COLORATA IN ALTO (Ripristinata) --- */
         .card::before {
             content: '';
             position: absolute;
@@ -188,7 +199,8 @@
             .interactive-bg { background-color: #0b1120; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); }
             .mouse-spotlight { background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 60%); mix-blend-mode: screen; }
             h1 { background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%); -webkit-background-clip: text; }
-            .role, .role-sub { color: #cbd5e1; }
+            .role-item { color: #cbd5e1; }
+            .role-sub { color: #94a3b8; }
             .disclaimer { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: #94a3b8; }
             .card h3 { color: white; } .card-meta { color: #94a3b8; }
             .card { border-color: rgba(255,255,255,0.1); }
@@ -212,14 +224,22 @@
             <h1>Elisabetta Agnello's Physics Notes Library</h1>
             
             <div class="role-container">
-                <div class="role">M.Sc. Student in Statistical Physics & Complex Systems @ Sapienza</div>
-                <div class="role-sub">Co-Founder @ Sheep</div>
+                <div class="role-item">
+                    <svg class="role-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/></svg>
+                    <span>M.Sc. Student in Statistical Physics & Complex Systems @ Sapienza</span>
+                </div>
+                
+                <div class="role-item role-sub">
+                    <svg class="role-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                    <svg class="role-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg>
+                    <span>Co-Founder @ Sheep</span>
+                </div>
             </div>
 
             <p class="disclaimer">
-                Questi sono i miei appunti universitari condivisi in modalità open source. 
-                Non essendo materiale didattico ufficiale, potrebbero contenere inesattezze o errori di battitura.
-                Sentitevi liberi di contattarmi per eventuali revisioni!
+                Questi sono i miei appunti universitari condivisi in modalità open source. <br>
+                Non essendo materiale didattico ufficiale, potrebbero esserci inesattezze o errori di battitura. <br>
+                Sentiti libero di contattarmi per eventuali revisioni!
             </p>
             
             <div class="social-links">
@@ -229,7 +249,7 @@
                 </a>
                 <a href="mailto:agnelloe24@gmail.com" class="btn-social">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    Personal Email
+                    Email
                 </a>
                 <a href="https://github.com/elisabettagnello" class="btn-social" target="_blank">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -259,7 +279,7 @@
         </main>
 
         <footer>
-            <p>Designed by Elisabetta Agnello &bull; <a href="https://sheeptechnologies.com" target="_blank">Sheep</a></p>
+            <p>Designed by Elisabetta Agnello &bull; <a href="https://sheeptechnologies.com" target="_blank">Check out my start-up: Sheep</a></p>
         </footer>
     </div>
 
