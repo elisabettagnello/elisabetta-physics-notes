@@ -12,10 +12,10 @@
             --primary: #6366f1;
             --primary-glow: #818cf8;
             --secondary: #ec4899;
-            --bg-deep: #020617;
+            --bg-deep: #050505; /* Nero quasi assoluto */
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --card-bg: rgba(30, 41, 59, 0.4);
+            --card-bg: rgba(20, 20, 25, 0.6);
             --glass-border: rgba(255, 255, 255, 0.08);
         }
 
@@ -30,68 +30,17 @@
             overflow-x: hidden;
         }
 
-        /* --- NUOVO SFONDO CINEMATOGRAFICO --- */
-        
-        /* 1. Base Rotante (Nebulosa profonda) */
-        .cosmos-bg {
+        /* --- NUOVO SFONDO CANVAS (Particle Network) --- */
+        #canvas-bg {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -3;
-            background: var(--bg-deep);
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(30, 27, 75, 0.5) 0%, rgba(2, 6, 23, 1) 80%),
-                conic-gradient(from 0deg at 50% 50%, #020617 0deg, #0f172a 120deg, #1e1b4b 240deg, #020617 360deg);
-            background-blend-mode: screen;
-            animation: rotateCosmos 120s linear infinite;
-            transform-origin: center;
-            scale: 1.2; /* Per evitare bordi durante la rotazione */
-        }
-
-        @keyframes rotateCosmos {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* 2. Texture Granulosa (Noise Overlay) - L'ingrediente segreto per l'effetto WOW */
-        .noise-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -1;
-            opacity: 0.06; /* Molto sottile */
-            pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background: radial-gradient(circle at center, #1a1b26 0%, #000000 100%);
         }
-
-        /* 3. Luce Mouse (Esistente) */
-        .mouse-spotlight {
-            position: fixed; /* Cambiato in fixed per stabilità */
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2;
-            background: radial-gradient(800px circle at var(--x, 50%) var(--y, 50%), rgba(99, 102, 241, 0.18), transparent 40%);
-            pointer-events: none;
-            mix-blend-mode: screen;
-        }
-
-        /* 4. Orbite colorate (Esistenti) */
-        .orb-container { position: fixed; top:0; left:0; width:100%; height:100%; z-index: -3; pointer-events: none; overflow: hidden; }
-        .orb-1 {
-            position: absolute; top: 10%; left: 20%;
-            width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
-            animation: float1 25s infinite ease-in-out; filter: blur(100px);
-        }
-        .orb-2 {
-            position: absolute; bottom: 10%; right: 10%;
-            width: 800px; height: 800px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-            animation: float2 35s infinite ease-in-out; filter: blur(100px);
-        }
-
-        @keyframes float1 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(60px, 40px) scale(1.1); } }
-        @keyframes float2 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-60px, -40px) scale(1.2); } }
-
         /* --- FINE SFONDO --- */
-
 
         .container {
             max-width: 1100px; margin: 0 auto; padding: 0 20px;
@@ -102,9 +51,10 @@
 
         .avatar {
             width: 120px; height: 120px; border-radius: 50%;
-            margin-bottom: 25px; border: 3px solid rgba(255,255,255,0.2);
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.3); object-fit: cover;
+            margin-bottom: 25px; border: 3px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.2); object-fit: cover;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #1e1e24; /* Fallback */
         }
         .avatar:hover { transform: scale(1.05) rotate(3deg); border-color: var(--primary); }
 
@@ -127,6 +77,7 @@
             background: rgba(255,255,255,0.03);
             padding: 8px 20px; border-radius: 30px;
             border: 1px solid var(--glass-border);
+            backdrop-filter: blur(4px);
         }
         
         .role-sub { color: #94a3b8; font-size: 1.1rem; }
@@ -159,10 +110,11 @@
         .disclaimer {
             font-size: 0.95rem; color: #94a3b8;
             max-width: 800px; margin: 0 auto; line-height: 1.6;
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(10, 10, 10, 0.6);
             padding: 25px; border-radius: 16px;
             border: 1px solid var(--glass-border);
             margin-top: 50px; 
+            backdrop-filter: blur(10px);
         }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; padding-bottom: 80px; }
@@ -171,16 +123,16 @@
             background: var(--card-bg); 
             border: 1px solid var(--glass-border); 
             border-radius: 24px; padding: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2); 
-            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3); 
+            backdrop-filter: blur(12px);
             transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;
         }
         
         .card:hover { 
             transform: translateY(-8px); 
-            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.4); 
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.5); 
             border-color: var(--primary); 
-            background: rgba(30, 41, 59, 0.6);
+            background: rgba(30, 30, 40, 0.7);
         }
 
         .card::before {
@@ -227,13 +179,9 @@
     </style>
 </head>
 <body>
-    <div class="cosmos-bg"></div>
-    <div class="noise-overlay"></div>
-    <div class="orb-container">
-        <div class="orb-1"></div>
-        <div class="orb-2"></div>
-    </div>
-    <div class="mouse-spotlight" id="spotlight"></div>
+    
+    <canvas id="canvas-bg"></canvas>
+
     <div class="container">
         <header>
             <img src="https://github.com/elisabettagnello.png" alt="Profile" class="avatar">
@@ -243,7 +191,7 @@
             <div class="role-container">
                 <div class="role-item">
                     <svg class="role-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/></svg>
-                    <span>M.Sc. Student in Statistical Physics & Complex Systems @ Sapienza</span>
+                    <span>M.Sc. Student in Statistical Physics & Complex Systems @ Sapienza <br></span>
                     <svg class="role-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg>
                     <span>Co-Founder @ Sheep</span>
                 </div>
@@ -297,18 +245,135 @@
     </div>
 
     <script>
-        // Script del Mouse Spotlight ottimizzato per il nuovo sfondo
-        const spotlight = document.getElementById('spotlight');
-        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
         
-        // Aggiorna variabili CSS per prestazioni migliori
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            // Aggiorna direttamente la posizione per reattività immediata
-            spotlight.style.setProperty('--x', mouseX + 'px');
-            spotlight.style.setProperty('--y', mouseY + 'px');
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+
+        let particlesArray;
+        let mouse = {
+            x: null,
+            y: null,
+            radius: 150 // Raggio di interazione del mouse
+        }
+
+        // Ridimensionamento canvas
+        function handleResize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        }
+        
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
         });
+        window.addEventListener('mouseout', () => { // Reset quando esce
+            mouse.x = undefined;
+            mouse.y = undefined;
+        });
+
+        // Classe Particella
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1; // Dimensione variabile
+                this.speedX = (Math.random() * 1.5) - 0.75; // Velocità casuale lenta
+                this.speedY = (Math.random() * 1.5) - 0.75;
+                // Colori a tema (Indigo/Pink/Bianco)
+                const colors = ['rgba(99, 102, 241, 0.7)', 'rgba(236, 72, 153, 0.7)', 'rgba(255, 255, 255, 0.5)'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                // Movimento base
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Rimbalzo sui bordi
+                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+
+                // Interazione col Mouse (Attrazione/Repulsione lieve o semplice connessione)
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+
+                // Effetto "Spotlight" sui nodi: diventano più grandi vicino al mouse
+                if (distance < mouse.radius) {
+                    if (this.size < 5) this.size += 0.2;
+                } else {
+                    if (this.size > 2) this.size -= 0.1;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particlesArray = [];
+            // Densità delle particelle basata sulla larghezza dello schermo
+            let numberOfParticles = (canvas.width * canvas.height) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function connect() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) +
+                                   ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    
+                    // Connetti se vicini
+                    if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+                        opacityValue = 1 - (distance / 20000);
+                        
+                        // Le linee vicino al mouse sono più luminose e colorate
+                        let dx = mouse.x - particlesArray[a].x;
+                        let dy = mouse.y - particlesArray[a].y;
+                        let mouseDist = Math.sqrt(dx*dx + dy*dy);
+
+                        ctx.lineWidth = 1;
+                        if (mouseDist < 150) {
+                            ctx.strokeStyle = 'rgba(99, 102, 241,' + opacityValue + ')'; // Primary color (Indigo)
+                            ctx.lineWidth = 1.5;
+                        } else {
+                            ctx.strokeStyle = 'rgba(255, 255, 255,' + (opacityValue * 0.1) + ')'; // Molto sottile e grigio
+                        }
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            connect();
+        }
+
+        // Avvia
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        init();
+        animate();
     </script>
 </body>
 </html>
