@@ -5,11 +5,13 @@ import datetime
 AUTHOR_NAME = "Elisabetta Agnello"
 ROLE_DESC = "M.Sc. Student in Statistical Physics & Complex Systems @ Sapienza | Co-Founder @ Sheep"
 GITHUB_USER = "elisabettagnello"
-REPO_NAME = "elisabetta-physics-notes"  # Assicurati che coincida con il nome del tuo repo
+REPO_NAME = "elisabetta-physics-notes"
 
-# Link generati
+# Link
 GITHUB_LINK = f"https://github.com/{GITHUB_USER}"
 REPO_LINK = f"https://github.com/{GITHUB_USER}/{REPO_NAME}"
+SHEEP_LINK = "https://sheeptechnologies.com"
+EMAIL_LINK = "agnelloe24@gmail.com"
 
 html_template = """
 <!DOCTYPE html>
@@ -107,7 +109,8 @@ html_template = """
         .social-links {{
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
+            flex-wrap: wrap; /* Fondamentale per mobile */
         }}
 
         .btn-social {{
@@ -130,6 +133,7 @@ html_template = """
             transform: translateY(-2px);
             box-shadow: 0 10px 15px rgba(0,0,0,0.1);
             color: var(--primary);
+            border-color: var(--primary-glow);
         }}
 
         /* Grid Layout */
@@ -140,7 +144,7 @@ html_template = """
             padding-bottom: 80px;
         }}
 
-        /* Card Design "Glass" */
+        /* Card Design */
         .card {{
             background: var(--card-bg);
             border: 1px solid white;
@@ -166,7 +170,6 @@ html_template = """
             border-color: rgba(79, 70, 229, 0.2);
         }}
 
-        /* Decorazione Card (Gradiente in alto) */
         .card::before {{
             content: '';
             position: absolute;
@@ -249,7 +252,7 @@ html_template = """
         
         footer a {{ color: var(--primary); text-decoration: none; }}
 
-        /* Dark Mode Support (Opzionale, basato sul sistema) */
+        /* Dark Mode Support */
         @media (prefers-color-scheme: dark) {{
             body {{ background-color: #0b1120; color: #f1f5f9; }}
             .card {{ background: rgba(30, 41, 59, 0.7); border-color: rgba(255,255,255,0.1); }}
@@ -274,13 +277,19 @@ html_template = """
             <p class="role">{role}</p>
             
             <div class="social-links">
+                <a href="{sheep_link}" class="btn-social" target="_blank">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                    Sheep Tech
+                </a>
+                
+                <a href="mailto:{email}" class="btn-social">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    Contattami
+                </a>
+
                 <a href="{github_link}" class="btn-social" target="_blank">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                    GitHub Profile
-                </a>
-                <a href="{repo_link}" class="btn-social" target="_blank">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-                    Source Code
+                    GitHub
                 </a>
             </div>
         </header>
@@ -290,7 +299,7 @@ html_template = """
         </main>
 
         <footer>
-            <p>Designed with ⚛️ by {author} &bull; <a href="https://sheeptechnologies.com" target="_blank">Sheep Technologies</a></p>
+            <p>Designed with ⚛️ by {author} &bull; <a href="{sheep_link}" target="_blank">Sheep Technologies</a></p>
         </footer>
     </div>
 </body>
@@ -316,7 +325,6 @@ card_template = """
 """
 
 def get_file_size(file_path):
-    # Calcola dimensione file in MB
     size_bytes = os.path.getsize(file_path)
     if size_bytes < 1024 * 1024:
         return f"{size_bytes / 1024:.0f} KB"
@@ -338,10 +346,8 @@ def generate_index():
     
     for filename in sorted(files):
         title = filename.replace("-", " ").replace("_", " ").replace(".pdf", "").title()
-        
         file_path = os.path.join(pdf_dir, filename)
         
-        # Dati reali
         mod_time = os.path.getmtime(file_path)
         date_str = datetime.datetime.fromtimestamp(mod_time).strftime('%d %b %Y')
         size_str = get_file_size(file_path)
@@ -359,13 +365,15 @@ def generate_index():
         github_user=GITHUB_USER,
         github_link=GITHUB_LINK,
         repo_link=REPO_LINK,
+        sheep_link=SHEEP_LINK,
+        email=EMAIL_LINK,
         cards=cards
     )
     
     with open("public/index.html", "w", encoding="utf-8") as f:
         f.write(output_html)
     
-    print("✨ Libreria generata con nuovo design Premium!")
+    print("✨ Libreria aggiornata con contatti e link Sheep!")
 
 if __name__ == "__main__":
     generate_index()
