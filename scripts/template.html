@@ -9,17 +9,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Palette Dark & Neon */
-            --primary: #8b5cf6;       /* Violetto elettrico */
-            --primary-glow: #a78bfa;
-            --secondary: #06b6d4;     /* Ciano neon */
-            --bg-deep: #050505;       /* Nero profondo */
+            --primary: #6366f1;
+            --primary-glow: #818cf8;
+            --secondary: #ec4899;
+            --bg-deep: #020204; /* Nero ancora più profondo */
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            
-            /* Glassmorphism più scuro e pulito */
-            --card-bg: rgba(15, 23, 42, 0.4); 
-            --glass-border: rgba(255, 255, 255, 0.05);
+            --card-bg: rgba(20, 20, 25, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,200 +30,190 @@
             overflow-x: hidden;
         }
 
-        /* --- QUANTUM FLOW CANVAS --- */
-        #flow-canvas {
+        /* --- NUOVO SFONDO: Quantum Shimmer Field --- */
+        #canvas-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            /* Gradiente di base sottile per dare profondità */
-            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #000000 90%);
+            /* Un gradiente di base molto sottile per dare profondità prima che il canvas carichi */
+            background: radial-gradient(circle at 50% 50%, #0f1119 0%, #000000 100%);
         }
+        /* --- FINE SFONDO --- */
 
         .container {
             max-width: 1100px; margin: 0 auto; padding: 0 20px;
             position: relative; z-index: 1;
         }
 
-        header { padding: 90px 0 70px; text-align: center; }
+        header { padding: 80px 0 60px; text-align: center; }
 
         .avatar {
-            width: 110px; height: 110px; border-radius: 50%;
-            margin-bottom: 30px; 
-            border: 2px solid rgba(255,255,255,0.1);
-            padding: 4px; /* Gap effect */
-            background-clip: content-box;
-            background-color: transparent;
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.3); 
-            object-fit: cover;
-            transition: transform 0.5s ease;
+            width: 120px; height: 120px; border-radius: 50%;
+            margin-bottom: 25px; border: 3px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.2); object-fit: cover;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #1e1e24;
         }
-        .avatar:hover { transform: scale(1.05); border-color: var(--secondary); }
+        .avatar:hover { transform: scale(1.05) rotate(3deg); border-color: var(--primary); }
 
         h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 3.5rem; font-weight: 700;
-            /* Testo con gradiente sfumato */
-            background: linear-gradient(to right, #e2e8f0 20%, #a78bfa 100%);
+            font-size: 3rem; font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 25px; letter-spacing: -0.03em; line-height: 1.1;
+            margin-bottom: 25px; letter-spacing: -0.02em; line-height: 1.1;
+            filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.3));
         }
 
         .role-container {
-            display: flex; flex-direction: column; gap: 12px; margin-bottom: 45px; align-items: center;
+            display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; align-items: center;
         }
 
-        .role-pill {
-            display: inline-flex; align-items: center; gap: 8px;
-            font-size: 0.95rem; color: #cbd5e1; font-weight: 500;
+        .role-item {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            font-size: 1.15rem; color: #cbd5e1; font-weight: 400;
             background: rgba(255,255,255,0.03);
-            padding: 8px 16px; border-radius: 99px;
+            padding: 8px 20px; border-radius: 30px;
             border: 1px solid var(--glass-border);
             backdrop-filter: blur(4px);
-            letter-spacing: 0.02em;
         }
-        .role-pill svg { color: var(--secondary); width: 18px; height: 18px; }
+        
+        .role-sub { color: #94a3b8; font-size: 1.1rem; }
+        .role-icon { width: 20px; height: 20px; color: var(--primary-glow); }
 
         .social-links { 
             display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; 
-            margin-bottom: 60px; 
+            margin-bottom: 50px; 
         }
 
         .btn-social {
-            text-decoration: none; color: white; 
-            background: rgba(255,255,255,0.02);
-            padding: 12px 28px; border-radius: 8px; 
-            font-size: 0.9rem; font-weight: 600;
+            text-decoration: none; 
+            color: white; 
+            background: rgba(255,255,255,0.05);
+            padding: 12px 24px; border-radius: 99px; 
+            font-size: 0.95rem; font-weight: 500;
             border: 1px solid var(--glass-border);
             display: inline-flex; align-items: center; gap: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
+            backdrop-filter: blur(5px);
         }
 
         .btn-social:hover { 
-            background: rgba(139, 92, 246, 0.15); 
+            transform: translateY(-3px); 
+            background: var(--primary); 
             border-color: var(--primary);
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
-            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
         }
 
         .disclaimer {
-            font-size: 0.9rem; color: #64748b;
-            max-width: 700px; margin: 0 auto; line-height: 1.6;
-            padding: 20px; border-left: 2px solid var(--glass-border);
-            background: linear-gradient(90deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+            font-size: 0.95rem; color: #94a3b8;
+            max-width: 800px; margin: 0 auto; line-height: 1.6;
+            background: rgba(10, 10, 10, 0.6);
+            padding: 25px; border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            margin-top: 50px; 
+            backdrop-filter: blur(10px);
         }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; padding-bottom: 100px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; padding-bottom: 80px; }
 
         .card {
             background: var(--card-bg); 
             border: 1px solid var(--glass-border); 
-            border-radius: 16px; padding: 28px;
-            /* Effetto ombra interna sottile */
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02); 
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            transition: all 0.4s ease; 
-            position: relative; overflow: hidden; display: flex; flex-direction: column;
-            group: hover;
+            border-radius: 24px; padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3); 
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;
         }
         
         .card:hover { 
-            transform: translateY(-5px) scale(1.01); 
-            background: rgba(20, 30, 50, 0.7);
-            border-color: rgba(139, 92, 246, 0.3);
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6);
+            transform: translateY(-8px); 
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.5); 
+            border-color: var(--primary); 
+            background: rgba(30, 30, 40, 0.7);
         }
 
-        /* Hover effect "scanline" */
-        .card::after {
-            content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transform: skewX(-20deg); transition: 0.5s; pointer-events: none;
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0; transition: opacity 0.3s ease;
         }
-        .card:hover::after { left: 150%; transition: 0.7s; }
+        .card:hover::before { opacity: 1; }
 
         .card-icon {
-            width: 44px; height: 44px; 
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
-            border-radius: 10px;
+            width: 48px; height: 48px; 
+            background: rgba(255,255,255,0.05); 
+            border-radius: 14px;
             display: flex; align-items: center; justify-content: center; 
             color: var(--primary-glow);
-            margin-bottom: 20px; font-size: 1.4rem;
-            border: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 20px; font-size: 1.5rem;
+            border: 1px solid var(--glass-border);
         }
 
-        .card h3 { 
-            font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; 
-            margin-bottom: 10px; color: #f1f5f9; letter-spacing: -0.01em;
-        }
-        
-        .card-meta { font-size: 0.85rem; color: #94a3b8; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; }
+        .card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; margin-bottom: 8px; color: white; }
+        .card-meta { font-size: 0.85rem; color: #94a3b8; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
         
         .badge { 
-            background: rgba(6, 182, 212, 0.1); color: var(--secondary);
-            padding: 3px 8px; border-radius: 4px; 
-            font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;
+            background: rgba(255,255,255,0.1); 
+            padding: 4px 10px; border-radius: 6px; 
+            font-weight: 500; font-size: 0.75rem; color: #e2e8f0; 
         }
 
         .download-btn {
             margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;
-            background: transparent; color: #e2e8f0; text-decoration: none; 
-            padding: 12px; border-radius: 8px;
-            font-weight: 500; border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.2s; font-size: 0.9rem;
+            background: white; color: #020617; text-decoration: none; padding: 14px; border-radius: 12px;
+            font-weight: 600; transition: all 0.2s;
         }
-        .download-btn:hover { 
-            background: var(--primary); border-color: var(--primary); color: white;
-        }
+        .download-btn:hover { background: var(--primary-glow); }
+        .download-btn svg { width: 18px; height: 18px; }
 
-        footer { 
-            text-align: center; padding: 40px; color: #64748b; font-size: 0.85rem; 
-            border-top: 1px solid var(--glass-border); margin-top: 40px; 
-        }
-        footer a { color: var(--text-main); text-decoration: none; transition: color 0.2s; }
-        footer a:hover { color: var(--secondary); }
+        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--glass-border); margin-top: 40px; }
+        footer a { color: var(--primary-glow); text-decoration: none; font-weight: 600; }
 
         @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
-            header { padding: 60px 0 40px; }
+            h1 { font-size: 2.2rem; }
+            .role-item { font-size: 1rem; padding: 6px 15px; }
         }
     </style>
 </head>
 <body>
     
-    <canvas id="flow-canvas"></canvas>
+    <canvas id="canvas-bg"></canvas>
 
     <div class="container">
         <header>
             <img src="https://github.com/{{GITHUB_USER}}.png" alt="Profile" class="avatar">
             
-            <h1>{{AUTHOR_NAME}}'s Library</h1>
+            <h1>{{AUTHOR_NAME}}'s Physics Notes Library</h1>
             
             <div class="role-container">
-                <div class="role-pill">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
-                    <span>M.Sc. Student: Statistical Physics & Complex Systems</span>
-                </div>
-                <div class="role-pill">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <div class="role-item">
+                    <svg class="role-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/></svg>
+                    <span>M.Sc. Student in Statistical Physics & Complex Systems @ Sapienza <br></span>
+                    <svg class="role-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg>
                     <span>Co-Founder @ Sheep</span>
                 </div>
             </div>
 
             <div class="social-links">
                 <a href="{{SHEEP_LINK}}" class="btn-social" target="_blank">
-                    Check out my start-up: Sheep
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                    Check out my startup: Sheep
                 </a>
                 <a href="mailto:{{EMAIL_LINK}}" class="btn-social">
-                    Email Me
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    Contact Me
                 </a>
                 <a href="{{GITHUB_LINK}}" class="btn-social" target="_blank">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                     GitHub
                 </a>
             </div>
 
             <p class="disclaimer">
-                Physics notes & open source resources. <br>
-                Not official teaching material.
+                These are my university notes, shared here as open source resources. <br>
+                Since this is not official teaching material, it may contain inaccuracies or typos. <br>
+                Feel free to report any issues or suggest edits!
             </p>
         </header>
 
@@ -235,178 +222,130 @@
         </main>
 
         <footer>
-            <p>Designed by {{AUTHOR_NAME}} &bull; <a href="{{SHEEP_LINK}}" target="_blank">Sheep</a></p>
+            <p>Designed by {{AUTHOR_NAME}} &bull; Check out my start-up:<a href="{{SHEEP_LINK}}" target="_blank">Sheep</a></p>
         </footer>
     </div>
 
     <script>
-        /*
-         * QUANTUM FLOW FIELD
-         * Genera un campo vettoriale "superfluido" che risponde al mouse.
-         * Niente linee connesse, solo scie di particelle in un campo di flusso.
+        /**
+         * QUANTUM SHIMMER FIELD
+         * Un campo di dati ad alta densità che reagisce all'osservazione (il mouse).
+         * Non usa linee o flussi vettoriali classici.
          */
-        const canvas = document.getElementById('flow-canvas');
+        const canvas = document.getElementById('canvas-bg');
         const ctx = canvas.getContext('2d');
-        
-        let width, height;
-        let flowField = [];
-        const particles = [];
-        const numberOfParticles = 1200; // Ottimizzato per performance/estetica
-        const cellSize = 20; // Risoluzione della griglia del flusso
-        let rows, cols;
-        let time = 0;
 
-        // Mouse interaction
-        let mouse = { x: 0, y: 0, isActive: false };
+        let w, h;
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 180 };
 
-        // Class Particella
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.speedX = 0;
-                this.speedY = 0;
-                this.history = [{x: this.x, y: this.y}];
-                this.maxLength = Math.floor(Math.random() * 20 + 10);
-                this.angle = 0;
-                this.speed = Math.random() * 1 + 0.5;
-                // Colore variabile tra blu e viola
-                this.hue = Math.random() > 0.5 ? 250 : 190; // 250 (Purple), 190 (Cyan)
-            }
-
-            update(flowField) {
-                // Calcola posizione nella griglia
-                let x = Math.floor(this.x / cellSize);
-                let y = Math.floor(this.y / cellSize);
-                
-                // Gestione bordi
-                if (x < 0) x = 0; if (x >= cols) x = cols - 1;
-                if (y < 0) y = 0; if (y >= rows) y = rows - 1;
-                
-                let index = x + y * cols;
-                let angle = flowField[index];
-
-                // Interazione mouse (Repulsione distorsiva)
-                if (mouse.isActive) {
-                    let dx = mouse.x - this.x;
-                    let dy = mouse.y - this.y;
-                    let dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < 250) {
-                        // Distorci l'angolo in base al mouse (effetto vortice/repulsione)
-                        let angleToMouse = Math.atan2(dy, dx);
-                        let force = (250 - dist) / 250;
-                        // Combina flusso naturale con forza repulsiva
-                        this.speedX -= Math.cos(angleToMouse) * force * 0.5;
-                        this.speedY -= Math.sin(angleToMouse) * force * 0.5;
-                    }
-                }
-
-                // Moto fluido
-                this.speedX += Math.cos(angle) * 0.1;
-                this.speedY += Math.sin(angle) * 0.1;
-
-                // Attrito per non farle esplodere
-                this.speedX *= 0.9;
-                this.speedY *= 0.9;
-
-                this.x += this.speedX * this.speed;
-                this.y += this.speedY * this.speed;
-
-                // Scia
-                this.history.push({x: this.x, y: this.y});
-                if (this.history.length > this.maxLength) {
-                    this.history.shift();
-                }
-
-                // Reset se esce dallo schermo
-                if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
-                    this.reset();
-                }
-            }
-
-            reset() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.history = [];
-                this.speedX = 0; 
-                this.speedY = 0;
-            }
-
-            draw(context) {
-                context.beginPath();
-                if (this.history.length > 1) {
-                    context.moveTo(this.history[0].x, this.history[0].y);
-                    for (let i = 0; i < this.history.length; i++) {
-                        context.lineTo(this.history[i].x, this.history[i].y);
-                    }
-                }
-                // Colore neon con opacità variabile
-                context.strokeStyle = `hsla(${this.hue}, 80%, 60%, 0.5)`;
-                context.lineWidth = 1.5;
-                context.stroke();
+        function init() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+            particles = [];
+            // Alta densità di particelle molto piccole
+            let particleCount = (w * h) / 2500; 
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
             }
         }
 
-        function init() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            rows = Math.floor(height / cellSize) + 1;
-            cols = Math.floor(width / cellSize) + 1;
-            
-            // Reinizializza particelle solo se vuoto
-            if(particles.length === 0) {
-                for (let i = 0; i < numberOfParticles; i++) {
-                    particles.push(new Particle());
+        class Particle {
+            constructor() {
+                // Posizione "home" (dove la particella vuole stare)
+                this.baseX = Math.random() * w;
+                this.baseY = Math.random() * h;
+                this.x = this.baseX;
+                this.y = this.baseY;
+                this.density = (Math.random() * 20) + 5; // Quanto è facile spostarla
+                this.sizeBase = Math.random() * 1.2 + 0.5; // Particelle molto piccole
+                this.size = this.sizeBase;
+                // Colore base spento (grigio/blu scuro)
+                this.baseColor = `rgba(${50 + Math.random()*30}, ${50 + Math.random()*40}, ${80 + Math.random()*50}, ${0.1 + Math.random()*0.2})`;
+                // Colore attivo (Indigo/Pink)
+                this.activeColor = Math.random() > 0.5 ? '99, 102, 241' : '236, 72, 153';
+                this.isActive = false;
+            }
+
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx*dx + dy*dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = mouse.radius;
+                let force = (maxDistance - distance) / maxDistance;
+                let directionX = forceDirectionX * force * this.density;
+                let directionY = forceDirectionY * force * this.density;
+
+                if (distance < mouse.radius + 20 && mouse.x !== null) {
+                    // Se il mouse è vicino, la particella si attiva e viene leggermente respinta
+                    // Creando un effetto "lente" o "onda d'urto"
+                    this.x -= directionX * 0.5;
+                    this.y -= directionY * 0.5;
+                    this.isActive = true;
+                    if (this.size < this.sizeBase * 2.5) this.size += 0.15;
+                } else {
+                    // Altrimenti torna lentamente alla posizione base
+                    if (this.x !== this.baseX) {
+                        let dxMove = this.x - this.baseX;
+                        this.x -= dxMove/15;
+                    }
+                    if (this.y !== this.baseY) {
+                        let dyMove = this.y - this.baseY;
+                        this.y -= dyMove/15;
+                    }
+                    this.isActive = false;
+                    if (this.size > this.sizeBase) this.size -= 0.1;
                 }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                
+                if (this.isActive) {
+                    // Luminosità intensa quando attiva, con un leggero alone
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+                    let opacity = 1 - (dist / mouse.radius);
+                    opacity = Math.max(0, Math.min(1, opacity));
+                    
+                    ctx.fillStyle = `rgba(${this.activeColor}, ${0.6 + opacity * 0.4})`;
+                    // Aggiunge un leggero bagliore (glow) alle particelle attive
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = `rgba(${this.activeColor}, 0.8)`;
+                } else {
+                    // Colore spento di base
+                    ctx.fillStyle = this.baseColor;
+                    ctx.shadowBlur = 0;
+                }
+                
+                ctx.fill();
+                ctx.closePath();
+                // Reset shadow per non influenzare altre operazioni
+                ctx.shadowBlur = 0;
             }
         }
 
         function animate() {
-            // Genera il campo di flusso (Noise pseudo-casuale basato su seno/coseno)
-            // Questo crea pattern ondulati che cambiano nel tempo
-            flowField = [];
-            time += 0.002; 
-            for (let y = 0; y < rows; y++) {
-                for (let x = 0; x < cols; x++) {
-                    // Formula matematica per generare il "paesaggio" del flusso
-                    let angle = (Math.cos(x * 0.05 + time) + Math.sin(y * 0.05 + time)) * 3;
-                    flowField.push(angle);
-                }
+            ctx.clearRect(0, 0, w, h);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
             }
-
-            // Disegna scia semi-trasparente per effetto "motion blur"
-            ctx.fillStyle = 'rgba(5, 5, 5, 0.15)'; 
-            ctx.fillRect(0, 0, width, height);
-
-            // Blend mode "screen" o "lighter" per far brillare le particelle sovrapposte
-            ctx.globalCompositeOperation = 'lighter'; 
-
-            particles.forEach(p => {
-                p.update(flowField);
-                p.draw(ctx);
-            });
-
-            ctx.globalCompositeOperation = 'source-over'; // Reset blend mode
-
             requestAnimationFrame(animate);
         }
 
-        // Event Listeners
-        window.addEventListener('resize', () => {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            rows = Math.floor(height / cellSize) + 1;
-            cols = Math.floor(width / cellSize) + 1;
-        });
-
-        window.addEventListener('mousemove', e => {
+        window.addEventListener('resize', init);
+        window.addEventListener('mousemove', (e) => {
             mouse.x = e.clientX;
             mouse.y = e.clientY;
-            mouse.isActive = true;
         });
-
         window.addEventListener('mouseout', () => {
-            mouse.isActive = false;
+            mouse.x = null;
+            mouse.y = null;
         });
 
         init();
