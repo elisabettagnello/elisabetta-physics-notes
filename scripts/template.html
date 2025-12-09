@@ -9,13 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1; /* Indigo più acceso */
+            --primary: #6366f1;
             --primary-glow: #818cf8;
             --secondary: #ec4899;
-            --bg-deep: #020617; /* Quasi nero */
+            --bg-deep: #020617;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --card-bg: rgba(30, 41, 59, 0.4); /* Scuro trasparente */
+            --card-bg: rgba(30, 41, 59, 0.4);
             --glass-border: rgba(255, 255, 255, 0.08);
         }
 
@@ -30,50 +30,68 @@
             overflow-x: hidden;
         }
 
-        /* --- SFONDO DEEP DARK (No Grid) --- */
-        .interactive-bg {
+        /* --- NUOVO SFONDO CINEMATOGRAFICO --- */
+        
+        /* 1. Base Rotante (Nebulosa profonda) */
+        .cosmos-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -3;
+            background: var(--bg-deep);
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(30, 27, 75, 0.5) 0%, rgba(2, 6, 23, 1) 80%),
+                conic-gradient(from 0deg at 50% 50%, #020617 0deg, #0f172a 120deg, #1e1b4b 240deg, #020617 360deg);
+            background-blend-mode: screen;
+            animation: rotateCosmos 120s linear infinite;
+            transform-origin: center;
+            scale: 1.2; /* Per evitare bordi durante la rotazione */
+        }
+
+        @keyframes rotateCosmos {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 2. Texture Granulosa (Noise Overlay) - L'ingrediente segreto per l'effetto WOW */
+        .noise-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            background-color: var(--bg-deep);
-            /* Sfumatura di fondo molto sottile */
-            background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 60%);
+            opacity: 0.06; /* Molto sottile */
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Luce Mouse - Più intensa sul nero */
+        /* 3. Luce Mouse (Esistente) */
         .mouse-spotlight {
-            position: absolute;
-            width: 1000px; height: 1000px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
+            position: fixed; /* Cambiato in fixed per stabilità */
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2;
+            background: radial-gradient(800px circle at var(--x, 50%) var(--y, 50%), rgba(99, 102, 241, 0.18), transparent 40%);
             pointer-events: none;
             mix-blend-mode: screen;
-            transition: opacity 0.3s ease;
         }
 
-        /* Orbite colorate (Nebula effect) */
+        /* 4. Orbite colorate (Esistenti) */
+        .orb-container { position: fixed; top:0; left:0; width:100%; height:100%; z-index: -3; pointer-events: none; overflow: hidden; }
         .orb-1 {
             position: absolute; top: 10%; left: 20%;
             width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(236, 72, 153, 0.08) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
             animation: float1 25s infinite ease-in-out; filter: blur(100px);
         }
-
         .orb-2 {
             position: absolute; bottom: 10%; right: 10%;
             width: 800px; height: 800px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
             animation: float2 35s infinite ease-in-out; filter: blur(100px);
         }
 
-        @keyframes float1 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(60px, 40px) scale(1.1); }
-        }
-        @keyframes float2 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-60px, -40px) scale(1.2); }
-        }
+        @keyframes float1 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(60px, 40px) scale(1.1); } }
+        @keyframes float2 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-60px, -40px) scale(1.2); } }
+
+        /* --- FINE SFONDO --- */
+
 
         .container {
             max-width: 1100px; margin: 0 auto; padding: 0 20px;
@@ -93,7 +111,6 @@
         h1 {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 3rem; font-weight: 700;
-            /* Gradiente testo metallico/luminoso */
             background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             margin-bottom: 25px; letter-spacing: -0.02em; line-height: 1.1;
@@ -115,7 +132,6 @@
         .role-sub { color: #94a3b8; font-size: 1.1rem; }
         .role-icon { width: 20px; height: 20px; color: var(--primary-glow); }
 
-        /* --- BOTTONI DARK GLASS --- */
         .social-links { 
             display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; 
             margin-bottom: 50px; 
@@ -146,11 +162,9 @@
             background: rgba(15, 23, 42, 0.6);
             padding: 25px; border-radius: 16px;
             border: 1px solid var(--glass-border);
-            /* Separazione netta dai bottoni */
             margin-top: 50px; 
         }
 
-        /* GRID & CARDS DARK */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; padding-bottom: 80px; }
 
         .card {
@@ -206,7 +220,6 @@
         footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--glass-border); margin-top: 40px; }
         footer a { color: var(--primary-glow); text-decoration: none; font-weight: 600; }
 
-        /* Mobile Adjustments */
         @media (max-width: 600px) {
             h1 { font-size: 2.2rem; }
             .role-item { font-size: 1rem; padding: 6px 15px; }
@@ -214,12 +227,13 @@
     </style>
 </head>
 <body>
-    <div class="interactive-bg">
-        <div class="mouse-spotlight" id="spotlight"></div>
+    <div class="cosmos-bg"></div>
+    <div class="noise-overlay"></div>
+    <div class="orb-container">
         <div class="orb-1"></div>
         <div class="orb-2"></div>
     </div>
-
+    <div class="mouse-spotlight" id="spotlight"></div>
     <div class="container">
         <header>
             <img src="https://github.com/{{GITHUB_USER}}.png" alt="Profile" class="avatar">
@@ -230,9 +244,6 @@
                 <div class="role-item">
                     <svg class="role-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/></svg>
                     <span>M.Sc. Student in Statistical Physics & Complex Systems @ Sapienza</span>
-                </div>
-                
-                <div class="role-item role-sub">
                     <svg class="role-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg>
                     <span>Co-Founder @ Sheep</span>
                 </div>
@@ -265,22 +276,23 @@
         </main>
 
         <footer>
-            <p>Designed by {{AUTHOR_NAME}} &bull; <a href="{{SHEEP_LINK}}" target="_blank">Check out my start-up: Sheep</a></p>
+            <p>Designed by {{AUTHOR_NAME}} &bull; Check out my start-up:<a href="{{SHEEP_LINK}}" target="_blank">Sheep</a></p>
         </footer>
     </div>
 
     <script>
+        // Script del Mouse Spotlight ottimizzato per il nuovo sfondo
         const spotlight = document.getElementById('spotlight');
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-        let spotX = mouseX, spotY = mouseY;
-        document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
-        function animate() {
-            const dx = mouseX - spotX; const dy = mouseY - spotY;
-            spotX += dx * 0.1; spotY += dy * 0.1;
-            spotlight.style.left = spotX + 'px'; spotlight.style.top = spotY + 'px';
-            requestAnimationFrame(animate);
-        }
-        animate();
+        
+        // Aggiorna variabili CSS per prestazioni migliori
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            // Aggiorna direttamente la posizione per reattività immediata
+            spotlight.style.setProperty('--x', mouseX + 'px');
+            spotlight.style.setProperty('--y', mouseY + 'px');
+        });
     </script>
 </body>
 </html>
