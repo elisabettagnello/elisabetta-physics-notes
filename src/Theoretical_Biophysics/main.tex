@@ -17,6 +17,7 @@
 \usepackage{graphicx}
 \usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
 \usepackage{fancyhdr} % Per personalizzare header e footer
+\setlength{\headheight}{14.5pt}
 \usepackage{hyperref} % Per link interni (es. tabella dei contenuti, riferimenti)
 \hypersetup{
     colorlinks=true,
@@ -28,17 +29,26 @@
 \usepackage{wrapfig} 
 \usepackage{caption} 
 
-
+\captionsetup{labelfont=bf} % Aggiunge il grassetto all'etichetta della didascalia
 
 \usepackage{draftwatermark}
 \usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+
 \usepackage{lmodern} % Font moderno opzionale
-\SetWatermarkText{\sffamily\bfseries\textcolor{gray!10}{ELISABETTA AGNELLO}}
-\SetWatermarkScale{0.4}
-\SetWatermarkColor{gray!10}
+\SetWatermarkText{\sffamily\bfseries\textcolor{gray!10}{github . com / elisabettagnello}}
+\SetWatermarkScale{0.3}
+\SetWatermarkColor{gray!8}
 \SetWatermarkAngle{45}
 
-
+% Definizione della palette sequenziale (Viridis-like)
+\definecolor{colorA}{HTML}{003f5c} % 1 - Blu Profondo
+\definecolor{colorB}{HTML}{2f4b7c} % 2 - Indaco
+\definecolor{colorC}{HTML}{665191} % 3 - Viola Bluastro
+\definecolor{colorD}{HTML}{a05195} % 4 - Magenta Scuro
+\definecolor{colorE}{HTML}{d45087} % 5 - Rosso Porpora
+\definecolor{colorF}{HTML}{f95d6a} % 6 - Arancio-Rosso
+\definecolor{colorG}{HTML}{ff7c43} % 7 - Arancio Brillante
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CONFIGURAZIONE STILE PAGINA (FANCYHDR)
@@ -49,7 +59,16 @@
 \fancyfoot[C]{\thepage} % Numero di pagina al centro del footer
 \renewcommand{\headrulewidth}{0.4pt} % Linea sotto l'header
 \renewcommand{\footrulewidth}{0.4pt} % Linea sopra il footer
-\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}} % Formato del titolo del capitolo
+
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+\usepackage{titlesec}
+
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries} % stile del titolo
+  {}               
+  {0pt}                      % spazio
+  {\Huge}                     % stile applicato al titolo vero e proprio
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -58,7 +77,7 @@
 \begin{document}
 
 % --- Pagina del Titolo (da personalizzare) ---
-\title{Appunti del Corso di Theoretical Biophysics \\ tenuto dalla prof.ssa Irene Giardina}
+\title{Theoretical Biophysics}
 \author{Autore: Elisabetta Agnello}
 \date{anno: 2024/2025}
 \maketitle
@@ -67,8 +86,7 @@
 \frontmatter % Numerazione romana per le pagine iniziali (indice)
 \tableofcontents
 
-% --- Inclusione dei Capitoli ---
-\mainmatter % Riprende la numerazione araba per il corpo del testo
+\mainmatter 
 \include{capitolo_01}
 \include{capitolo_02}
 \include{capitolo_03}
