@@ -8,120 +8,70 @@ permissions:
   contents: write
 
 jobs:
-  # JOB 1: FILTRO
+  # JOB 1: FILTRO - Capisce cosa è cambiato per risparmiare tempo
   check_changes:
     runs-on: ubuntu-latest
     outputs:
-      docs_changed: ${{ steps.filter.outputs.docs }}
+      latex_changed: ${{ steps.filter.outputs.latex }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
         id: filter
         with:
           filters: |
-            docs:
+            latex:
               - 'src/**/*.tex'
-              - 'notion/**/*.md'
-              - 'notion/**/*.png'
-              - 'notion/**/*.jpg'
+              - 'src/**/*.png'
+              - 'src/**/*.jpg'
+              - 'src/**/*.jpeg'
             site:
               - 'scripts/**'
+              - '.github/workflows/publish.yml'
 
-  # JOB 2: BUILD DOCS (Versione STABILE con Script esterno)
+  # JOB 2: COMPILAZIONE LATEX (Solo se i file .tex sono cambiati)
   build_pdfs:
     needs: check_changes
-    # Rimosso IF per test, puoi rimetterlo dopo
-    # if: ${{ needs.check_changes.outputs.docs_changed == 'true' }}
+    # Se vuoi forzare la compilazione sempre, metti un # davanti alla riga sotto (if: ...)
+    if: ${{ needs.check_changes.outputs.latex_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del codice
         uses: actions/checkout@v3
 
-      # --- PARTE 1: LATEX ---
+      # Compila TUTTI i file main.tex trovati nelle sottocartelle di src/
       - name: Compila i file LaTeX
         uses: xu-cheng/latex-action@v3
         with:
+          # Cerca main.tex in QUALSIASI sottocartella di src (es. src/Fisica/main.tex, src/Bio/main.tex)
           root_file: src/*/main.tex
+          
+          # FONDAMENTALE: Entra nella cartella prima di compilare (così trova le immagini e i capitoli)
           work_in_root_file_dir: true
+          
           continue_on_error: true
+          # -f forza la creazione del PDF anche se ci sono warning (es. bibliografia mancante)
           args: -pdf -file-line-error -interaction=nonstopmode -f
 
-      - name: Crea cartella PDF pubblica e sposta LaTeX
+      - name: Prepara cartella pubblica
+        run: mkdir -p public/pdfs
+
+      # Rinomina i PDF: da "main.pdf" al nome della cartella (es. "Meccanica_Statistica.pdf")
+      - name: Sposta e Rinomina i PDF
         run: |
-          mkdir -p public/pdfs
           find src -name "main.pdf" | while read file; do
               folder=$(basename "$(dirname "$file")")
+              echo "Trovato PDF in $folder -> Lo rinomino in $folder.pdf"
               mv "$file" "public/pdfs/${folder}.pdf"
           done
 
-      # --- PARTE 2: NOTION (PANDOC) ---
-      
-      # STEP A: Creiamo lo script di conversione (Logica "Una Cartella = Un PDF")
-      - name: Crea Script Conversione
-        run: |
-          cat << 'EOF' > convert_script.sh
-          #!/bin/sh
-          set -e
-          apk add --no-cache ttf-dejavu
-          
-          mkdir -p public/pdfs
-          
-          if [ -d "notion" ]; then
-            # Cicla attraverso le CARTELLE di primo livello dentro 'notion'
-            # Es: notion/Theoretical_Biophysics
-            for dir in notion/*/; do
-                # Rimuovi lo slash finale (es. notion/Bio/ -> notion/Bio)
-                dir=${dir%*/}
-                
-                # Se non è una directory, salta
-                if [ ! -d "$dir" ]; then continue; fi
-                
-                # Nome della materia (es. Theoretical_Biophysics)
-                subject_name=$(basename "$dir")
-                echo "Creating combined PDF for Subject: $subject_name"
-                
-                # Entra nella cartella della materia
-                cd "$dir"
-                
-                # Trova tutti i file .md, li ordina alfabeticamente e li passa a Pandoc tutti insieme
-                # *.md espande in "01.md 02.md 03.md"
-                pandoc *.md \
-                  -f markdown \
-                  -o "/github/workspace/public/pdfs/${subject_name}.pdf" \
-                  --pdf-engine=xelatex \
-                  -V geometry:margin=2.5cm \
-                  --variable urlcolor=cyan \
-                  --toc \
-                  --toc-depth=2 \
-                  -V mainfont="DejaVu Serif" 
-                
-                echo "✅ Created ${subject_name}.pdf"
-                
-                # Torna alla root per la prossima materia
-                cd /github/workspace
-            done
-          else
-            echo "Nessuna cartella Notion trovata."
-          fi
-          EOF
-          
-          chmod +x convert_script.sh
-
-      # STEP B: Eseguiamo lo script dentro il Container Docker
-      - name: Esegui Conversione in Docker
-        uses: docker://pandoc/latex:latest
-        with:
-          entrypoint: /bin/sh
-          args: -c "/github/workspace/convert_script.sh"
-
-      # Carica i PDF creati
+      # Salva i PDF generati per il passaggio successivo
       - name: Upload PDFs artifact
         uses: actions/upload-artifact@v4
         with:
           name: compiled-pdfs
           path: public/pdfs
 
-  # JOB 3: DEPLOY
+  # JOB 3: DEPLOY DEL SITO
   deploy_site:
     needs: [check_changes, build_pdfs]
     if: always()
@@ -133,18 +83,26 @@ jobs:
       - name: Prepara cartella pubblica
         run: mkdir -p public/pdfs
 
+      # SCENARIO A: Abbiamo ricompilato i PDF -> Scaricali dall'artefatto appena creato
       - name: Scarica nuovi PDF
+        if: needs.check_changes.outputs.latex_changed == 'true'
         uses: actions/download-artifact@v4
-        continue-on-error: true
         with:
           name: compiled-pdfs
           path: public/pdfs
 
-      - name: Recupera PDF esistenti (Backup)
+      # SCENARIO B: Non abbiamo toccato i LaTeX -> Recupera i vecchi PDF dal sito online
+      # (Così non pubblichi un sito vuoto se modifichi solo l'HTML)
+      - name: Recupera PDF esistenti
+        if: needs.check_changes.outputs.latex_changed != 'true'
         run: |
+          echo "LaTeX non modificato. Recupero i PDF dalla versione online..."
           git clone --branch gh-pages --single-branch https://github.com/${{ github.repository }}.git old_site || true
           if [ -d "old_site/pdfs" ]; then
             cp -n old_site/pdfs/* public/pdfs/ || true
+            echo "PDF recuperati."
+          else
+            echo "Nessun PDF trovato online."
           fi
           rm -rf old_site
 
