@@ -1,0 +1,92 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PREAMBOLO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt, a4paper]{book}
+
+% --- Lingua e Codifica ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+
+% --- Matematica ---
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+% --- Grafica e Layout ---
+\usepackage{graphicx}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{fancyhdr} % Per personalizzare header e footer
+\usepackage{hyperref} % Per link interni (es. tabella dei contenuti, riferimenti)
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\usepackage{wrapfig} 
+\usepackage{caption} 
+
+
+
+\usepackage{draftwatermark}
+\usepackage{xcolor}
+\usepackage{lmodern} % Font moderno opzionale
+\SetWatermarkText{\sffamily\bfseries\textcolor{gray!10}{ELISABETTA AGNELLO}}
+\SetWatermarkScale{0.4}
+\SetWatermarkColor{gray!10}
+\SetWatermarkAngle{45}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CONFIGURAZIONE STILE PAGINA (FANCYHDR)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancy}
+\fancyhf{} % Pulisce tutti i campi di header e footer
+\fancyhead[LE,RO]{\nouppercase{\leftmark}} % Titolo del capitolo in alto a sinistra (pagine pari) e destra (pagine dispari)
+\fancyfoot[C]{\thepage} % Numero di pagina al centro del footer
+\renewcommand{\headrulewidth}{0.4pt} % Linea sotto l'header
+\renewcommand{\footrulewidth}{0.4pt} % Linea sopra il footer
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}} % Formato del titolo del capitolo
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% INIZIO DEL DOCUMENTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+% --- Pagina del Titolo (da personalizzare) ---
+\title{Appunti del Corso di Theoretical Biophysics \\ tenuto dalla prof.ssa Irene Giardina}
+\author{Autore: Elisabetta Agnello}
+\date{anno: 2024/2025}
+\maketitle
+
+% --- Indice ---
+\frontmatter % Numerazione romana per le pagine iniziali (indice)
+\tableofcontents
+
+% --- Inclusione dei Capitoli ---
+\mainmatter % Riprende la numerazione araba per il corpo del testo
+\include{capitolo_01}
+\include{capitolo_02}
+\include{capitolo_03}
+\include{capitolo_04}
+\include{capitolo_05}
+\include{capitolo_06}
+\include{capitolo_07}
+\include{capitolo_08}
+\include{capitolo_09}
+\include{capitolo_10}
+\include{capitolo_11}
+\include{capitolo_12}
+\include{capitolo_13}
+\include{capitolo_14}
+\include{capitolo_15}
+\include{capitolo_16}
+\include{capitolo_17}
+\include{capitolo_18}
+\include{capitolo_19}
+\include{capitolo_20}
+\end{document}
