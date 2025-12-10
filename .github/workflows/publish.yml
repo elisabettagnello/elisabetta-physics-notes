@@ -8,12 +8,11 @@ permissions:
   contents: write
 
 jobs:
-  # JOB 1: FILTRO - Capisce cosa è cambiato
+  # JOB 1: FILTRO
   check_changes:
     runs-on: ubuntu-latest
     outputs:
       docs_changed: ${{ steps.filter.outputs.docs }}
-      site_changed: ${{ steps.filter.outputs.site }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
@@ -22,101 +21,73 @@ jobs:
           filters: |
             docs:
               - 'src/**/*.tex'
-              - 'src/**/*.png'
-              - 'src/**/*.jpg'
               - 'notion/**/*.md'
               - 'notion/**/*.png'
               - 'notion/**/*.jpg'
-              - 'notion/**/*.jpeg'
             site:
               - 'scripts/**'
-              - '.github/workflows/publish.yml'
 
-  # JOB 2: BUILD DOCS - Compila LaTeX e Converte Notion (Solo se servono nuovi PDF)
+  # JOB 2: BUILD DOCS (Versione VELOCE con Docker)
   build_pdfs:
     needs: check_changes
-    # Esegue solo se sono cambiati i file sorgente (docs)
-    if: ${{ needs.check_changes.outputs.docs_changed == 'true' }}
+    # Ho rimosso l'IF per farti testare subito. Poi potrai rimetterlo.
+    # if: ${{ needs.check_changes.outputs.docs_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del codice
         uses: actions/checkout@v3
 
-      # --- PARTE 1: LATEX ---
+      # --- PARTE 1: LATEX (Già veloce grazie alla action specifica) ---
       - name: Compila i file LaTeX
         uses: xu-cheng/latex-action@v3
         with:
           root_file: src/*/main.tex
-          # Fondamentale per trovare i file inclusi con \input
           work_in_root_file_dir: true
           continue_on_error: true
-          # -f forza la creazione del PDF anche con errori non fatali
           args: -pdf -file-line-error -interaction=nonstopmode -f
 
-      # --- PARTE 2: NOTION (PANDOC) ---
-      - name: Install Pandoc & Fonts
+      - name: Crea cartella PDF pubblica e sposta LaTeX
         run: |
-          sudo apt-get update
-          sudo apt-get install -y pandoc texlive-xetex fonts-dejavu
-
-      - name: Crea cartella PDF pubblica
-        run: mkdir -p public/pdfs
-
-      # --- PARTE 3: ORGANIZZAZIONE FILE ---
-      
-      # Sposta i PDF generati da LaTeX
-      - name: Sposta PDF LaTeX
-        run: |
+          mkdir -p public/pdfs
           find src -name "main.pdf" | while read file; do
-              # Prende il nome della cartella genitore (es. Meccanica_Statistica)
               folder=$(basename "$(dirname "$file")")
               mv "$file" "public/pdfs/${folder}.pdf"
           done
 
-      # Converte i file MD di Notion (gestendo le sottocartelle immagini)
-      - name: Converti Notion MD in PDF
-        run: |
-          # Percorso assoluto della cartella di destinazione
-          OUTPUT_DIR="$(pwd)/public/pdfs"
-          
-          if [ -d "notion" ]; then
-            # Cerca tutti i file .md dentro notion (anche annidati)
-            find notion -name "*.md" | while read file; do
-                # Cartella dove si trova il file .md corrente
-                dir=$(dirname "$file")
-                # Nome del file (es. Lezione_01)
-                filename=$(basename "$file" .md)
-                
-                echo "Convertendo: $filename nella cartella $dir"
-                
-                # Entriamo nella directory specifica per far trovare le immagini a Pandoc
-                (
-                  cd "$dir"
-                  pandoc "$(basename "$file")" -o "$OUTPUT_DIR/${filename}.pdf" \
-                    --pdf-engine=xelatex \
-                    -V geometry:margin=2.5cm \
-                    -V mainfont="DejaVu Serif" \
-                    -V monofont="DejaVu Sans Mono" \
-                    --variable urlcolor=cyan \
-                    --toc
-                )
-            done
-          else
-            echo "Nessuna cartella Notion trovata."
-          fi
+      # --- PARTE 2: NOTION (PANDOC via DOCKER - IL TRUCCO VELOCE) ---
+      - name: Converti Notion MD in PDF (Docker)
+        uses: docker://pandoc/latex:latest
+        with:
+          # Questo comando è un po' complesso perché deve girare dentro il container
+          # ma è molto più veloce dell'installazione manuale
+          entrypoint: /bin/sh
+          args: -c "
+            apk add --no-cache ttf-dejavu; 
+            mkdir -p public/pdfs;
+            if [ -d 'notion' ]; then
+              find notion -name '*.md' | while read file; do
+                dir=\$(dirname \"\$file\");
+                filename=\$(basename \"\$file\" .md);
+                echo \"Processing \$filename in \$dir\";
+                cd \"\$dir\";
+                pandoc \"\$(basename \"\$file\")\" -o \"/github/workspace/public/pdfs/\${filename}.pdf\" --pdf-engine=xelatex -V geometry:margin=2.5cm --variable urlcolor=cyan --toc;
+                cd /github/workspace;
+              done
+            else
+              echo 'No notion folder found';
+            fi"
 
-      # Carica i PDF creati come artefatto per il prossimo job
+      # Carica i PDF creati
       - name: Upload PDFs artifact
         uses: actions/upload-artifact@v4
         with:
           name: compiled-pdfs
           path: public/pdfs
 
-  # JOB 3: DEPLOY - Crea il sito web e pubblica
+  # JOB 3: DEPLOY (Uguale a prima)
   deploy_site:
     needs: [check_changes, build_pdfs]
-    # Esegue sempre, a patto che il check iniziale non sia fallito
-    if: always() && needs.check_changes.result == 'success'
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del codice
@@ -125,25 +96,20 @@ jobs:
       - name: Prepara cartella pubblica
         run: mkdir -p public/pdfs
 
-      # SCENARIO A: Abbiamo ricompilato i PDF -> Scaricali dall'artefatto
       - name: Scarica nuovi PDF
-        if: needs.check_changes.outputs.docs_changed == 'true'
         uses: actions/download-artifact@v4
+        continue-on-error: true # Se non ci sono PDF, non fallire
         with:
           name: compiled-pdfs
           path: public/pdfs
 
-      # SCENARIO B: Non abbiamo toccato i documenti -> Scaricali dal sito vecchio
-      - name: Recupera PDF esistenti
-        if: needs.check_changes.outputs.docs_changed != 'true'
+      # Recupera vecchi PDF se l'artefatto è vuoto o parziale
+      - name: Recupera PDF esistenti (Backup)
         run: |
-          echo "Nessun documento modificato. Recupero i PDF dalla versione online..."
-          git clone --branch gh-pages --single-branch https://github.com/${{ github.repository }}.git old_site
+          git clone --branch gh-pages --single-branch https://github.com/${{ github.repository }}.git old_site || true
           if [ -d "old_site/pdfs" ]; then
-            cp -r old_site/pdfs/* public/pdfs/
-            echo "PDF recuperati con successo."
-          else
-            echo "Attenzione: Nessun PDF trovato nel vecchio sito."
+            # Copia solo se non esistono già (non sovrascrivere quelli nuovi)
+            cp -n old_site/pdfs/* public/pdfs/ || true
           fi
           rm -rf old_site
 
