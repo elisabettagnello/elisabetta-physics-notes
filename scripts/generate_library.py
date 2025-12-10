@@ -8,25 +8,22 @@ SHEEP_LINK = "https://sheeptechnologies.com"
 EMAIL_LINK = "agnelloe24@gmail.com"
 GITHUB_LINK = f"https://github.com/{GITHUB_USER}"
 
-# --- COLLEZIONE ICONE (SVG) ---
+# --- COLLEZIONE ICONE (SEMPLICI E CLASSICHE) ---
 ICONS = {
-    # 1. BATTERIO (Theoretical Biophysics) - Nuovo!
-    "bacterium": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="6" y="8" width="12" height="8" rx="4" /><path d="M18 12h2"/><path d="M4 12h2"/><path d="M7 6l1 2"/><path d="M17 6l-1 2"/><path d="M7 18l1-2"/><path d="M17 18l-1-2"/><path d="M22 12c1 0 1-2 2-2"/></svg>""",
+    # 1. LIBRO APERTO (Biophysics)
+    "open_book": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>""",
     
-    # 2. CRITICAL PHENOMENA (Campo/Vortice)
-    "feynman": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 12c0-1.66 4-3 9-3s9 1.34 9 3"/><path d="M21 12c0 4.42-4 8-9 8s-9-3.58-9-8"/><path d="M3 12c0-4.42 4-8 9-8s9 3.58 9 8"/><circle cx="12" cy="12" r="3"/></svg>""",
+    # 2. PILA DI LIBRI (Critical Phenomena)
+    "stack_books": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2c1.798 0 3.298 1.044 4.5 2.5c1.202-1.456 2.702-2.5 4.5-2.5A2.5 2.5 0 0 1 18 4.5v15"/></svg>""",
     
-    # 3. SPIN GLASS / ISING (Reticolo)
-    "ising": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 8l0 2m0-4l0 2m8 4l0-2m0 4l0-2m-4 4l0 2m0-4l0 2m-4 4l0 2m0-4l0 2m8-4l0-2m0 4l0-2"/></svg>""",
+    # 3. RIGHELLO E MATITA (Lab / Misure)
+    "ruler": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>""",
     
-    # 4. MICROSCOPIO (Biosistemi)
-    "microscope": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20v-6h4v6m-2-6V9m-2 0h4l-1-5h-2l-1 5zM3 20h18M14 14l5-5"/><path stroke-linecap="round" stroke-linejoin="round" d="M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>""",
+    # 4. LIBRO CHIUSO (Generico)
+    "closed_book": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>""",
     
-    # 5. FISICA GENERICA (Atomo)
-    "physics": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>""",
-    
-    # 6. LIBRO (Default)
-    "book": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>"""
+    # 5. ATOMO SEMPLICE (Fisica)
+    "atom": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>"""
 }
 
 # --- TEMPLATE CARD HTML ---
@@ -52,30 +49,19 @@ def get_icon_for_title(title):
     """Sceglie l'icona in base alle parole chiave nel titolo"""
     t = title.lower()
     
-    # Logica di assegnazione
-    if "bio" in t or "neur" in t or "life" in t:
-        # Se c'è "lab", vince il microscopio, altrimenti batterio per biofisica
-        if "lab" in t:
-            return ICONS["microscope"]
-        return ICONS["bacterium"] 
-        
-    elif "critical" in t or "phenomena" in t or "field" in t:
-        return ICONS["feynman"] 
-        
-    elif "disordered" in t or "spin" in t or "glass" in t or "ising" in t:
-        return ICONS["ising"]
-        
+    # MAPPATURA PERSONALIZZATA
+    if "bio" in t or "neur" in t:
+        return ICONS["open_book"] # Theoretical Biophysics -> Libro Aperto
+    elif "critical" in t or "phenomena" in t:
+        return ICONS["stack_books"] # Critical Phenomena -> Pila di libri
+    elif "disordered" in t or "spin" in t or "glass" in t:
+        return ICONS["ruler"] # Sistemi disordinati -> Righello/Strumenti
     elif "lab" in t or "micro" in t:
-        return ICONS["microscope"]
-        
-    elif "non" in t and "equilibrium" in t:
-        return ICONS["physics"]
-        
-    elif "stat" in t or "mech" in t or "phys" in t:
-        return ICONS["physics"]
-        
+        return ICONS["closed_book"] # Laboratorio -> Libro Chiuso (Quaderno)
+    elif "stat" in t or "mech" in t or "non" in t:
+        return ICONS["atom"] # Altre fisiche -> Atomo semplice
     else:
-        return ICONS["book"]
+        return ICONS["closed_book"] # Default
 
 def get_file_size(file_path):
     try:
@@ -138,7 +124,7 @@ def generate_index():
     with open("public/index.html", "w", encoding="utf-8") as f:
         f.write(final_html)
     
-    print("✨ Libreria generata con icona Batterio per Biofisica!")
+    print("✨ Libreria generata con icone semplici (Libri, Righelli)!")
 
 if __name__ == "__main__":
     generate_index()
