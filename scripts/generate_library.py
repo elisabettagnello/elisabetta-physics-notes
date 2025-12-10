@@ -58,8 +58,6 @@ def get_icon_for_title(title):
         return ICONS["ruler"] # Sistemi disordinati -> Righello/Strumenti
     elif "lab" in t or "micro" in t:
         return ICONS["closed_book"] # Laboratorio -> Libro Chiuso (Quaderno)
-    elif "stat" in t or "mech" in t or "non" in t:
-        return ICONS["atom"] # Altre fisiche -> Atomo semplice
     else:
         return ICONS["closed_book"] # Default
 
