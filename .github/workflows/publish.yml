@@ -8,11 +8,11 @@ permissions:
   contents: write
 
 jobs:
-  # JOB 1: Controlla cosa è cambiato
+  # JOB 1: FILTRO - Capisce cosa è cambiato
   check_changes:
     runs-on: ubuntu-latest
     outputs:
-      latex_changed: ${{ steps.filter.outputs.latex }}
+      docs_changed: ${{ steps.filter.outputs.docs }}
       site_changed: ${{ steps.filter.outputs.site }}
     steps:
       - uses: actions/checkout@v3
@@ -20,52 +20,102 @@ jobs:
         id: filter
         with:
           filters: |
-            latex:
+            docs:
               - 'src/**/*.tex'
               - 'src/**/*.png'
               - 'src/**/*.jpg'
+              - 'notion/**/*.md'
+              - 'notion/**/*.png'
+              - 'notion/**/*.jpg'
+              - 'notion/**/*.jpeg'
             site:
               - 'scripts/**'
               - '.github/workflows/publish.yml'
 
-  # JOB 2: Compila LaTeX
+  # JOB 2: BUILD DOCS - Compila LaTeX e Converte Notion (Solo se servono nuovi PDF)
   build_pdfs:
     needs: check_changes
-    if: ${{ needs.check_changes.outputs.latex_changed == 'true' }}
+    # Esegue solo se sono cambiati i file sorgente (docs)
+    if: ${{ needs.check_changes.outputs.docs_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del codice
         uses: actions/checkout@v3
 
+      # --- PARTE 1: LATEX ---
       - name: Compila i file LaTeX
         uses: xu-cheng/latex-action@v3
         with:
           root_file: src/*/main.tex
+          # Fondamentale per trovare i file inclusi con \input
           work_in_root_file_dir: true
           continue_on_error: true
-          # HO RIMESSO -f PER IGNORARE I WARNING SUI RIFERIMENTI MANCANTI
+          # -f forza la creazione del PDF anche con errori non fatali
           args: -pdf -file-line-error -interaction=nonstopmode -f
 
-      - name: Prepara cartella PDF
+      # --- PARTE 2: NOTION (PANDOC) ---
+      - name: Install Pandoc & Fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc texlive-xetex fonts-dejavu
+
+      - name: Crea cartella PDF pubblica
         run: mkdir -p public/pdfs
 
-      - name: Sposta e rinomina i PDF
+      # --- PARTE 3: ORGANIZZAZIONE FILE ---
+      
+      # Sposta i PDF generati da LaTeX
+      - name: Sposta PDF LaTeX
         run: |
           find src -name "main.pdf" | while read file; do
+              # Prende il nome della cartella genitore (es. Meccanica_Statistica)
               folder=$(basename "$(dirname "$file")")
               mv "$file" "public/pdfs/${folder}.pdf"
           done
-      
+
+      # Converte i file MD di Notion (gestendo le sottocartelle immagini)
+      - name: Converti Notion MD in PDF
+        run: |
+          # Percorso assoluto della cartella di destinazione
+          OUTPUT_DIR="$(pwd)/public/pdfs"
+          
+          if [ -d "notion" ]; then
+            # Cerca tutti i file .md dentro notion (anche annidati)
+            find notion -name "*.md" | while read file; do
+                # Cartella dove si trova il file .md corrente
+                dir=$(dirname "$file")
+                # Nome del file (es. Lezione_01)
+                filename=$(basename "$file" .md)
+                
+                echo "Convertendo: $filename nella cartella $dir"
+                
+                # Entriamo nella directory specifica per far trovare le immagini a Pandoc
+                (
+                  cd "$dir"
+                  pandoc "$(basename "$file")" -o "$OUTPUT_DIR/${filename}.pdf" \
+                    --pdf-engine=xelatex \
+                    -V geometry:margin=2.5cm \
+                    -V mainfont="DejaVu Serif" \
+                    -V monofont="DejaVu Sans Mono" \
+                    --variable urlcolor=cyan \
+                    --toc
+                )
+            done
+          else
+            echo "Nessuna cartella Notion trovata."
+          fi
+
+      # Carica i PDF creati come artefatto per il prossimo job
       - name: Upload PDFs artifact
         uses: actions/upload-artifact@v4
         with:
           name: compiled-pdfs
           path: public/pdfs
 
-  # JOB 3: Genera Sito e Pubblica (SEMPRE, ma recupera i PDF)
+  # JOB 3: DEPLOY - Crea il sito web e pubblica
   deploy_site:
     needs: [check_changes, build_pdfs]
-    # Esegue sempre, purché non sia fallito il controllo iniziale
+    # Esegue sempre, a patto che il check iniziale non sia fallito
     if: always() && needs.check_changes.result == 'success'
     runs-on: ubuntu-latest
     steps:
@@ -75,26 +125,25 @@ jobs:
       - name: Prepara cartella pubblica
         run: mkdir -p public/pdfs
 
-      # CASO A: Se abbiamo ricompilato, scarica i NUOVI PDF
-      - name: Scarica nuovi PDF (se compilati)
-        if: needs.check_changes.outputs.latex_changed == 'true'
+      # SCENARIO A: Abbiamo ricompilato i PDF -> Scaricali dall'artefatto
+      - name: Scarica nuovi PDF
+        if: needs.check_changes.outputs.docs_changed == 'true'
         uses: actions/download-artifact@v4
         with:
           name: compiled-pdfs
           path: public/pdfs
 
-      # CASO B: Se NON abbiamo ricompilato, dobbiamo scaricare i VECCHI PDF dal sito esistente
-      # (Altrimenti pubblicheresti un sito senza PDF!)
-      - name: Recupera PDF esistenti (se LaTeX non è cambiato)
-        if: needs.check_changes.outputs.latex_changed != 'true'
+      # SCENARIO B: Non abbiamo toccato i documenti -> Scaricali dal sito vecchio
+      - name: Recupera PDF esistenti
+        if: needs.check_changes.outputs.docs_changed != 'true'
         run: |
-          # Clona la branch gh-pages dove sono salvati i PDF attuali
+          echo "Nessun documento modificato. Recupero i PDF dalla versione online..."
           git clone --branch gh-pages --single-branch https://github.com/${{ github.repository }}.git old_site
-          # Copia i PDF vecchi nella cartella di pubblicazione
           if [ -d "old_site/pdfs" ]; then
             cp -r old_site/pdfs/* public/pdfs/
+            echo "PDF recuperati con successo."
           else
-            echo "Nessun PDF precedente trovato."
+            echo "Attenzione: Nessun PDF trovato nel vecchio sito."
           fi
           rm -rf old_site
 
@@ -111,5 +160,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          # Mantiene la cronologia per evitare problemi
           keep_files: false
