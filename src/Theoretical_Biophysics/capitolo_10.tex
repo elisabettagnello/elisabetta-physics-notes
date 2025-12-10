@@ -1,0 +1,357 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 10 (Lezione del 01/04/2025)
+%-------------------------------------------------------------------------------
+\chapter{Lezione 10}
+\label{capitolo_10}
+\textit{Data: 01/04/2025}
+
+
+\section{Dimostrazione dell'andamento lineare di \texorpdfstring{$\alpha$}{alpha}}
+
+Secondo la Linear Response Theory, il rate di tumbling $\alpha(t)$ dipende dalla concentrazione del gradiente di nutriente $c(t)$ attraverso una funzione di risposta (\textbf{kernel}) $R(t)$.
+
+Nei sistemi fisici, un kernel tipico ha una forma esponenzialmente decrescente. Tuttavia, i batteri mostrano un \textbf{adattamento}: essi rispondono alla variazione della concentrazione e non al suo valore assoluto. Per garantire l'adattamento, il kernel ha un andamento come quello mostrato di sotto, e deve soddisfare:
+
+\begin{equation}
+    \int_0^\infty R(\tau)\,d\tau = 0
+    \label{eq:chap10_1}
+\end{equation}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{pics/10_1.jpeg}
+    \caption{Funzione di risposta.}
+\end{figure}
+
+Consideriamo:
+
+\begin{equation}
+    \int_0^t R(t - t') c(t') dt'
+    \label{eq:chap10_2}
+\end{equation}
+
+Effettuiamo il cambio di variabile: $\tau = t - t'$
+
+\begin{equation}
+    \int_0^t R(\tau) c(t - \tau) d\tau
+    \label{eq:chap10_3}
+\end{equation}
+
+Assumiamo che:
+\begin{itemize}
+    \item $c(t)$ sia una funzione lentamente variabile per cui è possibile espanderla in serie di Taylor;
+    \item $R(\tau) \to 0$ per $\tau ^* \gg t$, in modo da poter estendere l’integrale fino a $+ \infty$
+\end{itemize}
+
+Sviluppiamo in serie di Taylor:
+
+\begin{equation}
+    c(t - \tau) \approx c(t) + \frac{dc}{dt} \; (- \tau) + ...
+    \label{eq:chap10_4}
+\end{equation}
+
+Sostituendo nell'integrale e estendendo il dominio di integrazione:
+
+\begin{equation}
+    \int_0^\infty R(\tau)\left[c(t) - \tau \frac{dc}{dt}\right] d\tau
+    \label{eq:chap10_5}
+\end{equation}
+
+Assumiamo che la concentrazione del nutriente cambi nel tempo a causa del movimento del batterio. Se la variazione di $c$ è dovuta allo spostamento del batterio, allora:
+
+\begin{equation}
+    \frac{dc}{dt} = \nabla c \cdot \bar{v}
+    \label{eq:chap10_6}
+\end{equation}
+
+Questa espressione è corretta solo in determinate condizioni. Immaginiamo che il batterio si trovi in un gradiente di nutriente crescente ad esempio verso destra. Se il batterio si muove in linea retta, percepisce un gradiente positivo. Tuttavia, se durante l'intervallo di tempo $\tau$ (in cui il kernel è diverso da zero) il batterio cambia direzione più volte, la valutazione del gradiente diventa casuale. Per poter scrivere correttamente questa relazione, dobbiamo introdurre un fattore che tenga conto della probabilità che il batterio \textit{non} cambi direzione. Gli eventi di tumbling seguono una distribuzione di Poisson, quindi la probabilità di avere k tumbles in un tempo $\tau$ è:
+
+\begin{equation}
+    P(k) = e^{-\alpha \tau} \frac{(\alpha \tau)^k}{k!}
+    \label{eq:chap10_7}
+\end{equation}
+
+La probabilità che ci siano 0 tumbles quindi è:
+
+\begin{equation}
+    P(k=0) = e^{-\alpha \tau}
+    \label{eq:chap10_8}
+\end{equation}
+
+L’equazione \eqref{eq:chap10_4} diventa:
+
+\begin{equation}
+    c(t - \tau) \approx c(t) - \tau \; \nabla c \cdot \bar{v} \; e^{-\alpha_0 \tau} + ...
+    \label{eq:chap10_9}
+\end{equation}
+
+In prima approssimazione, possiamo considerare $\alpha \approx \alpha_0$ poiché l'integrale è calcolato su un intervallo piccolo.
+
+Quindi:
+
+\begin{equation}
+    \begin{aligned}
+        \alpha(t) &= \alpha_0 + \int_0^\infty d\tau \left[ c(t) - \tau \; (\nabla c \cdot \bar{v}) \; e^{-\alpha_0 \tau} \right] R(\tau) \\
+        &= \alpha_0 +c(t) \int_0^\infty d\tau R(\tau) - (\nabla c \cdot \bar{v}) \int_0^\infty d\tau \; \tau R(\tau) \; e^{-\alpha_0 \tau}
+    \end{aligned}
+    \label{eq:chap10_10}
+\end{equation}
+
+Il primo integrale è nullo per la \eqref{eq:chap10_1}, il secondo invece è una quantità positiva: il Kernel che è positivo per tempi brevi e negativo per tempi lunghi, è moltiplicato per un'esponenziale decrescente, quindi complessivamente il peso è maggiore per i tempi per cui il kernel è positivo rispetto a quelli per cui è negativo. Di conseguenza, il contributo medio è positivo.
+
+Definiamo $\gamma =\int_0^\infty d\tau \; \tau R(\tau) \; e^{-\alpha_0 \tau}$, che come detto è un valore costante positivo.
+
+La forma finale per $\alpha$ è:
+
+\begin{equation}
+    \alpha(t) = \alpha_0 - \gamma (\nabla c \cdot \bar{v})
+    \label{eq:chap10_11}
+\end{equation}
+
+Ciò giustifica l'assunzione usata nelle lezioni precedenti: una espansione lineare del rate di tumbling rispetto al gradiente di concentrazione.
+
+\section{Modello di Keller-Segel}
+
+Sotto l'assunzione di aver raggiunto uno stato stazionario, consideriamo la funzione di distribuzione $P(x)$. Si è visto che questa assume una forma suggerita dalla distribuzione di Boltzmann, ovvero:
+
+\begin{equation}
+    P(x) = \frac{e^{- \beta V(x)}}{z}
+    \label{eq:chap10_12}
+\end{equation}
+
+dove $V(x)$ è un potenziale efficace.
+
+\begin{equation}
+    V(x)\ = \left. \frac{d\alpha}{d \dot{c}} \right|_{0} c(x) = - \Bigg | \left. \frac{d\alpha}{d \dot{c}} \right|_{0} \Bigg | \; c(x)
+    \label{eq:chap10_13}
+\end{equation}
+
+La forza risultante associata a questo potenziale efficace è data da:
+
+\begin{equation}
+    F = -\frac{dV}{dx} = + \Bigg | \left. \frac{d\alpha}{d \dot{c}} \right|_{0} \Bigg | \; \frac{d c}{dx} = \chi \frac{d c}{dx}
+    \label{eq:chap10_14}
+\end{equation}
+
+Abbiamo indicato con $\chi$ la costante di proporzionalità.
+
+Questa forza efficace, che possiamo chiamare \textbf{forza chemotattica efficace}, tende a spingere i batteri verso le regioni a maggiore concentrazione di nutrienti nello stato stazionario.
+
+Generalizziamo questo ragionamento a più dimensioni:
+
+\begin{equation}
+    \bar{F} (\bar{x}) = \chi \nabla \cdot c (\bar{x})
+    \label{eq:chap10_15}
+\end{equation}
+
+Quando una popolazione evolve sotto diffusione e sotto l'azione di una forza, il suo comportamento può essere descritto attraverso l'equazione di Fokker-Planck. Questa prende la forma di una equazione di continuità per la probabilità $P(\bar{x}, t)$:
+
+\begin{align}
+    \frac{\partial p}{\partial t} &= -\nabla \cdot \bar{J} \label{eq:chap10_16a} \\
+    \bar{J} &= - D \; \nabla \cdot P + \frac{\bar{F}}{\zeta} P \label{eq:chap10_16b}
+\end{align}
+
+Combinando queste due equazioni e mettendo al posto di $\bar{F}$ l’espressione \eqref{eq:chap10_15}, otteniamo:
+
+\begin{equation}
+    \frac{\partial P}{\partial t} = D \; (\nabla^2 P) - \frac{\chi}{\zeta} \nabla \cdot \Big[P \; ( \nabla \cdot c )\Big]
+    \label{eq:chap10_17}
+\end{equation}
+
+Oltre all'equazione per la popolazione batterica, è necessario scrivere anche un'equazione per la dinamica del nutriente. Se il nutriente diffonde nel mezzo, possiamo usare un'equazione di diffusione:
+
+\begin{equation}
+    \frac{\partial c}{\partial t} = \tilde{D} \; (\nabla^2 c) + (g-h)
+    \label{eq:chap10_18}
+\end{equation}
+
+dove $\tilde{D}$ è il coefficiente di diffusione del nutriente, $g=g(P, c)$ è una funzione che descrive la produzione del nutriente e $h=h(P,c)$ è una funzione che descrive la degradazione del nutriente.
+
+Mettendo insieme le equazioni \eqref{eq:chap10_17} e \eqref{eq:chap10_18}, otteniamo il cosiddetto \textbf{modello di Keller-Segel}, che descrive il comportamento collettivo di popolazioni microbiche in risposta a gradienti di sostanze chimiche attrattive.
+
+\begin{equation}
+    \begin{cases}
+        \frac{\partial P}{\partial t} &= D \; (\nabla^2 P) - \frac{\chi}{\zeta} \nabla \cdot \Big[P \; ( \nabla \cdot c )\Big] \\
+        \frac{\partial c}{\partial t} &= \tilde{D} \; (\nabla^2 c) + (g-h)
+    \end{cases}
+    \label{eq:chap10_19}
+\end{equation}
+
+Queste equazioni non sono banali da risolvere e presentano un comportamento complesso, tra cui instabilità, formazione di pattern e collasso della densità batterica in regioni localizzate.
+
+
+
+\section{Fotorecettori}
+
+Analizzeremo ora il processo della fotorecezione, ovvero cosa accade quando vediamo.
+
+Anche in questo caso, come nella chemiotassi, ci troviamo di fronte a un problema in cui un segnale esterno (questa volta non è un nutriente ma un fotone) viene percepito, nonostante il rumore, e trasformato, in questo caso, in un segnale elettrico. Si tratta quindi di un processo di estrazione di informazione da un segnale esterno rumoroso, ed è interessante osservare come meccanismi simili (a livello informativo) si ripetano in contesti biologici differenti.
+
+Le prime osservazioni quantitative sul tema sono state fatte da \textbf{Hecht, Shlaer e Pirenne} (anni '40), sulla base di un’idea proposta da Lorentz. L’idea iniziale era che l’occhio umano è capace di percepire luce anche a bassissima intensità, corrispondente a poche centinaia di fotoni incidenti sulla cornea in un tempo molto breve. Dato che i fotorecettori sono distribuiti su tutta la cornea, ciascun fotorecettore riceve in media pochi fotoni, anche solo uno. Da qui l’ipotesi per cui i fotorecettori devono essere in grado di rispondere anche all’assorbimento di un singolo fotone.
+
+Consideriamo ora un modello più quantitativo: una torcia emette luce per un tempo $T$. L’intensità classica media della luce è indicata con $\tilde{I}$: essa è proporzionale al tasso medio con cui i fotoni colpiscono la cornea. Tuttavia, non tutti i fotoni vengono assorbiti: l’assorbimento è regolato dalla meccanica quantistica ed è un processo probabilistico. Sia $\alpha$ la probabilità (efficienza) di assorbimento. Allora il numero medio di fotoni assorbiti sarà:
+
+\begin{equation}
+    M = \alpha \tilde{I} T
+    \label{eq:chap10_20}
+\end{equation}
+
+Il processo è di tipo Poissoniano, quindi la probabilità di assorbire esattamente $n$ fotoni è:
+
+\begin{equation}
+    P(n|M) = \frac{(M)^n}{n!} e^{-M}
+    \label{eq:chap10_21}
+\end{equation}
+
+> Sia $k$ il numero minimo di fotoni necessari affinché una persona possa vedere qualcosa. Allora \textbf{la probabilità di vedere è la probabilità di assorbire almeno $k$ fotoni.}
+
+Il parametro rilevante è il prodotto tra $\tilde{I}$ e $T$, ridefiniamo quindi $I = \tilde{I}T$ e otteniamo $M = \alpha I$. Di conseguenza, la probabilità di vedere un flash d'intensità $I$ è data da:
+
+\begin{equation}
+    P_{\text{see}}(I) = \sum_{n=K}^{\infty} P(n|M = \alpha I) = e^{-\alpha I} \sum_{n=k}^{\infty} \frac{(\alpha I)^n}{n!}
+    \label{eq:chap10_22}
+\end{equation}
+
+Un aspetto cruciale emerge quando rappresentiamo $P_{\text{see}}$ in funzione di $\log I$:
+\begin{itemize}
+    \item La forma della curva dipende criticamente da numero di fotoni; variando $k$ (con $\alpha$ fisso), la curva diventa più “a gradino”.
+    \item L’ efficienza di assorbimento $\alpha$ produce solo una traslazione lungo l'asse delle ascisse.
+\end{itemize}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{pics/10_2.png}
+    \caption{$P_{\text{see}}$ in funzione di $\log I$}
+\end{figure}
+
+Esperimenti condotti da Hecht, Shlaer e Pirenne hanno mostrato che la curva teorica si adatta bene ai dati sperimentali con $k \approx 6$ mentre $\alpha$ varia da individuo a individuo.
+
+\subsection{Struttura dell'apparato visivo}
+
+Dietro la cornea troviamo dei \textbf{fotorecettori} di due tipi:
+\begin{itemize}
+    \item Coni: operano a intensità luminosa alta, responsabili della visione a colori.
+    \item \textbf{Bastoncelli} (\textbf{rods}): operano a bassa intensità luminosa, quelli che ci interessano in questo contesto.
+    
+    Ogni bastoncello è una cellula con una forma allungata. La parte esterna è composta da dischi membranosi nei quali si trovano le molecole di \textbf{rodopsina}, che contengono il \textbf{retinale}, il vero cromoforo che assorbe il fotone.
+\end{itemize}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pics/10_3.png}
+    \caption{Struttura di un bastoncello.}
+\end{figure}
+
+
+
+Struttura a strati del sistema visivo:
+\begin{itemize}
+    \item Fotorecettori (rods): ricevono i fotoni.
+    \item \textbf{Cellule bipolari}: integrano il segnale di più fotorecettori e iniziano la fase di filtraggio del rumore.
+    \item \textbf{Cellule gangliari}: ricevono il segnale dalle cellule bipolari.
+    \item Nervo ottico: formato dagli assoni delle cellule gangliari, trasmette il segnale al cervello.
+\end{itemize}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pics/10_4.png}
+    \caption{Struttura dell'apparato visivo.}
+\end{figure}
+
+Quando un fotone colpisce la retina, può essere assorbito da una molecola di retinale. Se il retinale assorbe un fotone, esso subisce un cambiamento di struttura. Questo cambiamento di struttura della molecola non riguarda solo i livelli elettronici, ma anche la posizione dei nuclei. Il cambiamento nella struttura della molecola attiva una catena di eventi:
+\begin{itemize}
+    \item Attivazione di enzimi attorno alla rodopsina;
+    \item Variazione della concentrazione di alcuni eteropolimeri;
+    \item Variazione della corrente di transmembrana;
+    \item Trasmissione del segnale alle cellule gangliari e infine al cervello.
+\end{itemize}
+
+\textbf{L'assorbimento del fotone si traduce, quindi, in un cambiamento nella corrente elettrica}.
+
+\subsection{Esperimento di Baylor}
+
+Obiettivo: Misurare la variazione di corrente generata dall’assorbimento di fotoni in un singolo fotorecettore (salamandra o rospo).
+
+Setup sperimentale:
+\begin{itemize}
+    \item Il fotorecettore è inserito in un circuito elettrico;
+    \item Si misura la corrente e la differenza di potenziale;
+    \item Si utilizza una torcia a bassa intensità accesa/spenta più volte.
+\end{itemize}
+
+In assenza di luce, in condizione stazionaria, la corrente fluttua attorno a un valore medio:
+\begin{equation}
+    I_{\text{s}} \approx 20 \, \text{pA}
+    \label{eq:chap10_23}
+\end{equation}
+con fluttuazioni $\Delta I_s \sim 0.1 \, \text{pA}$.
+
+\textbf{All'accensione della luce, la corrente diminuisce}. A intensità luminosa fissa e molto bassa, ripetendo l'accensione della torcia, si osservano picchi multipli in corrispondenza dell'assorbimento di 1, 2, 3… fotoni, ogni picco è di altezza multipla di $1 \; \; pA$:  
+
+2 fotoni → 2 pA | 3 fotoni → 3 pA …
+
+
+Il caso di assenza di fotoni corrisponde a fluttuazioni minori, comparabili al rumore di fondo. Per semplificare la lettura del grafico, si traccia $|I - I_{\text{s}}|$ come funzione del tempo, mostrando il cambiamento come valore positivo.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.35\textwidth]{pics/10_5.png}
+    \caption{Picchi multipli in corrispondenza dell'assorbimento dei fotoni.}
+\end{figure}
+
+Baylor ha registrato la corrente nel tempo e calcolato la probabilità $P(I)$ di osservare un dato valore $I$ della corrente. Per intensità luminose diverse, la distribuzione presenta dei picchi discreti, con il terzo picco che tende a scomparire se la luce è molto debole.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pics/10_6.png}
+    \caption{$P(I)$ di osservare un dato valore della corrente.}
+\end{figure}
+
+Consideriamo un esperimento in cui misuriamo la corrente elettrica generata da un singolo fotorecettore in assenza di stimoli esterni. In questo caso, la corrente fluttua attorno a un valore medio stazionario $I_s = 20$ $pA$, a causa del rumore intrinseco del sistema biologico. Le fluttuazioni sono descritte da una distribuzione gaussiana centrata su $I_s$, con deviazione standard $\sigma_0 = 0.1 \; \; pA$.
+
+Assumiamo quindi che la probabilità di osservare un certo valore di corrente, in assenza di fotoni, sia data da:
+\begin{equation}
+    P(I | n = 0) = \frac{1}{\sqrt{2\pi\sigma_0^2}} \exp\left[ -\frac{(I - I_s)^2}{2\sigma_0^2} \right]
+    \label{eq:chap10_24}
+\end{equation}
+
+Nel caso in cui un fotone venga assorbito, la corrente cambia in media di $\Delta I = 1 \; \; pA$ rispetto al valore stazionario. Supponiamo dunque che il nuovo valore medio della corrente diventi $I_1 = I_s - \Delta I$. Tuttavia, anche in questo caso il segnale è soggetto a rumore, quindi il profilo della corrente è descritto ancora da una gaussiana:
+\begin{equation}
+    P(I | n = 1) = \frac{1}{\sqrt{2\pi (\sigma_0^2+ \sigma_1^2)}} \exp\left[ -\frac{(I - I_1)^2}{2 (\sigma_0^2+\sigma_1^2)} \right]
+    \label{eq:chap10_25}
+\end{equation}
+
+Estendiamo il ragionamento al caso generico in cui vengano assorbiti $n$ fotoni. Supponiamo che ogni fotone generi una variazione media della corrente di $\Delta I$, quindi la corrente media sarà $I_n = I_0 - n \cdot \Delta I$.
+E la distribuzione di probabilità della corrente osservata diventa:
+\begin{equation}
+    P(I | n) = \frac{1}{\sqrt{2\pi\ (\sigma_0^2+ \dots + \sigma_n^2)}} \exp\left[ -\frac{(I - I_n)^2}{2\ (\sigma_0^2+ \dots + \sigma_n^2)} \right]
+    \label{eq:chap10_26}
+\end{equation}
+
+La probabilità totale di osservare una certa corrente si ottiene come somma pesata delle gaussiane condizionate, con pesi dati dalla probabilità di assorbire $n$ fotoni:
+\begin{equation}
+    P(I) = \sum_{n=0}^{\infty} P(I | n) \cdot P(n)
+    \label{eq:chap10_27}
+\end{equation}
+
+Dove $P(n)$ è la probabilità che $n$ fotoni vengano assorbiti dal fotorecettore, assunta distribuita secondo una Poissoniana con media $m = \alpha \tilde{I} T$:
+\begin{equation}
+    P(n) = \frac{m^n}{n!} e^{-m}
+    \label{eq:chap10_28}
+\end{equation}
+
+Quindi:
+\begin{equation}
+    P(I) = \sum_{n=0}^{\infty} \frac{1}{\sqrt{2\pi\ (\sigma_0^2+\dots+ \sigma_n^2)}} \exp\left[ -\frac{(I - I_n)^2}{2\ (\sigma_0^2+ \dots + \sigma_n^2)} \right] \frac{m^n}{n!} e^{-m}
+    \label{eq:chap10_29}
+\end{equation}
+
+Il profilo risultante è una convoluzione di distribuzioni Gaussiane, dove ciascuna Gaussiana è ponderata con un peso di Poisson. Il fattore di Poisson è maggiore per valori piccoli di $n$, quindi l'ampiezza delle gaussiane decresce rapidamente all'aumentare del numero di fotoni. Questo spiega perfettamente l'andamento della curva mostrata nella figura di sopra.
+Esaminando i picchi nella distribuzione:
+\begin{itemize}
+    \item Il primo picco corrisponde a $n=0$ fotoni ed è centrato in $I_0$
+    \item Il secondo picco, più attenuato, corrisponde a $n=1$ fotone ed è centrato in $I_1$
+    \item I successivi picchi corrispondono a valori crescenti di $n$ e sono via via più attenuati
+\end{itemize}
+
+A causa delle fluttuazioni (cioè del rumore), i picchi si sovrappongono, rendendo ambiguo l'attribuire un valore osservato di corrente a un preciso numero di fotoni assorbiti. Ad esempio, un valore intermedio della corrente potrebbe corrispondere sia all'assorbimento di 0 fotoni, sia a quello di 1 fotone, rendendo la decodifica del segnale da parte del sistema nervoso non banale.

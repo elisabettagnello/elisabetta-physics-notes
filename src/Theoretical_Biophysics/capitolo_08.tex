@@ -1,0 +1,217 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 8 (Lezione del 25/03/2025)
+%-------------------------------------------------------------------------------
+\chapter{Lezione 8}
+\label{capitolo_08}
+\textit{Data: 25/03/2025}
+
+
+
+\section{Chemiotassi}
+
+La probabilità di rotazione oraria $P_{\text{CW}}$ segue una relazione non lineare con CheY-P.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.4\textwidth]{pics/07_2.jpeg}
+    \label{fig:chap8_prob_cw}
+\end{figure}
+
+Indichiamo con C la concentrazione di CheY-P. Allora possiamo scrivere:
+\begin{equation}
+\label{eq:chap8_1}
+P_{cw} \approx \frac{c^n}{c^n+k^n}
+\end{equation}
+con n e K che sono due parametri che possono essere determinati a partire da un fit. Sperimentalmente si trova che:
+\begin{itemize}
+    \item $K \approx 3 \mu M$
+    \item $n \approx 10$
+\end{itemize}
+Vogliamo trovare il punto di flesso, quindi calcoliamo la derivata seconda:
+\begin{equation}
+\label{eq:chap8_2}
+\frac{dP_{cw} }{dc} =  \frac{n}{c} P_{cw} (1-P_{cw})
+\end{equation}
+\begin{equation}
+\label{eq:chap8_3}
+\frac{d^2P_{cw} }{dc^2} = 0 \longrightarrow  -1 + n(1-2P_{cw})=0
+\end{equation}
+Imponendo che la derivata seconda sia nulla, troviamo che il punto di flesso si ha per:
+\begin{equation}
+\label{eq:chap8_4}
+P_{cw} = \frac{1}{2} (1-\frac{1}{n}) \approx 0.45
+\end{equation}
+Sostituendo si trova che il punto di flesso si ha in corrispondenza di $c \approx 3 \mu M$
+
+Partendo dalla (2) possiamo scrivere:
+\begin{equation}
+\label{eq:chap8_5}
+\frac{dP_{cw} }{P_{cw}} = n \frac{dc}{c}  (1-P_{cw})
+\end{equation}
+Se  $P_{cw} <<1$ si ha:
+\begin{equation}
+\label{eq:chap8_6}
+\frac{dP_{cw} }{P_{cw}} \approx n \frac{dc}{c}
+\end{equation}
+Questa equazione mostra che vi è una \textbf{grande amplificazione del segnale}; se vi è una variazione piccola della concentrazione, infatti, questa ha un impatto più grande di un fattore 10 (=n) sulla variazione della probabilità. Il sistema, dunque, è molto sensibile.
+
+\section{Modello MWC (modello a due stati)}
+
+Il motore flagellare è costituito da una proteina che ha numerosi siti in cui Che-Y può legarsi. C’è una probabilità di legame con un rate che dipende da uno dei due stati: clockwise o anti-clockwise (counter cw).
+
+Consideriamo una condizione di equilibrio per cui ci sono due possibilità: effettuare un legame o sciogliere un legame (clockwise o anticlockwise).
+\begin{align}
+    \label{eq:chap8_7}
+    P_{cw} &= \sum_m P_{cw}(m) \\
+    P_{ccw} &= 1-P_{cw}
+\end{align}
+$m$ è il numero di molecole legate.
+
+Quando sono presenti numerosi CheY-P, lo stato cw è favorito, e dunque la probabilità cw è più grande di quella ccw. Assumiamo che l’\textbf{energia di legame} nello stato cw sia maggiore di quella nello stato ccw:
+\begin{equation}
+\label{eq:chap8_8}
+F_{cw}^b  > F_{ccw}^b
+\end{equation}
+Poiché il sistema si trova immerso in un bagno termico, usiamo la statistica dell’ensable canonico.
+\begin{equation}
+\label{eq:chap8_9}
+P_{cw} (m) = \frac{e^{-\beta H}}{z}
+\end{equation}
+dove $H$ è l’Hamiltoniana che dipende da $m$ e dallo stato.
+
+Consideriamo il caso m=1:
+\begin{equation}
+\label{eq:chap8_10}
+H^{cw}(1) = E_0^{cw} - F_{cw}^b - \mu
+\end{equation}
+dove $E_0^{cw}$ è l’energia intrinseca dello stato $cw$ e $\mu$ è il potenziale chimico (è l’energia necessaria per prelevare una molecola dalla soluzione).
+
+In generale:
+\begin{equation}
+\label{eq:chap8_11}
+H^{cw}(m) = E_0^{cw} - m F_{cw}^b - m \mu
+\end{equation}
+Stiamo assumendo valida l’ipotesi per cui l’energia di legame di due molecole è data semplicemente dal doppio dell’energia di legame di una molecola; quindi, non stiamo considerando alcuna interazione tra le due molecole.
+
+Abbiamo:
+\begin{equation}
+\label{eq:chap8_12}
+P_{cw} (m) = \frac{1}{z} e^{-\beta E_0^{cw} + \beta  m F_{cw}^b + \beta m \mu }
+\end{equation}
+Nell’ipotesi in cui il gas sia perfetto si ha: \begin{equation}
+\label{eq:chap8_131}
+z=\frac{z_1^N}{N!}
+\end{equation}
+
+Vogliamo trovare il potenziale chimico, sfruttiamo quindi la relazione:
+\begin{equation}
+\label{eq:chap8_13}
+\mu=\frac{\partial F}{\partial N} \Bigr|_{V, T}
+\end{equation}
+Troviamo F e sostituiamo:
+\begin{equation}
+\label{eq:chap8_14}
+\begin{aligned}
+F&=-\frac{1}{\beta} \log z =-\frac{1}{\beta} \log \left(\frac{z_1^N}{N!}\right) \approx -\frac{1}{\beta} \left[N \; \log(z_1)-\ln(N!)\right] \\
+&= -\frac{1}{\beta} \left[N \; \log(z_1)-N \;\log(N) +N\right]
+\end{aligned}
+\end{equation}
+\begin{equation}
+\label{eq:chap8_15}
+\mu=\frac{\partial F}{\partial N} \Bigr|_{V, T} = -\frac{1}{\beta} \left[ \log(z_1)-\log(N) -1 +1\right] = -\frac{1}{\beta} \log \left(\frac{z_1}{N}\right)
+\end{equation}
+Troviamo l’espressione di $z_1$:
+\begin{equation}
+\label{eq:chap8_16}
+z_1 = \frac{1}{h^3} \int d \bar{p}  d\bar{q} \; e^{- \beta \frac{p^2}{2m}} = \frac{V}{h^3} \left( \frac{2 \pi m}{\beta}\right)^{3/2} = \frac{V}{\lambda^3}
+\end{equation}
+Sostituiamo nell’espressione del potenziale chimico:
+\begin{equation}
+\label{eq:chap8_17}
+\mu = -\frac{1}{\beta} \log \left(\frac{V}{N} \frac{1}{\lambda^3} \right)
+\end{equation}
+Definiamo $c = N/V$  e  $c_0=1/ \lambda^3$ :
+\begin{equation}
+\label{eq:chap8_18}
+\mu = -\frac{1}{\beta} \log \left(\frac{c_0}{c}  \right) = \frac{1}{\beta} \log \left(\frac{c}{c_0}  \right)
+\end{equation}
+Sostituiamo nell’espressione di $P_{cw}$ :
+\begin{equation}
+\label{eq:chap8_19}
+\begin{aligned}
+P_{cw} (m) &= \frac{1}{z} e^{-\beta E_0^{cw}} \; e^{ \beta  m F_{cw}^b } \; e^{  m \log \left(\frac{c}{c_0}  \right)  }  \\
+&= \frac{1}{z} e^{-\beta E_0^{cw}} c^m \frac{1}{e^{ -\beta  m F_{cw}^b } \;  c_0^m}
+\end{aligned}
+\end{equation}
+Definendo $K_{cw} = e^{ -\beta  F_{cw}^b } \;  c_0$ si ha:
+\begin{equation}
+\label{eq:chap8_20}
+P_{cw} (m) = \frac{1}{z} e^{-\beta E_0^{cw}} \frac{c^m}{K_{cw}^m}
+\end{equation}
+Non abbiamo ancora trovato la formula definitiva. Bisogna considerare tutti i possibili modi in cui si possono scegliere $N$ siti di legame sul motore flagellare per le $m$ molecole.
+\begin{equation}
+\label{eq:chap8_21}
+\begin{aligned}
+P^{cw} &= \sum_{m=0}^{N} \binom{N}{m} \frac{e^{-\beta E_0^{cw}}}{z} \frac{c^m}{k_{cw}^m} \\
+&= \frac{e^{-\beta E_0^{cw}}}{z} \sum_{m=0}^{N} \binom{N}{m} \left( \frac{c}{k_{cw}} \right)^m \\
+&\overset{\text{(binomio di Newton)}}{=} \frac{e^{-\beta E_0^{cw}}}{z} \left( 1 + \frac{c}{K_{cw}} \right)^N
+\end{aligned}
+\end{equation}
+Dunque:
+\begin{equation}
+\label{eq:chap8_22}
+P^{cw} = \frac{e^{-\beta E_0^{cw}}}{z} \left( 1 + \frac{c}{K_{cw}} \right)^N
+\end{equation}
+\begin{equation}
+\label{eq:chap8_23}
+P^{ccw} = \frac{e^{-\beta E_0^{ccw}}}{z} \left( 1 + \frac{c}{K_{ccw}} \right)^N
+\end{equation}
+Dove $K_{ccw} = c_0 e^{-\beta F_{ccw}^b}$
+
+Sfruttando la relazione:  $P^{cw} + P^{ccw} = 1$ , si trova:
+\begin{equation}
+\label{eq:chap8_24}
+z = e^{-\beta E_0^{cw}} \left( 1 + \frac{C}{K_{cw}} \right)^N + e^{-\beta E_0^{ccw}} \left( 1 + \frac{C}{K_{ccw}} \right)^N
+\end{equation}
+Quindi l’espressione definitiva per la probabilità è:
+\begin{equation}
+\label{eq:chap8_25}
+P^{cw} = \frac{e^{-\beta E_0^{cw}} \left( 1 + \frac{C}{K_{cw}} \right)^N}{e^{-\beta E_0^{cw}} \left( 1 + \frac{C}{K_{cw}} \right)^N + e^{-\beta E_0^{ccw}} \left( 1 + \frac{C}{K_{ccw}} \right)^N}
+\end{equation}
+Dato che  $F_{cw}^b > F_{ccw}^b$ ,  segue che  $K_{cw} < K_{ccw}$ 
+
+Supponiamo che  $K_{cw} \ll c \ll K_{ccw}$   , allora:
+\begin{align}
+\label{eq:chap8_26}
+\frac{C}{K_{ccw}} &\ll 1, \quad \frac{C}{K_{cw}} \gg 1
+\end{align}
+Di conseguenza:
+\begin{equation}
+\label{eq:chap8_27}
+\begin{aligned}
+P^{cw} &\approx \frac{e^{-\beta E_0^{cw}} \left( \frac{C}{K_{cw}} \right)^N}{e^{-\beta E_0^{cw}} \left( \frac{C}{K_{cw}} \right)^N + e^{-\beta E_0^{ccw}}} \\
+&= \frac{c^N}{c^N + e^{\beta (E_0^{cw} - E_0^{ccw}) }K_{cw}^N}
+\end{aligned}
+\end{equation}
+Dove  $\Delta E_0 = E_0^{cw} - E_0^{ccw}$
+
+Riscrivendo:
+\begin{equation}
+\label{eq:chap8_28}
+P^{cw} \approx \frac{C^N}{C^N + e^{\beta \Delta E_0} K_{cw}^N}
+\end{equation}
+Se  $\Delta E_0 = 0$ , otteniamo esattamente:
+\begin{equation}
+\label{eq:chap8_29}
+P_{cw} = \frac{C^N}{C^N + K_{cw}^N}
+\end{equation}
+Ha la forma di una \textbf{funzione di Hill}.
+
+Risultati sperimentali:
+\begin{itemize}
+    \item $C = 3 \mu M$ 
+    \item $\frac{\delta P}{P} \approx O(1) \quad \Rightarrow \quad \frac{\delta C}{C} < 10\%$
+    \item $V_{\text{back}} \sim 1 \, M \sim 10^{-18} \, m^3$ 
+    \item $1 \, M = 10^3 \, mol/m^3$
+    \item   $m \approx 1800 \quad \text{(circa } 2 \times 10^{3} \text{ molecole in una concentrazione di } 3 \mu M\text{)}$
+\end{itemize}

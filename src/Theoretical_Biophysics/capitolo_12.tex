@@ -1,0 +1,393 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 12 (Lezione del 08/04/2025)
+%-------------------------------------------------------------------------------
+\chapter{Lezione 12}
+\label{capitolo_12}
+\textit{Data: 08/04/2025}
+
+
+\section{Signal to Noise Ratio}
+
+Consideriamo una situazione con grande intensità luminosa. In questo caso, in un piccolo intervallo di tempo potremmo avere l'assorbimento di 1, 2, o più fotoni a distanze temporali leggermente diverse. Il pattern risultante sarà la sovrapposizione di molti eventi elementari ravvicinati.
+
+Assumiamo che l'intensità della luce esterna sia un segnale che cambia nel tempo. Questo significa che il tasso di assorbimento dei fotoni è una quantità che varia nel tempo. Il rate di assorbimento può essere scritto come:
+\begin{equation} \label{eq:ch12_1}
+r(t)=\bar{r} (1+C(t))
+\end{equation}
+dove $\bar{r}$ è un rate medio e $C(t)$ è il modulatore che esprime la dipendenza temporale e prende il nome di \textbf{contrasto}.
+
+Il potenziale $V(t)$ è dato da:
+\begin{equation} \label{eq:ch12_2}
+V(t) = \tilde{V} + \sum_{i=1}^N V_{0}(t-t_i)
+\end{equation}
+dove $\tilde{V}$ è il potenziale in assenza di luce, $V_{0}$ è la risposta elementare a un singolo fotone.
+
+L'assorbimento di un fotone è un evento quantistico, intrinsecamente casuale. Un buon modello per descrivere il numero di eventi $n$ che cadono in un certo intervallo di tempo è la distribuzione di Poisson:
+\begin{equation} \label{eq:ch12_3}
+P(n) = e^{-\langle n \rangle} \frac{\langle n \rangle^n}{n!}
+\end{equation}
+dove $\langle n \rangle$ è il numero medio di eventi attesi in quell'intervallo.
+
+A basse intensità, avevamo considerato due fonti di rumore:
+\begin{enumerate}
+    \item La stocasticità Poissoniana del numero $n$ di fotoni assorbiti.
+    \item Le fluttuazioni termiche intrinseche al fotorecettore, che fanno sì che anche per un numero fisso di fotoni assorbiti, la risposta in corrente non sia una delta di Dirac (contatore perfetto), ma una distribuzione più larga (es. Gaussiana).
+\end{enumerate}
+
+In questo contesto di alta intensità luminosa, trascuriamo la seconda fonte di rumore (fluttuazioni termiche sulla forma della risposta elementare) e \textbf{assumiamo che il fotorecettore si comporti come un contatore perfetto}.
+
+\subsection*{Calcolo di $\langle V(t)\rangle$}
+
+Nella lezione precedente abbiamo visto che:
+\begin{equation} \label{eq:ch12_4}
+\langle V(t) \rangle = \tilde{V} + \sum_{N=1}^\infty \frac{1}{N!} e^{- \int_0^T d \tau r(\tau)} \left[ \int dt_j r(t_j) \right]^{N-1} \sum_{i=1}^N \int_0^T dt_i r(t_i) V_0(t-t_i)
+\end{equation}
+
+All'interno dell'integrale multiplo, i termini nella sommatoria sono identici una volta integrati, poiché $t_j$ sono variabili di integrazione mute. Possiamo sostituire la somma interna con $N$ volte il termine per $j=1$ (o qualsiasi altro indice):
+\begin{align} \label{eq:ch12_5}
+\langle V(t) \rangle &= \tilde{V} + \sum_{N=1}^\infty \frac{1}{N!} e^{- \int_0^T d \tau r(\tau)} \; \left[ \int dt_j r(t_j) \right]^{N-1} N \cdot \int_0^T dt_i r(t_i) V_0(t-t_i) \\
+&= \tilde{V} + e^{- \int_0^T d \tau r(\tau)} \int_0^T dt' r(t') V_0(t-t') \sum_{N=1}^\infty \frac{1}{(N-1)!} \left[\int ds r(s) \right]^{N-1} \nonumber
+\end{align}
+
+Possiamo ora ridefinire $N' = N-1$:
+\begin{equation} \label{eq:ch12_6}
+\begin{aligned}
+\langle V(t) \rangle &= \tilde{V} + e^{- \int_0^T d \tau r(\tau)} \int dt' r(t') V_0(t-t') \sum_{N'=0}^\infty \frac{1}{(N')!} \left[\int ds r(s) \right]^{N'}
+\end{aligned}
+\end{equation}
+
+Avendo cambiato variabile, possiamo riconoscere che $\sum_{N'=0}^\infty \frac{1}{(N')!} \left[\int ds r(s) \right]^{N'}$ è lo sviluppo in serie di Taylor dell'esponenziale di $e^{\int ds r(s)}$. Le variabili di integrazione sono mute, quindi quest'esponenziale va a semplificare quello in $d\tau$. Quindi abbiamo:
+\begin{equation} \label{eq:ch12_7}
+\begin{aligned}
+\langle V(t) \rangle &= \tilde{V} + \int dt' r(t') V_0(t-t')
+\end{aligned}
+\end{equation}
+
+Sostituendo $r(t')$ con la \eqref{eq:ch12_1} si ha:
+\begin{equation} \label{eq:ch12_8}
+\begin{aligned}
+\langle V(t) \rangle &= \tilde{V} + \bar{r} \int dt' V_0(t-t') + \bar{r} \int dt' V_0(t-t') C(t')
+\end{aligned}
+\end{equation}
+
+Possiamo identificare due termini:
+\begin{enumerate}
+    \item Un potenziale di background medio $V_{BG}$, che include il potenziale di riposo e la risposta media alla componente luminosa costante $\bar{r}$:
+    \begin{equation} \label{eq:ch12_9}
+    V_{BG}=\tilde{V} + \bar{r} \int dt' V_0(t-t')
+    \end{equation}
+    
+    \item Una variazione di potenziale $\Delta V$ che dipende dal contrasto $C(t)$:
+    \begin{equation} \label{eq:ch12_10}
+    \begin{aligned}
+    \langle \Delta V \rangle = \langle V(t) \rangle -V_{BG} &= \bar{r} \int dt' V_0(t-t') C(t')
+    \end{aligned}
+    \end{equation}
+\end{enumerate}
+
+Quest'ultima equazione è fondamentale: mostra che la risposta media del fotorecettore $\langle \Delta V \rangle$ è legata linearmente (\textbf{Linear Response}) al segnale di ingresso (ovvero il contrasto $C(t)$) attraverso un'operazione di convoluzione.
+
+Questo risultato è notevole: \textbf{anche se il processo sottostante coinvolge un'alta intensità luminosa e una risposta potenzialmente non lineare a livello dei singoli eventi, il valore medio della risposta del potenziale al contrasto fluttuante segue una legge lineare}.
+
+Questo giustifica l'uso dell'analisi dei sistemi lineari per studiare la percezione del contrasto.
+
+\subsection*{Analisi lineare}
+
+È conveniente analizzare la relazione lineare nel dominio delle frequenze usando la trasformata di fourier:
+\begin{equation} \label{eq:ch12_11}
+\begin{aligned}
+\langle \Delta V \rangle (\omega) = \bar{r} \; V_0(\omega) \; C(\omega)
+\end{aligned}
+\end{equation}
+
+Definiamo la \textbf{Transfer function}, che in questo caso coincide con il Kernel di risposta della \eqref{eq:ch12_10}:
+\begin{equation} \label{eq:ch12_12}
+T (\omega) = \bar{r} \; V_0(\omega)
+\end{equation}
+
+\textbf{La funzione di trasferimento descrive come il fotorecettore trasferisce o filtra le diverse componenti frequenziali del segnale di contrasto in ingresso} per produrre la risposta in potenziale.
+
+Le funzione di contrasto è una funzione sinusoidale con frequenza $\bar{\omega}$: $C(t) = C_0 \cos(\bar{\omega}t)$
+
+Le relazioni che legano C(t) alla sua trasformata di fourier sono:
+\begin{itemize}
+    \item $C(\omega) =\int_{- \infty}^{+ \infty} dt C(t) e^{-i \omega t}$
+    \item $C(t) = \frac{1}{2 \pi} \int_{- \infty}^{+ \infty} d \omega C(\omega) e^{+i \omega t}$
+\end{itemize}
+
+Utilizzando la formula di Eulero $\cos(x) = (e^{ix} + e^{-ix})/2$ , abbiamo:
+\begin{equation} \label{eq:ch12_13}
+C(\omega) = \int_{- \infty}^{+ \infty} dt \; e^{-i \omega t} \; C_0 \left( \frac{e^{+i \bar{\omega} t}+e^{-i \bar{\omega} t}}{2}\right)
+\end{equation}
+
+Usando la rappresentazione della delta di Dirac $\int dt e^{-i\Omega t} = 2\pi \delta(\Omega)$, otteniamo:
+\begin{equation} \label{eq:ch12_14}
+C(\omega) = \frac{C_0}{2} \; 2 \pi \left[ \delta(\bar{\omega} - \omega)+ \delta(\bar{\omega} + \omega)\right]
+\end{equation}
+
+Sostituendo nella \eqref{eq:ch12_11}:
+\begin{equation} \label{eq:ch12_15}
+\begin{aligned}
+\langle \Delta V \rangle (\omega) = T(\omega) \; \pi \; C_0 \left[ \delta(\bar{\omega} - \omega)+ \delta(\bar{\omega} + \omega)\right]
+\end{aligned}
+\end{equation}
+
+Per trovare la risposta nel dominio del tempo, applichiamo l'antitrasformata di Fourier (convenzione $\Delta V(t) = \frac{1}{2\pi} \int d\omega \Delta V(\omega) e^{i\omega t}$):
+\begin{equation} \label{eq:ch12_16}
+\langle \Delta V \rangle(t) = \frac{C_0}{2} \int d\omega \; T(\omega) \; \left[ \delta(\bar{\omega} - \omega)+ \delta(\bar{\omega} + \omega)\right] e^{i\omega t}
+\end{equation}
+
+Esprimiamo la funzione di trasferimento complessa $T(\omega)$ in forma polare, dividendo il modulo e la fase:
+\begin{equation} \label{eq:ch12_17}
+T(\omega) = |T(\omega)| e^{i \phi_T(\omega)}
+\end{equation}
+
+Sostituendo nell'espressione per $\Delta V(t)$:
+\begin{align} \label{eq:ch12_18}
+\langle \Delta V \rangle(t) &= \frac{C_0}{2} \int d\omega \; |T(\omega)| e^{i \phi_T(\omega)} \; \left[ \delta(\bar{\omega} - \omega)+ \delta(\bar{\omega} + \omega)\right]e^{i\omega t} \\
+&= \frac{C_0}{2} \; |T(\bar{\omega})| e^{i \phi_T(\bar{\omega}) + i \bar{\omega} t} + \frac{C_0}{2} \; |T(-\bar{\omega})| e^{i \phi_T(-\bar{\omega}) - i \bar{\omega} t} \nonumber
+\end{align}
+
+Poiché la funzione di trasferimento è una \textbf{funzione reale} del tempo, vale: $T(t)=T^*(t)$
+dove * indica il complesso coniugato.
+
+Per la sua trasformata questo implica:
+\begin{itemize}
+    \item Modulo: $|T(-\omega)| = |T(\omega)|$ (funzione pari)
+    \item fase: $\phi_T(-\omega) = -\phi_T(\omega)$ (funzione dispari)
+\end{itemize}
+
+Usando queste relazioni, la \eqref{eq:ch12_18} può essere riscritta:
+\begin{equation} \label{eq:ch12_19}
+\langle \Delta V \rangle(t) = \frac{C_0}{2} \left[ |T(\bar{\omega})| e^{i\phi_T(\bar{\omega})} e^{i\bar{\omega}t} + |T(\bar{\omega})| e^{-i\phi_T(\bar{\omega})} e^{-i\bar{\omega}t} \right]
+\end{equation}
+
+Utilizzando la formula di Eulero $\cos(x) = (e^{ix} + e^{-ix})/2$:
+\begin{equation} \label{eq:ch12_20}
+\langle \Delta V \rangle(t) = C_0 |T(\bar{\omega})| \cos(\bar{\omega}t + \phi_T(\bar{\omega}))
+\end{equation}
+
+\textbf{La risposta media del potenziale a un contrasto sinusoidale di frequenza $\bar{\omega}$ è anch'essa una sinusoide. Tuttavia, la sua ampiezza è amplificata dal modulo della funzione di trasferimento $|T(\bar{\omega})|$ e la sua fase è sfasata della fase della funzione di trasferimento $\phi_T(\bar{\omega})$, entrambe valutate alla frequenza di ingresso $\bar{\omega}$.}
+
+Finora abbiamo caratterizzato la risposta media del fotorecettore, $\Delta V(T)$, a un segnale esterno variabile (il contrasto $C(t)$). Abbiamo trovato una relazione di risposta lineare. Tuttavia, la sola risposta al segnale non è sufficiente per descrivere le prestazioni del sistema visivo. È fondamentale considerare anche il \textbf{rumore} intrinseco al processo. Il rumore rappresenta le fluttuazioni spontanee dell'uscita (potenziale di membrana) che avvengono anche in assenza di un segnale strutturato (cioè, anche quando il contrasto è nullo).
+
+Vogliamo quantificare questo rumore e confrontarlo con la risposta al segnale utile, definendo il Rapporto Segnale/Rumore (\textbf{SNR - Signal-to-Noise Ratio}). Un buon SNR indica che il sistema è efficiente nel distinguere il segnale dalle fluttuazioni casuali.
+
+\subsection*{Calcolo della potenza del rumore $\langle (\delta V(t))^2 \rangle$}
+
+\textbf{Consideriamo la situazione in cui il contrasto è nullo, $C(t) = 0$.}
+\textbf{Questo non significa assenza di luce, ma piuttosto che l'intensità luminosa esterna è costante e uniforme nel tempo}.
+
+Anche con un rate di assorbimento medio costante $\bar{r}$, il numero effettivo di fotoni assorbiti in un intervallo di tempo fluttuerà a causa della natura stocastica (Poissoniana) del processo di assorbimento. Queste fluttuazioni negli arrivi dei fotoni causeranno fluttuazioni nel potenziale di membrana $V(t)$.
+
+Definiamo la varianza di queste fluttuazioni come:
+\begin{equation} \label{eq:ch12_21}
+\langle \delta V(t)^2 \rangle _{c=0}= \langle \; \left( V(t) - \langle V(t) \rangle \right)^2 \rangle _{c=0}
+\end{equation}
+
+L'SNR confronta la "forza" del segnale (risposta al contrasto) con la "forza" del rumore (fluttuazioni spontanee). Possiamo definire la potenza del segnale come il quadrato della risposta media $\langle (\Delta V(t))^2 \rangle$ (dove $\Delta V$ è la risposta al contrasto $C(t) \neq 0$) e la potenza del rumore come la varianza $\langle (\delta V(t))^2 \rangle$ calcolata per $C=0$.
+\begin{equation} \label{eq:ch12_22}
+\text{SNR}(t) = \frac{\langle (\Delta V(t))^2 \rangle_{C \neq 0}}{\langle (\delta V(t))^2 \rangle_{C = 0}}
+\end{equation}
+
+La varianza $\langle (\delta V(t))^2 \rangle$ è una \textbf{funzione di autocorrelazione connessa} del potenziale, definita come:
+\begin{equation} \label{eq:ch12_23}
+C^{con}(t, t') = \langle \delta V(t) \delta V(t') \rangle = \langle (V(t) - \langle V(t) \rangle)(V(t') - \langle V(t') \rangle) \rangle
+\end{equation}
+
+Quando calcoliamo il rumore con $C=0$, l'ambiente luminoso esterno è costante. Non c'è nulla nel sistema che privilegi un istante di tempo rispetto a un altro. Ci aspettiamo quindi che le proprietà statistiche delle fluttuazioni siano stazionarie, ovvero \textbf{invarianti per traslazioni temporali}. Questo implica che la funzione di correlazione dipende solo dalla differenza tra i tempi, $\tau = t - t'$:
+\begin{equation} \label{eq:ch12_24}
+C^{con}(t, t') = C^{con}(t-t') \equiv C^{con}(\tau) =C^{con}(0) \quad (\text{per } C=0 \text{ e } t=t')
+\end{equation}
+
+\textbf{Questa invarianza non vale se $C(t) \neq 0$, perché il contrasto stesso introduce una dipendenza temporale specifica.}
+
+Nello spazio di Fourier si ha:
+\begin{equation} \label{eq:ch12_25}
+C^{con}(0) = \int_{-\infty}^{\infty} \frac{d \omega}{2 \pi} C^{con}(\omega) e^{i\omega \cdot 0} = \int_{-\infty}^{\infty} \frac{d \omega}{2 \pi} C^{con}(\omega)
+\end{equation}
+
+Nello spazio di Fourier possiamo definire un SNR dipendente dalla frequenza:
+\begin{equation} \label{eq:ch12_26}
+\text{SNR}(\omega) = \frac{\langle (\Delta V(t))^2 \rangle_{C \neq 0}}{C^{con}(\omega)}
+\end{equation}
+
+Il nostro obiettivo ora è calcolare la funzione di autocorrelazione $C^{con}(\tau)$ (per $C=0$) e la sua trasformata di Fourier.
+
+\subsection*{Calcolo di $C^{con}$}
+
+Ricordiamo che $V(t) = \tilde{V} + \sum V_0(t-t_i)$ e $\langle V(t) \rangle = \tilde{V} + \int ds V_0(t-s) \bar{r}$.
+
+Per semplificare la notazione, poniamo $f(t) = \sum V_0(t-t_i)$. Allora:
+La funzione di correlazione è:
+\begin{equation} \label{eq:ch12_27}
+C^{con}(t, t') = \langle \; (f(t) - \langle f(t) \rangle) \;(f(t') - \langle f(t') \rangle) \;\rangle
+\end{equation}
+
+Espandendo il prodotto:
+\begin{equation} \label{eq:ch12_28}
+C^{con}(t, t') = \langle f(t) f(t') \rangle - \langle f(t) \rangle \langle f(t') \rangle
+\end{equation}
+
+\begin{itemize}
+    \item Il secondo termine è semplicemente:
+    \begin{equation} \label{eq:ch12_29}
+    \langle f(t) \rangle \langle f(t') \rangle = \left (\int ds V_0(t-s)r(s) \right) \times \left (\int dz V_0(t'-z)r(z) \right)
+    \end{equation}
+    
+    \item Dobbiamo calcolare il primo:
+    \begin{equation} \label{eq:ch12_30}
+    \langle f(t) f(t') \rangle = \left\langle \left( \sum_{i=1}^N V_0(t-t_i) \right) \left( \sum_{k=1}^N V_0(t'-t_k) \right) \right\rangle
+    \end{equation}
+\end{itemize}
+
+\begin{equation*}
+\langle f(t) f(t') \rangle = \sum_{N=1}^{\infty} \frac{1}{N!}\int dt_1 \dots dt_N \left( \sum_{i,k=1}^N V_0(t-t_i) V_0(t'-t_k) \right) r(t_1)...r(t_N) e^{-\int d\tau r(\tau)}
+\end{equation*}
+
+La doppia somma $\sum_{i,k}$ può essere separata in due parti:
+\begin{enumerate}
+    \item Termini diagonali con $i=k$.
+    
+    Tutti i $t_i$ sono indistinguibili, quindi ogni termine dà lo stesso contributo. Scegliamo arbitrariamente un indice (es. $t_1$ ) e integriamo gli altri $N - 1$ in modo identico:
+    \begin{align*}
+    &\sum_{N=1}^\infty \frac{1}{N!} \int dt_1 \dots dt_N \left( \sum_{i=1}^N V_0(t - t_i) V_0(t' - t_i) \right) \prod_{j=1}^N r(t_j) e^{- \int d\tau\, r(\tau)} \\
+    &= \sum_{N=1}^\infty \frac{N}{N!} \int dt_1 \dots dt_N \, V_0(t - t_1) V_0(t' - t_1) \, \prod_{j=1}^N r(t_j) \, e^{ - \int d\tau\, r(\tau)} \\
+    &= e^{ - \int d\tau r(\tau)} \sum_{N=1}^\infty \frac{N}{N!} \left( \int dt_1 r(t_1) \right)^{N-1} \int dt_i V_0(t - t_i) V_0(t' - t_i) r(t_i)
+    \end{align*}
+    
+    \begin{itemize}
+        \item Da dove esce il fattore N :
+        
+        Ci sono N termini identici nella somma, quindi la somma dà un fattore N davanti all'integrale su un solo $t_i$ .
+        
+        \item Perché l'esponente N-1 :
+        
+        Dopo aver fissato un indice $i$ , restano $N - 1$ variabili di integrazione $t_j$ , ognuna integrata su $r(t_j)$ , producendo il fattore: $\left( \int dt\, r(t) \right)^{N - 1}$
+    \end{itemize}
+    
+    \item Termini non-diagonali con $i \neq k$.
+    
+    Ci sono $N(N-1)$ coppie ordinate con $i \ne k$. Scegliamo arbitrariamente due indici $i$ e $k$ , e integriamo i restanti $N - 2$ indipendentemente:
+    \begin{align*}
+    &\sum_{N=2}^{\infty} \frac{1}{N!} \int dt_1 \dots dt_N \left( \sum_{i \neq k} V_0(t - t_i) V_0(t' - t_k) \right) \prod_{j=1}^N r(t_j) e^{-\int d\tau r(\tau)} \\
+    &= \sum_{N=2}^{\infty} \frac{N(N - 1)}{N!} e^{-\int d\tau r(\tau)} \left( \int dt_1 r(t_1) \right)^{N - 2} \\
+    &\quad \times \int dt_i V_0(t - t_i) r(t_i) \int dt_k V_0(t' - t_k) r(t_k)
+    \end{align*}
+    
+    \begin{itemize}
+        \item Da dove esce il fattore $N(N-1)$ :
+        
+        Ogni coppia di indici distinti (i, k) con $i \ne k$ ha un contributo, e ci sono $N(N - 1)$ di queste coppie ordinate.
+        
+        \item Perché l'esponente $N - 2$:
+        
+        Fissati $t_i$ e $t_k$ , restano $N - 2$ tempi su cui si integra, ciascuno con misura $r(t_j)$,
+    \end{itemize}
+\end{enumerate}
+
+Unendo i 2 termini con $i=k$ e $i \neq k$ si ha:
+\begin{equation*}
+\begin{aligned}
+&\langle f(t)\, f(t') \rangle = e^{ -\int d \tau, r(\tau)} \left\{
+\sum_{N =1}^{+ \infty} \left[ \int dt_i\, V_0(t - t_i)\, V_0(t' - t_i) \frac{N}{N!}
+\left( \int dt_1\, r(t_1)\right)^{N - 1} \right] \right. \\
+&\left. + \sum_{N \geq 2} \frac{N(N - 1)}{N!}
+\int dt_i \int dt_k V_0(t - t_i) r(t_i) V_0(t' - t_k) r(t_k)\left[ \int dt_1 r(t_1) \right]^{N - 2} \right\} \\
+&= e^{ -\int d\tau r(\tau)}
+\left\{
+\int dt_i\, V_0(t - t_i)\, V_0(t' - t_i) r(t_i)
+\sum_{N = 1}^{\infty} \frac{1}{(N - 1)!}
+\left[ \int dt_1 r(t_1) \right]^{N - 1}
+\right. \\
+&+ \left. \int dt_i\, V_0(t - t_i)\, r(t_i) \int dt_k\, r(t_k)\, V_0(t' - t_k)
+\sum_{N=2}^{\infty} \frac{1}{(N - 2)!}
+\left[ \int dt_1 r(t_1) \right]^{N - 2}
+\right\}
+\end{aligned}
+\end{equation*}
+
+Nelle due sommatorie possiamo cambiare variabile e riconoscere che $\sum_{N'=0}^\infty \frac{1}{(N')!} \left[\int ds r(s) \right]^{N'}$ è lo sviluppo in serie di Taylor dell'esponenziale di $e^{\int ds r(s)}$. Le variabili di integrazione sono mute, quindi quest'esponenziale va a semplificare quello in $d\tau$.
+
+Quindi si ha:
+\begin{equation} \label{eq:ch12_31}
+\begin{aligned}
+\langle f(t)\, f(t') \rangle &=
+\int dt_i\, V_0(t - t_i)\, V_0(t' - t_i) r(t_i) \\ &+ \int dt_i\, V_0(t - t_i)\, r(t_i) \int dt_k\, r(t_k)\, V_0(t' - t_k)
+\end{aligned}
+\end{equation}
+
+La funzione di correlazione connessa è definita come:
+
+$C^{con}(t, t') = \langle \delta V(t) \delta V(t') \rangle = \langle f(t) f(t') \rangle - \langle f(t) \rangle \langle f(t') \rangle$
+
+Mettendo insieme quanto trovato nella \eqref{eq:ch12_29} e nella \eqref{eq:ch12_31}:
+\begin{equation*}
+\begin{aligned}
+C^{con}(t, t') &=
+\int dt_i\, V_0(t - t_i)\, V_0(t' - t_i) r(t_i) \\ &+ \int dt_i\, V_0(t - t_i)\, r(t_i) \times \int dt_k\, r(t_k)\, V_0(t' - t_k) \\ &- \int ds V_0(t-s)r(s) \times \int dz V_0(t'-z)r(z) \\
+\end{aligned}
+\end{equation*}
+
+Il secondo e il terzo termine si semplificano. Ricordando che $r(t_i)=\bar{r}$ si ha:
+\begin{equation} \label{eq:ch12_32}
+\begin{aligned}
+C^{con}(t, t') = \bar{r}
+\int dt_i\, V_0(t - t_i)\, V_0(t' - t_i)
+\end{aligned}
+\end{equation}
+
+Questa funzione dipende solo dalla differenza di tempo $\tau = t - t'$. Per vederlo esplicitamente, cambiamo variabile di integrazione $s = t-t_i$ :
+\begin{equation} \label{eq:ch12_33}
+\begin{aligned}
+C^{con}(t, t') &= \bar{r}
+\int dt_i\, V_0(t - t_i)\, V_0(t - \tau - t_i) \\ &= \bar{r}
+\int ds \; V_0(s)\, V_0(s - \tau )
+\end{aligned}
+\end{equation}
+
+Spostiamoci nello spazio di Fourier:
+\begin{equation} \label{eq:ch12_34}
+\begin{aligned}
+C^{con}(\omega) = \bar{r}
+\; V_0(\omega)\, V_0(-\omega ) = \bar{r} |V_0(\omega)|^2
+\end{aligned}
+\end{equation}
+
+$C^{con}(\omega)$ è proporzionale al rate medio $\bar{r}$ e al modulo quadro della trasformata di Fourier della risposta al singolo fotone.
+
+Calcoliamo ora l'SNR nel dominio delle frequenze; usiamo la \eqref{eq:ch12_12} e la \eqref{eq:ch12_34}:
+\begin{equation} \label{eq:ch12_35}
+\begin{aligned}
+SNR = \frac{\bar{r}^2 |V_0(\omega)|^2}{\bar{r} |V_0(\omega)|^2} = \bar{r}
+\end{aligned}
+\end{equation}
+
+Nell'ipotesi che il fotorecettore si comporti come un "\textbf{contatore perfetto}" (risposta $V_0$ deterministica per ogni fotone, arrivi Poissoniani), l'SNR intrinseco del sistema è semplicemente uguale al rate medio di assorbimento dei fotoni $\bar{r}$, ed è indipendente dalla frequenza $\omega$ .
+
+Questa è una misura intrinseca delle prestazioni del sistema, indipendente dallo specifico segnale di contrasto in ingresso (per questo non lo abbiamo considerato).
+
+Esperimenti condotti sui fotorecettori della mosca hanno permesso di misurare indipendentemente sia la funzione di trasferimento che il noise $N(\omega)=\bar{r} |V_0(\omega)|^2$.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{pics/12_1.png}
+\caption{Andamento di $T(\omega)$,  $N(\omega)$ e SNR.}
+\end{figure}
+
+\begin{itemize}
+    \item Sia $T(\omega)$ (grafico \textbf{a.}) che $N(\omega)$ (grafico \textbf{b.}) si comportano come \textbf{filtri passa-basso}. L'ampiezza di entrambe le funzioni aumenta all'aumentare di $\bar{r}$.
+    \item È stato calcolato il rapporto sperimentale $\text{SNR}(\omega) = |T(\omega)|^2 / N(\omega)$ per diversi valori di $\bar{r}$.
+    \textbf{Si osserva che per ciascun $\bar{r}$, la curva $\text{SNR}(\omega)$ vs $\omega$ (grafico \textbf{c.}) presenta un andamento approssimativamente costante (\textbf{plateau}) per un ampio range di basse/medie frequenze (indicativamente fino a circa 100 Hz). A frequenze più alte, l'SNR tende a diminuire.
+    L'altezza di questo plateau dipende dall'intensità luminosa media $\bar{r}$.}
+    \item Riportando in grafico l'altezza del plateau dell'SNR in funzione del corrispondente valore di $\bar{r}$, si osserva una relazione lineare con pendenza unitaria (fino a $\bar{r} \approx 10^5$ s$^{-1}$).
+\end{itemize}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{pics/12_2.png}
+\caption{Altezza del plateau dell'SNR in funzione del corrispondente valore di $\bar{r}$.}
+\end{figure}
+
+I dati sperimentali confermano notevolmente la predizione teorica $\text{SNR}(\omega) \approx \bar{r}$ nel range di frequenze in cui il plateau è osservato. Questo suggerisce che, in questo regime, \textbf{la principale fonte di rumore che limita le prestazioni è effettivamente la natura stocastica dell'arrivo dei fotoni, piuttosto che fluttuazioni intrinseche nella risposta biochimica/elettrica del fotorecettore stesso}. A frequenze molto alte, altri fattori o deviazioni dal modello ideale diventano probabilmente rilevanti.
+

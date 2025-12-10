@@ -1,0 +1,364 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 15 (Lezione del 23/04/2025)
+%-------------------------------------------------------------------------------
+\chapter{Lezione 15}
+\label{capitolo_15}
+\textit{Data: 23/04/2025}
+
+
+\section{Il Ruolo del cGMP}
+
+Seguendo il percorso biochimico innescato dall'assorbimento di fotoni, la concentrazione di cGMP viene alterata. Il passo successivo è capire come la concentrazione di cGMP regola l'apertura e la chiusura dei canali ionici nella membrana del fotorecettore.
+
+Ricordiamo che la corrente attraverso un singolo canale aperto ($i_1$) è stata stimata essere circa: $i_1 \approx 1 \text{pA}$. Esperimenti a bassa intensità luminosa mostrano che la corrente totale attraverso la membrana fluttua, e i cambiamenti indotti dalla luce sono tipicamente multipli di $\sim 1 \text{pA}$.
+
+Ciò potrebbe suggerire che un singolo fotone apra/chiuda un singolo canale. Tuttavia, questo è incoerente con le scale temporali: la corrente di membrana cambia nell'ordine dei \textbf{secondi}, mentre le dinamiche di apertura/chiusura dei singoli canali avvengono sulla scala dei \textbf{millisecondi}.
+Pertanto, l'assorbimento di un singolo fotone non controlla direttamente un canale. Invece, innesca la cascata che porta a una variazione della concentrazione di cGMP, la quale a sua volta modula la \textbf{statistica} di apertura e chiusura dei canali.
+
+
+\section{Cinetica dell'Apertura e Chiusura dei Canali Ionici}
+
+I canali ionici fluttuano continuamente tra stati aperti e chiusi, anche in assenza di luce. La corrente totale $I(t)$ attraverso la membrana è proporzionale al numero di canali aperti $n_o(t)$:
+\begin{equation} \label{eq:ch15_1}
+I(t) = n_o(t) i_1
+\end{equation}
+dove $i_1 \approx 1 \; \text{pA}$ è la corrente attraverso un singolo canale. Le fluttuazioni osservate in $I(t)$ corrispondono a fluttuazioni in $n_o(t)$.
+
+Definiamo:
+\begin{itemize}
+    \item $k_o$: Rate dell'apertura di un canale chiuso
+    \item $k_c$: Rate della chiusura di un canale aperto
+\end{itemize}
+Siano $n_o(t)$ il numero di canali aperti e $n_c(t)$ il numero di canali chiusi al tempo $t$. La velocità di variazione può essere descritta da:
+\begin{align}
+\frac{dn_o(t)}{dt} &= n_c(t) k_o - n_o(t) k_c \label{eq:ch15_2} \\
+\frac{dn_c(t)}{dt} &= n_o(t) k_c - n_c(t) k_o \label{eq:ch15_3}
+\end{align}
+Inoltre, il numero totale di canali $N_{ch}$ è costante:
+\begin{equation} \label{eq:ch15_4}
+n_o(t) + n_c(t) = N_{ch}
+\end{equation}
+
+\subsection*{Modello senza rumore}
+Usando l'eq. \eqref{eq:ch15_4}, possiamo eliminare $n_c(t) = N_{ch} - n_o(t)$ dall'eq. \eqref{eq:ch15_2}:
+\begin{align}
+\frac{dn_o(t)}{dt} &= (N_{ch} - n_o(t)) k_o - n_o(t) k_c \label{eq:ch15_5} \\
+&= N_{ch} k_o - n_o(t) (k_o + k_c) \label{eq:ch15_6}
+\end{align}
+Questa è un'equazione differenziale ordinaria lineare del primo ordine per $n_o(t)$.
+\begin{itemize}
+    \item \textbf{Stato Stazionario:}
+    Lo stato stazionario $n_o^{st}$ si raggiunge quando $\frac{dn_o}{dt} = 0$. Dall'eq. \eqref{eq:ch15_6}:
+    \begin{equation} \label{eq:ch15_7}
+    N_{ch} k_o - n_o^{st} (k_o + k_c) = 0
+    \end{equation}
+    \begin{equation} \label{eq:ch15_8}
+    n_o^{st} = \frac{N_{ch} k_o}{k_o + k_c}
+    \end{equation}
+    Possiamo definire la probabilità che un canale sia aperto nello stato stazionario, $P_o$, come:
+    \begin{equation} \label{eq:ch15_9}
+    P_o = \frac{k_o}{k_o + k_c}
+    \end{equation}
+    Allora, $n_o^{st} = N_{ch} P_o$.
+    Similmente, la probabilità di essere chiuso è:
+    \begin{equation} \label{eq:ch15_10}
+    P_c = \frac{k_c}{k_o + k_c} = 1 - P_o
+    \end{equation}
+    E $n_c^{st} = N_{ch} P_c$.
+\end{itemize}
+La soluzione dell'eq. \eqref{eq:ch15_6} descrive come $n_o(t)$ si avvicina allo stato stazionario da una condizione iniziale $n_o(0)$. La soluzione generale è:
+\begin{equation} \label{eq:ch15_11}
+n_o(t) = n_o^{st} + A e^{-(k_o + k_c)t}
+\end{equation}
+Usando la condizione iniziale $n_o(t=0) = n_o(0)$, troviamo $A = n_o(0) - n_o^{st}$.
+\begin{equation} \label{eq:ch15_12}
+n_o(t) = n_o^{st} + (n_o(0) - n_o^{st}) e^{-(k_o + k_c)t}
+\end{equation}
+Il sistema si avvicina allo stato stazionario esponenzialmente con una scala temporale caratteristica $\tau = 1 / (k_o + k_c)$.
+
+\subsection*{Modello con il rumore}
+Gli eventi di apertura e chiusura sono casuali. Possiamo modellare il numero di canali che si aprono ($X_o$) o si chiudono ($X_c$) in un piccolo intervallo di tempo $dt$ come processi di Poisson.
+
+Sia $X_o$ il numero di canali che si aprono in $dt$. Assumendo statistiche di Poisson:
+\begin{equation} \label{eq:ch15_13}
+P(X_o) = \frac{e^{-\bar{X}_o} (\bar{X}_o)^{X_o}}{X_o!}
+\end{equation}
+Il numero medio di eventi di apertura è:
+\begin{equation} \label{eq:ch15_14}
+\bar{X}_o = (k_o n_c) dt
+\end{equation}
+La varianza è uguale alla media per un processo di Poisson:
+\begin{equation} \label{eq:ch15_15}
+\overline{(\delta X_o)^2} = \bar{X}_o = k_o n_c dt
+\end{equation}
+Possiamo scrivere $X_o = \bar{X}_o + \delta X_o$, dove $\delta X_o$ è la fluttuazione attorno alla media.
+Valgono delle relazioni analoghe anche per gli eventi di chiusura ($X_c$) in $dt$.
+La variazione nel numero di canali aperti in $dt$ è $dn_o = X_o - X_c$:
+\begin{equation} \label{eq:ch15_16}
+\begin{aligned}
+dn_o &= (\bar{X}_o + \delta X_o) - (\bar{X}_c + \delta X_c) \\
+&= (\bar{X}_o - \bar{X}_c) + \underbrace{(\delta X_o - \delta X_c)}_{\delta X} \\
+&= (k_o n_c - k_c n_o) dt + \delta X
+\end{aligned}
+\end{equation}
+Dividendo per $dt$, otteniamo un'equazione di tipo Langevin:
+\begin{equation} \label{eq:ch15_17}
+\frac{dn_o}{dt} = k_o n_c - k_c n_o + \xi(t)
+\end{equation}
+dove $\xi(t) = \frac{\delta X}{dt}$ è il termine di rumore.
+\begin{itemize}
+    \item Il rumore ha media zero: $\langle \xi(t) \rangle = 0$
+    \item Assumendo che gli eventi di apertura e chiusura siano non correlati (ovvero che il termine misto sia nullo), la varianza della fluttuazione totale in $dt$ è la somma delle singole varianze:
+    \begin{equation} \label{eq:ch15_18}
+    \overline{(\delta X_o - \delta X_c)^2} \approx \overline{(\delta X_o)^2} + \overline{(\delta X_c)^2} = (k_o n_c + k_c n_o) dt \propto dt
+    \end{equation}
+\end{itemize}
+Il termine di rumore $\xi(t)$ può essere approssimato come rumore bianco Gaussiano con correlazione:
+\begin{equation} \label{eq:ch15_19}
+\langle \xi(t) \xi(t') \rangle \approx (k_o n_c^{st} + k_c n_o^{st}) \delta(t - t')
+\end{equation}
+dove $n_c^{st}, n_o^{st}$ sono valori stazionari, assumendo che l'ampiezza del rumore non vari molto.
+Questo mostra che le fluttuazioni sono inerenti, e la loro magnitudine dipende dai rate e dal numero di canali in ciascuno stato.
+\textbf{Da qui in avanti continuiamo a considerare il modello senza il rumore.}
+
+\section{Modello a Due Stati per il legame del cGMP}
+
+\textbf{Evidenze sperimentali:}
+    Il punto cruciale è che i rates $k_o$ e $k_c$, e quindi la probabilità $P_o$, possono essere influenzate dalla concentrazione intracellulare di cGMP, denotata come $G = [\text{cGMP}]$.
+    Esperimenti che misurano $|\delta i|$ (= il valore assoluto della differenza di corrente rispetto al valore minimo possibile) in funzione della concentrazione di cGMP ($G$) mostrano una \textbf{relazione sigmoidale}, ben descritta da un'equazione di Hill:
+    \begin{equation} \label{eq:ch15_20}
+    |\delta i|(G) = I_{max} \frac{G^n}{G^n + G_{1/2}^n}
+    \end{equation}
+
+Qui, $I_{max}$ è la massima variazione di corrente (presumibilmente quando tutti i canali rilevanti sono influenzati al massimo), $G_{1/2}$ è la concentrazione alla quale l'effetto è metà-massimale, e $n$ è il coefficiente di Hill.
+I fit sperimentali trovano: $n \approx 3$.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{pics/15_1.png}
+\caption{Andamento della corrente.}
+\end{figure}
+
+Questo comportamento tipo Hill suggerisce un legame cooperativo, reminiscenza di modelli usati nella chemiotassi (es. legame di CheY ai motori flagellari). Possiamo adattare il framework del modello a due stati.
+
+Assumiamo:
+\begin{itemize}
+    \item I canali ionici sono proteine con $n$ siti di legame identici e indipendenti per il cGMP.
+    \item Il canale può esistere in due conformazioni principali: Aperta (O) e Chiusa (C).
+    \item L'affinità di legame del cGMP dipende dallo stato del canale (Aperto o Chiuso).
+    \item L'energia libera di un canale dipende dal suo stato (O/C) e dal numero di molecole di cGMP legate ($m$).
+\end{itemize}
+Sia $F^s(m)$ l'energia libera di un canale nello stato $s \in \{O, C\}$ con $0 \le m \le n$ molecole di cGMP legate.
+L'energia libera dello stato aperto con $m$ molecole di cGMP legate è:
+\begin{equation} \label{eq:ch15_21}
+F^{o}(m) = E^{o}-mF_{b}^{o}-m\mu[G]
+\end{equation}
+dove:
+\begin{itemize}
+    \item $E^o$: Energia del canale nello stato aperto senza cGMP legato.
+    \item $F_b^o$: Energia di legame.
+    \item $\mu(G)$: Potenziale chimico del cGMP nella soluzione, legato alla concentrazione $G$.
+\end{itemize}
+\textbf{Assumiamo che il legame sia più favorevole nello stato aperto: $F_b^o > F_b^c$}
+La probabilità di trovare il canale nello stato stato aperto con $m$ siti occupati segue la statistica di Boltzmann:
+\begin{equation} \label{eq:ch15_22}
+P^o(m) = \frac{1}{Z} \binom{n}{m} e^{-\beta F^o(m)} \quad \quad \quad (\text{dove } \beta = 1/k_B T)
+\end{equation}
+dove $Z$ è la funzione di partizione.
+La probabilità che il canale sia nello stato aperto, indipendentemente da quanti cGMP siano legati, è $P_o = \sum_{m=0}^n P^o(m)$.
+Calcolando la somma si ottiene:
+\begin{equation} \label{eq:ch15_23}
+P_o = \frac{Z_o}{Z_o + Z_c}
+\end{equation}
+dove $Z_s$ è la funzione di partizione per lo stato $s$ :
+\begin{align}
+Z_s &= \sum_{m=0}^n \binom{n}{m} e^{-\beta F^s(m)} \\
+&= e^{-\beta E^s} \sum_{m=0}^n \binom{n}{m} (e^{\beta F_b^s + \beta \mu(G)})^m \nonumber \\
+&= e^{-\beta E^s} (1 + e^{\beta (F_b^s + \mu(G))})^n \label{eq:ch15_26}
+\end{align}
+Definiamo la costante di dissociazione $K_s$ tale che:
+\begin{equation} \label{eq:ch15_27}
+G/K_s = e^{\beta (F_b^s + \mu(G))}
+\end{equation}
+Un $K_s$ inferiore significa affinità maggiore. Poiché il legame è più favorevole nello stato aperto, ci aspettiamo $K_o < K_c$.
+\begin{equation} \label{eq:ch15_28}
+Z_s = e^{-\beta E^s} \left(1 + \frac{G}{K_s} \right)^n
+\end{equation}
+Quindi, la probabilità di essere aperto è:
+\begin{equation} \label{eq:ch15_29}
+P_o(G) = \frac{e^{-\beta E^o} (1 + G/K_o)^n}{e^{-\beta E^o} (1 + G/K_o)^n + e^{-\beta E^c} (1 + G/K_c)^n}
+\end{equation}
+Se $E^o=E^c$, la probabilità che il canale sia aperto è:
+\begin{equation} \label{eq:ch15_30}
+P^o(G) = \frac{\left(1+\frac{G}{K_{o}}\right)^{n}}{\left(1+\frac{G}{K_{o}}\right)^{n}+\left(1+\frac{G}{K_{c}}\right)^{n}}
+\end{equation}
+Siano $n_o$ il numero di canali aperti, $n_c$ il numero di canali chiusi e $N_{ch}$ il numero totale di canali, allora si ha:
+\begin{equation} \label{eq:ch15_31}
+n_o = N_{ch} \;P^o(G) = N_{ch}\frac{\left(1+\frac{G}{K_{o}}\right)^{n}}{\left(1+\frac{G}{K_{o}}\right)^{n}+\left(1+\frac{G}{K_{c}}\right)^{n}}
+\end{equation}
+Ricaviamo la relazione per la corrente:
+\begin{equation} \label{eq:ch15_32}
+I=i_1 \cdot n_o = i_1 \; N_{ch}\frac{\left(1+\frac{G}{K_{o}}\right)^{n}}{\left(1+\frac{G}{K_{o}}\right)^{n}+\left(1+\frac{G}{K_{c}}\right)^{n}}
+\end{equation}
+Consideriamo il regime in cui $K_o \ll G \ll K_c$.
+\begin{itemize}
+    \item $G/K_c \ll 1 \implies (1 + G/K_c)^{n} \approx 1^{n} = 1$
+    \item $G/K_o \gg 1 \implies (1 + G/K_o)^{n} \approx (G/K_o)^{n}$
+\end{itemize}
+Sostituendo nella \eqref{eq:ch15_32} si ha:
+\begin{equation} \label{eq:ch15_33}
+I(G) \approx i_1 \; N_{ch} \; \frac{G^{n}}{G^{n} + K_o^{n}}
+\end{equation}
+Questa forma corrisponde all'equazione di Hill sperimentale se identifichiamo la concentrazione metà-massimale $G_{1/2}$ con la costante di dissociazione $K_o$.
+Quindi, il modello suggerisce che il coefficiente di Hill $n=3$ corrisponda al numero di siti di legame del cGMP sul canale ionico.
+
+\section{Modellizzazione del Segnale e del Rumore}
+La fotorecezione inizia nei fotorecettori (ovvero i bastoncelli), che sono il primo strato di cellule ad elaborare il segnale luminoso. L'arrivo di fotoni modifica la corrente di membrana di queste cellule. I fotorecettori sono connessi tramite sinapsi alle \textbf{cellule bipolari}, un secondo strato di cellule. Ogni cellula bipolare riceve segnali (correnti) da un certo numero di fotorecettori.
+
+Il problema è capire cosa succede a livello della cellula bipolare, in relazione al rapporto segnale/rumore. La corrente $i_k$ proveniente dal $k$-esimo fotorecettore è un \textbf{segnale rumoroso}. Questo rumore è dovuto a fluttuazioni intrinseche, anche in assenza di luce, e all'assorbimento stocastico dei fotoni.
+
+La corrente $i_k$ di un singolo fotorecettore può essere modellata come:
+\begin{equation} \label{eq:ch15_34}
+i_k = i_1 n_k + \xi_k
+\end{equation}
+dove $n_k$ è il numero di fotoni assorbiti dal $k$-esimo fotorecettore, $i_1 \approx 1 \; \text{pA}$ è la corrente media per singolo fotone assorbito, e $\xi_k$ rappresenta il rumore.
+Abbiamo visto che la distribuzione di $i_k$ può essere approssimata da una Gaussiana:
+\begin{equation} \label{eq:ch15_35}
+P(i_k | n_k) \sim \frac{\exp \left(-\frac{(i_k - n_k i_1)}{2 \sigma^2}\right)}{\mathcal{N}}
+\end{equation}
+Inizialmente avevamo considerato $\sigma^2$ dipendente da $n_k$, ma per semplicità possiamo assumere che la varianza $\sigma^2$ sia costante, circa $(0.1 \, \text{pA})^2$.
+Consideriamo due possibili scenari per l'input $I_{input}$ alla cellula bipolare:
+\begin{enumerate}
+    \item \textbf{Scenario A (Somma Lineare)}: L'input è semplicemente la somma delle correnti provenienti dai fotorecettori connessi:
+    \begin{equation} \label{eq:ch15_36}
+    I_{input} = \sum_{k=1}^{N} i_k
+    \end{equation}
+    dove $N$ è il numero totale di fotorecettori connessi. In questo caso, la cellula bipolare applicherebbe un filtro successivo per "pulire" il segnale.
+    
+    \item \textbf{Scenario B (Filtraggio Pre-Sinaptico):} L'input è già una funzione non lineare $f(\{i_k\})$ delle correnti, implicando che un qualche tipo di filtraggio avvenga già a livello sinaptico.
+\end{enumerate}
+
+\subsubsection*{Somma Lineare}
+Se l'input fosse la somma lineare delle correnti:
+\begin{equation} \label{eq:ch15_37}
+\begin{aligned}
+I_{input} &= \sum_{k=1}^{N} i_k \\
+&= \sum_{k=1}^{N} (i_1 n_k + \xi_k) \\
+&= i_1 \sum_{k=1}^{N} n_k + \sum_{k=1}^{N} \xi_k
+\end{aligned}
+\end{equation}
+\begin{equation} \label{eq:ch15_38}
+I_{input} = i_1 N_{TOT} + \Xi
+\end{equation}
+dove $N_{TOT} = \sum_k n_k$ è il numero totale di fotoni assorbiti dalla retina connessa alla cellula bipolare, e $\Xi = \sum_k \xi_k$ è il rumore totale.
+Il termine $i_1 N_{TOT}$ è il segnale che vorremmo trasmettere. Il termine di rumore $\Xi$ è la somma di $N$ variabili casuali. Per il teorema del limite centrale, se le $\xi_k$ sono indipendenti e identicamente distribuite con media zero e varianza $\sigma^2$, allora $\Xi$ avrà media zero e varianza $N \sigma^2$.
+La deviazione standard del rumore $\Xi$ è quindi $\sqrt{N} \sigma$.
+Sappiamo che $\sigma \approx 0.1 \, \text{pA}$. Il numero $N$ di bastoncelli connessi a una cellula bipolare è dell'ordine di $N \approx 500$ (per salamandra) o $N \approx 1000$ (per mammiferi).
+Calcoliamo l'ordine di grandezza del rumore:
+\begin{equation} \label{eq:ch15_39}
+\sqrt{\langle \Xi^2 \rangle} = \sqrt{N} \sigma \approx \sqrt{500} \times 0.1 \, \text{pA} \approx 22.3 \times 0.1 \, \text{pA} \approx 2.2 \, \text{pA}
+\end{equation}
+Il segnale $i_1 N_{TOT}$ per bassa intensità luminosa (pochi fotoni assorbiti, $N_{TOT}$ piccolo, es. 1-5) è dell'ordine di pochi $i_1$. Se $i_1 \approx 1 \, \text{pA}$, il segnale è di pochi pA.
+Per bassa intensità luminosa, quindi, il rumore $\Xi$ (ordine di $\sim 2-3 \, \text{pA}$) è dello stesso ordine di grandezza del segnale $i_1 N_{TOT}$.
+\textbf{Se la cellula bipolare semplicemente sommasse le correnti, farebbe un pessimo lavoro nel distinguere il segnale dal rumore.} Lo scenario A non è efficiente. Deve esserci un meccanismo di filtraggio non lineare (Scenario B).
+
+\subsection*{Ricerca del Filtro Ottimale}
+Vogliamo trovare il filtro ottimale $n_{ext}(\{i_k\})$ che, date le correnti $\{i_k\}$, fornisca la migliore stima del numero totale di fotoni assorbiti $N_{TOT} = \sum_k n_k$. Il filtro ottimale minimizza l'errore quadratico medio:
+\begin{equation} \label{eq:ch15_40}
+\epsilon = \left\langle \left[ N_{TOT} - n_{ext}(\{i_k\}) \right]^2 \right\rangle
+\end{equation}
+L'operazione di media $\langle \dots \rangle$ è necessaria perché sia $N_{TOT}$ (variabile di Poisson) sia le correnti $i_k$ (a causa del rumore $\xi_k$) sono variabili casuali. La media va fatta rispetto alla distribuzione di probabilità congiunta $P(\{i_k\}, N_{TOT})$.
+\begin{equation} \label{eq:ch15_41}
+\epsilon = \sum_{N_{TOT}=0}^{\infty} \int \prod_k di_k \, P(\{i_k\}, N_{TOT}) \left( N_{TOT} - n_{ext}(\{i_k\}) \right)^2
+\end{equation}
+Per minimizzare $\epsilon$, calcoliamo la derivata funzionale rispetto a $n_{ext}$ e la poniamo uguale a zero:
+\begin{equation} \label{eq:ch15_42}
+\frac{\delta \epsilon \left[ n_{ext}(\{i_k\}) \right]}{\delta n_{ext}(\{i_k\})} = 0
+\end{equation}
+
+
+\textbf{Regole della derivata funzionale:}
+La derivata funzionale generalizza il concetto di derivata a funzionali (funzioni di funzioni). Intuitivamente, si considera come il valore del funzionale $\epsilon$ cambia a seguito di una piccola variazione della funzione $n_{est}$ in un punto specifico (o per un set di correnti $\{i_k\}$), mantenendo il resto della funzione invariato. Discretizzando l'integrale in Eq. \eqref{eq:ch15_41} in una somma su piccoli intervalli delle correnti $\{i_k\}$, la derivata funzionale si riduce a una derivata parziale rispetto al valore di $n_{est}$ in un dato "punto" $\{i_k\}$.
+
+
+$G[f(s)] = \int dx' A(x') B[f(x')]$
+
+
+\noindent Discretizzando: 
+
+$G[f(s)] = \sum_a A(x'_a) B[f(x'_a)]$
+$\frac{\delta G}{\delta f(x)}= \frac{\delta }{\delta f(x)} \left(\sum_a A(x'_a) B[f(x'_a)] \right) = A(x) \frac{\delta B}{\delta f(x)}$
+
+
+\noindent  Identifichiamo:
+
+$P(\{i_k\}, N_{TOT})=A(x)$
+
+$\left( N_{TOT} - n_{ext}(\{i_k\}) \right)^2 = B[f(x'_a)]$ 
+
+$n_{ext}(\{i_k\}) =f(x'_a)$
+
+\noindent  e usiamo le regole della derivata funzionale:
+\begin{equation} \label{eq:ch15_43}
+\frac{\delta \epsilon}{\delta n_{ext}(\{i_k\})} = \sum_{N_{TOT}=0}^{\infty} P(\{i_k\}, N_{TOT}) \cdot 2 \left( N_{TOT} - n_{ext}(\{i_k\}) \right) \cdot (-1) = 0
+\end{equation}
+\begin{equation} \label{eq:ch15_44}
+\sum_{N_{TOT}} N_{TOT} P(\{i_k\}, N_{TOT}) = \sum_{N_{TOT}} P(\{i_k\}, N_{TOT}) n_{ext}^{opt}(\{i_k\})
+\end{equation}
+Notando che $\sum_{N_{TOT}} P(\{i_k\}, N_{TOT}) = P(\{i_k\})$ (probabilità marginale delle correnti), otteniamo:
+\begin{equation} \label{eq:ch15_45}
+n_{ext}^{opt}(\{i_k\}) = \frac{\sum_{N_{TOT}} N_{TOT} P(\{i_k\}, N_{TOT})}{P(\{i_k\})}
+\end{equation}
+Questa è l'espressione del filtro ottimale: è la media del numero totale di fotoni assorbiti, condizionata ai valori delle correnti misurate $\{i_k\}$.
+\textbf{Assumiamo che i fotorecettori funzionino indipendentemente.}
+\begin{itemize}
+    \item L'assorbimento di fotoni $n_k$ in ciascun fotorecettore è indipendente.
+    \item La probabilità della corrente $i_k$ dipende solo da $n_k$ (numero di fotoni assorbiti da quel fotorecettore).
+\end{itemize}
+Allora la probabilità congiunta si fattorizza:
+\begin{equation} \label{eq:ch15_46}
+P(\{i_k\}) = \prod_k P(i_k)
+\end{equation}
+Riscriviamo $P(\{i_k\}, N_{TOT})$ usando la relazione $N_{TOT} = \sum_k n_k$:
+\begin{equation} \label{eq:ch15_47}
+P(\{i_k\}, N_{TOT}) = \sum_{\{n_k\}} P(\{i_k\}, \{n_k\}) \; \; \delta\left(N_{TOT} - \sum_k n_k\right)
+\end{equation}
+dove $\delta$ è la delta di Kronecker.
+Sostituendo nell'espressione del filtro ottimale:
+\begin{equation} \label{eq:ch15_48}
+n_{ext}^{opt}(\{i_k\}) = \frac{\sum_{N_{TOT}} N_{TOT} \sum_{\{n_k\}} P(\{i_k\}, \{n_k\}) \delta\left(N_{TOT} - \sum_k n_k\right)}{P(\{i_k\})}
+\end{equation}
+Eseguendo la somma su $N_{TOT}$, la delta seleziona $N_{TOT} = \sum_k n_k$:
+\begin{equation} \label{eq:ch15_49}
+n_{ext}^{opt}(\{i_k\}) = \frac{\sum_{\{n_k\}} \left(\sum_j n_j\right) P(\{i_k\}, \{n_k\})}{P(\{i_k\})}
+\end{equation}
+L'espressione per $n_{ext}^{opt}(\{i_k\})$ può essere semplificata sfruttando l'indipendenza dei fotorecettori.
+Usando la fattorizzazione $P(\{i_k\}, \{n_k\}) = \prod_k P(i_k, n_k)$ e $P(\{i_k\}) = \prod_l P(i_l)$:
+\begin{equation} \label{eq:ch15_50}
+n_{ext}^{opt}(\{i_k\}) = \frac{\sum_{\{n_k\}} \left(\sum_j n_j\right) \prod_k P(i_k, n_k)}{\prod_l P(i_l)}
+\end{equation}
+Consideriamo la struttura della somma $\sum_{\{n_k\}} = \sum_{n_1=0}^\infty \sum_{n_2=0}^\infty \dots \sum_{n_N=0}^\infty$.
+\begin{equation} \label{eq:ch15_51}
+n_{ext}^{opt}(\{i_k\}) = \frac{\sum_{n_1} \dots \sum_{n_N} (n_1 + n_2 + \dots + n_N) P(i_1, n_1) \dots P(i_N, n_N)}{P(i_1) \dots P(i_N)}
+\end{equation}
+Analizziamo il termine con $n_1$:
+\begin{equation} \label{eq:ch15_52}
+\frac{\sum_{n_1} \dots \sum_{n_N} n_1 P(i_1, n_1) \dots P(i_N, n_N)}{P(i_1) \dots P(i_N)}
+\end{equation}
+Le somme su $n_2, \dots, n_N$ possono essere eseguite indipendentemente per ciascun fattore $P(i_j, n_j)$. Ricordando che la probabilità marginale $P(i_j)$ si ottiene sommando la probabilità congiunta $P(i_j, n_j)$ su tutti i possibili valori di $n_j$:
+\begin{equation} \label{eq:ch15_53}
+P(i_j) = \sum_{n_j=0}^{\infty} P(i_j, n_j)
+\end{equation}
+Quindi per il termine contenente $n_1$, le somme su $n_2, \dots, n_N$ danno:
+\begin{equation} \label{eq:ch15_54}
+\begin{aligned}
+&\frac{\sum_{n_1} n_1 P(i_1, n_1) \left( \sum_{n_2} P(i_2, n_2) \right) \dots \left( \sum_{n_N} P(i_N, n_N) \right)}{P(i_1) P(i_2) \dots P(i_N)}\\
+&= \frac{\sum_{n_1} n_1 P(i_1, n_1) P(i_2) \dots P(i_N)}{P(i_1) P(i_2) \dots P(i_N)} = \frac{\sum_{n_1} n_1 P(i_1, n_1)}{P(i_1)}
+\end{aligned}
+\end{equation}
+Ripetendo per tutti i termini $n_j$ nella somma $\sum_j n_j$, otteniamo il risultato finale:
+\begin{equation} \label{eq:ch15_55}
+n_{ext}^{opt}(\{i_k\}) = \sum_{j=1}^{N} \frac{\sum_{n_j=0}^{\infty} n_j P(i_j, n_j)}{P(i_j)}
+\end{equation}
+Il filtro ottimale è la somma dei filtri ottimali per ciascun singolo fotorecettore. Ogni termine della somma $\frac{\sum_{n_k} n_k P(i_k, n_k)}{P(i_k)}$ rappresenta la stima ottimale del numero di fotoni $n_k$ assorbiti dal $k$-esimo fotorecettore, data la corrente $i_k$.
+

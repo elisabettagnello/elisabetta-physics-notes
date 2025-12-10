@@ -1,0 +1,449 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 9 (Lezione del 28/03/2025)
+%-------------------------------------------------------------------------------
+\chapter{Lezione 9}
+\label{capitolo_09}
+\textit{Data: 28/03/2025}
+
+
+\section{Dinamica chemiotattica}
+
+Il batterio è sensibile ai gradienti e non al valore assoluto della concentrazione. Questo concetto è ben rappresentato dal grafico sottostante.
+
+Nel primo caso, inizialmente il batterio si trova in un ambiente in cui la concentrazione è costante, ad un certo punto, per un breve periodo, la concentrazione viene aumentata e poi è riportata ai valori iniziali. Nel secondo caso, invece, la concentrazione viene aumentata e poi lasciata ad un valore più elevato. In entrambi i casi il grafico che mostra l'andamento della probabilità di rotazione antioraria dei flagelli è analogo: inizialmente aumenta, per poi tornare ad un valore costante. Si evince, quindi, che ciò che guida il comportamento chimico è la variazione della concentrazione del nutriente, e non il solo valore assoluto.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pics/09_1.jpeg}
+\end{figure}
+
+\begin{enumerate}
+    \item Se la concentrazione non è cambiata dall'esterno nel tempo, ma la distribuzione del nutriente è disomogenea nello spazio, allora si ha:
+    \begin{equation}
+        \dot{c} = \nabla c \cdot \bar{v}
+        \label{eq:chap9_1}
+    \end{equation}
+    In questo caso c'è una variazione temporale nel nutriente indotta dal fatto che il materiale si muove e, quindi, esplora le regioni con diversa concentrazione.
+
+    \item Se, invece, la concentrazione viene cambiata dall'esterno nel tempo, si ha:
+    \begin{equation}
+        \dot{c} = \frac{dc}{dt}
+        \label{eq:chap9_2}
+    \end{equation}
+\end{enumerate}
+
+Quando la concentrazione di nutriente aumenta, la probabilità di rotazione antioraria aumenta, ciò implica che la lunghezza della corsa aumenta e che il \textbf{tumbling rate} diminuisce.
+
+Il tumbling rate è definito come:
+\begin{equation}
+    \alpha(\dot{c}) = \frac{1}{\tau}
+    \label{eq:chap9_3}
+\end{equation}
+dove $\tau$ è la durata media della corsa.
+
+Il tumbling rate è una funzione \textbf{decrescente} di $\dot{c}$. Quindi se $\dot{c}$ aumenta, $\alpha$ diminuisce, e viceversa.
+
+Supponiamo di osservare una popolazione di batteri in una dimensione $x$. Sia $P(x,t) dx$ la probabilità di trovare un batterio in $x$ al tempo $t$. Questa probabilità può anche essere espressa come il rapporto del numero di batteri in $x$ al tempo $t$ per il numero totale di batteri (che consideriamo essere fisso): $\frac{N(x,t)}{N_{tot}}$
+
+L'obiettivo è scrivere un'equazione per $P(x,t)$ e capire come questa distribuzione dipende dalla concentrazione del nutriente.
+
+Discretizziamo la retta e assumiamo che la concentrazione di gradiente aumenti spostandosi verso destra dalla coordinata $x$.
+
+\begin{verbatim}
+|-------|-------|-------|-------|-------|-------|------->
+            - <--   x  --> +
+\end{verbatim}
+
+Dividiamo la popolazione di batteri in due sub-popolazioni, in modo che:
+\begin{itemize}
+    \item $P^+(x,t)$ descrive la popolazione di batteri che si muovono verso destra
+    \item $P^-(x,t)$ descriva la popolazione di batteri che si muovono verso sinistra
+\end{itemize}
+
+Poichè in questo caso la distribuzione del nutriente è disomogenea nello spazio, l'espressione del tumbling rate $\alpha$ è: $\alpha(\dot{c}) = \alpha(\nabla c \cdot \bar{v})$
+
+Distinguiamo anche per $\alpha$ il caso in cui si va a destra e quello in cui si va a sinistra:
+\begin{itemize}
+    \item $\alpha^+(\dot{c}) = \alpha(\nabla c \cdot \bar{v}) = \alpha \left( \frac{dc}{dx} \; v \right)$
+    \item $\alpha^-(\dot{c}) = \alpha \left( -\frac{dc}{dx} \; v \right)$
+\end{itemize}
+
+Nel caso della popolazione $+$ la velocità è sempre orientata verso destra per definizione, quindi ha segno positivo. Nella popolazione $-$ la velocità è orientata verso sinistra, quindi ha segno negativo.
+
+Discretizziamo l'asse e scegliamo la lunghezza dell'intervallo $d x$ in modo tale da poter assumere che i batteri si muovano a velocità fissa: $dx=v \;dt$
+
+Il cambiamento di $P^+(x,t)$ in un piccolo intervallo di tempo è dato da:
+\begin{equation}
+    \delta P^+(x,t)=P^+(x-dx)-P^+(x)-\frac{\alpha^+}{2}P^+(x,t)dt + \frac{\alpha^-}{2}P^-(x,t)dt
+    \label{eq:chap9_4}
+\end{equation}
+
+I primi due termini indicano rispettivamente i batteri che entrano in $x$ e quelli che escono da $x$.
+
+Bisogna anche considerare che alcuni batteri eseguono una torsione e cambiano direzione. La probabilità di tumbling è omogenea in tutte le direzioni; in una dimensione ciò implica che la probabilità di effettuare un tumble verso destra è uguale alla probabilità di effettuare un tumble verso sinistra. Bisogna quindi considerare anche il contributo degli ultimi due termini che indicano rispettivamente i batteri che inizialmente si stavano muovendo verso destra e che fanno un tumble verso sinistra (vanno sottratti), e i batteri che inizialmente si stavano muovendo verso sinistra e che fanno un tumble verso destra (vanno sommati).
+
+Dividiamo per $\delta t$ e consideriamo il caso in cui $\delta t$ è molto piccolo. In questo modo il termine a sinistra diventa una derivata rispetto al tempo.
+\begin{equation}
+    \frac{\partial P^+}{\partial t} = \frac{dx}{dt} \frac{ P^+(x-dx)-P^+(x)}{dx}-\frac{\alpha^+}{2}P^+(x,t) + \frac{\alpha^-}{2}P^-(x,t)
+    \label{eq:chap9_5}
+\end{equation}
+
+Analogamente, possiamo fare esattamente la stessa cosa per la popolazione $-$. Alla fine, si ottengono due equazioni:
+\begin{equation}
+    \begin{cases}
+        & \frac{\partial P^+}{\partial t} = -v \frac{ \partial P^+}{ \partial x}-\frac{\alpha^+}{2}P^+(x,t) + \frac{\alpha^-}{2}P^-(x,t) \\
+        &\frac{\partial P^-}{\partial t} = +v \frac{ \partial P^-}{ \partial x}+\frac{\alpha^+}{2}P^+(x,t) - \frac{\alpha^-}{2}P^-(x,t)
+    \end{cases}
+    \label{eq:chap9_6}
+\end{equation}
+
+Vogliamo risolvere queste equazioni, ma risolverle dinamicamente è complicato, consideriamo quindi una \textbf{situazione stazionaria.} Lo stato stazionario è una situazione in cui la popolazione non cambia più. In tale stato, le quantità non dipendono dal tempo. Quindi, possiamo porre il lato sinistro delle equazioni pari a zero:
+\begin{equation}
+    \frac{\partial P^+}{\partial t} = \frac{\partial P^-}{\partial t} =0
+    \label{eq:chap9_7}
+\end{equation}
+
+Possiamo riscrivere le due equazioni nel seguente modo:
+\begin{equation}
+    v \frac{ d P^+}{ dx}=-\frac{\alpha^+}{2}P^+(x,t) + \frac{\alpha^-}{2}P^-(x,t)
+    \label{eq:chap9_8}
+\end{equation}
+\begin{equation}
+    v \frac{ d P^-}{ d x} = -\frac{\alpha^+}{2}P^+(x,t) + \frac{\alpha^-}{2}P^-(x,t)
+    \label{eq:chap9_9}
+\end{equation}
+
+Poiché nello stato stazionario $P^+$ e $P^-$ dipendono solo da $x$, la derivata parziale è stata sostituito con una totale.
+
+Sottraiamo la \eqref{eq:chap9_9} alla \eqref{eq:chap9_8}. I termini con $\alpha^+$ e $\alpha^-$ si cancellano a vicenda e otteniamo:
+\begin{equation}
+    v \frac{d(P^+ - P^-)}{dx} = 0 \; \; \longrightarrow \; \; P^+ - P^- = A=\text{costante}
+    \label{eq:chap9_10}
+\end{equation}
+
+Questa costante è determinata dalle condizioni al contorno. Se imponiamo condizioni tali per cui vi è assenza di corrente, allora la costante è pari a 0 e si ha:
+\begin{equation}
+    P^+ = P^- = \frac{P}{2}
+    \label{eq:chap9_11}
+\end{equation}
+dove $P = P^+ + P^-$.
+
+Ora sommiamo le equazioni \eqref{eq:chap9_9} e \eqref{eq:chap9_8}:
+\begin{equation}
+    v \left( \frac{dP^+}{dx} + \frac{dP^-}{dx} \right)= - \alpha ^+ P^++\alpha^- P^-
+    \label{eq:chap9_12}
+\end{equation}
+
+Poiché $P^+ = P^- = \frac{P}{2}$, otteniamo:
+\begin{equation}
+    v \frac{dP}{dx} = - (\alpha ^+ -\alpha^- ) \frac{P}{2}
+    \label{eq:chap9_13}
+\end{equation}
+
+Questa equazione descrive la variazione spaziale della densità di probabilità. Il termine a sinistra rappresenta quante particelle escono dalla regione $x$. I termini con $\alpha$ rappresentano il cambiamento dovuto al tumbling delle particelle. Stiamo considerando un comportamento medio: non analizziamo le fluttuazioni, che richiederebbero un'equazione stocastica per ciascun batterio.
+
+\subsection{Analisi con l'espansione lineare}
+
+Assumiamo che $\alpha(\dot{c})$ sia una funzione regolare e che le variazioni del nutriente siano piccole. Eseguiamo un'espansione lineare e fermiamoci al primo termine in modo che $\alpha$ dipenda linearmente da $\dot{c}$:
+\begin{equation}
+    \alpha(\dot{c}) \approx \alpha(0) + \left. \frac{d\alpha}{d\dot{c} } \right|_{0} \dot{c}+ \dots
+    \label{eq:chap9_14}
+\end{equation}
+
+Ricordando che $\dot{c}= \pm v \frac{dc}{dx}$, si ha:
+allora:
+\begin{align}
+    \alpha^+ &= \alpha(0) + \left. \frac{d\alpha}{d \dot{c}} \right|_{0} v \frac{dc}{dx} \label{eq:chap9_15} \\
+    \alpha^- &= \alpha(0) - \left. \frac{d\alpha}{d\dot{c} } \right|_{0} v \frac{dc}{dx} \label{eq:chap9_16}
+\end{align}
+
+Sottraendo:
+\begin{equation}
+    \alpha^+ - \alpha^- = 2 \left. \frac{d\alpha}{d \dot{c}} \right|_{0} v \frac{dc}{dx}
+    \label{eq:chap9_17}
+\end{equation}
+
+Quindi l'equazione \eqref{eq:chap9_13} diventa:
+\begin{equation}
+    \frac{1}{P} \frac{dP}{dx} = - \left. \frac{d\alpha}{d \dot{c}} \right|_{0} \frac{dc}{dx}
+    \label{eq:chap9_18}
+\end{equation}
+
+Integriamo:
+\begin{equation}
+    \int_0^{P(x)} \frac{dP}{P} = - \left. \frac{d\alpha}{d \dot{c}} \right|_{0} \int_0^{c(x)} dc
+    \label{eq:chap9_19}
+\end{equation}
+
+Abbiamo portato $\left. \frac{d\alpha}{d \dot{c}} \right|_{0}$ fuori dall'integrale perchè è un numero.
+
+Integrando si trova:
+\begin{equation}
+    \ln \left( \frac{P(x)}{P(0)} \right) = -\left. \frac{d\alpha}{d \dot{c}} \right|_{0} \left( c(x) - c(0) \right)
+    \label{eq:chap9_20}
+\end{equation}
+
+Ovvero:
+\begin{equation}
+    P(x) = A \; \exp\left( -\left. \frac{d\alpha}{d \dot{c}} \right|_{0} c(x) \right)
+    \label{eq:chap9_21}
+\end{equation}
+dove A é una costante.
+
+Questa distribuzione è della forma Gibbs-Boltzmann.
+
+Se $\dot{c}$ aumenta, $\alpha$ diminuisce, quindi $\frac{d\alpha}{d\dot{c}} < 0$. L'esponente della \eqref{eq:chap9_21} quindi è positivo, segue che \textbf{i massimi di $P(x)$ coincidono con i massimi della concentrazione del nutriente}. A lungo termine perciò la popolazione si concentra dove il nutriente è maggiore, cioè nei massimi di $c(x)$.
+
+\subsection{Analisi senza espansione lineare}
+
+Supponiamo ora di non voler assumere linearità. Allora:
+\begin{equation}
+    \alpha^+ - \alpha^- = \alpha\left(v \frac{dc}{dx}\right) - \alpha\left(-v \frac{dc}{dx}\right) \equiv f(x)
+    \label{eq:chap9_22}
+\end{equation}
+
+Sostituiamo nella \eqref{eq:chap9_13}:
+\begin{equation}
+    v \frac{dP(x)}{dx} = - f(x)\frac{P(x)}{2}
+    \label{eq:chap9_23}
+\end{equation}
+
+Integriamo:
+\begin{equation}
+    \int_0^{P(x)} \frac{dP}{P} = - \frac{1}{2v}\int_0^{x} f(x') dx'
+    \label{eq:chap9_24}
+\end{equation}
+
+Integrando si trova:
+\begin{equation}
+    P(x) = p(0) \exp\left( - \frac{1}{2v} \int_0^x f(x') dx' \right)
+    \label{eq:chap9_25}
+\end{equation}
+
+Questa è ancora una distribuzione di Boltzmann $P(x) \approx e^{- \beta V(x)}$
+con un \textbf{potenziale efficace} $V(x)$ dato da:
+\begin{equation}
+    V(x) = \frac{1}{2v} \int_0^x f(x') dx'
+    \label{eq:chap9_26}
+\end{equation}
+
+\subsubsection{Massimi della distribuzione}
+
+I massimi di $P(x)$ si trovano nei minimi di $V(x)$.
+
+Troviamo i punti stazionari di $V(x)$ imponendo che $\frac{dV}{dx} = 0$:
+\begin{equation}
+    \frac{1}{2v} f(x) = 0 \; \; \longrightarrow \; \; \alpha\left(v \frac{dc}{dx} \right) = \alpha\left(-v \frac{dc}{dx} \right)
+    \label{eq:chap9_27}
+\end{equation}
+
+Poiché $\alpha$ è una funzione monotona, per ottenere la condizione espressa dalla \eqref{eq:chap9_27}, l'argomento deve essere zero, ovvero:
+\begin{equation}
+    \frac{dc}{dx}=0
+    \label{eq:chap9_28}
+\end{equation}
+
+Quindi i punti stazionari di $V(x)$ sono anche punti stazionari della concentrazione del nutriente.
+
+Per capire se sono massimi o minimi, calcoliamo la derivata seconda e imponiamo che sia maggiore di zero:
+\begin{equation}
+    \left.\frac{d^2V}{dx^2} \right|_{min} >0
+    \label{eq:chap9_29}
+\end{equation}
+
+La derivata seconda di $V$ rispetto a $x$ è data da $f'(x)$, che si ottiene derivando $\alpha^+ - \alpha^-$:
+\begin{equation}
+    \frac{d\alpha^+}{dx} - \frac{d\alpha^-}{dx} >0
+    \label{eq:chap9_30}
+\end{equation}
+
+Usiamo la relazione $\alpha^{\pm}(\dot{c}) = \alpha \left( \pm \frac{dc}{dx} \; v \right)$ e la regola di derivazione della funzione composta:
+\begin{equation}
+    \left. \frac{d\alpha}{d \dot{c}} \right|_{min} \frac{d}{dx} \left( v\frac{dc}{dx}\right) - \left. \frac{d\alpha}{d \dot{c}} \right|_{min} \frac{d}{dx} \left( -v\frac{dc}{dx}\right) >0
+    \label{eq:chap9_31}
+\end{equation}
+\begin{equation}
+    \left. \frac{d\alpha}{d \dot{c}}\right|_{min} v \;\frac{d^2c}{dx^2} >0
+    \label{eq:chap9_32}
+\end{equation}
+
+Se $\dot{c}$ aumenta, $\alpha$ diminuisce, quindi $\frac{d\alpha}{d\dot{c}} < 0$. Affinchè la \eqref{eq:chap9_32} sia verificata, perciò:
+\begin{equation}
+    \frac{d^2c}{dx^2} <0
+    \label{eq:chap9_33}
+\end{equation}
+
+Ovvero il punto considerato è un punto di massimo per $c$.
+
+Anche con questo approccio abbiamo trovato che \textbf{i massimi di $P(x)$ coincidono con i massimi della concentrazione del nutriente $c(x)$}. Quindi, la dinamica chemiotattica porta i batteri verso i massimi della concentrazione del nutriente.
+
+\section{Linear Response Theory}
+
+Si vuole ora giustificare perché l'assunzione che $\alpha(\dot{c})$ dipenda linearmente da $\dot{c}$ sia ragionevole. Per farlo, si introduce il concetto di risposta di un sistema a uno stimolo esterno.
+Un segnale esterno $c(x)$ (input) influenza una variabile interna del sistema, $\alpha$ (output).
+
+Quindi l'espressione $\alpha(\dot{c}) = \alpha(0) + A \;\dot{c}$ descrive il comportamento di risposta del sistema ad un segnale di ingresso.
+
+
+Usiamo la Linear Response Theory e chiamiamo in generale $x$ la variabile di interesse (che in questo caso specifico era $\alpha$).
+
+Consideriamo il sistema descritto dalla seguente equazione di Langevin:
+\begin{equation}
+    \zeta \frac{dx}{dt} = F(x) + \delta F
+    \label{eq:chap9_34}
+\end{equation}
+
+Dove $F(x) = - \frac{dU(x)}{dx}$
+
+Perturbiamo il sistema in modo tale che: $U(x) \rightarrow U(x) + x \;f$ e studiamo la risposta del sistema nel caso in cui $U(x) = \frac{1}{2} kx^2$
+
+In questo caso: $F(x) = -kx + f = F_0(x) + f$
+
+L'equazione di Langevin diventa:
+\begin{equation}
+    \zeta \frac{dx}{dt} = -kx + \delta F +f
+    \label{eq:chap9_35}
+\end{equation}
+
+\begin{itemize}
+    \item Se considero il sistema \textbf{imperturbato} ($f=0$):
+
+    Consideriamo $\zeta = 1$
+    \begin{equation}
+        x(t) = x_0 e^{-k t} + \int_0^t dt' e^{-k(t - t')} \delta F(t')
+        \label{eq:chap9_36}
+    \end{equation}
+    \begin{equation}
+        \langle x(t) \rangle_0 = x_0 e^{-k t} \longrightarrow 0 \; \; \; \; \mathrm{per } \; \;t \to \infty
+        \label{eq:chap9_37}
+    \end{equation}
+
+    \item Se il sistema è \textbf{perturbato}, invece, si ha: $\langle x \rangle_f \neq \langle x \rangle_0$
+    \begin{equation}
+        x(t) = x_0 e^{-k t} + \int_0^t dt' e^{-k(t - t')} \left( \delta F(t') +f \right)
+        \label{eq:chap9_38}
+    \end{equation}
+    Sfruttando il fatto che la media del rumore è nulla, si trova:
+    \begin{equation}
+        \langle x(t) \rangle_f = x_0 e^{-k t} + \int_0^t dt' e^{-k(t - t')} f(t') = \langle x(t) \rangle_0 + \int_0^t dt' e^{-k(t - t')} f(t')
+        \label{eq:chap9_39}
+    \end{equation}
+
+    Nel formalismo della teoria della risposta lineare:
+    \begin{equation}
+        \langle x(t) \rangle_f = \langle x(t) \rangle_0 + \int_0^t dt' R(t - t') f(t')
+        \label{eq:chap9_40}
+    \end{equation}
+
+    Confrontando con la formula precedente, otteniamo che il \textbf{Response Kernel} è:
+    \begin{equation}
+        R(t - t') = e^{-k(t - t')}
+        \label{eq:chap9_41}
+    \end{equation}
+\end{itemize}
+
+Calcoliamo ora la \textbf{funzione di correlazione} in assenza di perturbazione:
+\begin{equation}
+    \begin{aligned}
+        C(t, t') &= \langle \delta x(t) \delta x(t') \rangle \\
+        &= \langle (x(t) - \langle x \rangle) (x(t') - \langle x \rangle) \rangle
+    \end{aligned}
+    \label{eq:chap9_42}
+\end{equation}
+
+Sfruttando la \eqref{eq:chap9_36} e la \eqref{eq:chap9_37}, si ha:
+\begin{equation}
+    \begin{aligned}
+        C(t, t') &= \langle \int_0^t dt_1 e^{-k(t - t_1)} \delta F(t_1) \; \; \int_0^{t'} dt_2 e^{-k(t - t_2)} \delta F(t_2) \; \rangle \\
+        &= \int_0^t dt_1 \int_0^{t'} dt_2 e^{-k(t+t'-t_1 - t_2)} \langle \delta F(t_1) \delta F(t_2) \rangle \\
+        &= \int_0^t dt_1 \int_0^{t'} dt_2 e^{-k(t+t'-t_1 - t_2)} 2 K_b T \delta(t_1 -t_2)
+    \end{aligned}
+    \label{eq:chap9_43}
+\end{equation}
+
+Nell'ultimo passaggio è stato sfruttato il fatto che $\langle \delta F(t_1) \delta F(t_2) \rangle = 2K_b T \zeta \delta (t_1-t_2)$ e che in questo caso stiamo assumendo $\zeta=1$.
+
+Poiché $\delta(t_1 - t_2)$ impone $t_1 = t_2$, è utile iniziare con l'integrazione sulla variabile con l'estremo superiore più grande. Supponiamo quindi che t > t'. Allora:
+\begin{itemize}
+    \item $t_1 \in [0, t]$
+    \item $t_2 \in [0, t']$
+\end{itemize}
+Se integriamo prima su $t_1$, il range include sempre $t_2$, permettendo di implementare facilmente la delta. Integrare prima $t_2$ richiederebbe più attenzione, perché ci sono valori di $t_1 > t'$ per cui la delta vale zero. Assumiamo quindi che $t>t'$ e integriamo prima in $dt_1$ in modo da non avere problemi con i domini di integrazione:
+\begin{equation}
+    \begin{aligned}
+        C(t, t') &= \int_0^{t'} dt_2 e^{-k(t+t'- 2t_2)} \; 2 K_b T \\
+        &= e^{-k(t+t')} \int_0^{t'} dt_2 \; e^{ 2 k t_2} \; 2 K_b \\
+        &= e^{-k(t+t')} \; \frac{1}{2k} \; (e^{ 2 k t'} -1) \; 2 K_b T
+    \end{aligned}
+    \label{eq:chap9_44}
+\end{equation}
+
+Quindi:
+\begin{equation}
+    C(t, t') = \frac{K_b T}{k} \; (e^{-k(t-t')} - e^{-k(t+t')})
+    \label{eq:chap9_45}
+\end{equation}
+
+Per $t, t' \to \infty$ il secondo termine ($e^{-k(t + t')}$) tende a zero, mentre il primo rimane finito, quindi:
+\begin{equation}
+    C(t, t') = \frac{K_b T}{k} \; e^{-k(t-t')} \; \; \; \; \mathrm{per} \; \; t, t' \to \infty
+    \label{eq:chap9_46}
+\end{equation}
+
+Questa funzione di correlazione dipende solo dalla differenza dei tempi: è un segno della \textbf{invarianza per traslazione temporale}, caratteristica dei sistemi in equilibrio.
+
+Abbiamo ora la funzione di risposta $R(t - t')$ e la funzione di correlazione $C(t - t')$. In un \textbf{sistema in equilibrio} valgono le relazioni del \textbf{teorema di fluttuazione-dissipazione}:
+\begin{equation}
+    R(t - t') = -\beta \frac{\partial }{\partial t} C(t - t')
+    \label{eq:chap9_47}
+\end{equation}
+\textbf{Il teorema afferma che in sistemi all'equilibrio, la risposta a una perturbazione è legata alle fluttuazioni spontanee del sistema.}
+
+Supponiamo di applicare al tempo $t=0$ una perturbazione esterna costante $f(t) = f_0$.
+
+
+La variazione nella variabile osservabile $\delta \langle x(t) \rangle$ sarà:
+\begin{equation}
+    \delta \langle x(t) \rangle = \int_0^t dt' \, R(t - t') \cdot f_0 = f_0 \int_0^t R(t - t') dt'
+    \label{eq:chap9_48}
+\end{equation}
+
+Per $t \to \infty$, otteniamo la risposta statica:
+\begin{equation}
+    \delta \langle x \rangle \approx f_0 \int_0^{\infty} R(t-t') dt' = f_0 \cdot \chi
+    \label{eq:chap9_49}
+\end{equation}
+
+Dove $\chi$ è la \textbf{suscettibilità statica}. In sistemi fisici dissipativi classici (es. particella in potenziale quadratico), questa risposta tende a un valore finito.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pics/09_3.png}
+    \caption{Andamento della risposta nei sistemi fisici classici.}
+\end{figure}
+
+Nel caso di un sistema come un batterio, abbiamo osservato invece un comportamento diverso: il sistema risponde alla perturbazione, ma poi torna al valore iniziale. Questo fenomeno è detto \textbf{adattamento}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pics/09_4.png}
+    \caption{Andamento della risposta nei batteri.}
+\end{figure}
+
+Affinché ciò avvenga, l'integrale del kernel deve essere nullo:
+\begin{equation}
+    \int_{-\infty}^{\infty} R(t) dt = 0
+    \label{eq:chap9_50}
+\end{equation}
+
+Cioè il \textbf{kernel di risposta} deve avere lobi positivi e negativi, in modo tale che l'effetto della perturbazione si annulli nel lungo termine.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pics/09_5.png}
+    \caption{Andamento del kernel di risposta nei batteri.}
+\end{figure}
+
+Nei batteri, si misura sperimentalmente la funzione di risposta per la variabile $\alpha(t)$.
+
+Questa risposta mostra una struttura coerente con l'adattamento: un primo lobo positivo seguito da uno negativo. Questo comportamento è compatibile con una dipendenza lineare tra $\alpha$ e $\dot{c}$, e dimostra che, nonostante la linearità, l'adattamento è possibile grazie alla forma specifica del kernel di risposta.

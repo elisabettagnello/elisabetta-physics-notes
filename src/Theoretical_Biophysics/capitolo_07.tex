@@ -1,0 +1,261 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 7 (Lezione del 21/03/2025)
+%-------------------------------------------------------------------------------
+\chapter{Lezione 7}
+\label{capitolo_07}
+\textit{Data: 21/03/2025}
+
+
+\section{Chemiotassi}
+
+Nei loro esperimenti, Adler e Berlian Brown hanno osservato il comportamento batterico studiandone le proprietà cinematiche sia a livello del singolo individuo che a livello di popolazione.
+In un esperimento discusso precedentemente, si è osservato che ponendo una popolazione di batteri in un nutriente con gradiente di concentrazione, la popolazione si muove verso le regioni a concentrazione più elevata. Questa popolazione dimostra quindi la capacità di esplorare lo spazio e dirigersi verso le regioni più favorevoli.
+I batteri si muovono in un regime overdamped: non percepiscono l'inerzia, sono soggetti agli effetti dissipativi del mezzo circostante, si muovono rapidamente grazie ai flagelli (motori molecolari che permettono la propulsione). L'effetto di questa propulsione è una traiettoria erratica composta da due tipi di movimento: \textbf{percorsi rettilinei (\textit{run}) e riorientamenti casuali (\textit{tumble})}.
+
+In assenza di gradienti nutritivi:
+\begin{itemize}
+    \item La lunghezza media di una \textit{run} è di circa 20 lunghezze corporee (20 micron)
+    \item La durata media di una \textit{run} è di circa un secondo
+    \item La distribuzione è esponenziale con piccole fluttuazioni attorno a questi valori
+\end{itemize}
+
+In presenza di un gradiente, invece, il batterio misura continuamente la concentrazione di nutriente e quando percepisce un aumento di nutriente, \textbf{prolunga la durata della \textit{run}} mentre i \textit{tumble} rimangono completamente casuali.
+
+Questo meccanismo crea un bias verso la direzione favorevole, poiché le \textit{run} nella direzione favorevole sono più lunghe, quindi lo spostamento netto è maggiore nella direzione del gradiente.
+
+
+Per implementare questo comportamento, il batterio deve poter misurare le variazioni di concentrazione. Ciò avviene grazie a dei \textbf{chemiorecettori}, ovvero delle proteine distribuite sulla superficie cellulare (migliaia di unità) che legano e rilasciano le molecole di nutriente. La frequenza di legame/rilascio indica la concentrazione esterna.
+Sia $c$ la concentrazione di nutrienti, questa può variare in due modi:
+\begin{itemize}
+    \item a causa della presenza di un gradiente nel mezzo
+    \item a causa di una modulazione nel tempo che viene effettuata da fuori in un mezzo omogeneo
+\end{itemize}
+Definiamo:
+\begin{itemize}
+    \item la variazione reale della concentrazione $\frac{\Delta c}{\bar{c}}$
+    \item l’errore statistico della misura effettuata dal batterio $\frac{\delta c}{\bar{c}}$
+\end{itemize}
+La misura effettuata dal batterio è diversa dalla reale concentrazione a causa del volume finito dei chemiorecettori usati per eseguire le misure.
+
+Indichiamo con $\delta V$ il volume del chemiorecettore e con $m$ il numero di molecole di nutriente “contate”, allora sfruttando il fatto che il conteggio di molecole è un \textbf{processo Poissoniano}:
+\begin{equation}
+\label{eq:chap7_1}
+\bar{c}= \frac{\bar{m}}{\delta V} \quad \rightarrow \quad \bar{m}=\bar{c} \delta V \quad (\delta \bar{m}^2)^{1/2}=\sqrt{\bar{c} \delta V}
+\end{equation}
+Le fluttuazioni delle misure quindi sono:
+\begin{equation}
+\label{eq:chap7_2}
+\frac{(\delta \bar{m}^2)^{1/2}}{\bar{m}} \simeq \frac{1}{\sqrt{\bar{c} \; \delta V}} \quad \rightarrow \quad  \frac{\delta c}{\bar{c}} \simeq \frac{1}{\sqrt{\bar{c} \; \delta V}}
+\end{equation}
+Per una misura affidabile, l'errore statistico commesso dal batterio deve essere minore del segnale:
+\begin{equation}
+\label{eq:chap7_3}
+\frac{\delta c}{\bar{c}} < \frac{\Delta c}{\bar{c}}
+\end{equation}
+Se indichiamo con $S$ la lunghezza del chemiorecettore, abbiamo che $\delta V \simeq S^3$ , quindi:
+\begin{equation}
+\label{eq:chap7_4}
+\frac{\delta c}{\bar{c}} = \frac{1}{\sqrt{\bar{c} \;S^3}}
+\end{equation}
+In realtà il batterio fa meglio di così; il batterio migliora la precisione campionando più volumi indipendenti, ovvero usando contemporaneamente più recettori (= aumento del volume effettivo) e sfruttando il movimento molecolare per avere più misure nel tempo. Se consideriamo $K$ volumi indipendenti, si ha: 
+\begin{equation}
+\label{eq:chap7_5}
+\frac{\delta c}{\bar{c}} = \frac{1}{\sqrt{\bar{c} \; K \delta V}}
+\end{equation}
+Nel caso di diffusione pura, la tipica distanza percorsa in un tempo $t$ è:  $\langle \delta x^2 \rangle ^{1/2} = (2Dt)^{1/2}$
+
+Possiamo quindi definire il tempo di diffusione caratteristico necessario per cambiare il volume di  sampling, ovvero necessario per percorrere una distanza pari alla lunghezza del recettore stesso:
+\begin{equation}
+\label{eq:chap7_6}
+\langle \delta x^2 \rangle ^{1/2} = (2Dt)^{1/2} = S \quad \longrightarrow \quad t_{diff} = \frac{S^2}{2D}
+\end{equation}
+Il numero di campioni indipendenti nel tempo $T$ è:
+\begin{equation}
+\label{eq:chap7_7}
+K = \frac{T}{t_{diff}} = \frac{2DT}{S^2}
+\end{equation}
+Riducendo così l'errore statistico:
+\begin{equation}
+\label{eq:chap7_8}
+\frac{\delta c}{\bar{c}} = \frac{1}{\sqrt{\bar{c} S^3 \frac{2DT}{S^2}}} = \frac{1}{\sqrt{2D\bar{c} ST}} \simeq \frac{1}{\sqrt{A D\bar{c} ST}}
+\end{equation}
+Dove $A$ è una costante generica che dipende dalla forma del recettore.
+
+Il termine sotto la radice quadrata è molto simile alla corrente di molecole che arriva sulla superficie del batterio (assumendolo sferico) nell’unità di tempo: $J=4 \pi R D c$ , dove $4 \pi \approx A$ e $S=R$ (in J non c’è T perchè è una quantita che per definizione è calcolata nell’unità temporale)
+
+Abbiamo stabilito un vincolo fondamentale:
+\begin{equation}
+\label{eq:chap7_9}
+\frac{\delta c}{\bar{c}} < \frac{\Delta c}{\bar{c}}
+\end{equation}
+dove: $\delta c/\bar{c}$ è l'errore statistico e $\Delta c/\bar{c}$ è la variazione reale del nutriente.
+
+\begin{itemize}
+    \item \textbf{Caso 1: Batterio fermo con nutriente variabile}
+\end{itemize}
+Consideriamo prima il caso in cui il batterio è fermo e la concentrazione $C$ varia nel tempo esternamente. In questo caso:
+\begin{equation}
+\label{eq:chap7_10}
+\frac{\Delta c}{\bar{c}} = \frac{dc}{dt}\frac{T}{\bar{c}}
+\end{equation}
+Sostituendo nella disuguaglianza:
+\begin{equation}
+\label{eq:chap7_11}
+\frac{1}{\sqrt{2D\bar{c}ST}} < \frac{1}{\bar{c}}\frac{dc}{dt}T
+\end{equation}
+Risolvendo per $T$ otteniamo:
+\begin{equation}
+\label{eq:chap7_12}
+T > \left[ AD\bar{c}S\left( \frac{1}{\bar{c}}\frac{dc}{dt} \right)^2 \right]^{-1/3} = T_0
+\end{equation}
+
+\begin{itemize}
+    \item \textbf{Caso 2: Batterio in movimento con gradiente spaziale}
+\end{itemize}
+Il caso più interessante è quando il nutriente è stazionario e il batterio si muove attraverso il gradiente. In questo caso, la variazione percepita è:
+\begin{equation}
+\label{eq:chap7_13}
+\frac{dc}{dt} = \frac{dc}{dx} \frac{dx}{dt}  =\nabla c \cdot \bar{v} \; \; \; \;\mathrm{in \;3D}
+\end{equation}
+dove $v$ è la velocità del batterio.
+
+La disuguaglianza diventa:
+\begin{equation}
+\label{eq:chap7_14}
+T > \left[ AD\bar{c}S\left( \frac{1}{\bar{c}} \nabla c \cdot \bar{v}\right)^2 \right]^{-1/3}
+\end{equation}
+Durante il tumble non può avvenire la misura, quindi $T$ deve essere minore del tempo di un "run" altrimenti il tumble interromperebbe la misura: $T_0 < \tau_{run}$
+
+Possiamo inserire valori realistici:
+\begin{itemize}
+    \item $D \approx 10^{-5} cm^2/s$ (per aminoacidi/zuccheri)
+    \item $\bar{C} \approx 1 nM = 10^{-12} mol/cm^3$
+    \item $s \approx 1 \mu m$
+    \item $\frac{|\nabla C|v}{\bar{C}} \approx \frac{1}{30}$
+\end{itemize}
+
+
+Sostituendo si ottiene $T \approx 1.5 s$
+
+L'ordine di grandezza ottenuto è corretto perché corrisponde alla durata tipica di una run. Tuttavia, ci sono problemi che che sono stati tralasciati. Il problema principale è che ho utilizzato un valore troppo piccolo per il coefficiente A. Calcoli più realistici mostrano che se considero le dimensioni reali di un singolo chemiorecettore (circa 10 Ångström) anziché 1 $\mu$ m, il tempo caratteristico $\tau$ risulta essere circa 10 secondi. Questo creerebbe un problema poiché la durata media di un run è solo circa 1 secondo. Tuttavia, anche utilizzare $10^{-2}$ sarebbe sbagliato perché il numero totale di chemiorecettori è molto maggiore di 1.
+
+\section{Analogia elettromagnetica}
+
+Possiamo sfruttare un'analogia con l'elettromagnetismo. Consideriamo le seguenti equazioni:
+\begin{equation}
+\label{eq:chap7_15}
+J=-D\nabla c \quad \quad \; E=-\nabla V
+\end{equation}
+Notiamo che il flusso J di particelle è equivalente al campo elettrico, mentre la concentrazione c è equivalente al potenziale elettrico. Sfruttando questa analogia abbiamo:
+\begin{equation}
+\label{eq:chap7_16}
+J_{tot} = \int \bar{J} \cdot \bar{n} dS = \int \bar{E} \cdot \bar{n} dS = \frac{Q}{\epsilon_0}
+\end{equation}
+Dove l’ultima uguaglianza è stata trovata usando il teorema di Gauss.
+Per una sfera di raggio R, si ha $J_{tot} = 4\pi D R c$
+
+Per un conduttore sferico, invece si ha: $Q = C_{\text{cap}}V = 4\pi\epsilon_0 R V$
+
+Dove $C_{\text{cap}}$ è la capacità. 
+
+Quindi per geometrie complesse possiamo utilizzare risultati noti dalla letteratura, grazie all’analogia elettromagnetica.
+
+Consideriamo un batterio con tanti recettori:
+\begin{itemize}
+    \item $N \approx 3000$ recettori
+    \item Raggio del batterio $R \approx 1 \mu m$
+    \item Dimensione recettore $s \approx 10 Å$
+\end{itemize}
+Otteniamo: $J_{tot} = 4 \pi D c R \frac{Ns}{Ns+ \pi R}$
+
+Sostituendo con i numeri troviamo che $J_{tot} \approx \frac{1}{2}J_{\text{max}}$, dove $J_{\text{max}}$ è il flusso che si avrebbe se l'intera superficie fosse recettiva.
+
+Per descrivere la probabilità che il chemiorecettore sia legato o meno con una molecola definiamo:
+\begin{itemize}
+    \item $p(t)$: Variabile binaria (1=occupato, 0=libero)
+    \item $\bar{p}$: Probabilità media di occupazione
+    \item $\tau_b$: Tempo medio di legame
+    \item $\gamma_{\text{off}} = 1/\tau_b$: Tasso di distacco
+    \item $J_{tot} = 4 \pi D S c$ : numero di molecole che possono legarsi nell’unità di tempo
+\end{itemize}
+In condizioni stazionarie, il numero di legami deve essere pari al numero di legami sciolti:
+\begin{equation}
+\label{eq:chap7_17}
+(1-\bar{p}) \cdot {4\pi D s C} = \frac{\bar{p} }{\tau_{b}}
+\end{equation}
+Risolvendo per $\bar{p}$:
+\begin{equation}
+\label{eq:chap7_18}
+\bar{p} = \frac{4\pi D s c \tau_{b} }{1 + 4\pi D s c \tau_{b} } \approx 4\pi D s c \tau_{b}
+\end{equation}
+La seconda equivalenza vale se $4\pi D s c \tau_{b} <<1$.
+
+Quindi \textbf{il chemiorecettore non "conta" le molecole esterne, ma funziona come un sensore binario} (stato occupato (1) - legato a una molecola di nutriente || stato libero (0) - non legato ).
+
+La probabilità di occupazione $\bar{p}$ è direttamente proporzionale alla concentrazione $C$:  $\bar{p} \propto C$ 
+
+Questa relazione lineare permette al batterio di stimare la concentrazione esterna attraverso la frequenza di occupazione del recettore.
+
+\section{Signal-transduction pathway}
+
+
+\begin{enumerate}
+    \item Se un chemiorecettore è libero e non è legato ai nutrienti esterni, all’interno del batterio (il chemiorecettore stesso) può legarsi all’enzima chinasi A (Che-A). 
+    \item Questo enzima si attiva diventando Che-A$^+$ e trasferisce un gruppo fosfato a Che-Y e Che-B. 
+    \item Che-Y è una proteina regolatrice che, quando fosforilata (CheY-P), influenza il movimento flagellare. 
+    CheY-P si lega al complesso del motore flagellare, favorendo la rotazione oraria, ovvero il "tumbling" che causa un cambiamento casuale di direzione.
+    \item Se CheY non è fosforilata, il flagello ruota in senso antiorario ("running"), consentendo un movimento lineare.
+\end{enumerate}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.35\linewidth]{pics/07_1.png}
+    \caption{Meccanismo di funzionamento dei flagelli.}
+    \label{fig:chap7_flagella_mechanism}
+\end{figure}
+
+
+La probabilità di rotazione oraria $P_{\text{CW}}$ segue una relazione non lineare con CheY-P. Più ci sono enzimi CheY-P e più avvengono dei tumble. Meno enzimi CheY-P ci sono, meno avvengono i tumble e più la run è lunga.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{pics/07_2.jpeg}
+    \caption{probabilità di rotazione oraria $P_{\text{CW}}$ vs. concentrazione di CheY-P.}
+    \label{fig:chap7_prob_cw}
+\end{figure}
+
+
+
+Il sistema include un \textbf{feedback loop} negativo; si tratta di un meccanismo che permette ai batteri di adattarsi a un segnale chimico (es. nutrienti o tossine) e continuare a muoversi in modo efficace, anche dopo una risposta iniziale. Se il batterio continuasse a rispondere allo stesso stimolo, non potrebbe più percepire nuovi cambiamenti nell'ambiente. 
+
+Il batterio non deve reagire alla concentrazione \textit{assoluta} del nutriente, ma alle sue \textit{variazioni}. Per fare ciò regola la sensibilità dei suoi recettori attraverso un meccanismo di feedback chimico.
+
+La sensibilità è controllata dal livello di \textbf{metilazione} dei recettori:
+\begin{itemize}
+    \item \textbf{Più metilazione} = Recettore \textbf{meno sensibile}.
+    \item \textbf{Meno metilazione} = Recettore \textbf{più sensibile}.
+\end{itemize}
+Questo livello è gestito da due enzimi con attività opposte:
+\begin{itemize}
+    \item \textbf{Che-R:} Aggiunge costantemente gruppi metilici (-CH$_3$) ai recettori, rendendoli meno sensibili.
+    \item \textbf{Che-B:} Rimuove i gruppi metilici, rendendo i recettori più sensibili.
+\end{itemize}
+Il punto cruciale è che \textbf{Che-B funziona solo se viene attivato da Che-A+}.
+
+Se la concentrazione di nutriente è alta: 
+\begin{enumerate}
+    \item Il nutriente si lega al chemiorecettore con frequenza molto alta
+    \item Che-A resta disattivato e non attiva Che-B
+    \item Che-R, che è sempre attivo, aggiunge gruppi metilici
+    \item Il livello di metilazione totale aumenta e la sensibilità dei recettori diminuisce, venendo resettata
+\end{enumerate}
+Se la concentrazione di nutriente è bassa: 
+\begin{enumerate}
+    \item Il nutriente si lega al chemiorecettore con frequenza più bassa
+    \item Che-A si lega al chemiorecettore attivandosi
+    \item Che-B e Che-Y si attivano
+    \item Che-R aggiunge gruppi metilici mentre Che-B attivo li rimuove
+    \item Il livello di metilazione totale diminuisce e la sensibilità dei recettori aumenta
+\end{enumerate}
+Grazie al feedback loop se lo stimolo persiste, il batterio smette di rispondere e torna a muoversi casualmente. Quindi se in due contesti ci sono delle concentrazioni diverse, ma in entrambi i casi omogenee nello spazio, comunque i batteri si muoveranno con delle run con la medesima durata. L’unica cosa importante è la variazione di concentrazione e non il valore assoluto della concentrazione.
+

@@ -1,0 +1,292 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 14 (Lezione del 15/04/2025)
+%-------------------------------------------------------------------------------
+\chapter{Lezione 14}
+\label{capitolo_14}
+\textit{Data: 15/04/2025}
+
+
+\section{Cinetica di Michaelis-Menten}
+
+Consideriamo:
+\begin{itemize}
+    \item Substrato (GTP): $S$
+    \item Prodotto (cGMP): $G$
+    \item Enzima di Sintesi: $s$
+    \item Enzima di Degradazione: $d$
+\end{itemize}
+
+Gli schemi di reazione sono:
+\begin{itemize}
+    \item \textbf{Sintesi:}
+    \begin{equation} \label{eq:ch14_1}
+    S + s \; \underset{K_s^-}{\stackrel{K_s^+} {\rightleftharpoons}} \; sS \stackrel{V_s}{\longrightarrow} G 
+    \end{equation}
+    
+    \item \textbf{Degradazione:}
+    \begin{equation} \label{eq:ch14_2}
+    G + d \underset{K_d^-}{\stackrel{K_d^+}{\rightleftharpoons}} dG \stackrel{V_d}{\longrightarrow} S 
+    \end{equation}
+\end{itemize}
+
+Valgono le seguenti leggi di conservazione:
+\begin{equation} \label{eq:ch14_3}
+N_s^{TOT} = N_s + N_{sS} = \text{cost}
+\end{equation}
+\begin{equation} \label{eq:ch14_4}
+N_d^{TOT} = N_d + N_{dG} = \text{cost}
+\end{equation}
+
+\textbf{Ipotesi:} assumiamo di avere un'abbondanza di substrato, $C_{S} \gg 1$ e approssimativamente costante nel tempo.
+
+L'equazione differenziale che descrive la variazione nel tempo del numero di molecole $N_G$ (dove $N_G = \Omega C_G$, con $\Omega$ volume) è data dal bilancio tra la velocità di sintesi e quella di degradazione. L'equazione di partenza è:
+\begin{equation} \label{eq:ch14_5}
+\frac{dN_G}{dt} = V_s N_{sS} - k_d^+ C_G N_d + k_d^- N_{dG}
+\end{equation}
+
+Le equazioni differenziali per i complessi $N_{sS}$ , $N_{dG}$ sono:
+\begin{equation} \label{eq:ch14_6}
+\frac{dN_{sS}}{dt} = k_s^+ N_s C_S - k_s^- N_{sS} - V_s N_{sS}
+\end{equation}
+\begin{equation} \label{eq:ch14_7}
+\frac{dN_{dG}}{dt} = k_d^+ N_d C_G - k_d^- N_{dG} - V_d N_{dG}
+\end{equation}
+
+In condizioni stazionarie si ha:
+\begin{equation} \label{eq:ch14_8}
+N_{sS} = N_s^{TOT} \frac{C_s}{C_s + K_s}
+\end{equation}
+\begin{equation} \label{eq:ch14_9}
+N_{dG} = N_d^{TOT} \frac{C_G}{C_G + K_d}
+\end{equation}
+
+Le costanti $K_s$ e $K_d$ sono le costanti di Michaelis per le reazioni di sintesi e degradazione, rispettivamente, definite come:
+\begin{equation} \label{eq:ch14_10}
+K_s = \frac{k_s^{-} + V_s}{k_s^{+}}
+\end{equation}
+\begin{equation} \label{eq:ch14_11}
+K_d = \frac{k_d^{-} + V_d}{k_d^{+}}
+\end{equation}
+
+Riscriviamo la \eqref{eq:ch14_5} sfruttando la relazione \eqref{eq:ch14_4}:
+\begin{equation} \label{eq:ch14_12}
+\begin{aligned}
+\frac{dN_G}{dt} &= V_s N_{sS} + k_d^- N_{dG} - k_d^+ C_G (N_d^{tot} - N_{dG}) \\ &= V_s N_{sS} + N_{dG} (k_d^- + k_d^+ C_G) - k_d^+ C_G N_d^{tot}
+\end{aligned}
+\end{equation}
+
+Sostituiamo ora $N_{sS}$ e $N_{dG}$ con le equazioni \eqref{eq:ch14_8} e \eqref{eq:ch14_9}:
+\begin{align} \label{eq:ch14_13}
+\frac{dN_{G}}{dt} &= V_{s}N_{s}^{TOT}\frac{C_{s}}{C_{s}+K_{s}} + (k_{d}^{-}+C_{G}{k_{d}}^{+})N_{d}^{TOT}\frac{C_{G}}{C_{G}+K_{d}} - k_{d}^{+}N_{d}^{TOT}C_{G} \nonumber \\
+&= V_{s}N_{s}^{TOT}\frac{C_{s}}{C_{s}+K_{s}} + \left( \frac{k_{d}^{-}+C_{G}k_{d}^{+}}{C_{G}+K_{d}} - k_{d}^{+} \right) N_{d}^{TOT}C_{G}
+\end{align}
+
+Lavoriamo sull'espressione dentro la parentesi:
+\begin{align*}
+\frac{k_{d}^{-}+C_{G}k_{d}^{+}}{C_{G}+K_{d}} - k_{d}^{+} 
+&= \frac{k_{d}^{-}+C_{G}k_{d}^{+} - k_{d}^{+}C_{G} - k_{d}^{+}K_{d}}{C_{G}+K_{d}} \\
+&= \frac{k_{d}^{-} - k_{d}^{+}K_{d}}{C_{G}+K_{d}}
+\end{align*}
+
+Dall'eq. \eqref{eq:ch14_11} si ha $k_d^+ K_d = k_d^{-} + V_d$. Sostituendo:
+\begin{equation*}
+\frac{k_{d}^{-} - (k_{d}^{-} + V_d)}{C_{G}+K_{d}} = \frac{-V_d}{C_{G}+K_{d}}
+\end{equation*}
+
+Sostituendo questo risultato nell’eq. \eqref{eq:ch14_13}, otteniamo l'equazione cinetica finale per $N_G$:
+\begin{equation} \label{eq:ch14_14}
+\frac{dN_{G}}{dt} = V_{s}N_{s}^{TOT}\frac{C_{S}}{C_{S}+K_{S}} - V_{d}N_{d}^{TOT}\frac{C_{G}}{C_{G}+K_{d}}
+\end{equation}
+
+Espressa in termini di concentrazione:
+\begin{equation} \label{eq:ch14_15}
+\Omega \frac{dC_{G}}{dt} = V_{S}N_{S}^{TOT}\frac{C_{S}}{C_{S}+K_{S}} - V_{d}N_{d}^{TOT}\frac{C_{G}}{C_{G}+K_{d}}
+\end{equation}
+Questa è l'equazione non lineare che governa l'evoluzione della concentrazione $C_G$.
+
+\subsection{Stato Stazionario}
+Per trovare la concentrazione stazionaria $C_G^{SS}$, poniamo $\frac{dC_G}{dt} = 0$. Questo significa che il tasso di sintesi bilancia il tasso di degradazione:
+\begin{equation} \label{eq:ch14_16}
+V_{S}N_{S}^{TOT}\frac{C_{S}}{C_{S}+K_{S}} = V_{d}N_{d}^{TOT}\frac{C_{G}^{SS}}{C_{G}^{SS}+K_{d}}
+\end{equation}
+
+Risolvendo algebricamente per $C_G^{SS}$ :
+\begin{equation} \label{eq:ch14_17}
+C_{G}^{SS}= \frac{K_d}{\frac{V_{d}}{V_{s}}\frac{N_{d}^{TOT}}{N_{s}^{TOT}}(1+\frac{K_{s}}{C_{s}})-1}
+\end{equation}
+All'arrivo della luce si verifica un aumento di $N_d^{TOT}$ (gli enzimi di degradazione attivi).
+L'eq. \eqref{eq:ch14_17} mostra che questo causa una diminuzione di $C_G^{SS}$, portando alla chiusura dei canali e alla riduzione della corrente.
+
+\subsubsection*{Dinamica Intorno allo Stato Stazionario}
+Analizziamo come il sistema risponde a piccole perturbazioni $\delta G(t)$ attorno allo stato stazionario:
+\begin{equation} \label{eq:ch14_18}
+C_{G}(t)=C_{G}^{SS}+\delta G(t) \quad (\text{con } \delta G \text{ piccolo})
+\end{equation}
+
+Sostituiamo questa espressione nell'eq. \eqref{eq:ch14_15}.
+La derivata a sinistra diventa $\Omega \frac{d(\delta G)}{dt}$ poiché $C_G^{SS}$ è costante.
+Il primo termine a destra (sintesi) non dipende da $C_G$ e lo chiamiamo $A = V_{S}N_{S}^{TOT}\frac{C_{S}}{C_{S}+K_{S}}$.
+Il secondo termine (degradazione) dipende da $C_G$. Dobbiamo linearizzarlo:
+\begin{equation} \label{eq:ch14_19}
+V_{d}N_{d}^{TOT}\frac{C_{G}}{C_{G}+K_{d}} = V_{d}N_{d}^{TOT}\frac{C_{G}^{SS}+\delta G}{C_{G}^{SS}+\delta G+K_{d}}
+\end{equation}
+
+Riscriviamo il denominatore per l'espansione:
+\begin{equation*}
+\frac{1}{C_{G}^{SS}+K_{d}+\delta G} = \frac{1}{(C_{G}^{SS}+K_{d})(1 + \frac{\delta G}{C_{G}^{SS}+K_{d}})} = (C_{G}^{SS}+K_{d})^{-1} \left(1 + \frac{\delta G}{C_{G}^{SS}+K_{d}}\right)^{-1}
+\end{equation*}
+
+Poiché $\delta G$ è piccolo, $\frac{\delta G}{C_{G}^{SS}+K_{d}}$ è piccolo. Usiamo l'approssimazione $(1+x)^{-1} \approx 1-x$ per $x \ll 1$ :
+\begin{equation*}
+(C_{G}^{SS}+K_{d})^{-1} \left(1 + \frac{\delta G}{C_{G}^{SS}+K_{d}}\right)^{-1} \approx (C_{G}^{SS}+K_{d})^{-1} \left(1 - \frac{\delta G}{C_{G}^{SS}+K_{d}}\right)
+\end{equation*}
+
+Ora moltiplichiamo per il numeratore:
+\begin{align*}
+&V_{d}N_{d}^{TOT} (C_{G}^{SS}+\delta G) (C_{G}^{SS}+K_{d})^{-1} \left(1 - \frac{\delta G}{C_{G}^{SS}+K_{d}}\right) \\
+&= V_{d}N_{d}^{TOT} (C_{G}^{SS}+K_{d})^{-1} \left[ C_{G}^{SS} + \delta G - \frac{C_{G}^{SS} \delta G}{C_{G}^{SS}+K_{d}} - \frac{(\delta G)^2}{C_{G}^{SS}+K_{d}} \right]
+\end{align*}
+
+Trascuriamo il termine $(\delta G)^2$ (linearizzazione):
+\begin{equation} \label{eq:ch14_20}
+\approx \frac{V_{d} \; \; N_{d}^{TOT}}{C_{G}^{SS}+K_{d}} \left[ C_{G}^{SS}+\delta G - \frac{\delta G \; \; C_{G}^{SS}}{C_{G}^{SS}+K_{d}} \right]
+\end{equation}
+
+L'equazione differenziale linearizzata per $\delta G$ è:
+\begin{equation} \label{eq:ch14_21}
+\Omega \frac{d(\delta G)}{dt} = A - \frac{V_{d} \; \; N_{d}^{TOT}}{C_{G}^{SS}+K_{d}} \left[ C_{G}^{SS}+\delta G - \frac{\delta G \; \; C_{G}^{SS}}{C_{G}^{SS}+K_{d}} \right]
+\end{equation}
+
+Allo stato stazionario, $A = V_{d}N_{d}^{TOT} \frac{C_{G}^{SS}}{C_{G}^{SS}+K_{d}}$. Quindi i termini di ordine zero si cancellano. Rimane:
+\begin{equation} \label{eq:ch14_22}
+\Omega \frac{d(\delta G)}{dt} = -\frac{V_{d} \; \; N_{d}^{TOT}}{C_{G}^{SS}+K_{d}} \delta G \left[ 1- \frac{ C_{G}^{SS}}{C_{G}^{SS}+K_{d}} \right] 
+\end{equation}
+
+Dividiamo a destra e sinistra per $\Omega$ e moltiplichiamo e dividiamo per $C_G^{SS}$:
+\begin{equation} \label{eq:ch14_23}
+\frac{d(\delta G)}{dt} = -\frac{V_{d} \; \; N_{d}^{TOT} \; \; C_{G}^{SS}}{C_{G}^{SS}+K_{d}} \delta G \left[ 1- \frac{ C_{G}^{SS}}{C_{G}^{SS}+K_{d}} \right] \frac{1}{\Omega C_{G}^{SS}}
+\end{equation}
+
+Introduciamo $\tau_{eff}$ :
+\begin{equation} \label{eq:ch14_24}
+\frac{1}{\tau_{eff}}=\frac{V_{d} \; \; N_{d}^{TOT} \; \; C_{G}^{SS}}{C_{G}^{SS}+K_{d}}
+\end{equation}
+
+Possiamo riscrivere l’equazione \eqref{eq:ch14_23} come:
+\begin{equation} \label{eq:ch14_25}
+\frac{d(\delta G)}{dt} = -\frac{1} {\tau_{eff}} \delta G \left[ 1- \frac{ C_{G}^{SS}}{C_{G}^{SS}+K_{d}} \right] \frac{1}{N_{G}^{SS}}
+\end{equation}
+
+Definiamo la scala temporale di rilassamento:
+\begin{equation} \label{eq:ch14_26}
+\frac{1}{\tau}= \frac{1}{\tau_{eff}} \left[ 1- \frac{ C_{G}^{SS}}{C_{G}^{SS}+K_{d}} \right] \frac{1}{N_{G}^{SS}}
+\end{equation}
+
+In questo modo troviamo che la soluzione della \eqref{eq:ch14_25} è un decadimento esponenziale:
+\begin{equation} \label{eq:ch14_27}
+\delta G(t) = \delta G(t_0) e^{-t/\tau}
+\end{equation}
+
+\subsection{Regime Efficiente}
+Si definisce un "regime efficiente" quando valgono due condizioni:
+\begin{itemize}
+    \item $C_S \gg K_s$: il substrato per la sintesi è abbondante.
+    \item $C_G^{SS} \ll K_d$: la concentrazione stazionaria di G è molto bassa rispetto alla costante di Michaelis della degradazione. Questo implica che \textbf{il sistema risponde rapidamente alle perturbazioni}, cioè $\tau \approx \tau_{eff}$ (il tempo di vita della perturbazione è minimo).
+\end{itemize}
+In questo regime, le equazioni si semplificano :
+\begin{itemize}
+    \item Equazione differenziale:
+    \begin{equation} \label{eq:ch14_28}
+    \begin{aligned}
+    \Omega \frac{dC_{G}}{dt} &= V_{S}N_{S}^{TOT}\frac{C_{S}}{C_{S}+K_{S}} - V_{d}N_{d}^{TOT}\frac{C_{G}}{C_{G}+K_{d}} \\ &\approx V_{s}N_{s}^{TOT} - \frac{V_{d}}{K_{d}}N_{d}^{TOT}C_{G}
+    \end{aligned}
+    \end{equation}
+    
+    \item Concentrazione stazionaria:
+    \begin{equation} \label{eq:ch14_29}
+    \begin{aligned}
+    C_{G}^{SS} &= \frac{K_d}{\frac{V_{d}}{V_{s}}\frac{N_{d}^{TOT}}{N_{s}^{TOT}}(1+\frac{K_{s}}{C_{s}})-1} \\ &\approx \frac{K_{d}V_{S}N_{S}^{TOT}}{V_{d}N_{d}^{TOT}}
+    \end{aligned}
+    \end{equation}
+    
+    \item Tempo di vita della perturbazione:
+    \begin{equation} \label{eq:ch14_30}
+    \tau \approx \frac{K_{d}\Omega}{V_{d}{N_{d}}^{TOT}}
+    \end{equation}
+\end{itemize}
+
+\subsection{Guadagno e Amplificazione nel Regime Efficiente}
+Consideriamo una variazione $\delta N_d^{TOT}$ nel numero di enzimi di degradazione attivi a causa della transizione del retinale. Vogliamo capire come varia $C_G^{SS}$ in risposta.
+Usiamo l'espressione semplificata per $C_G^{SS}$:
+\begin{equation} \label{eq:ch14_31}
+\begin{aligned}
+C_{G}^{SS} &= \frac{K_{d}V_{S}N_{S}^{TOT}}{V_{d}N_{d}^{TOT}}
+\end{aligned}
+\end{equation}
+
+La variazione $\delta C_G^{SS}$ è data da:
+\begin{equation} \label{eq:ch14_32}
+\begin{aligned}
+|\delta C_{G}^{SS}| &\approx \left|\frac{\partial C_{G}^{SS}}{\partial N_{d}^{TOT}}\right| |\delta N_{d}^{TOT}| \\ &= \frac{K_{d}V_{S}N_{S}^{TOT}}{V_{d}N_{d}^{TOT}} \frac{|\delta N_{d}^{TOT}|}{N_d^{TOT}} = C_{G}^{SS} \frac{|\delta N_{d}^{TOT}|}{N_d^{TOT}}
+\end{aligned}
+\end{equation}
+
+Questa relazione mostra che la variazione relativa è uguale (in modulo):
+\begin{equation} \label{eq:ch14_33}
+\frac{|\delta C_{G}^{SS}|}{C_{G}^{SS}} \approx \frac{|\delta N_{d}^{TOT}|}{N_d^{TOT}}
+\end{equation}
+
+Definiamo il guadagno $g_0$ come il fattore che lega la variazione assoluta degli enzimi alla variazione assoluta della concentrazione :
+\begin{equation} \label{eq:ch14_34}
+|\delta C_{G}^{SS}| = g_0 |\delta N_{d}^{TOT}|
+\end{equation}
+Dove il guadagno è:
+\begin{equation} \label{eq:ch14_35}
+g_{0} = \frac{C_G^{SS}}{N_d^{TOT}} = \frac{K_{d}V_{s}N_{s}^{TOT}}{V_{d}(N_{d}^{TOT})^{2}}
+\end{equation}
+
+Il guadagno $g_0$ quantifica l'amplificazione del segnale. Se $g_0$ è grande, una piccola variazione nel numero di enzimi attivati $\delta N_d^{TOT}$ produce una grande variazione nella concentrazione $\delta C_G^{SS}$.
+
+
+Stime sperimentali indicano $g_0 \approx 1000$, mostrando che la cascata biochimica amplifica enormemente il segnale iniziale (assorbimento fotone $\rightarrow$ attivazione enzima). Questo spiega l'alta sensibilità alla luce.
+
+
+\subsection{Collegamento con la Corrente di Membrana}
+La variazione della concentrazione di cGMP all'interno del fotorecettore, risultato della cascata biochimica innescata dalla luce e amplificata come abbiamo visto, deve tradursi in un segnale elettrico. Questo avviene a livello della membrana cellulare, attraverso la modulazione dei canali ionici. La membrana del fotorecettore possiede proteine che agiscono da \textbf{canali ionici}. Questi canali permettono il passaggio selettivo di ioni quando sono nello stato "aperto". Lo stato (aperto o chiuso) di questi canali è regolato dal legame con molecole di cGMP: in presenza di cGMP, i canali tendono a rimanere aperti.
+
+Il passaggio di ioni attraverso i canali aperti genera una corrente elettrica di trans-membrana. Questo flusso ionico contribuisce anche a determinare la differenza di potenziale elettrico tra l'interno e l'esterno della cellula. Tenendo conto sia della diffusione che delle pompe ioniche attive, in condizioni stazionarie (buio), questa differenza di potenziale è dell'ordine di:
+$\Delta V \sim 50 \text{ mV}$
+
+La corrente ionica totale ($i$) può essere espressa in termini del flusso di ioni. La corrente è data dalla carica di un singolo ione ($q$) moltiplicata per il flusso di particelle attraverso l'area totale dei canali aperti: $i = q \cdot (\text{Flusso Particelle}) \cdot A_{tot}$
+dove $A_{tot}$ è l'area totale attraverso cui la corrente fluisce.
+
+Il flusso di particelle è dato dalla concentrazione locale degli ioni ($c$) moltiplicata per la loro velocità media di deriva ($v$) dovuta al campo elettrico: $\text{Flusso Particelle} = c \cdot v$.
+Quindi, $i = q c v A_{tot}$.
+
+La velocità di deriva è la velocità media acquisita a causa della forza esercitata dal campo elettrico presente attraverso la membrana. Il campo elettrico è $E \approx \Delta V / l$, dove $l$ è lo spessore della membrana. La forza su uno ione, quindi, è $F_{ext} = q E \approx q \Delta V / l$.
+
+In un mezzo viscoso, la velocità di deriva è pari alla forza fratto la costante di attrito $\zeta$. Usando la relazione di Einstein che lega l’attrito al coefficiente di diffusione ($\frac{1}{\zeta} = D / (k_B T)$), otteniamo la velocità di deriva :
+\begin{equation} \label{eq:ch14_36}
+v = \frac{F_{ext}}{\zeta} = \frac{D}{k_B T} q E = \frac{D q \Delta V}{k_B T \;l}
+\end{equation}
+
+Sostituendo questa velocità nell'espressione della corrente, otteniamo :
+\begin{equation} \label{eq:ch14_37}
+i = q c \left( \frac{D q \Delta V}{k_B T l} \right) A_{tot} = \frac{q^2 c D \Delta V}{k_B T \;l} A_{tot}
+\end{equation}
+
+Valori tipici:
+\begin{itemize}
+    \item $l \approx 5 \text{ nm}$
+    \item $d \approx 0.3 \text{ nm}$
+    \item $(k_B T)/q \approx 25 \text{ mV}$
+\end{itemize}
+La corrente risultante è dell'ordine di $i \sim 1 \text{ pA}$.
+
+Nei precedenti esperimenti con la torcia è stato osservato che le variazioni di corrente avvengono in multipli di un picoampere. Questo dato suggerisce una relazione precisa tra l’assorbimento del fotone e la risposta elettrica della cellula.
+
+Il processo inizia con l’assorbimento di un fotone, che provoca una trasformazione del retinale. A catena, vengono attivati degli enzimi che alterano la concentrazione di cGMP. Questo cambiamento influisce sull’apertura dei canali ionici, modificando così la corrente. Tuttavia, questa spiegazione non è sufficiente.
+
+I canali ionici si aprono e si chiudono su una scala temporale dell’ordine dei millisecondi.
+Se la variazione di corrente fosse dovuta alla chiusura di un singolo canale, l’effetto osservato sarebbe quasi istantaneo. Nei dati sperimentali, invece, la risposta si estende su circa due secondi, il che indica che non si tratta dell’attività di un singolo canale.
+La variazione di corrente è quindi il risultato di un cambiamento statistico collettivo: la variazione del cGMP non agisce su un solo canale, ma modifica la probabilità di apertura e chiusura di tutti i canali ionici. Questi si aprono e si chiudono in modo continuo e rapido, e ciò che si osserva sperimentalmente è una \textbf{variazione nel numero medio di canali aperti,} coerentemente con la risoluzione temporale dell’esperimento.

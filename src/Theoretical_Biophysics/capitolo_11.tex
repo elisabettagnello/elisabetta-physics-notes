@@ -1,0 +1,325 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 11 (Lezione del 04/04/2025)
+%-------------------------------------------------------------------------------
+\chapter{Lezione 11}
+\label{capitolo_11}
+\textit{Data: 04/04/2025}
+
+
+\section{Fotorecettori}
+
+Consideriamo l’esperimento di Baylor volto a misurare la corrente nella membrana di un recettore in funzione del tempo. L'apparato sperimentale include un recettore che consente la registrazione della corrente membranale durante l'esposizione a una sorgente luminosa accesa e spenta con densità luminosa regolare.
+
+In condizioni di assenza di luce, la corrente nella membrana del recettore presenta fluttuazioni con un \textbf{valore medio di 20 pA} e una \textbf{variazione dell'ordine di 0,1 pA}. Quando la sorgente luminosa viene accesa, la corrente diminuisce, per comodità consideriamo il valore assoluto e prendiamo valori positivi.
+
+Quando la sorgente viene accesa e spenta ripetitivamente, si osservano picchi multipli di \textbf{1 pA}. L'interpretazione di questo schema suggerisce che, in alcuni casi, il fotorecettore assorbe un fotone, determinando un aumento minimo della corrente. Talvolta assorbe due fotoni, producendo un aumento maggiore, mentre in altri casi non assorbe fotoni, risultando in assenza di variazione della corrente.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.6\textwidth]{pics/11_1.jpeg}
+\caption{Picchi multipli di 1 pA.}
+\end{figure}
+
+Oltre a considerare la corrente in funzione del tempo, è possibile analizzare tutti i possibili valori di corrente registrati durante l'esperimento e tracciarne l'istogramma. In questo modo, si ottiene la distribuzione di probabilità della corrente. Tale distribuzione presenta tre picchi; a densità luminosa molto bassa, il terzo picco potrebbe non essere visibile, mentre aumentando la densità luminosa possono emergere ulteriori picchi. 
+
+La forma precisa della distribuzione dipende dall'intensità luminosa.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{pics/11_2.jpeg}
+\caption{Distribuzione di probabilità della corrente.}
+\end{figure}
+
+Questo comportamento può essere spiegato con un modello semplice, considerando che il processo di assorbimento è quantistico, con una probabilità a priori di assorbire un certo numero di fotoni, descritta da una distribuzione di Poisson:
+\begin{equation} \label{eq:1}
+P(n) = \frac{e^{-m} m^n}{n!}
+\end{equation}
+dove $m$ è il numero medio di fotoni assorbiti, proporzionale all'intensità della luce.
+
+In assenza di segnale esterno, le fluttuazioni della corrente seguono una distribuzione gaussiana centrata sul valore stazionario $I_{\text{s}}$ con una certa varianza $\sigma_0$.
+\begin{equation} \label{eq:2}
+P(I | n = 0) = \frac{1}{\sqrt{2\pi\sigma_0^2}} \exp\left[ -\frac{(I - I_s)^2}{2\sigma_0^2} \right]
+\end{equation}
+Quando viene assorbito un fotone, si assume che la distribuzione della corrente rimanga gaussiana, ma centrata su un nuovo valore $I_1$, con una varianza $\sigma_1$ leggermente maggiore. Questo schema si ripete per un numero maggiore di fotoni assorbiti, con la corrente media che aumenta di $I_1 = 1 \text{pA}$ per ogni fotone aggiuntivo.
+
+La distribuzione risultante della corrente è quindi una somma ponderata di gaussiane:
+\begin{equation} \label{eq:3}
+P(I) = \sum_{n=0}^{\infty} P(I|n) P(n)
+\end{equation}
+Il profilo risultante è una convoluzione di distribuzioni Gaussiane, dove ciascuna Gaussiana è ponderata con un peso di Poisson ($P(n) = \frac{m^n}{n!} e^{-m}$). Il fattore di Poisson è maggiore per valori piccoli di $n$ , quindi l'ampiezza delle gaussiane decresce rapidamente all'aumentare del numero di fotoni. Questo spiega perfettamente l'andamento della curva mostrata nella figura di sopra.
+
+\subsection{Threshold della corrente}
+
+Il valore della corrente contiene informazioni sul segnale esterno. Ad esempio, un valore di corrente vicino a $I_{\text{s}}$ indica chiaramente l'assenza di luce, mentre un valore vicino a $I_1$ suggerisce la presenza di luce. Tuttavia, valori intermedi possono essere ambigui, poiché possono sovrapporsi tra diverse distribuzioni gaussiane. In questi casi, il fotorecettore deve discriminare tra la presenza o l'assenza di luce basandosi sulla probabilità di errore minima. Una strategia consiste nel definire una soglia $\theta$ tale che:
+\begin{itemize}
+    \item se $I > \theta$, si conclude che c'è luce (n $\geq$ 1)
+    \item se $I \leq \theta$, si conclude che non c'è luce (n = 0)
+\end{itemize}
+Possiamo incorrere in due tipi di errore:
+\begin{itemize}
+    \item Falso positivo: diciamo che $n > 0$ ma in realtà $n=0$
+    \item Falso negativo: diciamo che $n = 0$ ma in realtà $n > 0$
+\end{itemize}
+Supponiamo che l'intensità luminosa sia talmente bassa che $n = 0$ oppure $n = 1$.
+
+Allora la probabilità totale di errore $P(\text{errore})$ è la somma delle probabilità dei due eventi:
+\begin{align}
+P_{\theta}(\text{say } n=1 |n=0) &= \int_{\theta}^{+ \infty} \,di \; P(i|n=0) \label{eq:4} \\
+P_{\theta}(\text{say } n=0 |n=1) &= \int_{-\infty}^{\theta} \,di \; P(i|n=1) \label{eq:5}
+\end{align}
+Moltiplicati rispettivamente per la probabilità che siano assorbiti 0 fotoni ed un fotone.
+\begin{equation} \label{eq:6}
+\begin{aligned}
+P_{\theta}(\text{errore}) &= P_{\theta}(\text{say } n=1 |n=0) \cdot P(n=0) \\&+
+P_{\theta}(\text{say } n=0 |n=1) \cdot P(n=1)
+\end{aligned}
+\end{equation}
+Questa quantità dipende da $\theta$; possiamo trovare il valore ottimale $\theta^*$ minimizzando $P_{\text{errore}}(\theta)$.
+
+Deriviamo:
+\begin{equation} \label{eq:7}
+\begin{aligned}
+\frac{dP_{\text{err}}}{d\theta} = \frac{d}{d\theta} \left[ P(n=0) \int_{\theta}^{+ \infty} \,di \; P(i|n=0) + P(n=1) \int_{-\infty}^{\theta} \,di \; P(i|n=1) \right]
+\end{aligned}
+\end{equation}
+Ponendo la derivata rispetto a $\theta$ uguale a zero, si trova:
+\begin{align*}
+\frac{dP_{\text{errore}}}{d\theta} = -P(i=\theta|n=0) P(n=0) + P(i=\theta|n=1) P(n=1) = 0
+\end{align*}
+Si ottiene:
+\begin{equation*}
+P(i=\theta|n=0) P(n=0) = P(i=\theta|n=1) P(n=1)
+\end{equation*}
+\textbf{Quindi il valore ottimale $\theta^*$ è il punto di intersezione delle due distribuzioni pesate.}
+
+\subsection{Numero di soglia dei fotoni assorbiti}
+
+Quando consideriamo l'intero sistema visivo, possiamo modellare la probabilità di vedere come la probabilità che almeno un fotorecettore abbia assorbito un fotone:
+\begin{equation} \label{eq:8}
+P(\text{see}) = P\left(\sum_{i=1}^{N} n_i \geq 1 \right)
+\end{equation}
+dove $N$ è il numero totale di recettori, $n_i$ è il numero di fotoni assorbiti dal fotorecettore $i$-esimo.
+
+Assumendo indipendenza tra fotorecettori e che ogni $n_i$ segua una distribuzione di Poisson con media $m$ ($P(n_i) = e^{-m} \frac{m^{n_i}}{n_i!}$), abbiamo che la somma di tutti i fotoni assorbiti $n_{tot}$ è ancora una variabile di Poisson con media $M=Nm$:
+\begin{equation} \label{eq:9}
+P(n_{tot}) = e^{-M} \frac{M^{n_{tot}}}{n_{tot}!}
+\end{equation}
+Quindi:
+\begin{equation} \label{eq:10}
+P(\text{see}) = \sum_{n_{tot}=1}^{+ \infty} e^{-M} \frac{M^{n_{tot}}}{n_{tot}!}
+\end{equation}
+Usando questo metodo troviamo che il sistema visivo ha una soglia di $k = 1$ fotone, ciò è in disaccordo con i dati sperimentali secondo i quali $k=6$.
+
+La discrepanza nasce dal fatto che i fotorecettori non sono contatori perfetti a causa del \textbf{rumore di fondo}. Il fotorecettore non riesce a rispondere in modo preciso a ogni singolo fotone: ci sono fluttuazioni nella corrente anche in assenza di stimolo (rumore nel buio), e per poter distinguere un vero segnale da una fluttuazione casuale è necessario introdurre una soglia. Un fotorecettore può rilevare l'assorbimento di un fotone solo se la corrente generata supera una certa soglia. In caso contrario, si rischierebbe di confondere il rumore con un vero segnale. Quindi, la probabilità che il fotorecettore $i$-esimo segnali l'assorbimento di $n$ fotoni non è semplicemente la distribuzione di Poisson, ma deve essere corretta con un fattore modulante che tiene conto del superamento della soglia:
+\begin{equation} \label{eq:11}
+P(n_{i}) = e^{-m} \frac{m^{n_i}}{n_{i}!} \; P(i>\theta\;|n_i)
+\end{equation}
+Per $n$ elevati, $i>>\theta$ quindi il fattore modulante è circa 1, ma per $n$ piccoli (0 o 1) diminuisce notevolmente. Nella somma totale, quindi, i contributi per valori piccoli di $n$ vengono pesati meno a causa della soglia. Questo effetto riduce l'affidabilità delle risposte per piccoli stimoli e spinge il sistema a "preferire" segnali più forti per avere una risposta affidabile. Il risultato è che il valore ottimale di $k$ (cioè il numero minimo di fotoni necessari per distinguere il segnale dal rumore) risulta maggiore di 1.
+
+Tuttavia, questo non basta a spiegare l'intero effetto osservato sperimentalmente: il valore efficace di $k$ ottenuto da Hecht e Pirenne è circa 6. Anche considerando i fattori di soglia, le simulazioni danno valori tra 2 e 3. Questo indica la presenza di un altro fenomeno: il \textbf{dark noise}.
+
+\subsection{Dark noise}
+
+Anche con la sorgente spenta, a volte si osserva una risposta come se un fotone fosse stato assorbito. La molecola responsabile dell'assorbimento è il \textbf{retinale}, contenuta nella proteina \textbf{rodopsina}. Normalmente il retinale si trova nella conformazione \textbf{C-11}, e l'assorbimento di un fotone induce il passaggio alla conformazione \textbf{C-trans}, cambiando la struttura della molecola e innescando un processo a cascata.
+
+
+Tuttavia, la transizione può avvenire anche senza fotone, per effetto del noise termico: la molecola si trova all’interno di una cellula e può ricevere energia casuale dalle altre componenti dell'ambiente cellulare (che si trovano a temperatura finita), superando la barriera energetica della transizione.
+
+
+Questo fenomeno può essere modellizzato come segue:
+\begin{itemize}
+    \item Un minimo energetico stabile rappresenta lo stato stabile (C-11).
+    \item Un secondo minimo rappresenta lo stato meta-stabile (C-trans).
+    \item Una barriera energetica separa i due stati.
+\end{itemize}
+Il sistema può passare da uno stato all'altro tramite assorbimento di un fotone (transizione fotonica) oppure tramite fluttuazioni termiche (transizione spontanea).
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{pics/11_3.png}
+\caption{Transizione dalla configurazione C-11 a C-trans.}
+\end{figure}
+
+La frequenza di queste transizioni spontanee è molto bassa: studi sperimentali hanno stimato che il tempo medio tra due transizioni spontanee è dell'ordine di 1000 anni per una singola molecola di retinale: $\tau_{trans} \approx e^{\beta \Delta U} \approx 1000 \; \text{anni}$. Tuttavia, considerando che una retina contiene milioni di fotorecettori e che all'interno di ciascun fotorecettore ci sono circa $10^9$ molecole di rodopsina, il dark noise complessivo diventa osservabile. La frequenza complessiva di eventi spontanei per fotorecettore è pari a $0.33 \; s^{-1}$. In realtà il tasso osservato di eventi è inferiore a quanto previsto teoricamente, grazie alla presenza di una costante temporale microscopica che riduce l'effetto esponenziale. Questa costante ha dimensioni di tempo e modula la probabilità dell'evento: $\tau_{trans} \approx \tau_0 \;e^{\beta \Delta U}$. La frequenza effettiva di eventi spontanei è quindi molto più bassa, pur rimanendo sufficientemente alta da poter essere rilevata sperimentalmente.
+
+Esperimenti condotti sui rospi mostrano che questi animali sono soggetti a un tasso più alto di dark noise, in quanto il fattore esponenziale è meno efficace. Durante un esperimento, un rospo veniva posto davanti a una ciotola di cibo, visibile solo con l'accensione di una torcia. Anche in assenza di luce, il rospo eseguiva frequentemente il movimento della lingua verso la ciotola. Il numero di questi movimenti era maggiore rispetto a quelli compiuti quando la torcia era accesa, indicando la presenza di eventi rumorosi confusi con stimoli reali.
+
+La presenza di rumore impone la necessità di fissare una soglia per la rilevazione del segnale più alta di $k=1$. Se la soglia fosse troppo bassa, il sistema genererebbe troppi falsi positivi. Per ridurre gli errori, è necessario osservare più eventi consecutivi prima di concludere che sia presente uno stimolo luminoso reale.
+
+\section{Analisi del potenziale di membrana}
+
+In condizioni di bassa intensità luminosa si conduce un esperimento analogo a quello descritto in precedenza, in cui un fotorecettore viene illuminato con una torcia.
+
+Se misuriamo la differenza di potenziale attraverso la membrana del fotorecettore $V(t)$ in funzione del tempo $t$, accendendo (per pochi millisecondi) e spegnendo una sorgente luminosa, troveremo - come nel caso precedente - un segnale fluttuante. Quando si accende la luce osserveremo un certo incremento (un picco) seguito da un ritorno al valore stazionario. Questo comportamento si ripete in modo simile per ogni impulso luminoso. La scala temporale della risposta è dell'ordine del secondo.
+
+Consideriamo ora una situazione con intensità luminosa molto maggiore. In questo caso, in un piccolo intervallo di tempo potremmo avere l'assorbimento di 1, 2, o più fotoni a distanze temporali leggermente diverse. Il pattern risultante sarà la sovrapposizione di molti eventi elementari ravvicinati.
+
+Nel grafico le linee tratteggiate mostrano le risposte sottostanti ai singoli fotoni, mentre la linea solida mostra il loro effetto sommato.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{pics/11_4.png}
+\caption{Andamento del potenziale nel caso di alta intensità luminosa.}
+\end{figure}
+
+In questo caso l'obiettivo è determinare se il sistema è in grado di seguire le variazioni temporali di $I(t)$ e rispondere adeguatamente anche in presenza di elevata intensità luminosa.
+
+Assumiamo che l'intensità della luce esterna sia un segnale che cambia nel tempo. Questo significa che il tasso di assorbimento dei fotoni è una quantità che varia nel tempo. Il rate di assorbimento può essere scritto come:
+\begin{equation} \label{eq:12}
+r(t)=\bar{r} (1+C(t))
+\end{equation}
+dove $\bar{r}$ è un rate medio e $C(t)$ è il modulatore che esprime la dipendenza temporale.
+
+Per determinare se il nostro sistema funziona efficientemente, procediamo nel seguente modo:
+\begin{enumerate}
+    \item Calcoliamo il valore medio del potenziale intramembrana $V$ in presenza di un segnale variabile $C(t) \neq 0$
+    \item Calcoliamo le proprietà statistiche di $V$ in assenza del segnale.
+\end{enumerate}
+Eseguiamo questi calcoli perché ciò che otteniamo in assenza del segnale rappresenta il rumore. La percezione in un ambiente omogeneo (ad esempio con illuminazione uniforme) non è deterministica: esistono fluttuazioni. Se l'ambiente esterno varia nel tempo, percepiremo un cambiamento. Tuttavia, se tale cambiamento è dello stesso ordine di grandezza delle fluttuazioni, la percezione risulta inefficiente. Dobbiamo quindi valutare il rapporto segnale-rumore per determinare l'efficienza del sistema.
+
+Per calcolare queste quantità, dobbiamo specificare cosa intendiamo per "valori medi". Consideriamo che:
+\begin{itemize}
+    \item Il processo di assorbimento dei fotoni è stocastico (fenomeno quantistico).
+    \item I fotoni possono essere assorbiti in istanti temporali diversi: $t_i$ (tempo di assorbimento) è una variabile casuale
+    \item Il numero totale di fotoni assorbiti può variare: $N$ è una variabile casuale
+\end{itemize}
+Il potenziale $V(t)$ è dato da:
+\begin{equation} \label{eq:13}
+V(t) = \tilde{V} + \sum_{i=1}^N V_{0}(t-t_i)
+\end{equation}
+dove $\tilde{V}$ è il potenziale in assenza di luce, $V_{0}$ è la risposta elementare a un singolo fotone.
+
+Discretizziamo l'asse temporale in piccoli intervalli. Per ogni intervallo, possiamo identificare un punto rappresentativo, ad esempio il punto centrale $\tau_k$. Questi $\tau_k$ sono da non confondere con i tempi effettivi $t_1, t_2, \dots$ in cui avvengono gli eventi di assorbimento veri e propri.
+
+\subsubsection*{Calcolo della densità di probabilità}
+
+L'assorbimento di un fotone è un evento quantistico, intrinsecamente casuale. Un buon modello per descrivere il numero di eventi $n$ che cadono in un certo intervallo di tempo è la distribuzione di Poisson:
+\begin{equation} \label{eq:14}
+P(n) = e^{-\langle n \rangle} \frac{\langle n \rangle^n}{n!}
+\end{equation}
+dove $\langle n \rangle$ è il numero medio di eventi attesi in quell'intervallo.
+
+Il numero medio $\langle n \rangle$ dipende dalla durata dell'intervallo $d \tau$ che stiamo considerando: più lungo è l'intervallo, più eventi ci aspettiamo in media. Possiamo scrivere $\langle n \rangle = r(\tau) \cdot d\tau$, where $r$ è il rate medio di eventi.
+La probabilità di osservare $n$ eventi nell'intervallo $d \tau$ è:
+\begin{equation} \label{eq:15}
+P(n) = e^{-r(\tau) \cdot d\tau} \frac{(r(\tau) \cdot d\tau)^n}{n!}
+\end{equation}
+Quindi abbiamo:
+\begin{itemize}
+    \item Probabilità che non si verifichi nessun evento: $P(n=0) = e^{-r(\tau)d \tau}$
+    \item Probabilità che si verifichi un evento: $P(n=1) = e^{-r(\tau)d\tau} r(\tau)d\tau$
+\end{itemize}
+
+
+\textbf{Vogliamo trovare la probabilità di osservare esattamente $N$ eventi proprio negli istanti $t_1, ..., t_N$.} Dobbiamo avere:
+\begin{itemize}
+    \item Un evento in ciascun $t_i$.
+        
+        Probabilità: $r(t_i)dt_i \, e^{-r(t_i)dt_i}$ per ogni $i$.
+        
+    \item Nessun evento in tutti gli altri intervallini.
+        
+        Probabilità: $e^{-r(\tau)d \tau}$ per ogni $\tau \ne t_i$.
+\end{itemize}
+
+
+\begin{equation} \label{eq:16}
+P(t_1, ..., t_N | N) \cdot dt_1 ... dt_N = \left[ \prod_{i=1}^{N} r(t_i)dt_i \, e^{-r(t_i)dt_i} \right] \times \left[ \prod_{t' \ne t_i} e^{-r(t')dt'} \right]
+\end{equation}
+Il fattore $e^{-r(\tau)d\tau}$ compare per tutti gli intervalli $d\tau$.
+
+Il prodotto di tutti questi esponenziali è: $e^{\left( -\sum_{k} r(\tau_k)d\tau_k \right)}$
+
+Quindi:
+\begin{equation} \label{eq:17}
+P(t_1, ..., t_N | N) \cdot dt_1 ... dt_N = e^{\left( -\sum_{k} r(\tau_k)d\tau_k \right)} \left[ \prod_{i=1}^{N} r(t_i)dt_i \, \right]
+\end{equation}
+Per $d \tau \to 0$, la somma diventa un integrale su tutto il periodo di osservazione (es. $[0, T]$).
+
+La densità di probabilità quindi è:
+
+\textit{
+\begin{equation} \label{eq:18}
+P(t_1, ..., t_N | N) = e^{\left( -\int_0^T r(\tau)d\tau \right)} \; \prod_{i=1}^{N} r(t_i)
+\end{equation}
+}
+
+\subsubsection*{Calcolo del valore medio $\langle V(t) \rangle$}
+
+Vogliamo calcolare il valore medio dell'osservabile $V(t)$ definito prima. Dobbiamo mediare su tutte le possibili realizzazioni (numero $N$ e tempi $t_i$).
+\begin{equation} \label{eq:19}
+\langle V(t) \rangle = \sum_{N=0}^{\infty} \frac{1}{N!} \int_{0}^{T} dt_1 \dots dt_N \, P(t_1, \dots, t_N | N) \, V(t)
+\end{equation}
+Stiamo considerando i fotoni indistinguibili, da qui il fattore $1/N!$
+
+Sostituiamo $P(t_1, \dots, t_N | N)$ con la \eqref{eq:18} e $V(t)$ con la \eqref{eq:13}:
+\begin{equation} \label{eq:20}
+\sum_{N=0}^{\infty} \frac{1}{N!} \int dt_1 \dots dt_N \; e^{-\int r(\tau) d \tau} \; r(t_1) ... r(t_N) \left( \tilde{V} + \sum_{i=1}^N V_o(t-t_i) \right)
+\end{equation}
+Separiamo il calcolo in due parti:
+
+\begin{enumerate}
+    \item \textbf{N>0:}
+    \begin{equation*}
+    \begin{aligned}
+    &\; \; \; \tilde{V} e^{-\int r(\tau) d \tau} \left[\int dt_i r(t_i)\right]^N \\ &+ e^{-\int r(\tau) d \tau} \sum_{i=1}^N \int dt_1 \dots dt_N \; r(t_1) ... r(t_N) V_o(t-t_i)
+    \end{aligned}
+    \end{equation*}
+    Nel primo pezzo abbiamo sostituito gli integrali con uno solo elevato alla N, poiché tutti i $t_i$ sono indistinguibili, quindi ogni termine dà lo stesso contributo.
+    
+    Nel secondo pezzo l’integrale può essere scritto come:
+    \begin{equation*}
+    \begin{aligned}
+    & \int dt_1 \dots dt_N \; r(t_1) ... r(t_N)V_o(t-t_i) = \\ &\int dt_1 r(t_1) \times \int dt_2 r(t_2) \times \dots \times \int dt_i r(t_i) \; \; V_0(t-t_i)
+    \end{aligned}
+    \end{equation*}
+    Tutti gli $N-1$ integrali prima di quello finale sono identici, quindi possiamo scrivere:
+    \begin{equation*}
+    \begin{aligned}
+    & \int dt_1 \dots dt_N \; r(t_1) ... r(t_N)V_o(t-t_i) = \left[\int dt_j r(t_j) \right]^{N-1} \int dt_i r(t_i) \; \; V_0(t-t_i)
+    \end{aligned}
+    \end{equation*}
+    Alla fine per N>0 si ha:
+    \begin{equation*}
+    \begin{aligned}
+    e^{-\int r(\tau) d \tau} \left( \tilde{V}\left[\int dt_i r(t_i)\right]^N + \left[\int dt_j r(t_j) \right]^{N-1} \sum_{i=1}^N \int dt_i r(t_i) \; \; V_0(t-t_i) \right)
+    \end{aligned}
+    \end{equation*}
+    
+    \item \textbf{N=0:}
+    
+    Per N=0 rimane solo il termine con $\tilde{V}$.
+    \begin{equation*}
+    \begin{aligned}
+    \tilde{V} e^{-\int_0^T r(\tau) d \tau} \longrightarrow 0 \quad \text{per } T>>1
+    \end{aligned}
+    \end{equation*}
+\end{enumerate}
+
+Uniamo i due pezzi:
+\begin{equation*}
+\begin{aligned}
+\langle V(t) \rangle &= \tilde{V} e^{-\int r(\tau) d \tau} \\ &+\sum_{N=1}^{\infty} \frac{1}{N!} \tilde{V} e^{-\int r(\tau) d \tau} \left[\int dt_i r(t_i)\right]^N \\ &+ \sum_{N=1}^{\infty} \frac{1}{N!} e^{-\int r(\tau) d \tau} \left[\int dt_j r(t_j)\right]^{N-1} \sum_{i=1}^N\int dt_i r(t_i) V_0(t-t_i)
+\end{aligned}
+\end{equation*}
+Soffermiamoci sui primi due termini. Questi possono essere riscritti come un unico termine, facendo partire la sommatoria da 0:
+\begin{equation*}
+\begin{aligned}
+\tilde{V} e^{-\int r(\tau) d \tau} \left ( 1+ \sum_{N=1}^{\infty} \frac{1}{N!} \left[\int dt_i r(t_i)\right]^N \right) = \tilde{V} e^{-\int r(\tau) d \tau} \sum_{N=0}^{\infty} \frac{1}{N!} \left[\int dt_i r(t_i)\right]^N
+\end{aligned}
+\end{equation*}
+$\sum_{N=0}^\infty \frac{1}{(N)!} \left[\int ds r(s) \right]^{N}$ è lo sviluppo in serie di Taylor dell’esponenziale di $e^{\int ds r(s)}$. Quindi possiamo riscrivere:
+\begin{equation*}
+\begin{aligned}
+\tilde{V} e^{-\int r(\tau) d \tau} \sum_{N=0}^{\infty} \frac{1}{N!} \left[\int dt_i r(t_i)\right]^N = \tilde{V} e^{-\int r(\tau) d \tau} e^{+\int r(s) ds}
+\end{aligned}
+\end{equation*}
+Le variabili di integrazioni sono mute, quindi i due esponenziali si semplificano.
+
+La formula finale è:
+
+\textit{
+\begin{equation*}
+\langle V(t) \rangle = \tilde{V} + \sum_{N=1}^\infty \frac{1}{N!} e^{- \int d \tau r(\tau)} \left[ \int dt_j r(t_j) \right]^{N-1} \sum_{i=1}^N \int dt_i r(t_i) V_0(t-t_i)
+\end{equation*}
+}

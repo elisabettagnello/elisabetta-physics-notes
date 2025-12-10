@@ -1,0 +1,267 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 1 (Lezione del 28/02/2025)
+%-------------------------------------------------------------------------------
+\chapter{Lezione 1}
+\label{chap:1}
+\textit{Data: 28/02/2025}
+
+\section{Il Rumore}
+Ciascun sistema vive in un ambiente, ovvero è in contatto con un bagno termico (reservoir); ciò comporta che vi siano delle fluttuazioni d’energia. Queste fluttuazioni possono essere descritte in termini di rumore. Se i corpi presi in considerazione sono macroscopici, a temperatura ambiente le scale energetiche delle fluttuazioni possono essere trascurate. Per sistemi che vivono in scale microscopiche, invece, l’ordine delle fluttuazioni energetiche è sufficientemente grande da diventare rilevante. Il \textbf{rumore termico} influenza la cinematica di un sistema microscopico.
+
+Possono esserci anche altre sorgenti di rumore oltre a quello termico (es. behavioral noise per sistemi macroscopici).
+
+\section{Moto Browniano}
+Se si immerge un granello di polline (ordine di \textbf{µm} come una cellula) in acqua, questo non resterà fermo ma inizierà a muoversi anche in assenza di forze esterne. Il moto del polline è irregolare ed è causato dalle collisioni casuali e provenienti da ciascuna direzione che avvengono con le molecole d’acqua. In questo contesto le collisioni casuali coincidono con il rumore. Durante tali collisioni, le molecole d’acqua cedono dell’energia al polline.
+
+L’energia cinetica di ciascuna molecola d’acqua è:
+\begin{align*}
+K  &= \frac{3}{2} K_b T \\
+   &\simeq \frac{3}{2} \cdot 1.38 \cdot 10^{-23} \, \text{JK}^{-1} \cdot 295 \, \text{K} \\
+   &\simeq 4.1 \cdot 10^{-21} \, \text{J} \\
+   &\simeq \mathbf{10^{-2} \, eV}
+\end{align*}
+La velocità tipica di una molecola d’acqua è:
+\begin{align*}
+&\frac{3}{2} K_b T = \frac{1}{2} m v^2 \\ \\
+&v = \sqrt{\frac{3 K_b T}{m}} \simeq \mathbf{10^3  \, \frac{m}{s}}
+\end{align*}
+Si considera che la distanza tipica tra due molecole sia paragonabile alle dimensioni di una molecola stessa, quindi dell’ordine di nm.
+
+Il tempo tipico tra due collisioni è:
+\begin{equation}
+\tau = \frac{d}{v} \simeq \mathbf{10^{-12} \; s} \label{eq:chap1_tau_collisioni}
+\end{equation}
+Gli urti avvengono su una scala temporale microscopica, che non è accessibile direttamente con un'osservazione normale. Quello che si può osservare è il comportamento risultante dall'effetto di moltissimi urti successivi. Quindi, ciò che vediamo a livello macroscopico è il moto browniano, che è un fenomeno su larga scala nel tempo.
+
+Se osserviamo il nostro granello di polline in un contenitore d'acqua e lo seguiamo nel tempo, vedremo che inizierà lentamente a muoversi. Se aspettiamo abbastanza tempo, il granello esplorerà un'area sempre più grande. Questo è un tipico esempio di diffusione.
+
+Se il granello di polline inizialmente è in moto in una direzione, l’effetto delle collisioni provenienti da direzioni casuali è quello di rallentare il sistema e deviarne la traiettoria. Nel caso in cui, invece, il granello di polline sia inizialmente in quiete, a causa delle collisioni il sistema verrà messo in moto; è un esempio di diffusione.
+
+\section{Random Walk}
+Vogliamo dare una descrizione matematica che parta dalla scala microscopica e ci porti a quella macroscopica. Faremo questo in due modi: inizieremo con la descrizione più semplice, che è il random walk.
+
+Consideriamo un \textit{random walk} unidimensionale in cui ad ogni intervallo di tempo $\tau$ corrisponde un \textbf{\textit{random step}} di lunghezza casuale $l_n$ (il pedice $n$ fa riferimento al numero dello \textit{step}). La distribuzione della variabile casuale $l_n$ è $P_n (l_n)$. La distribuzione è caratterizzata da un valor medio $\langle l \rangle$ e da una deviazione standard $\langle \delta l^2 \rangle$, che assumiamo essere \textbf{finiti}.
+
+Riprendiamo l’esempio del granello di polline in acqua e consideriamo il moto del granello causato dalle collisioni come se fosse un random walk. Dopo un tempo $t \gg \tau$, la posizione del polline è: $X_t = \sum_{n=1}^{N} l_n$, dove $N = \frac{t}{\tau}$.
+
+Per il \textbf{teorema del limite centrale} la distribuzione della posizione finale X sarà approssimativamente una distribuzione gaussiana se N è sufficientemente grande:
+\begin{align}
+    \langle X \rangle &= \; N \langle l \rangle \label{eq:chap1_media_X} \\
+    \sigma_x^2 &= \; \langle (X-\langle X \rangle)^2 \rangle \;= N \langle \delta l^2 \rangle \label{eq:chap1_varianza_X}
+\end{align}
+Per N molto grande, la distribuzione, quindi, tende ad una distribuzione gaussiana:
+\begin{align}
+P(x,t) &= \frac{1}{\sqrt{2 \pi \sigma_x^2}} \; \exp\left(-\frac{(X-\langle X \rangle)^2}{2 \sigma_x^2}\right) \nonumber \\
+       &= \frac{1}{\sqrt{2 \pi t \frac{\langle \delta l^2 \rangle}{\tau}}} \; \exp\left(-\frac{(X-t \frac{\langle l \rangle}{\tau})^2}{2 t \frac{\langle \delta l^2 \rangle}{\tau}}\right) \label{eq:chap1_gaussiana}
+\end{align}
+La \textbf{velocità di drift} è definita come: $V = \frac{\langle X \rangle}{t} = \frac{N \langle l \rangle}{t} = \frac{\langle l \rangle}{\tau}$.
+
+Definendo la \textbf{diffusione} $D = \frac{\langle \delta l^2 \rangle}{2 \tau}$, si ottiene: $\sigma_x^2 = 2Dt$.
+
+La distribuzione può essere riscritta come:
+\begin{equation}
+P(x,t)= \frac{1}{\sqrt{4 \pi D \;t}} \; \exp\left(-\frac{(X-Vt)^2}{4D \;t}\right) \label{eq:chap1_distribuzione_diffusione}
+\end{equation}
+Questa equazione ci permette di capire il comportamento del sistema nel lungo periodo. Dopo un tempo $t$, la distribuzione della posizione del camminatore segue una gaussiana con media $Vt$ e varianza $2Dt$. Il coefficiente di diffusione e la velocità di deriva hanno anche una chiara interpretazione fenomenologica. Se immaginiamo un esperimento con molte particelle che si muovono in modo casuale (ad esempio, particelle di polline in un fluido), possiamo misurare la posizione media e la varianza a diversi istanti di tempo. Tracciando un grafico della posizione media in funzione del tempo, otteniamo una retta la cui pendenza è $V$. Allo stesso modo, tracciando la varianza della posizione in funzione del tempo, otteniamo una retta con pendenza $2D$.
+
+Immaginiamo di porre al tempo $t=0$ un gran numero di molecole d’acqua tutte nell’origine; dopo un grande intervallo di tempo (durante il quale ciascuna ha eseguito un \textit{random walk}), le molecole saranno distribuite in modo completamente simmetrico in una regione di spazio di dimensioni $\langle (X-\langle X \rangle)^2 \rangle$, quindi la distanza tra le molecole cresce linearmente nel tempo (standard diffusion behavior).
+
+
+Nel caso in cui la relazione non sia lineare, si parla di \textbf{diffusione anomala}. Questa può essere caratterizzata a partire dal valore di $z$:
+\begin{equation*}
+\sigma_x^2 \simeq t^{\frac{2}{z}}
+\end{equation*}
+\begin{itemize}
+    \item $z=2$ standard
+    \item $z<2$   super-diffusione: il moto è più rapido della diffusione normale
+    \item $z>2$  sub-diffusione: il moto è più lento
+\end{itemize}
+
+\subsection{Generalizzazione Multi-dimensionale}
+Nel caso in cui il moto avviene in $d$ dimensioni in modo isotropico, si può generalizzare:
+\begin{align}
+    \langle \bar{X} \rangle &= \; \bar{V}t \label{eq:chap1_drift_multi} \\
+    \langle (\bar{X}-\langle \bar{X} \rangle)^2 \rangle \; &= 2Dt \label{eq:chap1_diff_multi} \\
+    D &= d \frac{\langle \delta l^2 \rangle}{2 \tau} = d \; D_1 \label{eq:chap1_coeffD_multi}
+\end{align}
+La distribuzione in questo caso diventa:
+\begin{equation}
+    P(\bar{x},t) = \frac{1}{(4 \pi d D_1 t)^{d/2}} \; \exp\left(-\frac{(\bar{X}-\bar{V}t)^2}{4 d D_1 t}\right) \label{eq:chap1_distr_multi}
+\end{equation}
+
+
+Assumiamo che ciascuno \textit{step} possa avvenire con uguale probabilità sia a destra che a sinistra dell’origine, in questo caso si ha che $\langle l \rangle = 0$ e che $V=0$.
+
+
+
+Mentre se è presente un \textit{bias} nei confronti della direzione in cui avviene ciascuno spostamento (ad esempio in presenza di un campo esterno o di una forza esterna), $\langle l \rangle \neq 0$ e $V \neq 0$. Il fatto di avere una velocità di deriva diversa da zero è dovuto alla presenza di forze esterne che introducono un bias nel moto dell'oggetto.
+
+\begin{figure}[h!]
+    \centering
+    \begin{minipage}[b]{0.48\textwidth} 
+        \centering
+        \includegraphics[width=0.7\textwidth]{pics/01_1.png}
+        \caption{Random Walk senza drift.}
+        \label{fig:chap1_no_drift_left} 
+    \end{minipage}
+    \hfill 
+    \begin{minipage}[b]{0.48\textwidth} 
+        \centering
+        \includegraphics[width=0.7\textwidth]{pics/01_2.png}
+        \caption{Random Walk con drift.}
+        \label{fig:chap1_drift_right} 
+    \end{minipage}
+\end{figure}
+
+\subsection{Caso con una forza esterna}
+Osserviamo il granulo di polline tra due urti consecutivi. Ogni volta che avviene un urto, c'è un effetto di casualità, ma tra due urti c'è solo l'effetto della forza esterna.
+\begin{align*}
+    & F=m a \\ \\
+    & \frac{l}{\tau} = \frac{1}{2} a \frac{\tau^2}{\tau} = \frac{1}{2} \frac{F}{m}\frac{\tau^2}{\tau} \\ \\
+    & V = \frac{\tau}{2m} F = \frac{1}{\zeta} F
+\end{align*}
+Questa relazione ci dice che esiste una relazione lineare tra la velocità di deriva e la forza applicata al sistema. E da questa relazione possiamo introdurre il parametro \textbf{$\zeta=\frac{2m}{\tau}$}, che è un parametro di \textbf{frizione} che può essere ricavato sperimentalmente.
+
+Il coefficiente di diffusione delle molecole all’interno di un batterio è $D \simeq 1 \frac{\mu m^2}{ms}$. Dato un batterio lungo circa $1 \mu m$, una molecola impiega circa $0.17 ms$ per attraversarlo.
+
+\subsection{Diffusione Anomala}
+Ipotesi imposte fino ad ora:
+\begin{itemize}
+    \item varianza e valor medio finiti
+    \item $l$ è una variabile casuale, $l_n$ e $l_{n+1}$ non sono correlate
+\end{itemize}
+Se $P(l)$ non decresce abbastanza velocemente, il secondo momento non è definito. Ci troviamo quindi in un caso in cui la distribuzione ha code molto lunghe, ciò significa che i grandi spostamenti sono ragionevolmente probabili. Quindi la diffusione nello spazio sarà più rapida rispetto al caso in cui la distribuzione ha code più corte. Questo caso di superdiffusione prende il nome di \textbf{diffusione di Lévy}.
+
+Un altro caso in cui si può ottenere una superdiffusione è in presenza di una distribuzione con momenti finiti ma con correlazioni tra le variabili. Quando le variabili non sono più indipendenti, può accadere che, se ad un certo punto, per qualche motivo, si compie un passo più grande, allora il prossimo passo avrà una probabilità maggiore di essere anch'esso grande. Quindi anche se non ogni passo singolarmente è grande, si possono avere sequenze di passi più lunghi che portano a spostamenti maggiori.
+
+Supponiamo che sia $l$ che $\tau$ siano variabili casuali, ciascuna con la propria distribuzione. Ognuna di queste distribuzioni avrà un valore medio e una varianza. Fintanto che il valor medio di $\tau$ è ben definito non cambia nulla rispetto il caso standard. Se la distribuzione dei tempi ha una media infinita, ad esempio se i tempi di attesa sono distribuiti secondo una legge di potenza con code lunghe, potrebbe accadere che tra un passo e l'altro si debba attendere un tempo molto lungo. Ciò significa che il movimento sarà più lento, e infatti si può dimostrare che questo è un caso di sottodiffusione. In molti sistemi fisici, la presenza di code pesanti nella distribuzione dei tempi è dovuta alla presenza di trappole energetiche.
+
+\section{Equazione di Langevin}
+L'equazione di Langevin è un'equazione fenomenologica stocastica, ovvero include un termine di rumore casuale. L'idea è quella di descrivere il moto di una particella soggetta a forze deterministiche e a forze casuali.
+\begin{equation}
+    m \frac{dv}{dt} = -\zeta v + \delta F + F_{ext} \label{eq:chap1_langevin}
+\end{equation}
+\begin{itemize}
+    \item $-\zeta v$ è una forza viscosa che rappresenta l'attrito con il fluido circostante
+    \item $\delta F$ è un termine di rumore casuale
+    \item $F_{ext}$ è una forza deterministica nota
+\end{itemize}
+Questa equazione descrive il moto di una particella in un fluido. Il fluido ha due effetti distinti: un effetto dissipativo, descritto dal coefficiente di attrito, che tende a smorzare il moto, e un effetto eccitante, dovuto agli impulsi casuali ricevuti nel tempo, che è rappresentato dal termine di rumore.
+
+$\delta F$ è una variabile casuale quindi dobbiamo specificare le sue proprietà statistiche: Supponiamo che abbia media \textbf{nulla} $\langle \delta F(t) \rangle = 0$, facciamo questa assunzione perché se la media fosse diversa da zero, potremmo semplicemente traslare il valore medio nel termine corrispondente. Poiché si tratta di un processo definito nel tempo, è possibile che le variabili casuali estratte a tempi diversi siano correlate tra loro. Dobbiamo quindi specificare il correlatore di queste variabili nel tempo. Nel caso più semplice, che è quello che consideriamo, assumeremo che le variabili casuali in istanti di tempo distinti siano \textbf{indipendenti}:
+\begin{equation}
+    \langle \delta F(t)\delta F(t') \rangle = 2B \delta(t-t') \label{eq:chap1_rumore_corr}
+\end{equation}
+Se $F_{ext}=0$, l’equazione di Langevin diventa:
+\begin{equation}
+    m \frac{dv}{dt} = -\zeta v + \delta F \label{eq:chap1_langevin_semplice}
+\end{equation}
+La soluzione dell’equazione di Langevin è:
+\begin{equation}
+    v(t)=v_0 e^{- \frac{\zeta}{m}t} + \int_0^t e^{-\frac{\zeta}{m} (t-t')} \frac{\delta F(t')}{m} dt' \label{eq:chap1_langevin_sol}
+\end{equation}
+La soluzione ha due contributi:
+\begin{itemize}
+    \item Il primo termine rappresenta la memoria delle condizioni iniziali. L'esponenziale indica che questa memoria decade con una scala temporale caratteristica. Per tempi molto più grandi di $\tau=\frac{m}{\zeta}$, la memoria della condizione iniziale si perde.
+    \item Il secondo termine descrive l'effetto del rumore. Anche l'effetto del rumore viene memorizzato con lo stesso kernel esponenziale, indicando che il sistema mantiene traccia del passato con una certa persistenza, che diminuisce nel tempo.
+\end{itemize}
+
+
+Ci sono due modi per derivare la soluzione dell’equazione di Langevin: uno rapido e uno più lento.
+
+\subsubsection{Metodo rapido}
+Osservando la presenza del termine dissipativo, ovvero quello con l’attrito, si può intuire che la soluzione debba contenere un esponenziale decrescente. La scala caratteristica di questo esponenziale può essere determinata solo da $m / \zeta$ per ragioni dimensionali. Infatti, $m / \zeta$ ha le dimensioni di un tempo, ed è l’unica quantità in grado di definire una scala temporale in questo modello. Di conseguenza, mi aspetto che la soluzione del sistema abbia questa forma.
+
+Considero quindi la funzione $v(t)$ e la scrivo nel modo seguente:
+\begin{equation}
+    v(t) = g(t) e^{-\frac{\zeta}{m}t} \label{eq:chap1_ansatz_v}
+\end{equation}
+A questo punto, il mio problema diventa quello di determinare $g(t)$. Sostituisco questa forma nella mia equazione per verificare cosa succede. L'equazione originale è:
+\begin{equation}
+    m \frac{dv}{dt} = -\zeta v + \delta F \label{eq:chap1_deriv_start}
+\end{equation}
+Sostituendo $v(t)$ si ha:
+\begin{equation}
+    m \frac{d}{dt} \left( g(t) e^{-\frac{\zeta}{m}t} \right) = -\zeta g(t) e^{-\frac{\zeta}{m}t} + \delta F \label{eq:chap1_deriv_sost}
+\end{equation}
+Derivando il prodotto:
+\begin{equation}
+    m \left( \frac{dg}{dt} e^{-\frac{\zeta}{m}t} - \frac{\zeta}{m} g(t) e^{-\frac{\zeta}{m}t} \right) = -\zeta g(t) e^{-\frac{\zeta}{m}t} + \delta F \label{eq:chap1_deriv_prodotto}
+\end{equation}
+I termini $-\zeta g(t) e^{-\frac{\zeta}{m}t}$ si cancellano e rimane:
+\begin{equation}
+    m \frac{dg}{dt} e^{-\frac{\zeta}{m}t} = \delta F \label{eq:chap1_dg_dt_semplice}
+\end{equation}
+Dividendo per $m$:
+\begin{equation}
+    \frac{dg}{dt} = \frac{\delta F}{m} e^{\frac{\zeta}{m}t} \label{eq:chap1_dg_dt}
+\end{equation}
+Integrando:
+\begin{equation}
+    g(t) = g_0 + \int_0^t dt' \frac{\delta F(t')}{m} e^{\frac{\zeta}{m}t'} \label{eq:chap1_g_t}
+\end{equation}
+Una volta ottenuto $g(t)$, si può sostituire per ottenere $v(t)$:
+\begin{equation}
+    v(t) = g_0 e^{-\frac{\zeta}{m}t} + \int_0^t dt' e^{-\frac{\zeta}{m}(t-t')} \frac{\delta F(t')}{m} \label{eq:chap1_v_finale_rapido}
+\end{equation}
+Ora dobbiamo verificare la condizione iniziale. A $t = 0$, l’integrale è nullo e otteniamo $v(0) = g_0$, il che è coerente.
+
+\subsubsection{Metodo lento}
+Ora possiamo trovare la soluzione anche in un altro modo, più complesso ma utile in seguito. L'equazione data è un'equazione differenziale del primo ordine:
+\begin{equation}
+    m \frac{dv}{dt} = -\zeta v + \delta F \label{eq:chap1_deriv_lento_start}
+\end{equation}
+Si può risolvere con il metodo generale delle equazioni differenziali, trovando prima la soluzione dell’equazione omogenea, e poi una soluzione particolare.
+
+L’equazione omogenea è:
+    \begin{equation}
+        m \frac{dv}{dt} = -\zeta v \label{eq:chap1_omogenea}
+    \end{equation}
+    ha soluzione:
+    \begin{equation}
+        v_{omogenea}(t) = v_0 e^{-\frac{\zeta}{m}t} \label{eq:chap1_sol_omogenea}
+    \end{equation}
+
+Ora cerchiamo una soluzione particolare con il \textbf{metodo del propagatore}. Consideriamo l'equazione con un termine forzante delta:
+    \begin{equation}
+        m \frac{dv}{dt} + \zeta v = \delta(t) \label{eq:chap1_prop_start}
+    \end{equation}
+    Denotiamo la soluzione di questa equazione come $G(t)$, chiamata propagatore.
+    \begin{equation}
+        \left(m \frac{d}{dt} + \zeta\right) G(t)= \delta(t) \label{eq:chap1_prop_eq}
+    \end{equation}
+    Passiamo alla trasformata di Fourier:
+    \begin{equation}
+        i \omega m G(\omega) + \zeta G(\omega) = 1 \implies G(\omega)=\frac{1}{i\omega m+\zeta}=\frac{1}{im(\omega-i\frac{\zeta}{m})} \label{eq:chap1_G_omega}
+    \end{equation}
+    $G(t)$ e la sua trasformata di Fourier $G(\omega)$ sono legate dalla seguente relazione:
+    \begin{equation}
+        G(t)=\int_{-\infty}^{+\infty} \frac{d\omega}{2\pi} e^{i \omega t} G(\omega) \label{eq:chap1_G_t_fourier}
+    \end{equation}
+    Quindi si ha:
+    \begin{equation}
+        G(t)=\int \frac{d\omega}{2\pi} \frac{e^{i \omega t}}{im(\omega-i\frac{\zeta}{m})} \label{eq:chap1_G_t_integrale}
+    \end{equation}
+    L’integrale può essere calcolato chiudendo il contorno nel piano complesso e usando il teorema dei residui. In questo caso vi è solo un polo in corrispondenza di $\bar{\omega} = i \frac{\zeta}{m}$; il residuo corrispondente è:
+    \begin{equation}
+        \text{Res}(\bar{\omega_k}) = \lim_{\omega \to i\zeta/m} (\omega - i\zeta/m) \frac{e^{i \omega t}}{im(\omega-i\frac{\zeta}{m})} = \frac{e^{-\frac{\zeta}{m}t}}{im} \label{eq:chap1_residuo}
+    \end{equation}
+    Quindi la soluzione è:
+    \begin{equation}
+        G(t) = 2\pi i \frac{\text{Res}(\bar{\omega})}{2\pi i} = \frac{e^{-\frac{\zeta}{m}t}}{m} \theta(t) \label{eq:chap1_G_t_sol}
+    \end{equation}
+    Osserviamo che la funzione $\theta(t)$ garantisce la \textbf{causalità}. Trovato $G(t)$, possiamo ottenere la soluzione particolare come:
+    \begin{equation}
+        v(t) = \int_{-\infty}^{+\infty} dt' G(t - t') \delta F(t') = \int_0^t dt' e^{-\frac{\zeta}{m}(t - t')} \frac{\delta F(t')}{m} \label{eq:chap1_sol_part}
+    \end{equation}
+
+\textbf{Soluzione completa}:
+\begin{equation}
+    v(t) = v_0 e^{-\frac{\zeta}{m}t} + \int_0^t dt' e^{-\frac{\zeta}{m}(t - t')} \frac{\delta F(t')}{m} \label{eq:chap1_sol_completa_lento}
+\end{equation}
+
+\subsection{Caso overdamped}
+Se osserviamo il sistema a tempi molto più grandi di $\tau$ (o in casi in cui $\tau$ diventa molto piccolo), possiamo semplificare l'equazione e ottenere il cosiddetto \textbf{limite overdamped.} In questo caso, la condizione iniziale può essere trascurata, mentre l’esponenziale nell’integrale diventa una funzione a delta di Dirac. La soluzione diventa:
+\begin{equation}
+    v(t)=\frac{\delta F(t)}{\zeta} \label{eq:chap1_overdamped_v}
+\end{equation}

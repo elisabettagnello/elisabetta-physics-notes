@@ -1,0 +1,247 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 6 (Lezione del 18/03/2025)
+%-------------------------------------------------------------------------------
+\chapter{Lezione 6}
+\label{capitolo_06}
+\textit{Data: 18/03/2025}
+
+
+
+\section{Comportamento dei Batteri}
+
+
+Consideriamo un esperimento classico, ad esempio quello di Adler, condotto su una piastra di Petri.
+Vengono predisposte due situazioni:
+
+\begin{enumerate}
+    \item \textbf{Chemiotassi}: Al centro della piastra viene posta una regione ricca di nutrienti (es. glucosio). Si osserva che i batteri, come \textit{E. coli}, si muovono seguendo il gradiente di concentrazione del nutriente, dirigendosi verso la zona a concentrazione più alta.
+    \item \textbf{Diffusione del nutriente}: Il nutriente è distribuito in modo casuale e uniforme nella piastra, ma a una concentrazione molto bassa (es. $10^{-6}$ molare). In questo caso non c'è un gradiente che possa guidare il movimento.
+\end{enumerate}
+
+Iniziamo a studiare il comportamento di un singolo batterio in un ambiente uniforme, utilizzando un approccio fisico-matematico. Il punto di partenza è l'equazione di Langevin.
+
+\subsubsection{L'Equazione di Langevin}
+
+L'equazione di Langevin descrive il moto di una particella in un fluido, soggetta a una forza di attrito viscoso e a una forza stocastica che rappresenta gli urti casuali con le molecole del fluido.
+\begin{equation}
+\label{eq:chap6_1}
+m\frac{d\vec{v}}{dt}=-\xi\vec{v}+\delta\vec{F}
+\end{equation}
+Ricordiamo la soluzione formale di questa equazione:
+\begin{equation}
+\label{eq:chap6_2}
+\vec{v}(t)=\vec{v}_{0}e^{-\frac{t}{\tau}}+\int_{0}^{t} dt^{\prime}e^{-\frac{(t-t')}{\tau}}\frac{\delta \vec{F}(t^{\prime})}{m}
+\end{equation}
+dove $\tau$ è il tempo di rilassamento della velocità, definito come:
+\begin{equation}
+\label{eq:chap6_3}
+\tau=\frac{m}{\xi}
+\end{equation}
+
+\subsubsection{Il Regime Sovrasmorzato (Overdamped)}
+
+Ora, dimostriamo che per un batterio in acqua, il termine inerziale ($m\frac{d\vec{v}}{dt}$) è trascurabile. Questo è noto come limite o regime sovrasmorzato (\textit{overdamped}).
+
+In questo caso, l'equazione di Langevin si semplifica notevolmente:
+\begin{equation}
+\label{eq:chap6_4}
+\frac{d\vec{v}}{dt} \approx 0 \rightarrow \xi\vec{v}=\delta\vec{F}
+\end{equation}
+Per giustificare questa approssimazione, calcoliamo il valore di $\tau$ per un batterio. Assumiamo che il batterio sia una sfera di raggio $r$.
+
+\begin{itemize}
+    \item \textbf{Raggio del batterio}: $r \approx 1 \mu m = 10^{-6} m = 10^{-4} cm$
+    \item \textbf{Densità del batterio}: $\rho \approx 1 g/cm^3$
+    \item \textbf{Viscosità dell'acqua (a 20°C)}: $\eta_{H_2O} = 1 \text{cp} = 10^{-2} \text{P} = 10^{-2} g \cdot cm^{-1} \cdot s^{-1}$
+\end{itemize}
+
+Per una sfera, la massa è $m = \frac{4}{3}\pi r^3 \rho$ e il coefficiente di attrito di Stokes è $\xi = 6\pi\eta r$.
+
+Sostituendo questi valori nella definizione di $\tau$:
+\begin{equation}
+\label{eq:chap6_5}
+\tau = \frac{m}{\xi} = \frac{\frac{4}{3}\pi r^3 \rho}{6\pi\eta r} = \frac{2\rho r^2}{9\eta}
+\end{equation}
+Inserendo i valori numerici (in unità CGS):
+\begin{equation}
+\label{eq:chap6_6}
+\tau \approx \frac{2 \cdot (1 \frac{g}{cm^3}) \cdot (10^{-4} cm)^2}{9 \cdot (10^{-2} g \cdot cm^{-1} \cdot s^{-1})} \approx 10^{-7} s
+\end{equation}
+Questo risultato ci dice che il tempo caratteristico su cui la velocità del batterio "dimentica" il suo valore iniziale è estremamente piccolo. Su qualsiasi scala temporale di nostro interesse, possiamo considerare che la velocità si adatti istantaneamente alle forze agenti.
+
+Pertanto, \textbf{siamo nel limite sovrasmorzato}. Il moto del batterio è dominato dagli effetti viscosi del fluido e non dalla sua inerzia.
+
+\subsection{Ipotesi 1: Particella Passiva}
+
+Se il moto è dominato dal bagno termico, possiamo trattare il batterio come una grande particella colloidale che si muove passivamente per diffusione (moto Browniano).
+
+Lo spostamento quadratico medio in questo regime è dato da:
+\begin{equation}
+\label{eq:chap6_7}
+\langle \delta\vec{x}^{2}\rangle=2Dt
+\end{equation}
+dove $\delta\vec{x} = \vec{x}(t) - \vec{x}_0$ è lo spostamento e $D$ è il coefficiente di diffusione, dato dalla relazione di Einstein-Stokes:
+\begin{equation}
+\label{eq:chap6_8}
+D=\frac{k_{B}T}{\xi}
+\end{equation}
+Calcoliamo il valore di D e la distanza tipica percorsa.
+
+A temperatura ambiente ($T \approx 300 K$), $k_B T \approx 4.1 \cdot 10^{-21} J$
+
+Il coefficiente di attrito $\xi = 6\pi\eta r \approx 6\pi(10^{-3} Pa \cdot s)(10^{-6} m) \approx 1.88 \cdot 10^{-8} N \cdot s \cdot m^{-1}$
+\begin{equation}
+\label{eq:chap6_9}
+D \approx \frac{4.1 \cdot 10^{-21} J}{1.88 \cdot 10^{-8} N \cdot s \cdot m^{-1}} \approx 2 \cdot 10^{-13} m^2/s = 0.2 \mu m^2/s
+\end{equation}
+La distanza tipica percorsa in un tempo $t$ è la radice dello spostamento quadratico medio:
+\begin{equation}
+\label{eq:chap6_10}
+\sqrt{\langle\delta x^{2}\rangle} \sim \sqrt{D} \cdot t^{1/2} \approx 1 \cdot t^{1/2} \mu m
+\end{equation}
+Se consideriamo un tempo di $t=1s$, la distanza percorsa sarebbe dell'ordine di $1 \mu m$
+
+\textbf{Questo risultato non è sperimentalmente vero.} Si osserva che i batteri possono coprire distanze molto maggiori in un secondo (decine di micrometri).
+
+La conclusione è che la nostra ipotesi è sbagliata: i batteri non sono particelle passive. Essi sono agenti attivi, dotati di "motori" (i \textbf{flagelli}) che usano per autopropellersi.
+
+\subsection{Ipotesi 2: Il Modello "Run and Tumble"}
+
+Un modello più realistico per il moto batterico in assenza di gradienti di nutrienti è il cosiddetto \textbf{Run and Tumble} (corsa e riorientamento).
+
+Questo moto è una combinazione di due modalità:
+
+\begin{enumerate}
+    \item \textbf{RUN (Corsa)}: I diversi flagelli del batterio ruotano in modo sincrono (in \textbf{senso antiorario}) e si raccolgono in un unico fascio che funziona come un'elica. Questo spinge il batterio in avanti lungo una traiettoria pressoché \textbf{rettilinea}.
+    \item \textbf{TUMBLE (Riorientamento)}: I motori flagellari invertono il loro senso di rotazione (\textbf{senso orario}). I flagelli non sono più sincronizzati, si separano e si muovono caoticamente. Questo non produce una spinta netta, ma induce un \textbf{riorientamento casuale} del batterio. Dopodiché, i motori tornano a ruotare in modo sincrono e inizia un nuovo "run" in una nuova direzione.
+\end{enumerate}
+
+In questo modello, il moto è dominato dalla meccanica dei flagelli, e l'effetto degli urti casuali con le molecole d'acqua è meno influente sulla traiettoria complessiva.
+
+Assumiamo che non ci sia un gradiente di nutriente.
+
+\begin{itemize}
+    \item Caratteristiche dei "Runs"
+    \begin{itemize}
+        \item \textbf{Durata media}: $\tau_{RUN} \sim 1s$
+        \item \textbf{Lunghezza media}: $l_{RUN} \sim 10-20 \mu m$
+        \item il che implica una velocità $v_0 \sim 10-20 \mu m/s$
+    \end{itemize}
+    \item Caratteristiche dei "Tumbles"
+    \begin{itemize}
+        \item \textbf{Durata media}: $\tau_{TUMBLE} \sim 0.1s$ (molto breve rispetto al run).
+        \item \textbf{Spostamento}: Durante un tumble, lo spostamento del batterio è trascurabile. Il suo effetto principale è un cambio di direzione.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Statistica dei Tumble}
+
+Si assume che gli eventi di "tumble" seguano una \textbf{statistica di Poisson}. 
+
+Definiamo $\alpha$ come il rate con cui terminano i "run" e iniziano i "tumble". 
+
+Sperimentalmente, $\alpha = (\tau_{RUN})^{-1} \approx 1s^{-1}$.
+
+La probabilità che un "run" abbia una durata esatta $t$ (cioè, che non avvengano "tumble" per un tempo $t$, e che un "tumble" avvenga nell'intervallo $[t, t+dt]$) è data da:
+
+$P(\text{0 tumble in } t) \cdot P(\text{1 tumble in } dt)$
+
+Usando la distribuzione di Poisson $P(k,t) = \frac{(\alpha t)^k e^{-\alpha t}}{k!}$:
+
+\begin{itemize}
+    \item $P(0, t) = e^{-\alpha t}$
+    \item $P(1, dt) = \alpha dt e^{-\alpha dt} \approx \alpha dt$ (per $dt$ piccolo)
+\end{itemize}
+
+Quindi, la densità di probabilità per la durata di un run è:
+\begin{equation}
+\label{eq:chap6_11}
+P(t_{RUN}=t) = \alpha e^{-\alpha t}
+\end{equation}
+Questa è una distribuzione esponenziale. La durata media di un run è:
+\begin{equation}
+\label{eq:chap6_12}
+\langle t_{RUN} \rangle = \int_0^\infty t P(t) dt = \int_0^\infty t \alpha e^{-\alpha t} dt = \frac{1}{\alpha} = \tau_{RUN}
+\end{equation}
+Se la velocità durante un run è costante e pari a $v_0$, possiamo trovare la distribuzione delle lunghezze dei run, $l = v_0 t$:
+\begin{equation}
+\label{eq:chap6_13}
+P(l_{RUN}) dl = P(t) dt \rightarrow P(l) = P(t) \frac{dt}{dl} = (\alpha e^{-\alpha t}) \frac{1}{v_0} = \frac{\alpha}{v_0} e^{-\frac{\alpha l}{v_0}}
+\end{equation}
+La lunghezza media di un run è:
+\begin{equation}
+\label{eq:chap6_14}
+\langle l \rangle = v_0 \langle t \rangle = \frac{v_0}{\alpha}
+\end{equation}
+La distribuzione esponenziale implica che la maggior parte dei run sono brevi, ma c'è una "coda" di run occasionalmente molto lunghi.
+
+\subsubsection{Distribuzione degli Angoli di Tumble}
+
+Come si distribuisce l'angolo $\theta$ tra la direzione del run prima del tumble e quella dopo?
+
+Un modello semplice assume che la nuova direzione sia scelta in modo completamente casuale e uniforme sulla superficie di una sfera.
+
+La probabilità di orientarsi in un elemento di angolo solido $d\Omega = \sin\theta d\theta d\phi$ è costante.
+\begin{equation}
+\label{eq:chap6_15}
+P(\theta, \phi) d\theta d\phi = C \sin\theta d\theta d\phi
+\end{equation}
+Per trovare la distribuzione del solo angolo polare $\theta$, integriamo sull'angolo azimutale $\phi$ (da 0 a $2\pi$):
+\begin{equation}
+\label{eq:chap6_16}
+P(\theta)d\theta = \left( \int_0^{2\pi} C d\phi \right) \sin\theta d\theta = C' \sin\theta d\theta
+\end{equation}
+Normalizzando la probabilità ($\int_0^\pi P(\theta) d\theta = 1$), si ottiene $C' = 1/2$.
+\begin{equation}
+\label{eq:chap6_17}
+P(\theta) = \frac{1}{2}\sin\theta
+\end{equation}
+Questo modello teorico predice che l'angolo di riorientamento più probabile è $\theta=90^\circ$.
+
+Tuttavia, i \textbf{dati sperimentali} mostrano una distribuzione diversa, con un picco intorno ai \textbf{70°}.
+
+Questo indica che il riorientamento non è perfettamente isotropo; c'è una certa "memoria" della direzione precedente.
+
+\subsubsection{Effetto della Diffusione Rotazionale}
+
+Durante un "run", che dura circa 1 secondo, il batterio non si muove in linea perfettamente retta, perché gli urti termici del fluido inducono piccole fluttuazioni anche nella sua orientazione (diffusione rotazionale). Questo processo è descritto da:
+\begin{equation}
+\label{eq:chap6_18}
+\langle \delta\theta^2 \rangle \sim 2D_{rot}t
+\end{equation}
+Tuttavia, il tempo caratteristico per la diffusione rotazionale, $t_B \sim 1/D_{rot}$, è molto più grande della durata media di un run, $\tau_{RUN}$.
+
+Quindi, l'effetto della diffusione rotazionale esiste, ma è molto piccolo e può essere considerato trascurabile prima che avvenga il successivo "tumble".
+
+\subsection{Giustificazione Fluidodinamica del Regime Sovrasmorzato}
+
+Un modo più fondamentale per dimostrare che l'inerzia è trascurabile è analizzare le \textbf{equazioni di Navier-Stokes} che governano il flusso del fluido attorno al batterio. L'equazione è:
+\begin{equation}
+\label{eq:chap6_19}
+\rho \left( \frac{\partial\vec{v}}{\partial t} + (\vec{v}\cdot\nabla)\vec{v} \right) = -\nabla p + \eta\nabla^2\vec{v}
+\end{equation}
+dove il termine a sinistra rappresenta l'inerzia del fluido e i termini a destra sono le forze di pressione e viscose.
+
+Adimensionalizziamo l'equazione usando scale caratteristiche per il nostro problema:
+\begin{itemize}
+    \item Lunghezza: $l$ (raggio del batterio)
+    \item Velocità: $v_0$ (velocità del batterio)
+    \item Tempo: $t_0 = l/v_0$
+\end{itemize}
+Riscrivendo l'equazione con variabili adimensionali ($\tilde{v} = v/v_0$, etc.), emerge un numero adimensionale fondamentale, il \textbf{numero di Reynolds (Re)}, che moltiplica il termine inerziale:
+\begin{equation}
+\label{eq:chap6_20}
+Re \left[ \frac{\partial\vec{\tilde{v}}}{\partial \tilde{t}} + (\vec{\tilde{v}}\cdot\tilde{\nabla})\vec{\tilde{v}} \right] = -\tilde{\nabla} \tilde{P} + \tilde{\nabla}^2\vec{\tilde{v}}
+\end{equation}
+Il numero di Reynolds è definito come il rapporto tra le forze inerziali e le forze viscose:
+\begin{equation}
+\label{eq:chap6_21}
+Re = \frac{\rho v_0 l}{\eta}
+\end{equation}
+Calcoliamolo per un batterio:
+\begin{equation}
+\label{eq:chap6_22}
+Re  \approx 10^{-4}
+\end{equation}
+Poiché \textbf{Re $<< 1$}, il termine inerziale nell'equazione di Navier-Stokes è completamente trascurabile. L'equazione si riduce all'\textbf{equazione di Stokes}, che bilancia solo le forze di pressione e di viscosità. Questo conferma, da un punto di vista fluidodinamico, che il mondo di un batterio è dominato dalla viscosità e l'inerzia non gioca un ruolo rilevante.
+

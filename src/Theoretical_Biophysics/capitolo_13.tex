@@ -1,0 +1,301 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 13 (Lezione del 11/04/2025)
+%-------------------------------------------------------------------------------
+\chapter{Lezione 13}
+\label{capitolo_13}
+\textit{Data: 11/04/2025}
+
+
+
+\section{Analisi della Risposta dei Fotorecettori}
+
+Abbiamo analizzato il comportamento dei fotorecettori in condizioni di forte illuminazione. Il parametro principale studiato è stato il \textbf{rapporto segnale-rumore (SNR)}, definito come:
+$$
+\text{SNR} = \frac{\text{Risposta al contrasto}}{\text{Livello di rumore}}
+$$
+Il livello di rumore è stato calcolato in assenza di contrasto, mentre la risposta è la funzione di trasferimento del recettore. Secondo le previsioni teoriche, \textbf{se il fotorecettore agisce come un rilevatore perfetto del contrasto}, allora:
+$$
+\text{SNR} = \bar{r}
+$$
+dove $\bar{r}$ è l'intensità luminosa media esterna.
+
+Sono stati condotti esperimenti variando $\bar{r}$ e misurando il rapporto segnale-rumore. I risultati mostrano che:
+\begin{itemize}
+    \item Il rapporto cresce linearmente con $\bar{r}$ fino ad un valore massimo. Fino a tale soglia, i fotorecettori operano in modo estremamente efficiente, come se fossero perfetti.
+    \item Dopo tale soglia, il comportamento devia dal modello teorico.
+\end{itemize}
+
+Per quantificare, consideriamo che il \textbf{tempo di integrazione} di un fotorecettore è dell'ordine di $\tau$.
+
+Il tempo di integrazione di un fotorecettore è il periodo di tempo durante il quale il recettore "somma" o integra i segnali luminosi (cioè i fotoni assorbiti) prima di generare una risposta elettrica (variazione del potenziale di membrana).
+
+Moltiplicando il valore soglia di $\bar{r}$ ($\approx 10^5$) per $\tau$ si ottiene il numero di fotoni rilevati.
+
+\textbf{Il fotorecettore è quindi efficiente fino a circa 1000 fotoni}. Funziona bene anche per intensità molto basse, sopra il limite minimo di circa 6 fotoni, sotto il quale il rumore compromette l'affidabilità della rilevazione.
+
+Dopo aver compreso la risposta del sistema, si vuole ora analizzare il meccanismo biologico alla base.
+
+\section{Biochemical Pathway}
+
+Il fotorecettore (\textbf{bastoncello}) è formato da una parte esterna a forma di cilindro, al cui interno si trovano dei dischi impilati. Su questi dischi sono presenti proteine di \textbf{rodopsina}, che contengono una molecola chiamata \textbf{retinale} e una proteina chiamata \textbf{opsina}.
+
+Funzionamento:
+\begin{itemize}
+    \item In condizioni di riposo, il retinale ha una struttura planare chiamata \textbf{C-11}.
+    \item Quando assorbe un fotone, subisce un cambiamento conformazionale e diventa \textbf{C-trans}, che non è più planare.
+    \item Questo cambiamento attiva degli enzimi che convertono il \textbf{GTP} in \textbf{cGMP}.
+    \item Il cGMP regola l'apertura dei canali ionici sulla membrana. Questi canali determinano la corrente ionica e quindi la differenza di potenziale sulla membrana del fotorecettore.
+\end{itemize}
+
+\section{Isomerizzazione del Retinale}
+
+\subsection*{Derivazione dello Spettro di Assorbimento}
+
+Per descrivere l'assorbimento di luce, possiamo usare un modello semplificato basato sull'\textbf{approssimazione di Born-Oppenheimer}, che assume che i nuclei atomici siano molto più lenti degli elettroni. Possiamo quindi definire delle superfici di energia potenziale per lo stato elettronico fondamentale (Ground State, GS) e lo stato eccitato (Excited State, ES) in funzione di una coordinata nucleare \textbf{$q$}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{pics/13_1.png}
+\caption{Superfici di energia potenziale per lo stato elettronico fondamentale e lo stato eccitato.}
+\end{figure}
+
+\textbf{Poiché i nuclei non sono fermi ma vibrano a causa dell'agitazione termica, le loro coordinate fluttuano nel tempo secondo la distribuzione di Boltzmann}. Segue che anche l'energia del fotone (che deve essere assorbito per far avvenire una transizione elettronica) varia. Se indichiamo con $\Delta E$ l'energia necessaria affinché avvenga una transizione, allora la relazione per trovare la \textbf{frequenza di assorbimento} è data da:
+$$
+\Delta E = \hbar \omega
+$$
+A causa delle fluttuazioni, pertanto, non esiste un'unica frequenza di assorbimento, ma piuttosto uno spettro continuo. Questo si estende su lunghezze d'onda comprese tra \textbf{400 e 700 nm} , ed ha un picco in corrispondenza di 500 nm.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{pics/13_2.png}
+\caption{Spettro di assorbimento.}
+\end{figure}
+
+
+Assumiamo forme paraboliche semplici per le energie potenziali (\textbf{approssimazione armonica}).
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.65\textwidth]{pics/13_3.png}
+\caption{}
+\end{figure}
+
+Nel grafico mostriamo le superfici di potenziale del GS e dell'ES. Le linee verticali rappresentano delle transizioni elettroniche verticali in seguito all'assorbimento di un fotone. La curva tratteggiata indica la distribuzione di Boltzmann delle coordinate.
+
+\begin{itemize}
+    \item \textbf{Stato Fondamentale (GS)}: L'energia potenziale è minima per la configurazione C-11.
+    
+    Assumiamo che la coordinata del GS si trovi all'origine: $q_{GS}=0$. Per il GS l'energia potenziale è data da:
+    \begin{equation} \label{eq:ch13_1}
+    V_{GS}(q) = \frac{1}{2} K q^2
+    \end{equation}
+    dove $K$ è una costante di forza che descrive la "rigidità" della molecola attorno alla configurazione di equilibrio.
+    
+    \item \textbf{Stato Eccitato (ES)}: L'assorbimento del fotone porta il sistema allo stato eccitato. La configurazione di equilibrio e l'energia minima di questo stato sono diverse.
+    \begin{equation} \label{eq:ch13_2}
+    V_{ES}(q) = \epsilon + \frac{1}{2} K (q - \Delta)^2
+    \end{equation}
+    Dove:
+    \begin{itemize}
+        \item $\epsilon$ è la differenza di energia tra i minimi delle due curve di potenziale (l'energia elettronica di eccitazione).
+        \item $\Delta$ è lo spostamento della coordinata di equilibrio nello stato eccitato rispetto allo stato fondamentale.
+    \end{itemize}
+\end{itemize}
+
+L'energia del fotone assorbito $\hbar\omega$ deve corrispondere alla differenza di energia tra lo stato eccitato e lo stato fondamentale alla specifica coordinata nucleare $q$ in cui si trova la molecola al momento dell'assorbimento (\textbf{principio di Franck-Condon}: la transizione elettronica è istantanea rispetto al moto nucleare):
+\begin{align} \label{eq:ch13_5}
+\hbar\omega &= V_{ES}(q) - V_{GS}(q) \\
+&= \left( \epsilon + \frac{1}{2} K (q - \Delta)^2 \right) - \left( \frac{1}{2} K q^2 \right) \nonumber \\
+&= \epsilon + \frac{1}{2} K \Delta^2 - K q \Delta \nonumber
+\end{align}
+
+I nuclei non sono fermi a $q=0$ nello stato fondamentale, ma fluttuano a causa dell'agitazione termica. A temperatura $T$, la probabilità di trovare la molecola con una coordinata nucleare $q$ è data dalla \textbf{distribuzione di Boltzmann}:
+\begin{equation} \label{eq:ch13_6}
+P(q) = \frac{1}{Z} e^{-\beta V_{GS}(q)} = \frac{1}{Z} e^{-\beta \frac{1}{2} K q^2}
+\end{equation}
+dove $\beta = 1/(k_B T)$ ($k_B$ è la costante di Boltzmann) e $Z$ è la funzione di partizione data da $Z = \sqrt{\frac{2\pi}{\beta K}}$. Questa è una distribuzione Gaussiana.
+
+Poiché la molecola può trovarsi in un intervallo di posizioni $q$ con probabilità $P(q)$, e poiché l'energia $\hbar\omega$ assorbita dipende da $q$ (Eq. \eqref{eq:ch13_5}), \textbf{non ci sarà una singola frequenza di assorbimento, ma uno spettro continuo} (come mostrato nel grafico su).
+
+La probabilità $P(\omega)d\omega$ di assorbire un fotone con frequenza tra $\omega$ e $\omega+d\omega$ si ottiene sommando (integrando) le probabilità $P(q)dq$ di tutte le configurazioni $q$ che possono assorbire a quella frequenza $\omega$, rispettando la conservazione dell'energia (Eq. \eqref{eq:ch13_5}). Matematicamente, si usa la funzione delta di Dirac per imporre questa condizione:
+\begin{equation} \label{eq:ch13_7}
+P(\omega) = \int_{-\infty}^{+\infty} dq \, P(q) \, \delta\left(\omega - \frac{V_{ES}(q) - V_{GS}(q)}{\hbar}\right)
+\end{equation}
+
+Sostituendo $P(q)$ e la differenza di energia:
+\begin{equation} \label{eq:ch13_8}
+P(\omega) = \int_{-\infty}^{+\infty} dq \, \frac{1}{Z} e^{-\beta \frac{K}{2} q^2} \, \delta\left(\omega - \left(\frac{\epsilon}{\hbar} + \frac{K \Delta^2}{2\hbar} - \frac{K \Delta}{\hbar} q\right)\right)
+\end{equation}
+
+Per risolvere questo integrale, usiamo la proprietà della funzione delta. L'argomento della delta è zero quando:
+\begin{align*}
+\omega - \frac{\epsilon}{\hbar} - \frac{K \Delta^2}{2\hbar} + \frac{K \Delta}{\hbar} q = 0 
+\implies q' = -\left( \omega - \frac{\epsilon}{\hbar} - \frac{K \Delta^2}{2\hbar} \right) \frac{\hbar}{K \Delta} = -\frac{\hbar\omega - \epsilon - \frac{1}{2}K\Delta^2}{K\Delta}
+\end{align*}
+
+Possiamo riscrivere la delta: $\delta\left( \omega - \dots + \frac{K \Delta}{\hbar} q \right) = \delta\left( \frac{K \Delta}{\hbar} (q - q') \right) = \frac{1}{|K\Delta/\hbar|} \delta(q-q')$. Quindi l'integrale diventa:
+\begin{align} \label{eq:ch13_9}
+P(\omega) & \propto \int_{-\infty}^{+\infty} dq \, \frac{1}{Z} e^{-\beta \frac{K}{2} q^2} \, \delta(q - q') \\
+&\propto \frac{1}{Z} e^{-\beta \frac{K}{2} (q')^2} \nonumber \\
+&\propto \frac{1}{Z} \exp\left( -\frac{\beta K}{2} \left( \frac{\hbar\omega - \epsilon - \frac{1}{2}K\Delta^2}{K\Delta} \right)^2 \right) \nonumber \\
+&\propto \frac{1}{Z} \exp\left( -\frac{\beta K}{2 K^2 \Delta^2} \left( \hbar\omega - \left(\epsilon + \frac{1}{2}K\Delta^2\right) \right)^2 \right) \nonumber
+\end{align}
+
+Definiamo:
+\begin{itemize}
+    \item L'energia di picco dell'assorbimento è $\hbar\omega_{peak} = \epsilon + \frac{1}{2}K\Delta^2$. Questo corrisponde all'energia verticale dalla coordinata $q=0$ (minimo di GS) alla curva ES.
+    \item L'energia di riorganizzazione $\lambda = \frac{1}{2} K \Delta^2$
+    \item La larghezza della Gaussiana è determinata da $\sigma^2 = K \Delta^2 k_B T$. La larghezza dello spettro aumenta con la temperatura $T$ e con lo spostamento $\Delta$.
+\end{itemize}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{pics/13_4.png}
+\caption{}
+\end{figure}
+
+La formula finale è:
+\begin{equation} \label{eq:ch13_10}
+P(\omega) \propto \frac{1}{Z} \;\exp{\left( -\frac{(\hbar\omega - \hbar\omega_{peak})^2}{4 \lambda K_b T} \right) }
+\end{equation}
+Lo spettro di assorbimento dunque è ben descritto da una Gaussiana.
+
+\subsection*{Fluorescenza vs. Isomerizzazione}
+
+Dopo l'assorbimento del fotone e la transizione allo stato eccitato ES, la molecola si rilassa vibrazionalmente molto velocemente (scala dei ps) fino al minimo della curva di potenziale $V_{ES}$, cioè a $q=\Delta$. Da questo punto, la molecola può tornare allo stato fondamentale GS principalmente in due modi:
+\begin{enumerate}
+    \item \textbf{Fluorescenza}: Emissione di un fotone. L'energia del fotone emesso corrisponde alla differenza di energia verticale tra il minimo di ES ($q=\Delta$) e la curva GS alla stessa coordinata $q=\Delta$.
+    \begin{align} \label{eq:ch13_12}
+    \hbar\omega_{fluor} &= V_{ES}(\Delta) - V_{GS}(\Delta) \\
+    &= \epsilon - \frac{1}{2} K \Delta^2 = \epsilon - \lambda \nonumber
+    \end{align}
+    Notare che $\hbar\omega_{fluor} < \hbar\omega_{peak}$. La differenza $\hbar\omega_{peak} - \hbar\omega_{fluor} = 2\lambda$ è chiamata \textbf{shift di Stokes}. Lo spettro della fluorescenza, dunque, è \textbf{red-shiftato} rispetto allo spettro di assorbimento di un fattore $2 \lambda$.
+    
+    \item \textbf{Isomerizzazione}: La molecola può seguire un percorso sulla superficie di energia potenziale dello stato eccitato che la porta a una diversa configurazione geometrica C-trans prima di tornare allo stato fondamentale. Questo è un processo non radiativo (non emette luce) ed è il percorso biologicamente funzionale nella rodopsina.
+\end{enumerate}
+
+Le velocità (rates) per questi processi sono uguali ( $\sim 10^9 \, s^{-1}$ ) se il retinale viene estratto dalla rodopsina. Mentre quando è all'interno, il rapporto tra i due rates è: $r_{iso}/r_{fluor} \sim 10^5$.
+A causa di questo rapporto di velocità estremamente favorevole all'isomerizzazione, la fluorescenza è praticamente "disinnescata". L'energia assorbita viene utilizzata in modo molto efficiente per guidare il cambiamento strutturale necessario per la trasduzione del segnale visivo.
+
+\section{Cinetica Enzimatica (Michaelis-Menten)}
+
+Gli enzimi sono catalizzatori biologici che accelerano le reazioni chimiche. Il \textbf{modello di Michaelis-Menten} descrive la velocità di molte reazioni enzimatiche.
+
+\subsection*{Schema di Reazione Base}
+
+Consideriamo un enzima $E$ che converte un substrato $S$ (in questo caso $GTP$) in un prodotto $P$ (in questo caso $cGMP$). Il modello assume la formazione di un complesso intermedio enzima-substrato $ES$:
+\begin{equation} \label{eq:ch13_16}
+S + E \underset{k^-}{\stackrel{k^+}{\rightleftharpoons}} ES \stackrel{V_{max}}{\longrightarrow} P + E
+\end{equation}
+dove:
+\begin{itemize}
+    \item $k^+$ è la costante di velocità per la formazione del complesso $ES$.
+    \item $k^-$ è la costante di velocità per la dissociazione del complesso $ES$ in $S$ ed $E$.
+    \item $V_{max}$ è la costante di velocità con cui il complesso $ES$ viene convertito in prodotto $P$.
+\end{itemize}
+
+Valgono le seguenti relazioni:
+\begin{equation} \label{eq:ch13_17}
+\frac{dN_{P}}{dt} = V_{max} N_{ES}
+\end{equation}
+\begin{equation} \label{eq:ch13_18}
+\frac{dN_{ES}}{dt} = k^+ C_{S} N_{E}- k^- N_{ES} - V_{max} N_{ES}
+\end{equation}
+dove:
+\begin{itemize}
+    \item $C_S$ è la concentrazione del substrato libero
+    \item $N_E$ è il numero di enzimi liberi
+    \item $N_P$ è il numero di prodotti
+    \item $N_{ES}$ è il numero di complessi intermedi
+\end{itemize}
+La concentrazione totale dell'enzima $N_{E}^{tot}$ è costante, quindi esiste una legge di conservazione:
+\begin{equation} \label{eq:ch13_19}
+N_{E}^{tot} = N_{E} + N_{ES} = \text{cost}
+\end{equation}
+Sostituendo $N_{E}$ nell'equazione \eqref{eq:ch13_18}:
+\begin{equation} \label{eq:ch13_20}
+\frac{dN_{ES}}{dt} = k^+ C_{S} (N_{E}^{tot} - N_{ES}) - (k^- + V_{max}) N_{ES}
+\end{equation}
+
+\textbf{Approssimazione dello Stato Stazionario:}
+Si assume che dopo un breve periodo iniziale, la concentrazione del complesso intermedio $N_{ES}$ diventi approssimativamente costante, cioè $dN_{ES}/dt \approx 0$.
+Questa è una buona approssimazione se la concentrazione del substrato $C_{S}$ è molto maggiore della concentrazione dell'enzima $N_{E}^{tot}$.
+
+
+Ponendo $dN_{ES}/dt = 0$ nell'equazione \eqref{eq:ch13_20}:
+\begin{equation} \label{eq:ch13_21}
+k^+ C_{S} N_{E}^{tot} = ( k^+ C_{S} + k^- + V_{max}) N_{ES}^{SS}
+\end{equation}
+
+Risolvendo per la concentrazione stazionaria del complesso, $N_{ES}^{SS}$:
+\begin{equation} \label{eq:ch13_22}
+N_{ES}^{SS} = \frac{k^+ C_{S} N_{E}^{tot}}{k^+ C_{S} + k^- + V_{max}}
+\end{equation}
+
+Ora sostituiamo $N_{ES}^{SS}$ nell'equazione \eqref{eq:ch13_17}:
+\begin{equation} \label{eq:ch13_23}
+\frac{dN_P}{dt} = V_{max} \; N_{E}^{tot} \; \frac{C_{S} }{C_{S} + K_M}
+\end{equation}
+Dove abbiamo definito:
+
+\textbf{Costante di Michaelis} ($K_M$): Una misura dell'affinità dell'enzima per il substrato.
+\begin{equation} \label{eq:ch13_24}
+K_M = \frac{k^- + V_{max}}{k^+}
+\end{equation}
+L'equazione \eqref{eq:ch13_23} descrive una curva iperbolica della velocità in funzione della concentrazione di substrato, che satura a $V_{max} N_E^{tot}$ per alte concentrazioni di $C_{S}$. A basse concentrazioni, la velocità è approssimativamente lineare.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{pics/13_5.png}
+\caption{Velocità in funzione della concentrazione di substrato.}
+\end{figure}
+
+\subsection*{Applicazione al Sistema GTP/cGMP}
+
+Consideriamo un sistema più complesso dove la concentrazione di una molecola segnale, \textbf{cGMP} (che indichiamo per comodità semplicemente con $G$), è regolata da due enzimi:
+\begin{itemize}
+    \item Enzima di Sintesi ($s$): Usa \textbf{GTP} (=substrato $S$) per produrre \textbf{cGMP} ($G$).
+    \item Enzima di Degradazione ($d$): Degrada cGMP ($G$).
+\end{itemize}
+
+Gli schemi di reazione sono:
+\begin{itemize}
+    \item \textbf{Sintesi:}
+    \begin{equation} \label{eq:ch13_25}
+    S + s \; \underset{K_s^-}{\stackrel{K_s^+} {\rightleftharpoons}} \; sS \stackrel{V_s}{\longrightarrow} G
+    \end{equation}
+    dove $S$ è GTP, $s$ è l'enzima sintetasi, $sS$ il complesso intermedio.
+    Inoltre vale:
+    \begin{equation} \label{eq:ch13_26}
+    N_s^{TOT} = N_s + N_{sS} = \text{cost}
+    \end{equation}
+    
+    \item \textbf{Degradazione:}
+    \begin{equation} \label{eq:ch13_27}
+    G + d \underset{K_d^-}{\stackrel{K_d^+}{\rightleftharpoons}} dG \stackrel{V_d}{\longrightarrow} S
+    \end{equation}
+    dove $G$ è cGMP, $d$ è l'enzima degradante (PDE), $dG$ il complesso intermedio.
+    Come nel caso precedente si ha:
+    \begin{equation} \label{eq:ch13_28}
+    N_d^{TOT} = N_d + N_{dG} = \text{cost}
+    \end{equation}
+\end{itemize}
+
+La variazione netta del numero di molecole di cGMP ($N_G$) è data da:
+\begin{equation} \label{eq:ch13_29}
+\frac{dN_G}{dt} = V_s N_{sS} - K_d^+ C_G N_d + K_d^- N_{dG}
+\end{equation}
+
+Per trovare $N_{sS}$ e $N_{dG}$, dobbiamo scrivere le equazioni differenziali per questi complessi e applicare l'approssimazione dello stato stazionario.
+\begin{itemize}
+    \item Dinamica del Complesso di Sintesi ($N_{sS}$):
+    \begin{equation} \label{eq:ch13_30}
+    \frac{dN_{sS}}{dt} = K_s^+ N_s C_S - K_s^- N_{sS} - V_s N_{sS}
+    \end{equation}
+    
+    \item Dinamica del Complesso di Degradazione ($N_{dG}$):
+    \begin{equation} \label{eq:ch13_31}
+    \frac{dN_{dG}}{dt} = K_d^+ N_d C_G - K_d^- N_{dG} - V_d N_{dG}
+    \end{equation}
+    dove $C_G$ è la concentrazione di cGMP.
+\end{itemize}
