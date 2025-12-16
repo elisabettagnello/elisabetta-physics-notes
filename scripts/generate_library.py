@@ -52,8 +52,6 @@ def get_icon_for_title(title):
     # MAPPATURA PERSONALIZZATA
     if "bio" in t or "neur" in t:
         return ICONS["open_book"] # Theoretical Biophysics -> Libro Aperto
-    elif "critical" in t or "phenomena" in t:
-        return ICONS["stack_books"] # Critical Phenomena -> Pila di libri
     elif "disordered" in t or "spin" in t or "glass" in t:
         return ICONS["ruler"] # Sistemi disordinati -> Righello/Strumenti
     elif "lab" in t or "micro" in t:
