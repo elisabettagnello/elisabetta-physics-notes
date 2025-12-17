@@ -313,7 +313,7 @@ dove $\langle S_0 \rangle^+_{homo}$ è calcolata nel sistema in cui tutti i coup
 \noindent Concludiamo che la derivata seconda è non positiva ($\le 0$), quindi la funzione è \textbf{concava}.
 \end{enumerate}
 
-\begin{tcolorbox}[colback=colorD!10, colframe=colorD!60!colorE, , coltitle=black, title=\textbf{Esito della dimostrazione}]
+\begin{tcolorbox}[colback=colorD!10, colframe=colorD!60!colorE, , coltitle=white, title=\textbf{Esito della dimostrazione}]
 \noindent Poiché $\langle S_0 \rangle^+$ è una funzione concava delle variabili $\{J_{ij}\}$, possiamo applicare la disuguaglianza di Jensen:
 \begin{equation}
 \mathbb{E}_J \left[ \langle S_0 \rangle^+(\{J_{ij}\}) \right] \le \langle S_0 \rangle^+(\{\mathbb{E}_J[J_{ij}]\})
@@ -333,53 +333,66 @@ Questo dimostra che, a parità di temperatura, l'ordine nel sistema disordinato 
     \label{fig: fase ferromag}
 \end{figure}
 
-\newpage
+
 \section{Criterio di Harris Generalizzato}
 
 Il Criterio di Harris ci permette di capire se la presenza di un piccolo disordine (vicino al punto critico del sistema puro, $p \approx 1$) modifichi la classe di universalità della transizione, ovvero se gli esponenti critici cambino rispetto al caso puro.
 Se il punto fisso del sistema puro è stabile rispetto al disordine, allora il sistema disordinato su grande scala si comporta come quello puro. Se invece è instabile, il flusso del gruppo di rinormalizzazione si sposta verso un nuovo punto fisso (ad esempio un "Random Fixed Point"), implicando nuovi esponenti critici.
 
-Possiamo mappare il disordine dei legami (o dei siti) in una fluttuazione locale della temperatura critica. Immaginiamo che ogni regione dello spazio $\vec{x}$ abbia una sua temperatura critica locale $T_c(\vec{x})$ che dipende dalla configurazione microscopica del disordine in quel punto.
+Per applicare questo criterio al modello diluito, dobbiamo mappare il disordine geometrico in una fluttuazione di un parametro termodinamico locale.
+Nel modello di Link Dilution, le quantità fisiche dipendono dal prodotto $\beta J_{ij}$.
+Invece di considerare la temperatura inversa $\beta$ costante e gli accoppiamenti $J_{ij}$ come variabili casuali ($0$ o $1$), possiamo cambiare punto di vista: fissiamo l'interazione costante $J=1$ e consideriamo una \textbf{temperatura inversa locale} $\beta_{ij}$ che fluttua spazialmente:
+
+\begin{equation}
+\beta_{ij} = 
+\begin{cases} 
+\beta & \text{con probabilità } p \\
+0 & \text{con probabilità } 1-p 
+\end{cases}
+\end{equation}
+
+Questo approccio ci permette di interpretare il \textbf{disordine come una fluttuazione locale della temperatura critica} $T_c(\vec{x})$. Ogni regione dello spazio $\vec{x}$ avrà una sua temperatura critica locale che dipende dalla densità locale di legami attivi (o equivalentemente dal valore medio locale di $\beta_{ij}$).
+
 Assumiamo che le fluttuazioni della temperatura critica locale siano correlate spazialmente secondo una funzione $g(\vec{r})$:
 
 \begin{equation}
-g(\vec{x}-\vec{y}) = \overline{T_c(\vec{x}) T_c(\vec{y})} - \overline{T_c}^2 \sim |\vec{x}-\vec{y}|^{-a} \quad (\text{per } |\vec{x}-\vec{y}| \gg 1)
+g(\vec{x}-\vec{y}) = \overline{T_c(\vec{x}) T_c(\vec{y})} - \overline{T_c}^2 \sim |\vec{x}-\vec{y}|^{-a} \quad \text{per } |\vec{x}-\vec{y}| \gg 1
 \end{equation}
 
-[cite_start]Dove l'esponente $a$ caratterizza il tipo di correlazione del disordine[cite: 3969]:
+Dove l'esponente $a$ caratterizza il tipo di correlazione del disordine:
 \begin{itemize}
-    \item $a$ grande: disordine a corto raggio (uncorrelated).
-    \item $a$ piccolo: disordine a lungo raggio (long-range correlated).
+    \item $a$ grande ($a \ge D$): disordine a corto raggio (uncorrelated).
+    \item $a$ piccolo ($a < D$): disordine a lungo raggio (long-range correlated).
 \end{itemize}
 
-Introduciamo la **temperatura ridotta locale** $t(\vec{x})$, normalizzata rispetto alla temperatura critica media $\overline{T_c}$:
+Introduciamo la temperatura ridotta locale $t(\vec{x})$, normalizzata rispetto alla temperatura critica media $\overline{T_c}$ (che nel regime perturbativo $p \approx 1$ è molto vicina a quella del sistema puro):
 \begin{equation}
 t(\vec{x}) = \frac{T - T_c(\vec{x})}{\overline{T_c}}
 \end{equation}
 
 Sappiamo che in un sistema puro, la lunghezza di correlazione $\xi$ diverge come una potenza della temperatura ridotta:
 \begin{equation}
-\xi \sim t^{-\nu}
+\xi \sim t^{-\nu} \implies t \sim \xi^{-1/\nu}
 \end{equation}
 
-Vogliamo capire se le fluttuazioni locali della temperatura ridotta sono rilevanti su una scala di lunghezza $\xi$. Per farlo, consideriamo un volume di correlazione $V \sim \xi^D$ e calcoliamo la media spaziale della temperatura ridotta in questo volume:
+Vogliamo capire se le fluttuazioni locali della temperatura ridotta sono rilevanti su una scala di lunghezza $\xi$. Per farlo, consideriamo un volume di correlazione $V \sim \xi^D$ e calcoliamo la media spaziale della temperatura ridotta in questo volume (\textbf{coarse graining}):
 \begin{equation}
 t_V = \frac{1}{V} \int_V d^D x \, t(\vec{x})
 \end{equation}
 
-Ci interessa confrontare il valor medio di questa quantità con la sua varianza (fluttuazione) dovuta al disordine. [cite_start]Calcoliamo la fluttuazione quadratica media $\Delta^2$ su tutto il sistema (o su diverse realizzazioni del disordine) [cite: 4037-4038]:
+Ci interessa confrontare il valor medio di questa quantità (che guida la transizione) con la sua varianza (fluttuazione) dovuta al disordine. Calcoliamo la fluttuazione quadratica media $\Delta^2$ su tutto il sistema:
 
 \begin{equation}
-\Delta^2 = \overline{t_V^2} - \overline{t_V}^2 = \frac{1}{V^2} \int_V d^D x \int_V d^D y \left( \overline{t(\vec{x})t(\vec{y})} - \overline{t(\vec{x})} \, \overline{t(\vec{y})} \right)
+\Delta^2 = \overline{t_V^2} - \overline{t_V}^2 = \frac{1}{V^2} \int_V d^D \vec{x} \int_V d^D \vec{y} \left( \overline{t(\vec{x})t(\vec{y})} - \overline{t(\vec{x})} \; \overline{t(\vec{y})} \right)
 \end{equation}
 
-Il termine tra parentesi è proporzionale alla funzione di correlazione $g(\vec{x}-\vec{y})$. Sostituendo l'andamento asintotico $g(r) \sim r^{-a}$:
+Il termine tra parentesi è proporzionale alla funzione di correlazione connessa $g(\vec{x}-\vec{y})$. Sostituendo l'andamento asintotico $g(r) \sim r^{-a}$ e integrando:
 
 \begin{equation}
 \Delta^2 \propto \frac{1}{V} \int_V d^D r \, g(r) \sim \xi^{-D} \int_0^\xi dr \, r^{D-1} r^{-a} = \xi^{-D} \int_0^\xi dr \, r^{D-1-a}
 \end{equation}
 
-[cite_start]L'integrale si comporta diversamente a seconda del valore di $a$ rispetto alla dimensione spaziale $D$ [cite: 4044-4045]:
+L'integrale si comporta diversamente a seconda del valore di $a$ rispetto alla dimensione spaziale $D$, determinando se le fluttuazioni mediano a zero o divergono:
 
 \begin{enumerate}
     \item \textbf{Caso $a > D$ (Decadimento veloce/Corto raggio):}
@@ -399,22 +412,27 @@ Il termine tra parentesi è proporzionale alla funzione di correlazione $g(\vec{
     \end{equation}
     
     \item \textbf{Caso $a = D$ (Marginale):}
-    L'integrale dà un contributo logaritmico.
+    L'integrale dà un contributo logaritmico:
     \begin{equation}
     \Delta^2 \sim \xi^{-D} \log \xi
     \end{equation}
 \end{enumerate}
 
-[cite_start]Riassumendo, la fluttuazione del disordine scala come[cite: 3982]:
+Riassumendo, la fluttuazione del disordine $\Delta$ scala come:
+
+\begin{tcolorbox}[colback=yellow!10, colframe=yellow!60!colorG, , coltitle=black, title=\textbf{Fluttuazione del Disordine}]
 \begin{equation}
 \Delta \sim 
 \begin{cases} 
 \xi^{-D/2} & \text{se } a > D \\
+\xi^{-D} \log \xi & \text{se } a = D \\
 \xi^{-a/2} & \text{se } a < D
 \end{cases}
 \end{equation}
+\end{tcolorbox}
 
-Ora applichiamo il criterio di stabilità. Il disordine è una perturbazione **irrilevante** se, avvicinandosi al punto critico ($\xi \to \infty$), le fluttuazioni del disordine $\Delta$ diventano trascurabili rispetto alla distanza media dal punto critico $t$.
+
+\noindent Ora applichiamo il criterio di stabilità. Il disordine è una perturbazione \textbf{irrilevante} se, avvicinandosi al punto critico ($\xi \to \infty$), le fluttuazioni del disordine $\Delta$ diventano trascurabili rispetto alla distanza media dal punto critico $t$. Ovvero il "segnale" termico deve vincere sul "rumore" del disordine.
 Ricordando che $t \sim \xi^{-1/\nu}$, la condizione di stabilità è:
 \begin{equation}
 \frac{\Delta}{t} \to 0 \quad \text{per } \xi \to \infty
@@ -422,53 +440,14 @@ Ricordando che $t \sim \xi^{-1/\nu}$, la condizione di stabilità è:
 Ovvero, l'esponente con cui decade $\Delta$ deve essere maggiore di $1/\nu$.
 
 \begin{itemize}
-    \item **Per $a > D$ (Criterio di Harris Standard):**
+    \item Per $a > D$ (Criterio di Harris Standard):
     Richiediamo $D/2 > 1/\nu \implies D\nu > 2$.
     Usando la relazione di iperscaling $\alpha = 2 - D\nu$, questa condizione equivale a richiedere $\alpha < 0$. Se il calore specifico del sistema puro non diverge (o diverge molto debolmente), il disordine è irrilevante.
     
-    \item **Per $a < D$ (Criterio di Weinrib-Halperin):**
+    \item Per $a < D$ (Criterio di Weinrib-Halperin):
     Richiediamo $a/2 > 1/\nu \implies a\nu > 2$.
-    In questo caso, la correlazione a lungo raggio del disordine rende più difficile soddisfare la condizione di stabilità.
+    In questo caso, la correlazione a lungo raggio del disordine rende più difficile soddisfare la condizione di stabilità, poiché le fluttuazioni decadono più lentamente.
 \end{itemize}
 
-Se queste disuguaglianze sono violate, il disordine è **rilevante**: il punto fisso puro diventa instabile e il sistema fluisce verso un nuovo punto fisso disordinato con nuovi esponenti critici (o la transizione viene distrutta/smussata).
+\noindent Se queste disuguaglianze sono violate, il disordine è rilevante: il punto fisso puro diventa instabile e il sistema fluisce verso un nuovo punto fisso disordinato con nuovi esponenti critici.
 
-\section{Criterio di Harris Generalizzato}
-
-Il Criterio di Harris ci permette di capire se il disordine cambia la classe di universalità della transizione (cioè se gli esponenti critici cambiano rispetto al caso puro).
-Consideriamo il disordine come una fluttuazione locale della temperatura critica $T_c(\vec{x})$.
-Definiamo la funzione di correlazione spaziale delle fluttuazioni di $T_c$:
-
-\begin{equation}
-g(\vec{r}) = \overline{T_c(\vec{x}) T_c(\vec{x}+\vec{r})} - \overline{T_c}^2 \sim r^{-a} \quad (\text{per } |\vec{r}| \gg 1)
-\end{equation}
-
-Dove l'esponente $a$ caratterizza il tipo di disordine:
-\begin{itemize}
-    \item $a > D$: Disordine a corto raggio (short-range correlated).
-    \item $a < D$: Disordine a lungo raggio (long-range correlated).
-\end{itemize}
-
-Valutiamo la varianza delle fluttuazioni della temperatura ridotta locale $t(\vec{x})$ in un volume di correlazione $V \sim \xi^D$:
-
-\begin{equation}
-\Delta^2 = \overline{t_V^2} - \overline{t_V}^2 \propto \xi^{-2D} \int_V d^D x \int_V d^D y \, g(\vec{x}-\vec{y})
-\end{equation}
-
-L'integrale scala come:
-
-\begin{equation}
-\Delta^2 \sim \xi^{-D} \int_0^\xi dr \, r^{D-1} r^{-a} \sim \xi^{-D} \int_0^\xi dr \, r^{D-1-a}
-\end{equation}
-
-Il comportamento asintotico dipende dal rapporto tra $a$ e $D$:
-\begin{itemize}
-    \item \textbf{Se $a > D$ (Convergenza):} L'integrale converge a una costante. La varianza scala come $\Delta^2 \sim \xi^{-D}$. Questo recupera il criterio di Harris standard ($D\nu > 2$).
-    \item \textbf{Se $a < D$ (Divergenza):} L'integrale diverge e domina il limite superiore ($\xi^{D-a}$). La varianza scala come:
-    \begin{equation}
-    \Delta^2 \sim \xi^{-D} \cdot \xi^{D-a} = \xi^{-a}
-    \end{equation}
-    \item \textbf{Se $a = D$ (Marginale):} Si ha una correzione logaritmica $\Delta^2 \sim \xi^{-D} \log \xi$.
-\end{itemize}
-
-Perché il punto fisso puro sia stabile, le fluttuazioni del disordine $\Delta$ devono essere trascurabili rispetto alla distanza dal punto critico $t \sim \xi^{-1/\nu}$ nel limite termodinamico. Se $\Delta \gg t$, il disordine è rilevante e cambia gli esponenti critici (o distrugge la transizione).
