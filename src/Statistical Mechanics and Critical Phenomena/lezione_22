@@ -1,0 +1,562 @@
+\chapter{Lezione 22}
+\label{chap:lezione_22}
+
+\begin{flushright}
+\textit{Data: 15/12/2025}
+\end{flushright}
+
+
+\section{Gruppo di Rinormalizzazione}
+
+L'obiettivo principale di questa trattazione è dare un senso alla teoria perturbativa vicino al punto critico. Sappiamo che l'approccio perturbativo standard crolla in prossimità della transizione di fase.
+In particolare, consideriamo la costante di accoppiamento adimensionale $\tilde{g}$. In $D$ dimensioni, la costante di accoppiamento $g$ ha dimensione di massa $[g] = m^{4-D}$. Definiamo quindi la costante adimensionale come:
+
+\begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Costante Adimensionale}]
+\begin{equation}
+    \tilde{g} = \frac{g}{m^{4-D}} = g \; \xi^{4-D}
+    \label{eq:g_tilde}
+\end{equation}
+\end{tcolorbox}
+
+
+
+dove abbiamo usato la relazione di scaling $\xi \sim m^{-1}$.
+
+\noindent È noto che, nel modello Gaussiano ($g=0$), avvicinandosi al punto critico, la massa tende a zero ($m \to 0$) e, di conseguenza, la lunghezza di correlazione diverge ($\xi \to \infty$). Questo implica un comportamento patologico per la nostra costante di accoppiamento adimensionale:
+
+\begin{equation}
+    \tilde{g} \xrightarrow{m \to 0} \infty
+\end{equation}
+
+\noindent Questo risultato segnala che l'approccio perturbativo standard crolla in prossimità del punto critico. Il parametro di espansione $\tilde{g}$ diventa infinitamente grande.
+Questo rende l'approccio perturbativo standard inutilizzabile proprio nella regione di maggiore interesse fisico, dove si manifestano i fenomeni critici. Tuttavia, il punto critico esiste ed è ben definito fisicamente; ci sono proprietà misurabili a cui corrispondono valori finiti.
+
+\subsection{Modello Gaussiano e Rinormalizzazione}
+
+Consideriamo il Modello Gaussiano, definito da $g=0$. In questo contesto, la funzione di Green è data da:
+
+\begin{equation}
+    G(p) = \frac{Z_1}{p^2 + m^2 + O(p^4)}
+\end{equation}
+
+Per il modello libero ($g=0$), la costante di rinormalizzazione della funzione d'onda è $Z_1 = 1$, che implica un esponente critico $\eta = 0$.
+Tuttavia, quando $g \neq 0$, è necessario introdurre una rinormalizzazione dei campi per assorbire le divergenze. Definiamo il campo rinormalizzato $\varphi_R$ come:
+
+\begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Campo Rinormalizzato}]
+\begin{equation}
+    \varphi_R(x) \equiv \frac{\varphi(x)}{\sqrt{Z_1}}
+\end{equation}
+\end{tcolorbox}
+
+
+\noindent La funzione di Green rinormalizzata $G_R(p)$ assume quindi la forma:
+
+\begin{equation}
+    G_R(p) = \frac{1}{p^2 + m^2 + O(p^4)}
+\end{equation}
+
+\noindent Questa procedura è essenziale per gestire le correzioni quantistiche e le divergenze che emergono nelle teorie interagenti.
+
+\subsubsection{La Dimensione Critica}
+
+La dimensione critica superiore, al di sopra della quale la teoria Gaussiana è valida, è $D_c^u = 4$. Per studiare il comportamento critico per $D < 4$, abbiamo due strategie principali:
+
+\begin{enumerate}
+    \item \textbf{Espansione in $\epsilon$ :}
+    Ci allontaniamo perturbativamente dalla dimensione critica superiore ponendo:
+    \begin{equation}
+        D = D_c^u - \epsilon = 4 - \epsilon
+    \end{equation}
+    L'idea è che per $\epsilon$ piccolo le divergenze siano controllabili.
+
+    \item \textbf{Dimensione Fissa (Parisi):}
+    Siamo interessati fisicamente al caso:
+    \begin{equation}
+        D = 3 \quad \implies \tilde{g} = \frac{g}{m}
+    \end{equation}
+    Parisi trovò un modo per calcolare gli esponenti critici direttamente a dimensione fissa ($D=3$), senza ricorrere all'espansione dimensionale, riorganizzando la serie perturbativa.
+\end{enumerate}
+
+\noindent L'approccio che seguiremo ora (Gruppo di Rinormalizzazione nello Spazio dei Parametri) ci permetterà di lavorare con una costante di accoppiamento rinormalizzata che rimane finita anche quando $\tilde{g}$ diverge nel limite $D=3$.
+
+\subsection{La Nuova Costante di Accoppiamento}
+
+Poiché $\tilde{g}$ diverge al punto critico, non può essere utilizzata come parametro di espansione affidabile in quel regime. Tuttavia, la teoria fisica sottostante continua ad avere senso; la fisica non diverge, è solo la nostra parametrizzazione che fallisce. Introduciamo quindi una nuova costante di accoppiamento $\lambda$, che deve rimanere finita e ben definita anche nel limite critico.
+
+\noindent Ci aspettiamo che $\lambda$ si comporti come $\tilde{g}$ per piccoli valori di accoppiamento, ma che saturi a un valore finito $\lambda_c$ quando $\tilde{g} \to \infty$.
+
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+    \begin{axis}[
+        axis lines = left,
+        xlabel = {$\tilde{g} = g/m$},
+        ylabel = {$\lambda$},
+        % MODIFICA QUI:
+        % at={(axis description cs:0,1)} -> posiziona la label in cima all'asse y
+        % anchor=south -> ancora la label al suo punto sud (così sta sopra la freccia)
+        % rotate=-90 -> ruota la label di -90 gradi per renderla orizzontale
+        ylabel style={at={(axis description cs:0.1,0.9)}, anchor=south, rotate=-90},
+        ymin=0, ymax=1.5,
+        xmin=0, xmax=5,
+        xtick=\empty,
+        ytick=\empty,
+        extra y ticks={1.1},
+        extra y tick labels={$\lambda_c$},
+        extra y tick style={grid=major, grid style={dashed, black}}
+    ]
+    % Curva asintotica
+    \addplot [
+        domain=0:5, 
+        samples=100, 
+        color=colorD!90, 
+        ultra thick
+    ]
+    {1.3 * x / (1 + x)};
+    
+    % Label comportamento asintotico
+    \node at (axis cs: 1.3, 0.3) {$\lambda \sim g/m$};
+    \end{axis}
+\end{tikzpicture}
+\caption{Comportamento di saturazione di $\lambda$ in funzione di $\tilde{g}$.}
+\label{fig:lambda_saturation}
+\end{figure}
+
+
+
+\noindent L'idea centrale è trasformare l'espansione perturbativa in potenze di $\tilde{g}$ (che diverge) in un'espansione perturbativa in potenze di $\lambda$ (che rimane finita).
+
+
+\noindent Analizziamo il comportamento della massa in prossimità della criticità. Dalla teoria dello scaling sappiamo che:
+
+\begin{equation}
+    m^2 \simeq (\mu - \mu_c)^{2\nu} \implies (m^2)^{\frac{1}{2 \nu}} \sim \mu - \mu_c
+\end{equation}
+
+\noindent Derivando rispetto a $m^2$:
+
+\begin{equation}
+    \frac{d\mu}{dm^2} \sim \frac{1}{2\nu} (m^2)^{\frac{1}{2 \nu} -1} 
+\end{equation}
+\noindent Segue:
+\begin{equation}
+   \log \left( \frac{d\mu}{dm^2} \right) \approx \left ( \frac{1}  {2\nu} - 1 \right ) \; \log m^2 + \text{cost.}
+\end{equation}
+
+\noindent Derivando nuovamente si trova:
+
+\begin{equation}
+    m^2 \frac{d}{dm^2} \log \left( \frac{d\mu}{dm^2} \right) \xrightarrow{m^2 \to 0} \frac{1}{2\nu} - 1
+\end{equation}
+
+\noindent Definiamo la funzione $A(\tilde{g})$ proprio come questa quantità:
+
+\begin{equation}
+    A(\tilde{g}) = A(g/m) = \sum_k A_k \tilde{g}^k \equiv m^2 \frac{d}{dm^2} \log \left( \frac{d\mu}{dm^2} \right)
+\end{equation}
+
+\noindent I coefficienti $\{A_k\}$ dell'espansione in $\tilde{g}$ non sono direttamente utili per studiare il limite asintotico $\tilde{g} \to \infty$. Tuttavia, sappiamo che la funzione limite deve tendere a una costante legata all'esponente $\nu$:
+
+\begin{equation}
+    A(\tilde{g} \to \infty) = \frac{1}{2\nu} - 1
+\end{equation}
+
+\noindent Definiamo ora la funzione rinormalizzata $\bar{A}(\lambda)$ attraverso il cambio di variabile:
+
+\begin{equation}
+    A(\tilde{g}(\lambda)) \equiv \bar{A}(\lambda)
+\end{equation}
+
+\noindent Nel punto critico $\lambda_c$ (che corrisponde a $\tilde{g} = \infty$), avremo:
+
+\begin{equation}
+    \bar{A}(\lambda_c) = \frac{1}{2\nu} - 1
+\end{equation}
+
+\noindent Di seguito è riportato il grafico qualitativo di $-\bar{A}$ in funzione di $\lambda$.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+    \begin{axis}[
+        axis lines = left,
+        xlabel = {$\lambda$},
+        ylabel = {$-\overline{A}(\lambda)$},
+        ymin=0, ymax=1.2,
+        xmin=0, xmax=3,
+        xtick={2.2},
+        xticklabels={$\lambda_c$},
+        ytick=\empty,
+        extra y ticks={0.8},
+        extra y tick labels={$1 - \frac{1}{2\nu}$},
+        extra y tick style={grid=major, grid style={dashed, gray}},
+        ylabel style={at={(axis description cs:0.07,0.85)}, anchor=south, rotate=-90}
+    ]
+    
+    % Curva rinormalizzata
+    \addplot [
+        domain=0:2.2, 
+        samples=100, 
+        color=colorD!70, 
+        ultra thick
+    ]
+    {0.8 * (2*x/2.2 - (x/2.2)^2)}; % Parabola qualitativa che arriva piatta
+    
+    % Linea tratteggiata verticale per lambda_c
+    \draw[dashed, gray] (axis cs:2.2,0) -- (axis cs:2.2,0.8);
+    
+    % Punto critico
+    \addplot[mark=*, color=colorD] coordinates {(2.2,0.8)};
+    
+    
+
+    \end{axis}
+\end{tikzpicture}
+\caption{Andamento qualitativo della funzione $-\overline{A}(\lambda)$.}
+\label{fig:A_renormalized}
+\end{figure}
+
+
+\subsection{Inversione della Serie}
+
+Per utilizzare praticamente questo formalismo, dobbiamo invertire la relazione funzionale tra $\lambda$ e $\tilde{g}$. Assumiamo un'espansione perturbativa per $\lambda$ in termini di $\tilde{g}$:
+
+\begin{equation}
+    \lambda = \tilde{g} + B_2 \tilde{g}^2 + o(\tilde{g}^3)
+\end{equation}
+
+\noindent Per piccoli $\tilde{g}$, possiamo approssimare la serie (riconoscendo la struttura di una serie geometrica o simile) come:
+
+\begin{equation}
+    \lambda \sim \tilde{g}(1 + B_2 \tilde{g}) \sim \frac{\tilde{g}}{1 - B_2 \tilde{g}}
+\end{equation}
+
+\noindent  Invertendo questa relazione per esprimere $\tilde{g}$ in funzione di $\lambda$:
+
+\begin{equation}
+    \tilde{g} \sim \lambda(1 - B_2 \lambda)
+\end{equation}
+
+\noindent  Formalmente, l'inversione della serie ci fornisce:
+
+\begin{equation}
+    \tilde{g} = \lambda - B_2 \lambda^2 + o(\lambda^3)
+\end{equation}
+
+\noindent  Sostituiamo ora questa espressione nell'espansione originale di $A(\tilde{g}) = A_1 \tilde{g} + A_2 \tilde{g}^2 + \dots$:
+
+\begin{equation}
+    \bar{A}(\lambda) = A_1 (\lambda - B_2 \lambda^2) + A_2 (\lambda - B_2 \lambda^2)^2 + o(\lambda^3)
+\end{equation}
+
+\noindent  Sviluppando e raccogliendo i termini dello stesso ordine:
+
+\begin{equation}
+    \bar{A}(\lambda) = A_1 \lambda + (-A_1 B_2 + A_2) \lambda^2 + o(\lambda^3)
+\end{equation}
+
+\noindent  Per trovare il valore critico $\lambda_c$, utilizziamo la funzione beta $\bar{\beta}(\lambda)$, definita come:
+
+\begin{equation}
+    \bar{\beta}(\lambda) = \beta(\tilde{g}(\lambda)) \quad \text{dove} \quad \beta(\tilde{g}) \equiv \tilde{g} \frac{d}{d\tilde{g}} \lambda(\tilde{g}) \xrightarrow{\tilde{g}\to \infty} 0
+\end{equation}
+
+\begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Condizione di Criticità}]
+\noindent  La condizione di criticità è determinata dallo zero della funzione beta:
+
+\begin{equation}
+    \bar{\beta}(\lambda_c) = 0
+\end{equation}
+\end{tcolorbox}
+
+
+\noindent  Una volta determinato $\lambda_c$, possiamo calcolare l'esponente critico $\nu$ usando la relazione derivata in precedenza:
+
+\begin{equation}
+    \bar{A}(\lambda_c) = \frac{1}{2\nu} - 1
+\end{equation}
+
+
+\begin{figure}[h!]
+    \centering
+    % Primo grafico: Beta(g)
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=1]
+            \begin{axis}[
+                axis lines = left,
+                xlabel = {$\tilde{g}$},
+                ylabel = {$\beta(\tilde{g})$},
+                ymin=0, ymax=0.7, % Alzato leggermente per sicurezza
+                xmin=0, xmax=5,
+                xtick=\empty,
+                ytick=\empty,
+                ylabel style={at={(axis description cs:0.2,1)}, anchor=south, rotate=-90},
+                extra y ticks={0},
+                extra x ticks={0},
+                clip=true % Assicura che nulla esca dagli assi
+            ]
+            
+            % Comportamento: parte lineare, raggiunge un massimo, poi tende asintoticamente a 0
+            % Picco di 1.5*x*exp(-x) è circa 0.55 a x=1. Rientra in ymax=0.7
+            \addplot [
+                domain=0:5, 
+                samples=100, 
+                color=colorB!90, 
+                ultra thick
+            ]
+            {1.5 * x * exp(-x)}; 
+            
+            % Annotazione del limite
+            \node[anchor=west, font=\small] at (axis cs: 3.5, 0.2) {$\beta \to 0$};
+            \end{axis}
+        \end{tikzpicture}
+       
+    \end{minipage}
+    \hfill
+    % Secondo grafico: Beta(lambda)
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=1]
+            \begin{axis}[
+                axis lines = left,
+                xlabel = {$\lambda$},
+                ylabel = {$\overline{\beta}(\lambda)$},
+                ymin=0, ymax=1.0, % CORRETTO: ymax aumentato per contenere il picco (0.8)
+                xmin=0, xmax=2.5,
+                xtick={2.0},
+                xticklabels={$\lambda_c$},
+                ytick=\empty,
+                ylabel style={at={(axis description cs:0.2,1)}, anchor=south, rotate=-90},
+                extra x tick style={grid=major, grid style={dashed, black}},
+                clip=true
+            ]
+            
+            % Parabola rovesciata x(L-x). Picco a x=1 vale 0.8*1*(1) = 0.8
+            \addplot [
+                domain=0:2.0, 
+                samples=100, 
+                color=colorC!90, 
+                ultra thick
+            ]
+            {0.8 * x * (2.0 - x)}; 
+            
+            
+            
+            % Punto fisso
+            \addplot[mark=*, color=colorE] coordinates {(2.0,0)};
+            
+            \end{axis}
+        \end{tikzpicture}
+        
+    \end{minipage}
+    \caption{Confronto tra le funzioni $\beta(\tilde{g})$  e $\overline{\beta}(\lambda)$ }
+    \label{fig:beta_functions}
+\end{figure}
+
+\subsection{Definizione Operativa e Calcolo Perturbativo}
+
+Per studiare il comportamento critico, è necessario definire una costante di accoppia-
+mento rinormalizzata $\lambda$ basata su osservabili fisiche che rimangano finite e ben definite.
+Selezioniamo a tale scopo la funzione di correlazione a 4 punti, connessa, amputata e
+rinormalizzata, calcolata a momento esterno nullo:
+
+\begin{equation}
+    \lambda = m^{D-4} \Gamma_4^R(0,0,0,0)
+\end{equation}
+
+Questa grandezza può essere riscritta in termini dei campi nudi e di $Z_1$. All'ordine più basso (tree-level), $Z_1 \approx 1$, per cui la relazione con la funzione di vertice nuda $\Gamma_4$ è:
+
+\begin{equation}
+    \lambda = m^{D-4} Z_1^2 \Gamma_4 \approx m^{D-4} \Gamma_4^R
+\end{equation}
+
+
+Inoltre, per la costante di accoppiamento adimensionale $\tilde{g} = g m^{D-4}$, vale la relazione asintotica:
+\begin{equation}
+    \lambda = \tilde{g} + O(\tilde{g}^2) \quad \text{per } \tilde{g} \to 0
+\end{equation}
+
+
+
+\subsubsection{Calcolo dei Diagrammi a 1-Loop}
+
+Facciamo il calcolo esatto fino a 1 loop. Di seguito i diagrammi rispettivamente per le funzioni a 2 e a 4 punti:
+
+\begin{figure}[h!]
+\centering
+    \begin{tikzpicture}[scale=1.2, every node/.style={transform shape}]
+        
+        % --- Stile per i diagrammi ---
+        \tikzset{
+            propagator/.style={thick},
+            vertex/.style={fill=black, circle, inner sep=1.5pt}
+        }
+
+       
+        
+        \begin{scope}[shift={(-2.5, 0)}]
+            % Linea del propagatore
+            \draw[propagator] (-1.2, 0) -- (1.2, 0);
+            
+            % Loop (Tadpole)
+            \draw[propagator] (0, 0.5) circle (0.5);
+            
+            % Vertice
+            \node[vertex] at (0, 0) {};
+            
+            % Etichette opzionali (commentate se non richieste)
+            % \node[below] at (0, -0.1) {$- \frac{\lambda}{2}$};
+        \end{scope}
+
+        % --- Diagramma per la funzione a 4 punti (Bubble / Fish) ---
+        
+        
+        \begin{scope}[shift={(2.5, 0)}]
+            % Vertici definiti sulle estremità del loop
+            \coordinate (v1) at (-0.6, 0);
+            \coordinate (v2) at (0.6, 0);
+            
+            % Linee esterne (gambe)
+            \draw[propagator] (-1.4, 0.6) -- (v1) node[midway, above left, scale=0.7] {};
+            \draw[propagator] (-1.4, -0.6) -- (v1) node[midway, below left, scale=0.7] {};
+            \draw[propagator] (v2) -- (1.4, 0.6) node[midway, above right, scale=0.7] {};
+            \draw[propagator] (v2) -- (1.4, -0.6) node[midway, below right, scale=0.7] {};
+            
+            % Loop centrale (costruito con due archi o un cerchio)
+            \draw[propagator] (0,0) circle (0.6);
+            
+            % Disegno dei vertici sopra le linee
+            \node[vertex] at (v1) {};
+            \node[vertex] at (v2) {};
+            
+            % Etichette interne opzionali
+            % \node[above, scale=0.7] at (0, 0.6) {$q$};
+            % \node[below, scale=0.7] at (0, -0.6) {$p+q$};
+        \end{scope}
+        
+    \end{tikzpicture}
+\caption{Diagrammi 1-loop per le funzioni a 2 punti (sx) e 4 punti (dx).}
+\label{fig:diagrammi_topologici}
+\end{figure}
+
+
+\hfill 
+
+\noindent Cominciamo dalla funzione a 4 punti.
+I diagrammi di Feynman rilevanti per la funzione di vertice a 4 punti sono mostrati in Figura  \ref{fig:feynman_diagrams}:
+\begin{enumerate}
+    \item Il termine di ordine zero (Tree Level), proporzionale a $g$.
+    \item Le correzioni radiative a 1-loop, rappresentate topologicamente da una "bolla" inserita nel vertice, proporzionali a $g^2$.
+\end{enumerate}
+
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}[scale=1.1, transform shape]
+        % Stile delle linee
+        \tikzset{scalar/.style={thick}}
+        \tikzset{momentum/.style={->, semithick, >=stealth, shorten >=2pt, shorten <=2pt}}
+
+        % --- DIAGRAMMA AD ALBERO ---
+        \begin{scope}[shift={(-4,0)}]
+            \node at (0, 1.8) {\scriptsize \textbf{ Tree Level}};
+            
+            % Vertice
+            \coordinate (V) at (0,0);
+            
+            % Linee esterne
+            \draw[scalar] (-1.2, 1.2) node[left] {$p_1$} -- (V);
+            \draw[scalar] (-1.2, -1.2) node[left] {$p_2$} -- (V);
+            \draw[scalar] (V) -- (1.2, 1.2) node[right] {$p_3$};
+            \draw[scalar] (V) -- (1.2, -1.2) node[right] {$p_4$};
+            
+            
+        \end{scope}
+
+        % --- DIAGRAMMA A 1 LOOP (Canale s) ---
+        \begin{scope}[shift={(3,0)}]
+            \node at (0, 1.8) {\scriptsize \textbf{ 1-Loop}};
+            
+            % Vertici
+            \coordinate (V1) at (-0.8, 0);
+            \coordinate (V2) at (0.8, 0);
+            
+            % Linee esterne sx
+            \draw[scalar] (-2, 0.8) node[left] {$p_1$} -- (V1);
+            \draw[scalar] (-2, -0.8) node[left] {$p_2$} -- (V1);
+            
+            % Loop
+            \draw[scalar] (V1) arc (180:0:0.8);
+            \draw[scalar] (V2) arc (0:-180:0.8);
+            
+            % Momenti nel loop (etichette)
+            \draw[momentum] (-0.2, 0.9) -- (0.2, 0.9) node[midway, above] {$-q$};
+            \draw[momentum] (-0.2, -0.9) -- (0.2, -0.9) node[midway, below] {$q + p_1 + p_2$};
+
+            % Linee esterne dx
+            \draw[scalar] (V2) -- (2, 0.8) node[right] {$p_3$};
+            \draw[scalar] (V2) -- (2, -0.8) node[right] {$p_4$};
+        \end{scope}
+    \end{tikzpicture}
+    \caption{Diagrammi di Feynman per la funzione a 4 punti.}
+    \label{fig:feynman_diagrams}
+\end{figure}
+
+
+\noindent Per costruire l'ampiezza corretta, è fondamentale analizzare la combinatoria e la topologia dei diagrammi:
+
+\begin{itemize}
+    \item Il diagramma ad albero contribuisce semplicemente con un fattore $g$.
+    \item \textbf{Canali di scattering:} Esistono 3 modi topologicamente distinti di connettere le linee esterne a 1-loop,. Matematicamente, questi corrispondono a combinare i momenti in ingresso come $(p_1+p_2)$, $(p_1+p_3)$ e $(p_1+p_4)$.
+    \item \textbf{Limite di momento nullo:} Poiché calcoliamo $\Gamma_4$ a $p_i=0$, i tre canali  diventano cinematicamente indistinguibili. Ognuno fornisce lo stesso contributo integrale. Pertanto, sommiamo 3 volte lo stesso diagramma.
+    \item \textbf{Fattore di simmetria:} Per ogni diagramma a bolla, esiste un fattore di simmetria $S=2$ dovuto allo scambio delle due linee interne equivalenti. Il peso combinatorico è quindi $1/2$.
+\end{itemize}
+
+\noindent Combinando questi elementi, il fattore moltiplicativo totale per l'integrale a loop è:  $3~\cdot~\frac{1}{2}~=~\frac{3}{2}$.
+L'espressione formale per la funzione di vertice è:
+
+\begin{equation}
+    \Gamma_4(0,0,0,0) = g - \frac{3}{2} g^2 \int \frac{d^D q}{(2\pi)^D} \frac{1}{(q^2 + m^2)^2}
+    \label{eq:gamma4_integral}
+\end{equation}
+
+
+\noindent L'integrale divergente che appare nella (\ref{eq:gamma4_integral}) può essere calcolato utilizzando la regolarizzazione dimensionale (o i parametri di Feynman), ottenendo il noto risultato standard:
+
+\begin{equation}
+    \int \frac{d^D q}{(2\pi)^D} \frac{1}{(q^2+m^2)^2} = \frac{\Gamma(2 - \frac{D}{2})}{(4\pi)^{D/2}} (m)^{D - 4}
+\end{equation}
+
+\noindent Sostituendo questo risultato nell'espressione per $\Gamma_4$, otteniamo:
+
+\begin{equation}
+    \Gamma_4(0) = g - \frac{3}{2} g^2 \frac{\Gamma(2 - \frac{D}{2})}{(4\pi)^{D/2}} m^{D-4}
+\end{equation}
+
+\noindent Per esprimere il risultato in termini della costante di accoppiamento adimensionale $\tilde{g}$, utilizziamo l'identità $g = \tilde{g} m^{4-D}$. Sostituendo:
+
+\begin{align}
+    \Gamma_4(0) &= \tilde{g} m^{4-D} - \frac{3}{2} (\tilde{g}^2 m^{8-2D}) \frac{\Gamma(2 - \frac{D}{2})}{(4\pi)^{D/2}} m^{D-4} \nonumber \\
+    &= \tilde{g} m^{4-D} - \frac{3}{2} \tilde{g}^2 m^{4-D} \frac{\Gamma(2 - \frac{D}{2})}{(4\pi)^{D/2}}
+\end{align}
+
+\noindent Raccogliendo a fattor comune $\tilde{g} m^{4-D}$, otteniamo l'espressione finale per la funzione a 4 punti:
+
+\begin{equation}
+    \Gamma_4(0,0,0,0) = \tilde{g} \; m^{4-D} \left[ 1 - \frac{3}{2} \tilde{g} \frac{\Gamma(2 - \frac{D}{2})}{(4\pi)^{D/2}} \right]
+\end{equation}
+
+\noindent Questo risultato conferma che le correzioni introducono una dipendenza non banale dalla dimensione $D$ e dalla scala di massa $m$.
+
+\subsubsection{Prossimi Passaggi dell'Algoritmo}
+
+Avendo completato il calcolo perturbativo di $\Gamma_4$, l'algoritmo di rinormalizzazione procede attraverso i seguenti step logici:
+
+\begin{enumerate}
+    \item Determinare la funzione $A$ come espansione in serie di potenze di $\tilde{g}$.
+    \item Esprimere $A$ in funzione di $\lambda$ (invece che di $\tilde{g}$) per ottenere $\overline{A}(\lambda)$, eliminando la dipendenza esplicita dai parametri nudi.
+    \item Calcolare lo zero della funzione beta rinormalizzata, $\overline{\beta}(\lambda_c) = 0$, per trovare il valore critico dell'accoppiamento.
+    \item Valutare $\overline{A}(\lambda_c)$ per estrarre l'esponente critico $\nu$.
+\end{enumerate}
