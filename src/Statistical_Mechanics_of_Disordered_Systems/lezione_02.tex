@@ -1,0 +1,284 @@
+\chapter{Lezione 2}
+\label{chap:lezione_02} 
+
+\begin{flushright}
+\textit{Data: 02/10/2025}
+\end{flushright}
+
+
+
+\section{Derivazione dell'Entropia di Shannon}
+
+Per dedurre l'espressione dell'entropia di Shannon, consideriamo il seguente esperimento mentale. Supponiamo di dover trasmettere una sequenza di $N$ bit. Lo spazio delle possibili configurazioni ha una dimensione di $2^N$. Per specificare una di queste $2^N$ "parole", è necessario trasmettere tutti gli $N$ bit.
+
+Ora, supponiamo di poter classificare queste $2^N$ configurazioni in base al valore di un'osservabile, come la magnetizzazione media o l'energia. Sia $X$ tale osservabile, che può assumere $l$ valori distinti: $X \in \{x_1, x_2, \dots, x_l\}$.
+Se consideriamo una misura uniforme sullo spazio delle $2^N$ configurazioni, $X$ si comporta come una variabile aleatoria, assumendo i suoi valori con diverse probabilità.
+
+Definiamo la probabilità $p_i$ come la probabilità che la variabile aleatoria $X$ assuma il valore $x_i$:
+\begin{equation}
+ p_i = P[X = x_i]
+\end{equation}
+
+Queste probabilità definiranno l'entropia della variabile $X$.
+
+Consideriamo uno scenario di trasmissione di informazione da un trasmettitore a un ricevitore. Invece di trasmettere tutti gli $N$ bit della configurazione, comunichiamo al ricevitore solo il valore $x_i$ che l'osservabile $X$ assume su quella specifica configurazione. Questa informazione riduce l'incertezza del ricevitore.
+
+Dopo aver comunicato che $X = x_i$, il numero di configurazioni possibili non è più $2^N$, ma si riduce al numero di configurazioni compatibili con questa condizione, che è $2^N p_i$. Di conseguenza, il numero di bit necessari per identificare univocamente la configurazione passa da $N$ a $N + \log_2(p_i)$. Poiché $p_i \le 1$, il termine $\log_2(p_i)$ è negativo (o nullo), indicando una riduzione del numero di bit da trasmettere. Assegnare un valore alla variabile aleatoria riduce l'incertezza di una quantità pari a $-\log_2(p_i)$.
+
+L'incertezza media associata alla non conoscenza della variabile aleatoria $X$ si ottiene calcolando il valore di aspettazione di questa quantità su tutti i possibili valori di $X$. L'incertezza associata al valore $x_i$ è $-\log_2(p_i)$, e questo valore si presenta con probabilità $p_i$. L'incertezza media, o entropia di $X$, è quindi la somma pesata:
+
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+H_X = -\sum_{i=1}^{l} p_i \log_2(p_i)
+\end{equation}
+\end{tcolorbox}
+
+
+
+Questa quantità può essere interpretata in due modi equivalenti: come il contenuto medio di informazione che si ottiene scoprendo il valore della variabile aleatoria, o come l'incertezza media sulla variabile prima di conoscerne il valore.
+
+\subsubsection{Proprietà dell'Entropia}
+\begin{itemize}
+ \item \textbf{Positività:} Per variabili con un numero discreto e finito di valori, l'entropia è sempre non negativa, $H_X \ge 0$. È legata a un conteggio di configurazioni.
+ \item \textbf{Caso Certo:} Se la variabile $X$ è certa, assume un solo valore con probabilità $p_i=1$ e tutti gli altri con probabilità zero. In questo caso, l'entropia è nulla, $H_X = 0$.
+\item \textbf{Massima Entropia:} L'entropia è massima quando tutti i valori possibili sono equiprobabili. Se $X$ può assumere $l$ valori, il massimo si ha per $p_i = 1/l$ per ogni $i$, e vale $H_X = \log_2(l)$.
+\item \textbf{Variabili Continue:} Per le variabili continue, l'entropia di Shannon non è più necessariamente positiva e perde l'interpretazione diretta di conteggio. In questi casi, concetti come l'informazione mutua, che si basano su differenze di entropie, sono più robusti.
+ \item \textbf{Subadditività:} Date due variabili aleatorie $X$ e $Y$, che possono essere correlate, l'entropia congiunta è subadditiva:
+\begin{equation}
+H_{X,Y} \le H_X + H_Y
+\end{equation}
+L'uguaglianza vale se e solo se le variabili sono statisticamente indipendenti, ovvero se la loro distribuzione congiunta si fattorizza: $P(x,y) = P(x)P(y)$. La correlazione riduce l'incertezza totale perché la conoscenza di una variabile fornisce informazione sull'altra.
+\end{itemize}
+
+\subsection*{Esempio: Variabile di Bernoulli}
+Consideriamo una variabile di Bernoulli che può assumere due valori (e.g., 0 e 1) con probabilità $q$ e $1-q$ rispettivamente. La sua entropia è data da:
+\begin{equation}
+ H_X = -q \log_2(q) - (1-q) \log_2(1-q)
+\end{equation}
+Questa funzione è nulla per $q=0$ e $q=1$ (eventi certi) e raggiunge il suo massimo, $\log_2(2)=1$, per $q=1/2$ (massima incertezza).
+
+\newpage
+\section{Divergenza di Kullback-Leibler (DKL)}
+
+La divergenza di Kullback-Leibler (DKL), o entropia relativa, è una misura della "distanza" tra due distribuzioni di probabilità, $p(x)$ e $q(x)$. Date due distribuzioni, la DKL di $q$ rispetto a $p$ è definita come:
+
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+ D_{KL}(q || p) = \sum_x q(x) \log\left(\frac{q(x)}{p(x)}\right)
+\end{equation}
+\end{tcolorbox}
+
+
+Questa espressione può essere interpretata come il valore di aspettazione, calcolato sulla distribuzione $q$, del logaritmo del rapporto tra le due distribuzioni.
+
+\subsubsection{Proprietà della DKL}
+\begin{itemize}
+ \item \textbf{Non-negatività:} $D_{KL}(q || p) \ge 0$. L'uguaglianza $D_{KL}(q || p) = 0$ si verifica se e solo se $q(x) = p(x)$ per ogni $x$.
+
+    \textit{Dimostrazione:}
+    Utilizziamo la disuguaglianza $\ln(A) \le A - 1$ per $A > 0$, dove l'uguaglianza vale solo per $A=1$.
+    \begin{align*}
+    -D_{KL}(q || p) &= -\sum_x q(x) \log\left(\frac{q(x)}{p(x)}\right) = \sum_x q(x) \log\left(\frac{p(x)}{q(x)}\right) \\
+     &\le \sum_x q(x) \left(\frac{p(x)}{q(x)} - 1\right) \\
+    &= \sum_x p(x) - \sum_x q(x) = 1 - 1 = 0
+    \end{align*}
+    
+    Poiché $-D_{KL}(q || p) \le 0$, segue che $D_{KL}(q || p) \ge 0$. L'uguaglianza si ha quando l'argomento del logaritmo, $p(x)/q(x)$, è uguale a 1 per ogni $x$, cioè quando le distribuzioni coincidono.
+ 
+ \item \textbf{Asimmetria:} In generale, $D_{KL}(q || p) \neq D_{KL}(p || q)$. Per questo non è una vera e propria distanza metrica.
+ \item \textbf{Convessità:} La DKL è una funzione convessa nel suo primo argomento, $q$.
+\end{itemize}
+
+
+\newpage
+\section{Somma di Variabili Aleatorie Indipendenti}
+
+Consideriamo una sequenza di $N$ variabili aleatorie $x_1, x_2, \dots, x_N$ che sono indipendenti e identicamente distribuite (i.i.d.). Assumiamo che abbiano momento primo (media $\mu$) e secondo (varianza $\sigma^2$) finiti. Siamo interessati a caratterizzare la variabile somma:
+\begin{equation}
+ S_N = \sum_{i=1}^N x_i
+\end{equation}
+Esistono tre livelli di descrizione per il comportamento di $S_N$ per $N$ grande.
+
+\subsection{Legge dei Grandi Numeri}
+Questo è il primo e più semplice livello di informazione. Ci dice che, per $N$ molto grande, la somma $S_N$ si concentra attorno al suo valore atteso.
+
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+ S_N \approx N\mu
+\end{equation}
+\end{tcolorbox}
+
+
+O, in modo equivalente, la media campionaria $S_N/N$ converge alla media teorica $\mu$.
+
+\subsection{Teorema  Centrale del Limite(TLC)}
+Il TLC fornisce un'informazione più dettagliata, descrivendo le fluttuazioni di $S_N$. Queste fluttuazioni sono di ordine $\sqrt{N}$ e sono note come "piccole deviazioni". 
+
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+ S_N \approx N\mu + \sqrt{N \sigma^2} Z
+\end{equation}
+\end{tcolorbox}
+
+Il teorema afferma che la variabile standardizzata converge in distribuzione a una variabile Gaussiana con media nulla e varianza unitaria:
+\begin{equation}
+ \frac{S_N - N\mu}{\sqrt{N\sigma^2}} \rightarrow Z \sim \mathcal{N}(0,1)
+\end{equation}
+Questo significa che $S_N$ è approssimativamente distribuita come una Gaussiana con media $N\mu$ e varianza $N\sigma^2$.
+
+\subsection{Teoria delle Grandi Deviazioni}
+Il terzo livello si occupa di eventi rari, le "grandi deviazioni". Siamo interessati alla probabilità che la somma $S_N$ assuma un valore che si discosta dal suo valore medio di una quantità di ordine $N$, non $\sqrt{N}$. Vogliamo calcolare la probabilità di un evento del tipo $S_N = \lambda N$, con $\lambda \neq \mu$.
+È ragionevole aspettarsi che questa probabilità sia esponenzialmente piccola in $N$. Perché un evento così raro accada, è necessario che molte delle variabili $x_i$ assumano valori atipici. Se ogni variabile lo fa con una probabilità leggermente inferiore a 1, la probabilità congiunta per $N$ variabili sarà una potenza di $N$.
+La teoria postula che:
+
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+ P(S_N = \lambda N) \sim e^{-N I(\lambda)}
+\end{equation}
+\end{tcolorbox}
+
+
+dove $I(\lambda)$ è la \textbf{funzione di Cramér} o funzione di rate. Il compito della teoria è calcolare $I(\lambda)$ a partire dalla distribuzione $p(x)$ della singola variabile.
+
+\subsubsection{Calcolo di $I(\lambda)$ con il Metodo del Punto di Sella}
+
+La probabilità può essere scritta in forma integrale:
+\begin{equation}
+P(S_N = \lambda N) = \int \prod_{i=1}^N dp(x_i) \delta\left(\sum_i x_i - \lambda N\right)
+\end{equation}
+Usando la rappresentazione integrale della delta di Dirac, si ottiene:
+\begin{align}
+ P(S_N = \lambda N) &\propto \int \prod_{i=1}^N dp(x_i) \int dq \, e^{-iq\lambda N + iq \sum_i x_i}  \\ &\propto \int dq \, e^{-iq\lambda N} \left[\int dp(x) e^{iqx}\right]^N \\
+ \label{eq:integrale_h}
+ &\propto \int_{-i\infty}^{+i\infty} dh \, e^{-h\lambda N} \left[\int dp(x) e^{hx}\right]^N
+\end{align}
+dove nell'ultimo passaggio abbiamo effettuato una rotazione nel piano complesso $h=iq$.
+Definiamo la \textbf{funzione generatrice dei cumulanti} scalata, $R(h)$:
+\begin{equation}
+ R(h) = \log \mathbb{E}_x[e^{hx}] = \log\left(\int dp(x) e^{hx}\right)
+\end{equation}
+L'integrale \eqref{eq:integrale_h} diventa:
+\begin{equation}
+ P(S_N = \lambda N) \propto \int_{-i\infty}^{+i\infty} dh \, e^{N\left(R(h) - \lambda h\right)}
+\end{equation}
+Per $N$ grande, questo integrale può essere valutato con il metodo del punto di sella. L'integrale è dominato dal valore di $h$ che rende stazionario l'esponente. Stiamo integrando lungo l'asse immaginario, ma possiamo deformare il cammino di integrazione nel piano complesso per passare attraverso un punto di sella sull'asse reale. Tale punto, $h^*$, annulla le oscillazioni dell'integrando. Il punto di sella $h^*$ è determinato dalla condizione:
+\begin{equation}
+ \frac{d}{dh} (R(h) - \lambda h)\bigg|_{h=h^*} = 0 \quad \implies \quad R'(h^*) = \lambda
+\end{equation}
+Lungo l'asse reale, questo punto corrisponde a un \textbf{minimo} dell'esponente (poiché \mbox{$R''(h) \ge 0$}), ma è un \textbf{massimo} lungo il cammino di integrazione deformato, dominando così il valore dell'integrale.
+L'approssimazione del punto di sella fornisce:
+
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+\begin{equation}
+ P(S_N = \lambda N) \sim \exp\left[N(R(h^*) - \lambda h^*)\right]
+\end{equation}
+\end{tcolorbox}
+
+
+Confrontando con la forma $e^{-NI(\lambda)}$, identifichiamo la funzione di Cramér:
+\begin{equation}
+ I(\lambda) = \lambda h^*(\lambda) - R(h^*(\lambda))
+\end{equation}
+dove $h^*(\lambda)$ è la soluzione di $R'(h) = \lambda$. Questa espressione è una \textbf{trasformata di Legendre} della funzione $R(h)$. Può anche essere scritta come:
+\begin{equation}
+ I(\lambda) = \max_h (h\lambda - R(h))
+\end{equation}
+
+\textbf{Interpretazione fisica:}
+La derivata $R'(h)$ è il valore medio di $x$ calcolato con una distribuzione "deformata" o "tiltata" $p(x)e^{hx}$:
+\begin{equation}
+ R'(h) = \frac{\int dp(x) x e^{hx}}{\int dp(x) e^{hx}} = \langle x \rangle_h
+\end{equation}
+
+\begin{tcolorbox}[colback=yellow!30,  
+                  colframe=yellow!50!orange,  
+                  boxrule=0.8pt, 
+                  arc=3pt,  
+                  top=4pt, bottom=4pt, left=6pt, right=6pt,
+                  enhanced,
+                  sharp corners=south]
+La condizione del punto di sella $R'(h^*) = \lambda$ significa che stiamo scegliendo un $h^*$ tale da deformare la distribuzione originale in modo che il suo nuovo valore medio sia esattamente $\lambda$, l'evento raro che vogliamo osservare. In questo modo, l'evento raro diventa tipico sotto la nuova misura. Il termine $\lambda h^*$ in $I(\lambda)$ sottrae "l'aiuto" che abbiamo introdotto artificialmente per rendere l'evento probabile.
+\end{tcolorbox}
+
+
+\subsubsection{Proprietà di $I(\lambda)$ e Connessione con il TLC}
+\begin{itemize}
+ \item $R(h)$ e $I(\lambda)$ sono una la trasformata di Legendre dell'altra.
+ \item La derivata seconda $R''(h) = \langle x^2 \rangle_h - \langle x \rangle_h^2 \ge 0$, quindi $R(h)$ è convessa.
+ \item Attraverso le proprietà della trasformata di Legendre, si può mostrare che anche $I(\lambda)$ è sempre convessa: $I''(\lambda) = 1/R''(h^*) \ge 0$.
+ \item La funzione $I(\lambda)$ ha un unico minimo globale in $\lambda = \mu$ (il valore medio), dove $I(\mu)=0$. Per tutti gli altri valori $\lambda \neq \mu$, $I(\lambda)>0$.
+\end{itemize}
+Vicino al suo minimo $\mu$, possiamo approssimare $I(\lambda)$ con una parabola:
+\begin{equation}
+ I(\lambda) \approx \frac{(\lambda-\mu)^2}{2\sigma^2}
+\end{equation}
+Sostituendo questa approssimazione nella formula delle grandi deviazioni, si ottiene:
+\begin{equation}
+ P(S_N = \lambda N) \sim e^{-N\frac{(\lambda-\mu)^2}{2\sigma^2}} = \exp\left\{-\frac{(N\lambda-N\mu)^2}{2N\sigma^2}\right\}
+\end{equation}
+Questa è esattamente la forma di una distribuzione Gaussiana per la variabile $S_N$ con media $N\mu$ e varianza $N\sigma^2$, \textbf{recuperando così il Teorema del Limite Centrale come approssimazione locale della teoria delle grandi deviazioni}.
+
+\newpage
+\section{Probabilità di una Sequenza Empirica}
+
+Consideriamo ora un problema più generale. Invece di guardare solo alla somma delle variabili $x_i$, analizziamo l'intera sequenza di $N$ osservazioni. Supponiamo che la variabile $X$ possa assumere $l$ valori discreti $\{x_1, \dots, x_l\}$ con probabilità teoriche $\{p_1, \dots, p_l\}$.
+Dopo $N$ estrazioni, non osserveremo esattamente $N p_j$ occorrenze del valore $x_j$, ma piuttosto un numero $N q_j$, dove $q_j$ è la \textbf{frequenza empirica}:
+\begin{equation}
+ q_j = \frac{1}{N} \sum_{i=1}^N \mathbb{I}[x_i = x_j]
+\end{equation}
+Vogliamo calcolare la probabilità di osservare una specifica sequenza di frequenze empiriche $\{q_1, \dots, q_l\}$ dato che le variabili sono generate dalla distribuzione teorica $\{p_1, \dots, p_l\}$.
+La probabilità di una specifica sequenza con $Nq_j$ occorrenze di $x_j$ per ogni $j$ è data da:
+\begin{equation*}
+ \prod_{j=1}^l p_j^{Nq_j}
+\end{equation*}
+Il numero di sequenze diverse che corrispondono allo stesso insieme di frequenze empiriche $\{q_j\}$ è dato dal coefficiente multinomiale:
+\begin{equation*}
+ \frac{N!}{\prod_{j=1}^l (Nq_j)!}
+\end{equation*}
+La probabilità totale è quindi:
+\begin{equation}
+ P(\{q_j\} | \{p_j\}) = \frac{N!}{\prod_{j=1}^l (Nq_j)!} \prod_{j=1}^l p_j^{Nq_j}
+\end{equation}
+Utilizzando l'approssimazione di Stirling per i fattoriali per $N$ grande, si può dimostrare che questa probabilità segue un principio di grandi deviazioni:
+\begin{align}
+ P(\{q_j\} | \{p_j\}) &\sim \exp\left\{-N \sum_j q_j \log\left(\frac{q_j}{p_j}\right)\right\} \\
+ &= \exp\left\{-N D_{KL}(q || p)\right\}
+\end{align}
+Questo risultato fondamentale mostra che la probabilità di osservare una distribuzione empirica $q$ quando la vera distribuzione è $p$, è esponenzialmente piccola in $N$ con una rate function data esattamente dalla divergenza di Kullback-Leibler tra le due distribuzioni. Questo principio è alla base di molti metodi moderni di inferenza statistica e machine learning, dove si cerca di minimizzare la divergenza tra un modello generativo e la distribuzione dei dati osservati.
+

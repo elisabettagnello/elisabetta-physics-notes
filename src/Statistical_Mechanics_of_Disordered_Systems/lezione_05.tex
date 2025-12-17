@@ -1,0 +1,208 @@
+\chapter{Lezione 5}
+\label{chap:lezione_05} 
+
+\begin{flushright}
+\textit{Data: 10/10/2025}
+\end{flushright}
+
+\section{Metodo della Matrice di Trasferimento 1D}
+
+Usando il metodo della matrice di trasferimento, si possono calcolare le proprietà di un sistema 1D.
+
+L'energia libera è data dal primo autovalore $\lambda_1$:
+
+\begin{equation}
+f = -T \log(\lambda_1)
+\end{equation}
+
+
+La funzione di correlazione $C(r)$ tra due spin a distanza $r$ decade esponenzialmente:
+
+\begin{equation}
+C(r) = (1-m^2) \left(\frac{\lambda_2}{\lambda_1}\right)^r \propto e^{-r/\xi}
+\end{equation}
+
+
+Dove $\xi$ è la lunghezza di correlazione:
+
+\begin{equation}
+\xi = \frac{1}{\log \left(\frac{\lambda_1}{ \lambda_2}\right)}
+\end{equation}
+
+
+Il rapporto degli autovalori per il modello di Ising 1D  è:
+
+\begin{equation}
+\frac{\lambda_1}{ \lambda_2}=\frac{\cosh(\beta h) + \sqrt{\sinh^2(\beta h) + e^{-4\beta J}}}{\cosh(\beta h) - \sqrt{\sinh^2(\beta h) + e^{-4\beta J}}}
+\end{equation}
+
+Se $T<<1$ si ha:
+\begin{equation}
+    \xi \approx \frac{1}{2 \beta h}
+\end{equation}
+
+La lunghezza di correlazione $\xi$ diverge (indicando una transizione di fase) solo se $h=0$ e $T \to 0$. Se $h \neq 0$, la lunghezza di correlazione è sempre finita e dipende dal campo esterno. La presenza di un campo esterno pone un cut-off sulla correlazione: il sistema è meno correlato. 
+
+
+\subsection{Modello di Ising su una Striscia (2D)}
+
+Si può estendere il metodo della matrice di trasferimento a una striscia 2D di larghezza $L$, con condizioni periodiche al bordo. In questo caso, invece di imporre condizioni su un singolo spin, si condizionano intere colonne.
+
+\noindent Ogni colonna ha $2^L$ possibili configurazioni. La matrice di trasferimento $T$ è quindi una matrice $2^L \times 2^L$. Si definisce una "supervariabile" $\vec{\sigma} = (s_1, \dots, s_L)$ per ricondursi a un sistema 1D, le cui "variabili" (stati della colonna) hanno $L$ dimensioni.
+
+
+Nel limite $L \to \infty$, si ritrova la soluzione di Onsager per il 2D.
+
+
+\subsection{Modello con Campo Alternato (Staggered) DA RIVEDERE}
+
+Si considera un modello 1D con un campo magnetico alternato (staggered): $h_i = (-1)^i h$ 
+
+\noindent Questo è equivalente a un modello antiferromagnetico in un campo costante.
+
+\noindent La matrice di trasferimento è:
+
+\begin{equation}
+T = \begin{pmatrix}
+e^{-\beta J + \beta h} & e^{\beta J} \\
+e^{\beta J} & e^{-\beta J + \beta h}
+\end{pmatrix}
+\end{equation}
+
+Questo sistema presenta due punti singolari (in corrispondenza di $h = \pm 2J$) invece di uno solo come nel caso ferromagnetico con $h$ costante. Questo avviene perché in quei punti l'intensità del campo è esattamente uguale all'intensità dell'interazione tra spin.
+
+L'intera regione a $T=0$ con $-2J \le h \le 2J$ presenta correlazioni a lungo raggio. Se $|h| < 2J$, il campo non è abbastanza forte da contrastare le interazioni; mentre per $|h| > 2J$ gli spin si allineano lungo il campo (ovvero le correlazioni si annullano).
+
+A $T=0$, la probabilità di avere uno spin $S=\pm 1$ ha una forma a gradino in funzione di $h$, con il salto in corrispondenza di $h=0$:
+
+$P(+1)$ è 0 per $h < -2J$, 0.5 per $-2J < h < 2J$, e 1 per $h > 2J$.
+
+
+
+\newpage
+\section{Modello di Curie-Weiss}
+
+Si considera un modello di Ising definito su un \textbf{grafo completo} (ovvero ogni nodo è connesso a tutti gli altri). L'Hamiltoniana è data da:
+
+\begin{equation}
+H(S) = -J \sum_{i<j} s_i s_j - h \sum_i s_i 
+\end{equation}
+
+
+\noindent Per garantire che l'energia sia estensiva, poniamo $J = 1/N$. In questa approssimazione, ogni spin interagisce con la media di tutti gli altri.
+
+Possiamo approssimare il termine di interazione:
+\begin{equation*}
+   \sum_{i<j} s_i s_j \approx \frac{1}{2} (\sum_i s_i) (\sum_j s_j) = \frac{1}{2} (\sum_i s_i)^2 
+\end{equation*}
+
+\noindent Definendo la magnetizzazione totale $M = \sum_i s_i$ e la magnetizzazione per spin $m = M/N$, l'Hamiltoniana (in questa approssimazione di campo medio) diventa:
+
+\begin{equation}
+H(S) \approx -\frac{1}{2N} (\sum_i s_i)^2 - h \sum_i s_i = -\frac{1}{2N} M^2 - hM
+\end{equation}
+
+\noindent Riscrivendo in termini di $m$, l'Hamiltoniana dipende solo da $m$:
+
+\begin{equation}
+H = N \left( -\frac{m^2}{2} - hm \right)
+\end{equation}
+
+
+\noindent Definiamo l'energia per spin:
+\begin{equation}
+   \mathcal{E}(m) = -\frac{1}{2}m^2 - hm
+\end{equation}
+
+\subsubsection*{Funzione di Partizione}
+
+Calcoliamo la funzione di partizione $Z = \sum_S e^{-\beta H(S)}$. Effettuiamo un cambio di variabile, passando dalla somma su tutte le configurazioni $\{S\}$ alla somma sulla magnetizzazione totale $M$:
+
+\begin{equation}
+Z = \sum_{M=-N}^N e^{-\beta H(M)} \cdot \#(\vec{S} : \sum_i s_i = M)
+\end{equation}
+
+
+Il termine $\#(\vec{S} : \sum_i s_i = M)$ è il numero di configurazioni con $M$ fissato. Questo è un problema combinatorio. Il numero di spin "up" è $N_{\uparrow} = \frac{N+M}{2}$ e "down" è $N_{\downarrow} = \frac{N-M}{2}$.
+
+\begin{equation}
+\#(\vec{S} : \sum_i s_i = M) = \binom{N}{\frac{N+M}{2}}
+\end{equation}
+
+
+Usando l'approssimazione di Stirling per $N \to \infty$, questo termine può essere scritto come $\exp(N \cdot s(m))$, dove $s(m)$ è l'entropia per spin:
+
+
+
+
+\begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Equazione per Spin}]
+\begin{equation}
+s(m) = - \left[ \frac{1+m}{2} \log\left(\frac{1+m}{2}\right) + \frac{1-m}{2} \log\left(\frac{1-m}{2}\right) \right]
+\end{equation}
+\end{tcolorbox}
+
+La funzione di partizione (nel continuo) diventa:
+
+\begin{equation}
+Z \approx \int_{-1}^{1} dm \exp\left[ N ( -\beta \mathcal{E}(m) + s(m) ) \right]
+\end{equation}
+
+
+Definiamo l'energia libera di Helmholtz per spin $f(m)$ :
+
+\begin{equation}
+f(m) = \mathcal{E}(m) - T s(m)
+\end{equation}
+
+
+La funzione di partizione può essere riscritta come: 
+\begin{equation}
+    Z \approx \int dm e^{ -N \beta f(m) }
+\end{equation}
+
+
+Per $N$ grande, questo integrale è dominato dal valore $m^*$ che minimizza $f(m)$ (\textbf{metodo del punto di sella}). L'energia libera che domina la termodinamica $f_{th}$ è data da questo minimo:
+
+\begin{equation}
+f_{th} = \min_m f(m) = \mathcal{E}(m^*) - T s(m^*)
+\end{equation}
+
+La funzione $f(m)$ (energia libera) contiene informazioni su tutte le configurazioni (anche quelle meno probabili), mentre $f_{th} = \min f(m)$ è l'energia libera termodinamica. 
+
+\subsubsection*{Equazione di Autoconsistenza}
+
+Per trovare il minimo $m^*$, deriviamo $f(m)$ rispetto a $m$ e poniamo la derivata a zero: 
+\begin{equation*}
+  m^* : \quad \left.\frac{\partial f}{\partial m}\right|_{m^*} = 0  
+\end{equation*}
+
+\begin{equation}
+\frac{\partial f}{\partial m} = -m - h + T \cdot \frac{1}{2} \log\left(\frac{1+m}{1-m}\right) = 0
+\end{equation}
+
+
+\noindent Usando la relazione $\text{arctanh}(m) = \frac{1}{2} \log\left(\frac{1+m}{1-m}\right)$ , otteniamo l'equazione di autoconsistenza (o equazione del punto di sella):
+
+
+\begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Equazione di Autoconsistenza}]
+\begin{equation}
+m^* = \tanh\left[\beta(m^* + h)\right]
+\end{equation}
+\end{tcolorbox}
+
+
+\subsubsection*{Analisi delle Soluzioni e Transizione di Fase}
+
+Per $h=0$: L'equazione diventa $m = \tanh(\beta m)$. Questa equazione può avere una o tre soluzioni.
+
+\begin{itemize}
+    \item Se $T > T_c$ (alta temperatura): L'unica soluzione è $m=0$. L'energia libera $f(m)$ ha un solo minimo in $m=0$.
+    \item Se $T < T_c$ (bassa temperatura):  Ci sono tre soluzioni: $m=0$ (massimo locale, instabile) e due soluzioni simmetriche $\pm m^* \neq 0$. Queste sono i minimi di $f(m)$ e rappresentano uno stato con magnetizzazione spontanea.
+\end{itemize}
+
+\noindent Questo fenomeno, per cui il sistema sceglie una delle due soluzioni $\pm m^*$ per $T < T_c$, è la \textbf{rottura spontanea della simmetria}.
+
+\noindent Nel punto di transizione del secondo ordine (per $h=0, T=T_c$), si osservano una serie di fenomeni concomitanti (metastabilità, transizione di fase, divergenza della suscettività, ecc.).
+
+
+
