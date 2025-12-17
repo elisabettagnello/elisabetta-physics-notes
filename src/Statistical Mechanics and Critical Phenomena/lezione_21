@@ -1,0 +1,193 @@
+\chapter{Lezione 21}
+\label{chap:lezione_21}
+
+\begin{flushright}
+\textit{Data: 12/12/2025}
+\end{flushright}
+
+
+\section{Diagrammi Completamente Connessi e Funzioni a 4 Punti}
+
+Dopo aver analizzato le funzioni di correlazione a due punti, l'obiettivo attuale è estendere il formalismo ai diagrammi completamente connessi, i quali rappresentano i contributi fisicamente rilevanti che manterremo nello sviluppo perturbativo. Prima di procedere al calcolo effettivo degli integrali nello spazio dei momenti, è necessario ottenere una stima delle funzioni di correlazione a quattro punti.
+
+\subsection{Sviluppo al Primo Ordine in $g$}
+
+Consideriamo la funzione di correlazione a quattro punti $\langle \varphi(x_1)\varphi(x_2)\varphi(x_3)\varphi(x_4) \rangle$. All'ordine zero ($g=0$), questa funzione presenta solo diagrammi disconnessi; pertanto, la funzione di correlazione \textbf{completamente connessa} (CC) è nulla a questo ordine.
+
+\noindent Al primo ordine in $g$, il contributo è dato dal termine:
+\begin{equation}
+\langle \varphi(x_1)\varphi(x_2)\varphi(x_3)\varphi(x_4) \rangle_{CC} \sim -\frac{g}{4!} \left\langle \varphi(x_1)\varphi(x_2)\varphi(x_3)\varphi(x_4) \int d^D y \, \varphi^4(y) \right\rangle_{CC}
+\end{equation}
+
+In termini diagrammatici, questo corrisponde a un singolo vertice in $y$ a cui devono essere connesse le quattro gambe esterne $x_i$.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.2]
+    \draw[thick] (0,0) -- (-1,1) node[left] {$x_1$};
+    \draw[thick] (0,0) -- (-1,-1) node[left] {$x_2$};
+    \draw[thick] (0,0) -- (1,1) node[right] {$x_3$};
+    \draw[thick] (0,0) -- (1,-1) node[right] {$x_4$};
+    \filldraw (0,0) circle (2pt) node[below] {$y$};
+\end{tikzpicture}
+\caption{Diagramma a un vertice (ordine $g$) per la funzione a 4 punti.}
+\label{fig:vertex_g1}
+\end{figure}
+
+Per il calcolo del fattore di simmetria, utilizziamo il \textbf{teorema di Wick}: dobbiamo contrarre i quattro campi esterni con i quattro campi presenti nel vertice $\varphi^4(y)$. Esistono 4 modi per attaccare $x_1$, 3 modi per $x_2$, 2 per $x_3$ e un solo modo per $x_4$, per un totale di $4! = 24$ combinazioni. Questo fattore cancella esattamente il termine $1/4!$ dello sviluppo dell'esponenziale. Si ottiene quindi:
+\begin{equation}
+G^{(4)}_{CC}(x_1, x_2, x_3, x_4) = -g \int d^D y \, G_0(x_1 - y) G_0(x_2 - y) G_0(x_3 - y) G_0(x_4 - y)
+\end{equation}
+
+È importante notare che a questo ordine non possono apparire "bolle" (self-energy) sulle linee esterne senza disconnettere il diagramma dal vertice principale.
+
+\subsubsection{Conservazione del Momento e Spazio di Fourier}
+
+Passando allo spazio di Fourier, la funzione di correlazione assume la forma:
+\begin{equation}
+\tilde{G}(p_1, p_2, p_3, p_4) = -g \int d^D y \left( \prod_{i=1}^4 \int d^D x_i G_0(x_i - y) e^{i p_i x_i} \right)
+\end{equation}
+
+\noindent Per \textbf{dimostrare la conservazione del momento} in modo esplicito, effettuiamo il cambiamento di variabili $z_i = x_i - y$. Lo Jacobiano di questa trasformazione è unitario ($|J|=1$). L'integrale diventa:
+\begin{equation}
+\tilde{G} = -g \int d^D y \, e^{i y \cdot \sum p_i} \prod_{i=1}^4 \left( \int d^D z_i G_0(z_i) e^{i p_i z_i} \right)
+\end{equation}
+
+L'integrazione su $y$ produce la funzione delta di Dirac $\delta^{(D)}(\sum p_i)$, che impone la conservazione del momento totale al vertice. Definendo $\tilde{G}_0(p) = (p^2 + \mu)^{-1}$, il risultato finale al primo ordine è:
+\begin{equation}
+\tilde{G}(p_1, p_2, p_3, p_4) = -g \, \delta^{(D)}\left(\sum_{i=1}^4 p_i\right) \prod_{i=1}^4 \tilde{G}_0(p_i)
+\end{equation}
+
+\subsection{Ordini Successivi e Funzioni di Vertice}
+
+All'aumentare dell'ordine perturbativo, subentrano nuovi vertici e strutture a loop. Consideriamo la "rinormalizzazione" delle linee esterne: sommando tutti i diagrammi di self-energy $\Sigma$ su ogni gamba, i propagatori liberi $\tilde{G}_0(p)$ vengono sostituiti dalle funzioni a due punti complete $\tilde{G}(p)$:
+\begin{equation}
+\tilde{G}(p) = \frac{1}{p^2 + \mu - \Sigma(p)}
+\end{equation}
+
+In generale, la funzione a 4 punti connessa può essere scritta come:
+\begin{equation}
+\tilde{G}(p_1, p_2, p_3, p_4)_{CC} = \delta^{(D)}\left(\sum p_i\right) \left[ \prod_{i=1}^4 \tilde{G}(p_i) \right] \Gamma^{(4)}(p_1, p_2, p_3, p_4)
+\end{equation}
+dove $\Gamma^{(4)}$ è la \textbf{funzione di vertice a 4 punti}, definita dalla somma di tutti i diagrammi 1PI (One-Particle Irreducible) amputati.
+
+\noindent All'ordine $\mathcal{O}(g^2)$, appare il diagramma a "bolla" tra due vertici:
+\begin{equation}
+\Gamma^{(4)} \sim g^2 \int \frac{d^D q}{[\mu + q^2][\mu + (q + p_1 + p_2)^2]}
+\end{equation}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+  [scale=1.1, transform shape]
+        % Stile delle linee
+        \tikzset{scalar/.style={thick}}
+        \tikzset{momentum/.style={->, semithick, >=stealth, shorten >=2pt, shorten <=2pt}}
+            
+            % Vertici
+            \coordinate (V1) at (-0.8, 0);
+            \coordinate (V2) at (0.8, 0);
+            
+            % Linee esterne sx
+            \draw[scalar] (-2, 0.8) node[left] {$p_1$} -- (V1);
+            \draw[scalar] (-2, -0.8) node[left] {$p_2$} -- (V1);
+            
+            % Loop
+            \draw[scalar] (V1) arc (180:0:0.8);
+            \draw[scalar] (V2) arc (0:-180:0.8);
+            
+            % Momenti nel loop (etichette)
+            \draw[momentum] (-0.2, 0.9) -- (0.2, 0.9) node[midway, above] {$-q$};
+            \draw[momentum] (-0.2, -0.9) -- (0.2, -0.9) node[midway, below] {$q + p_1 + p_2$};
+
+            % Linee esterne dx
+            \draw[scalar] (V2) -- (2, 0.8) node[right] {$p_3$};
+            \draw[scalar] (V2) -- (2, -0.8) node[right] {$p_4$};
+        
+\end{tikzpicture}
+\caption{Diagramma a bolla (one-loop) al secondo ordine $g^2$.}
+\label{fig:bubble_g2}
+\end{figure}
+
+
+
+\section{Regolarizzazione e Divergenze UV}
+
+Il calcolo esplicito di questi integrali richiede tecniche specifiche, come l'introduzione dei \textbf{parametri di Feynman}. Utilizziamo la rappresentazione integrale della funzione Gamma:
+\begin{equation}
+A^{-n} = \frac{1}{\Gamma(n)} \int_0^\infty d\alpha \, \alpha^{n-1} e^{-\alpha A}
+\end{equation}
+Per un propagatore ($n=1$), si ha: 
+\begin{equation}
+   \frac{1}{k^2+m^2} = \int_0^\infty d\alpha \, e^{-\alpha(k^2+m^2)} 
+\end{equation}
+
+Questa forma è estremamente vantaggiosa poiché trasforma l'integrale sui momenti in un integrale Gaussiano.
+
+\begin{tcolorbox}[colback=colorE!10, colframe=colorE!70!red, boxrule=1pt, title=\textbf{Nota}]
+I seguenti paragrafi non sono parte del curriculum standard richiesto per l'esame, ma sono riservati a chi aspira alla lode.
+\end{tcolorbox}
+
+\subsection{Grado di Divergenza Superficiale}
+
+\noindent Consideriamo un diagramma generico con $L$ loop, $N$ linee interne, $E$ linee esterne e $V$ vertici. Nello spazio a $D$ dimensioni, ogni loop apporta un'integrazione $d^D k$ e ogni propagatore apporta un fattore $k^{-2}$. Il comportamento ultravioletto ($k \to \infty$) è governato dal \textbf{grado di divergenza} $\omega$:
+\begin{equation}
+\omega = D L - 2 N
+\end{equation}
+\begin{itemize}
+    \item Se $\omega \ge 0$, il diagramma è \textbf{divergente UV}.
+    \item Se $\omega < 0$, il diagramma è \textbf{superficialmente convergente}.
+\end{itemize}
+
+\noindent Secondo il \textbf{Teorema di Weinberg} (1960), una condizione necessaria per la convergenza effettiva è che il diagramma e tutti i suoi sottodiagrammi siano superficialmente convergenti.
+
+Utilizzando le relazioni topologiche per una teoria $\varphi^4$:
+\begin{enumerate}
+    \item $E + 2N = 4V$ (ogni vertice ha 4 gambe, le linee interne contano doppio).
+    \item $V=L+\frac{E-2}{2}$ (numero di momenti indipendenti).
+\end{enumerate}
+Si ottiene la formula generale:
+\begin{equation}
+\omega = (D - 4)L + 4 - E
+\end{equation}
+
+\subsubsection{Analisi per Dimensioni Critiche}
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{\textwidth}{|c|l|X|}
+\hline
+\textbf{Dim.} & \textbf{Divergenze} & \textbf{Note} \\ \hline
+$D < 2$ & Nessuna & La teoria è sempre convergente UV. \\ \hline
+$D = 2$ & $\omega = -2L + 2$ & Solo la self-energy a 1-loop ($L=1, E=2$) diverge ($\omega=0$). \\ \hline
+$D = 3$ & $\omega = -L + 4 - E$ & Diverge la self-energy e un diagramma a 4 punti. \\ \hline
+$D = 4$ & $\omega = 4 - E$ & \textbf{Dimensione critica}. Le divergenze non dipendono dal numero di loop $L$. \\ \hline
+\end{tabularx}
+\caption{Classificazione delle divergenze UV in funzione della dimensionalità $D$.}
+\end{table}
+
+
+\noindent In $D=2$, l'unica divergenza è una costante nella self-energy $\Sigma(0, \mu)$. Poiché l'energia è definita a meno di una costante, questa divergenza non è problematica e può essere rimossa tramite sottrazione (rinormalizzazione):
+\begin{equation}
+\Sigma_R(p, \mu) = \Sigma(p, \mu) - \Sigma(0, \mu_R)
+\end{equation}
+Fisicamente, questo equivale ad aggiungere un \textbf{controtermine} nel'Hamiltoniana del tipo $\delta m^2 \int \varphi^2 dx$, che corregge la massa nuda del sistema.
+
+
+\section{Divergenze IR e Fallimento della Perturbazione}
+
+Mentre le divergenze UV sono "tecniche" e gestibili, le \textbf{divergenze infrarosse} (IR) che appaiono vicino al punto critico $\mu \to \mu_c$ sono fisicamente profonde.
+L'analisi dimensionale mostra che stiamo espandendo in potenze della quantità adimensionale:
+\begin{equation}
+u = \frac{g}{(\mu - \mu_c)^{(4-D)/2}}
+\end{equation}
+Quando ci si avvicina alla regione critica ($\mu \to \mu_c$), il parametro $u$ \textbf{diverge}, rendendo lo sviluppo perturbativo in $g$ completamente privo di validità, anche per accoppiamenti $g$ molto piccoli.
+Sostituendo la massa con il momento $p$ al punto critico ($\mu=\mu_c$), la funzione di correlazione a 2 punti si comporta come:
+\begin{equation}
+\tilde{G}(p, g) = \frac{1}{p^2} f\left( \frac{g}{p^{4-D}} \right)
+\end{equation}
+Ogni loop aggiuntivo (bolla) in un diagramma introduce una potenza di $g/p^{4-D}$. Per $D < 4$, man mano che $p \to 0$ (limite a grandi distanze), ogni termine successivo della serie è più divergente del precedente ($p^{-(4-D)}$, $p^{-2(4-D)}$, ecc.).
+
+\noindent L'espansione perturbativa standard "esplode" nel limite infrarosso. Per risolvere questo "disastro", sarà necessario introdurre il \textbf{Gruppo di Rinormalizzazione} per gestire il cambiamento di scala e salvare la teoria.
+
+
