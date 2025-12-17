@@ -1,0 +1,316 @@
+\chapter{Lezione 6}
+\label{chap:lezione_06}
+
+\begin{flushright}
+\textit{Data: 16/10/2025}
+\end{flushright}
+
+\section{Modello di Curie-Weiss}
+
+L'Hamiltoniana del modello di Curie-Weiss è data da:
+\begin{equation}
+    H = -\frac{1}{N} \sum_{i<j} S_i S_j - h \sum_i S_i
+\end{equation}
+
+\noindent L'energia libera (di Landau), in funzione del parametro d'ordine $m$ è:
+\begin{equation}
+    f(m) = -\frac{m^2}{2} - hm - T s(m)
+\end{equation}
+dove $s(m)$ è il termine entropico:
+\begin{equation}
+    s(m) = -\frac{1+m}{2} \log\left(\frac{1+m}{2}\right) - \frac{1-m}{2} \log\left(\frac{1-m}{2}\right)
+\end{equation}
+
+Abbiamo tracciato un diagramma di fase nel piano $(h, T)$. In questo piano è identificata una linea, chiamata \textbf{linea spinodale}, tale che:
+\begin{itemize}
+    \item All'interno della regione delimitata dalla linea spinodale, l'energia libera $f(m)$ presenta tre punti stazionari: due minimi e un massimo.
+    \item All'esterno di tale regione, $f(m)$ ha un solo minimo.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pics/12.jpeg} 
+    
+    \caption{La linea verde sull'asse $h=0$ per $T < T_c$ indica la transizione del primo ordine. La linea tratteggiata rappresenta la linea spinodale.}
+    \label{fig:diagramma_fase}
+\end{figure}
+
+
+\subsubsection{Energia Libera Termodinamica}
+
+Definiamo l'\textbf{energia libera termodinamica} $f_{th}$ come il minimo assoluto della funzione $f(m)$ rispetto a $m$ nell'intervallo $[-1, 1]$:
+\begin{equation}
+    f_{th}(T, h) = \min_{m \in [-1, 1]} f(m; T, h)
+\end{equation}
+
+Questa $f_{th}$ è la funzione che descrive la termodinamica del sistema. Finché $N$ è finito, tutto è regolare. Tuttavia, nel limite $N \to \infty$, possono svilupparsi delle singolarità.
+
+La funzione $f(m)$ di per sé è analitica. La singolarità non nasce da $f(m)$, ma dall'operazione di $\min$. Essendoci potenzialmente più soluzioni (più minimi), quando il minimo assoluto "passa" da una soluzione (un ramo) all'altra, si possono verificare cambiamenti drastici che introducono singolarità (la continuazione analitica da un ramo all'altro non è possibile).
+
+Definiamo $m_{th}$ (o $m^*$) come il valore che minimizza $f(m)$:
+\begin{equation}
+    m_{th} = \text{argmin}_{m \in [-1, 1]} f(m)
+\end{equation}
+Questo $m_{th}$ è la soluzione dell'equazione di punto sella:
+\begin{equation}
+    m^* = \tanh(\beta(m^* + h))
+\end{equation}
+
+
+\subsection{Transizione del Primo Ordine}
+Lungo tutta la regione $h=0$ con $T < T_c$ (la linea verde nella Figura \ref{fig:diagramma_fase}), la funzione $f_{th}$ ha una singolarità nella sua \textbf{derivata prima}. Questa è definita come una \textbf{transizione di fase del primo ordine}.
+
+La derivata prima dell'energia libera non è definita in quei punti. In particolare, il limite venendo da $h > 0$ e il limite venendo da $h < 0$ assumono valori diversi. 
+
+\noindent Ricordiamo che la magnetizzazione termodinamica è legata alla derivata dell'energia libera:
+\begin{equation}
+    m_{th} = - \frac{\partial f_{th}}{\partial h}
+\end{equation}
+
+
+Se tracciamo $m_{th}$ in funzione di $T$ e $h$ (Figura \ref{fig:superficie_mth}), vediamo una superficie che presenta un "taglio" o "salto" lungo l'asse $h=0$ per $T < T_c$.
+
+\begin{figure}[H]
+    \centering
+     \includegraphics[width=0.55\textwidth]{pics/13.png}
+    
+    \caption{Rappresentazione della superficie della magnetizzazione termodinamica $m_{th}(T, h)$, evidenziando la discontinuità (salto) lungo l'asse $h=0$ per $T < T_c$.}
+    \label{fig:superficie_mth}
+\end{figure}
+
+
+Muovendosi a $T$ fissa, quando si attraversa $h=0$, la magnetizzazione $m_{th}$ fa un salto discontinuo (es. da un valore positivo a uno negativo).
+
+
+Se $m_{th}$ ha un salto, significa che la derivata prima $\partial f_{th} / \partial h$ ha un salto. Questo implica che la derivata prima non è ben definita, poiché i limiti destro e sinistro non coincidono:
+\begin{equation}
+    \lim_{h \to 0^+} \frac{\partial f_{th}}{\partial h} \neq \lim_{h \to 0^-} \frac{\partial f_{th}}{\partial h} \quad \text{(per $T < T_c$)}
+\end{equation}
+
+
+\subsection{Transizione del Secondo Ordine}
+Il punto finale di questo luogo di singolarità del primo ordine, cioè il punto $(h=0, T=T_c)$, è una singolarità del \textbf{secondo ordine}. Questa è chiamata \textbf{transizione di fase del secondo ordine} (o transizione critica).
+
+Il fatto che alla fine di una linea di singolarità della derivata prima ci sia un punto con singolarità della derivata seconda è una necessità analitica.
+Lo si può capire visualizzando il grafico di $m_{th}$ (Figura \ref{fig:superficie_mth}): man mano che ci si sposta lungo la linea $h=0$ verso $T_c$, il "salto" (la discontinuità) nella magnetizzazione si stringe. Al punto critico $T_c$, il salto si chiude e $m_{th}$ diventa continua.
+Tuttavia, nel momento esatto in cui il salto si chiude, la derivata $\partial m_{th} / \partial h$ (che è la derivata seconda di $f_{th}$) diventa infinita.
+\begin{equation}
+    \frac{\partial^2 f_{th}}{\partial h^2} = \frac{\partial m_{th}}{\partial h} = \infty \quad \text{(per $h=0, T=T_c$)}
+\end{equation}
+Prima di diventare regolare (analitica) per $T > T_c$, la funzione passa per questo punto critico in cui la derivata seconda diverge.
+
+
+\newpage
+\section{Stati Stabili, Metastabili e Instabili}
+
+Analizziamo il sistema a $T < T_c$ fissata e muoviamoci in $h \neq 0$. Vogliamo plottare tutte le soluzioni $m^*$ dell'equazione di punto sella.
+Risolvere $m^*(h)$ è difficile, ma possiamo plottare $h(m^*)$ parametricamente:
+\begin{equation}
+    h = T \; \text{arctanh}(m^*) - m^*
+\end{equation}
+Plottando $h$ in funzione di $m^*$ (scambiando gli assi), si ottiene la caratteristica curva a "S" (Figura \ref{fig:curva_s}).
+
+\begin{figure}[H]
+    \centering
+     \includegraphics[width=0.6\textwidth]{pics/14.jpeg}
+    \caption{Soluzioni dell'equazione di punto sella in funzione del campo (per $T < T_c$).}
+    \label{fig:curva_s}
+\end{figure}
+
+\noindent Dobbiamo dare un significato a questi rami di soluzioni:
+\begin{enumerate}
+    \item \textbf{Stato Stabile:} È la soluzione $m^*$ che corrisponde al minimo globale di $f(m)$. Questa è la soluzione termodinamica $m_{th}$. Per $h>0$, è il ramo con $m>0$; per $h<0$, è il ramo con $m<0$.
+    \item \textbf{Stato Metastabile:} È la soluzione $m^*$ che corrisponde a un minimo locale di $f(m)$, ma non globale.
+    \item \textbf{Stato Instabile:} È la soluzione $m^*$ che corrisponde a un massimo locale di $f(m)$.
+\end{enumerate}
+
+\noindent Per visualizzarlo, tracciamo $f(m)$ vs $m$ (Figura \ref{fig:doppia_buca}).  Per $T < T_c$ e $h$ leggermente positivo, $f(m)$ avrà:
+\begin{itemize}
+    \item Un \textbf{minimo globale (stabile)} a $m>0$.
+    \item Un \textbf{minimo locale (metastabile)} a $m<0$.
+    \item Un \textbf{massimo locale (instabile)} tra i due.
+\end{itemize}
+
+\begin{figure}[h!]
+    \centering
+     \includegraphics[width=0.5\textwidth]{pics/15.jpeg}
+    
+    \caption{Andamento dell'energia libera $f(m)$ per $T < T_c$ e $h > 0$.}
+    \label{fig:doppia_buca}
+\end{figure}
+
+
+
+\bigskip 
+
+
+\noindent Per \textbf{stato osservabile} intendiamo uno stato con tempi di vita grandi, che sopravvive su scale temporali umane:
+\begin{itemize}
+    \item Se $\frac{\partial f }{ \partial m} \neq 0$, il sistema cambia stato su tempi microscopici e non è osservabile.
+    \item Uno stato osservabile deve avere $\frac{\partial f }{ \partial m} = 0$.
+\end{itemize}
+Questo giustifica la focalizzazione sui punti stazionari, che possono essere di natura diversa (stabili, instabili, metastabili). Un punto \textbf{metastabile} è un minimo locale: il sistema, pur non trovandosi nello stato termodinamicamente dominante, risulta stabile rispetto a piccole perturbazioni e può permanere a lungo “intrappolato” in quella configurazione.
+
+
+Per passare dallo stato metastabile a quello stabile, il sistema deve superare la barriera di energia rappresentata dallo stato instabile (Figura \ref{fig:doppia_buca}).
+Se $\Delta$ è la differenza di energia libera tra lo stato instabile e lo stato metastabile, la probabilità di trovarsi sulla cima della barriera è:
+\begin{equation}
+    \frac{P(\text{instabile})}{P(\text{metastabile})} \approx e^{-\beta N \Delta}
+\end{equation}
+Nei modelli a campo medio, il tempo per superare la barriera scala esponenzialmente con $N$, diventando infinito nel limite termodinamico.
+Questo è fondamentale per capire sistemi come i vetri (che sono sistemi metastabili che evolvono su tempi lunghissimi).
+
+Le transizioni del primo ordine (acqua-ghiaccio) sono più comuni e mostrano coesistenza di stati (stabile e metastabile), i due minimi hanno esattamente la stessa energia libera.
+
+\newpage
+\section{Ciclo di Isteresi e Punti Spinodali}
+
+Il concetto di metastabilità è alla base del fenomeno dell'\textbf{isteresi}.
+Consideriamo la caratteristica curva a "S" (Figura \ref{fig:curva_s}):
+\begin{enumerate}
+    \item Partiamo da $h$ molto grande (positivo): il sistema è nello stato stabile $m>0$.
+    \item Abbassiamo il campo $h$: la magnetizzazione segue il ramo stabile.
+    \item Attraversiamo $h=0$ e andiamo a $h$ leggermente negativo: il sistema non salta immediatamente allo stato termodinamico (che ora sarebbe $m<0$), ma rimane "agganciato" al ramo $m>0$, che ora è diventato \textbf{metastabile}.
+    \item  Il sistema segue il ramo metastabile fino a che quel ramo esiste. 
+    
+    Uno sperimentatore osserva quindi una \textbf{magnetizzazione residua} non nulla a campo quasi nullo. Il punto in cui il ramo metastabile cessa di esistere è chiamato \textbf{punto spinodale}. 
+    \item Raggiunto il punto spinodale, la soluzione metastabile scompare, e il sistema deve "saltare" bruscamente all'unico stato stabile rimasto (quello $m<0$).
+    
+    \item Se ora invertiamo il processo (da $h$ negativo a $h$ positivo), il sistema traccerà un percorso simmetrico, saltando dall'altro punto spinodale.
+\end{enumerate}
+
+Questo percorso chiuso è il \textbf{ciclo di isteresi}.
+
+\begin{figure}[h!]
+    \centering
+     \includegraphics[width=0.6\textwidth]{pics/17.jpeg}
+    \caption{Energia libera $f(m^*; T, h)$ delle soluzioni stazionarie in funzione di $h$. I rami più bassi rappresentano lo stato stabile. I rami superiori sono gli stati metastabili e instabili.}
+    \label{fig:f_vs_h}
+\end{figure}
+
+\subsection{Criticità nei Punti Spinodali}
+
+Un sistema è \textbf{critico} quando è estremamente suscettibile: una piccola perturbazione (cambiamento di $h$) causa una risposta macroscopica (cambiamento di $m$).
+\begin{itemize}
+    \item Al punto di transizione termodinamica ($h=0, T<T_c$), il sistema non è critico. Se perturbo $h$ di poco, $m$ cambia di poco (rimane sullo stesso ramo).
+    \item Ai \textbf{punti spinodali}, il sistema è critico. Arrivando al punto spinodale, un cambiamento infinitesimo di $h$ causa un salto macroscopico di $m$.
+\end{itemize}
+
+
+\begin{tcolorbox}[colback=colorA!10, colframe=colorB!60!colorA,  title=\textbf{Criticità nelle transizioni del primo ordine}]
+Nelle transizioni del primo ordine, il punto di transizione termodinamica e il punto critico (spinodale) sono separati.
+\end{tcolorbox}
+
+\subsection{Caratterizzazione Analitica dei Punti Spinodali}
+
+Il punto spinodale è un punto in cui la funzione $f(m)$ sviluppa un \textbf{flesso a tangente orizzontale}.
+Le condizioni analitiche per il punto spinodale sono:
+\begin{align}
+    \frac{\partial f}{\partial m} &= 0 \quad \text{(è uno "stato", un punto stazionario)} \\
+    \frac{\partial^2 f}{\partial m^2} &= 0 \quad \text{(è "critico", la curvatura è nulla)}
+\end{align}
+
+\noindent La derivata seconda è proporzionale all'inverso della suscettività locale; quando $\frac{\partial^2 f}{\partial m^2} \to 0$ la suscettività diverge: il sistema è estremamente piatto e suscettibile alle fluttuazioni.
+
+%\begin{figure}[h!]
+    %\centering
+    % Sostituire 'path/to/image7.png' con il percorso del file immagine
+    % \includegraphics[width=0.6\textwidth]{path/to/image7.png}\caption{Energia libera $f(m)$ al punto spinodale. Il minimo locale (metastabile) e il massimo locale (instabile) si fondono in un flesso a tangente orizzontale, caratterizzato da $\partial f / \partial m = 0$ e $\partial^2 f / \partial m^2 = 0$.} \label{fig:flesso_spinodale}
+%\end{figure}
+
+\section{Punti Critici in una Transizione del Secondo Ordine}
+
+Torniamo ora al punto di transizione del secondo ordine $(h=0, T=T_c)$.
+Questo punto è speciale perché la linea spinodale (luogo dei punti critici) interseca l'asse della transizione termodinamica ($h=0$).
+
+\begin{tcolorbox}[colback=colorA!10, colframe=colorB!60!colorA,  title=\textbf{Criticità nelle transizioni del secondo ordine}]
+In una transizione del secondo ordine i concetti di criticità, transizione termodinamica e rottura spontanea della simmetria coincidono.
+\end{tcolorbox}
+
+
+\noindent Per parlare di rottura spontanea della simmetria, dobbiamo essere a $h=0$, altrimenti la simmetria $Z_2$ ($S_i \to -S_i$) è rotta "a mano" dal campo esterno.
+
+
+\noindent A $h=0$, $f(m)$ è una funzione pari. Analizziamo $f(m)$ vs $m$ (Figura \ref{fig:rss}):
+\begin{itemize}
+    \item $T > T_c$: $f(m)$ ha un singolo minimo in $m=0$ (stato paramagnetico simmetrico). La derivata seconda $\frac{\partial^2 f}{\partial m^2} > 0$.
+    \item $T = T_c$: Il minimo in $m=0$ si appiattisce. Questo è il punto critico con $ \frac{\partial^2 f}{\partial m^2}= 0$.
+    \item $T < T_c$: Lo stato simmetrico $m=0$ diventa un massimo locale ($\frac{\partial^2 f}{\partial m^2} < 0$), cioè diventa instabile. Il sistema deve "scegliere" spontaneamente uno dei due nuovi minimi globali simmetrici ($+m^*$ o $-m^*$). Questa è la rottura spontanea della simmetria.
+\end{itemize}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{pics/16.jpeg}
+    \caption{Energia libera $f(m)$ a $h=0$ al variare della temperatura, illustrando la rottura spontanea della simmetria.}
+    \label{fig:rss}
+\end{figure}
+
+
+\section{Critictà nel Modello XY}
+
+Si tende a pensare che, una volta rotta la simmetria ($T < T_c$), il sistema non sia più critico (infatti nei minimi $m \neq 0$ del modello di Ising, $\frac{\partial^2 f }{ \partial m^2} > 0$). Questa è una semplificazione dovuta alla simmetria $Z_2$. Consideriamo un modello con simmetria più ricca, come il \textbf{Modello XY}, dove $m \in \mathbb{R}^2$.
+\begin{itemize}
+    \item $T > T_c$: L'energia libera è un paraboloide con minimo in $m=(0,0)$.
+    \item $T < T_c$: Avviene la rottura spontanea della simmetria. L'energia libera assume la forma a \textbf{"cappello messicano"} (Sombrero).
+\end{itemize}
+Il sistema rompe la simmetria scegliendo un punto sul fondo del cappello ( $|m| = m^* > 0$).
+Tuttavia, il sistema rimane critico rispetto alle perturbazioni lungo il fondo del cappello. Muoversi lungo quella direzione (cambiare l'angolo $\theta$ di $m$) non costa energia.
+Esistono dei \textbf{modi di Goldstone} che mantengono il sistema critico anche nella fase a simmetria rotta.
+
+Questo è fondamentale nei sistemi disordinati (spin glass), che possono avere una transizione di fase e rimanere critici (suscettibili) anche nella fase "fredda" (vetrosa).
+
+\newpage
+\section{Modello 3-Spin - da rivedere}
+
+Consideriamo interazioni non a 2 corpi, ma a 3 corpi (modello P-spin, con $P=3$).
+
+L'Hamiltoniana (fully-connected) è:
+\begin{equation}
+    H = -\frac{1}{N^2} \sum_{i<j<k} S_i S_j S_k
+\end{equation}
+La normalizzazione $1/N^2$ è necessaria perché la somma ha $\mathcal{O}(N^3)$ termini.
+
+\noindent Questa Hamiltoniana \textbf{non} ha la simmetria $Z_2$. Se $S_i \to -S_i$, allora $H \to -H$. Non ci può essere rottura spontanea di simmetria.
+
+\noindent Approssimando $h$: 
+\begin{equation}
+H \approx -\frac{N}{6} (\frac{1}{N}\sum S_i)^3 = -\frac{N m^3}{6}
+\end{equation}
+L'energia libera diventa:
+\begin{equation}
+    f(m) = -\frac{m^3}{6} - T s(m)
+\end{equation}
+L'equazione di punto sella è:
+\begin{equation}
+    -\frac{m^2}{2} + T \; \text{arctanh}(m) = 0
+\end{equation}
+
+\begin{itemize}
+    \item $m=0$ è sempre una soluzione.
+    \item Esiste una temperatura spinodale $T_s$ sotto la quale compaiono due nuove soluzioni $m \neq 0$.
+    \item Esiste una temperatura $T_1$ (con $T_1 < T_s$) dove l'energia libera della soluzione $m=0$ e quella della soluzione $m \neq 0$ si incrociano.
+\end{itemize}
+Abbassando la temperatura, a $T_1$, il sistema \textbf{salta} discontinuamente da $m=0$ a $m \neq 0$. Questa è una transizione del primo ordine \textbf{in temperatura}.
+
+Di nuovo, il punto di transizione termodinamica ($T_1$) non è critico. L'unico punto critico è il \textbf{punto spinodale} ($T_s$), dove nasce la soluzione $m \neq 0$.
+Questo dimostra che interazioni a più corpi producono spontaneamente metastabilità e transizioni del primo ordine.
+
+\bigskip
+In natura, le forze fondamentali sono a 2 corpi (gravitazionale, elettromagnetica). Tuttavia, nei sistemi complessi (vetri, polimeri, sistemi biologici), si usano \textbf{teorie effettive}. Integrando via via gradi di libertà (es. con il gruppo di rinormalizzazione), le interazioni a 2 corpi generano interazioni efficaci a 3, 4, o più corpi.
+
+\newpage
+\section{Modello di Potts}
+
+Un altro modo per generare transizioni del primo ordine è mantenere l'interazione a 2 corpi, ma aumentare il numero di stati microscopici (da $q=2$ di Ising a $q>2$).
+Definiamo il \textbf{Modello di Potts}: $x_i \in \{1, 2, ..., q\}$.
+L'Hamiltoniana è:
+\begin{equation}
+    H = -\frac{1}{N} \sum_{i<j} \delta_{x_i, x_j}
+\end{equation}
+
+\begin{itemize}
+    \item Per $q=2$, si recupera il modello di Ising (transizione del secondo ordine).
+    \item Per $q>2$, il modello presenta una \textbf{transizione del primo ordine} in temperatura.
+\end{itemize}
+Questo modello presenta \textbf{due} punti spinodali in temperatura: un punto spinodale per lo stato ferromagnetico ed uno per lo stato paramagnetico (lo stato $m=0$ stesso diventa instabile sotto una certa $T$).
+

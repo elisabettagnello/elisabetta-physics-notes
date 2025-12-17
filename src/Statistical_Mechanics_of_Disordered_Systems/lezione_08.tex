@@ -1,0 +1,474 @@
+\chapter{Lezione 8}
+\label{chap:lezione_08}
+
+\begin{flushright}
+\textit{Data: 22/10/2025}
+\end{flushright}
+
+\section{Modelli Ferromagnetici Diluiti}
+
+Fino ad ora abbiamo trattato modelli "puri", definiti da reticoli perfetti e interazioni costanti. Tuttavia, i sistemi reali presentano spesso disordine. Un esempio classico in materia condensata è dato dalle leghe magnetiche, dove avviene una sostituzione casuale di atomi magnetici con atomi non magnetici (impurità).
+La domanda teorica fondamentale è se l'introduzione di questa perturbazione (il disordine) modifichi il comportamento critico del sistema (classe di universalità, esponenti critici) o se il sistema rimanga robusto.
+
+\noindent Analizziamo due modelli principali di disordine geometrico:
+\begin{itemize}
+    \item \textbf{Site Dilution:} Si rimuovono randomicamente alcuni siti dal reticolo.
+    \item \textbf{Link Dilution:} Si rimuovono randomicamente alcuni legami tra gli spin.
+\end{itemize}
+
+\subsubsection{Definizione delle Hamiltoniane}
+
+
+
+Nel modello di \textbf{Site Dilution}, introduciamo una variabile casuale $\epsilon_i$ associata ad ogni sito $i$:
+
+\begin{equation}
+\mathcal{H}(\vec{S}) = -J \sum_{\langle i,j \rangle} \epsilon_i S_i \epsilon_j S_j - h \sum_i \epsilon_i S_i
+\end{equation}
+
+\noindent dove la variabile $\epsilon_i$ è definita come:
+
+\begin{equation}
+\epsilon_i = 
+\begin{cases} 
+1 & \text{con probabilità } p \\
+0 & \text{con probabilità } 1-p 
+\end{cases}
+\end{equation}
+
+\noindent Qui $p$ rappresenta la concentrazione di siti magnetici attivi (densità). Se $\epsilon_i=0$, il sito è vuoto e non interagisce.
+
+\hfill 
+
+\noindent Nel modello di \textbf{Link Dilution} (o Bond Dilution), i siti sono tutti presenti, ma il disordine è sui legami $J_{ij}$:
+
+\begin{equation}
+\mathcal{H}(\vec{S}) = - \sum_{\langle i,j \rangle} J_{ij} S_i S_j - h \sum_i S_i
+\end{equation}
+
+\noindent con la distribuzione:
+
+\begin{equation}
+J_{ij} = 
+\begin{cases} 
+1 & \text{con probabilità } p \\
+0 & \text{con probabilità } 1-p 
+\end{cases}
+\end{equation}
+
+\noindent Sebbene microscopicamente diversi, questi modelli condividono molte proprietà a livello macroscopico e possono spesso essere trattati con le stesse tecniche di teoria di campo (analogia con la percolazione di sito e di legame). Convenzionalmente, $p=1$ corrisponde al sistema puro (senza disordine).
+
+\subsection{Diagramma di Fase}
+
+Per studiare la possibile esistenza di una fase ferromagnetica, poniamo $h=0$ per permettere la rottura spontanea della simmetria $\mathbb{Z}_2$.
+Costruiamo il diagramma di fase.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{pics/18.png}
+    \caption{Diagramma di fase nel piano $(p, T)$  per il modello di Ising diluito. La linea rossa è la temperatura critica $T_c(p)$ che separa la fase P da quella F. La linea tratteggiata è la temperatura critica del modello omogeneizzato $T_c^{homo}(p)$, che funge da limite superiore (bound) per la temperatura critica reale.}
+    \label{fig: fase ferromag}
+\end{figure}
+
+
+
+Possiamo fissare due punti chiave del diagramma:
+\begin{enumerate}
+    \item \textbf{Limite Puro ($p=1$):} Ritroviamo il modello di Ising puro. Esiste una temperatura critica ben definita $T_c(p=1)$ che separa la fase paramagnetica (P) da quella ferromagnetica (F).
+    \item Limite a $T=0$ \textbf{(Percolazione):} A temperatura nulla, il sistema cerca di ordinarsi localmente. Tuttavia, l'ordine a lungo raggio è possibile solo se esiste un cluster infinito di spin connessi. Esiste una soglia critica $p_c$ (soglia di percolazione):
+    \begin{itemize}
+        \item Per $p < p_c$: Il sistema è frammentato in cluster finiti. Non c'è ordine a lungo raggio. Fase Non Percolativa o Paramagnetica.
+        \item Per $p > p_c$: Esiste un cluster gigante che permette l'ordine ferromagnetico. Fase Percolativa o Ferromagnetica.
+    \end{itemize}
+\end{enumerate}
+
+\section{Disuguaglianze di Griffiths}
+
+Per analizzare analiticamente la regione della transizione, introduciamo le disuguaglianze di Griffiths. Queste si applicano a modelli ferromagnetici generalizzati con interazioni a più corpi, purché tutti i coefficienti di accoppiamento siano non negativi ($J, K, \dots \ge 0$).
+
+L'Hamiltoniana generica è:
+
+\begin{equation}
+H = - \sum_i h_i S_i - \sum_{i<j} J_{ij} S_i S_j - \sum_{i<j<k} K_{ijk} S_i S_j S_k - \dots
+\end{equation}
+
+Le disuguaglianze fondamentali sono due:
+\begin{enumerate}
+    \item \textbf{Positività delle Correlazioni Totali:}
+    \begin{equation}
+    \langle S_i \rangle \ge 0 \quad \forall i \subset \{1, \dots, N\}
+    \end{equation}
+    \begin{equation}
+    \langle S_i S_j\rangle \ge 0 \quad \forall i, j \subset \{1, \dots, N\}
+    \end{equation}
+     \begin{equation}
+    \langle S_i S_j S_k\rangle \ge 0 \quad \forall i, j, k \subset \{1, \dots, N\}
+    \end{equation}
+     \begin{equation*}
+    \dots 
+    \end{equation*}
+    Questa si dimostra facilmente espandendo la funzione di partizione (espansione di alta temperatura): essendo tutti i coefficienti positivi, ogni termine della somma è positivo.
+    
+    \item \textbf{Positività delle Correlazioni Connesse:}
+    \begin{equation}
+    \langle S_i S_j \rangle_c = \langle S_i S_j \rangle - \langle S_i \rangle \langle S_j \rangle \ge 0 \quad \forall i, j \subset \{1, \dots, N\}
+    \end{equation}
+\end{enumerate}
+
+\subsection{Dimostrazione della Prima Disuguaglianza}
+
+La dimostrazione si basa sull'espansione in serie ad alta temperatura, utilizzando l'identità per le variabili di Ising ($S = \pm 1$):
+\begin{equation}
+e^{\lambda S} = \cosh(\lambda) + S \sinh(\lambda) = \cosh(\lambda) [1 + S \tanh(\lambda)]
+\end{equation}
+
+\noindent Applichiamo questa identità a ogni termine dell'Hamiltoniana 
+
+$H(\vec{S}) = - \sum h_i S_i - \sum J_{ij} S_i S_j - \dots$ all'interno della funzione di partizione:
+
+\begin{equation}
+e^{\beta h_i S_i} = \cosh(\beta h_i) [1 + S_i \tanh(\beta h_i)]
+\end{equation}
+
+\begin{equation}
+e^{\beta J_{ij} S_i S_j} = \cosh(\beta J_{ij}) [1 + S_i S_j \tanh(\beta J_{ij})]
+\end{equation}
+
+\begin{equation}
+e^{\beta K_{ijk} S_i S_j S_k} = \cosh(\beta K_{ijk}) [1 + S_i S_j S_k \tanh(\beta K_{ijk})]
+\end{equation}
+
+La funzione di partizione (o il numeratore di una media) può essere scritta come il prodotto di questi termini sommato su tutte le configurazioni:
+
+\begin{equation}
+Z = \sum_{\{S\}} \prod_i \cosh(\beta h_i) [1 + S_i \tanh(\beta h_i)] \prod_{\langle ij \rangle} \cosh(\beta J_{ij}) [1 + S_i S_j\tanh(\beta J_{ij})] \dots
+\end{equation}
+
+
+Osserviamo che:
+\begin{itemize}
+    \item I termini $\cosh(\dots)$ sono costanti positive e possono essere portati fuori.
+    \item Poiché stiamo considerando un sistema ferromagnetico, le costanti di accoppiamento sono non negative ($J \ge 0, h \ge 0$), quindi $\tanh(\beta J) \ge 0$.
+\end{itemize}
+
+Sviluppando il prodotto, otteniamo un \textbf{polinomio nelle variabili di spin con coefficienti tutti positivi}.
+Quando calcoliamo il valore di aspettazione $\langle S_i \rangle$, stiamo essenzialmente selezionando alcuni termini di questo polinomio e sommando su tutte le configurazioni $\{S\}$.
+Poiché la somma su $\{S\}$ di un qualsiasi monomio di spin $\prod S_k$ è:
+\begin{equation}
+\sum_{S=\pm 1} S_{k_1} S_{k_2} \dots = 
+\begin{cases} 
+2^N & \text{se ogni spin appare una potenza pari (o zero)} \\
+0 & \text{altrimenti}
+\end{cases}
+\end{equation}
+Il risultato è una somma di termini positivi (i coefficienti del polinomio) moltiplicati per $2^N$ o $0$. Non c'è alcun termine negativo che possa rendere la media minore di zero.
+
+\begin{equation}
+\implies \langle S_i \rangle \ge 0
+\end{equation}
+
+
+\subsection{Dimostrazione della Seconda Disuguaglianza: Positività delle Correlazioni Connesse}
+
+Vogliamo dimostrare che per un sistema ferromagnetico, le funzioni di correlazione connesse sono non negative:
+\begin{equation}
+\langle S_i S_j \rangle_c = \langle S_i S_j \rangle - \langle S_i \rangle \langle S_j \rangle \ge 0
+\end{equation}
+
+Per dimostrarlo, utilizziamo il trucco del raddoppio del sistema. Consideriamo due copie indipendenti del sistema, descritte dalle variabili di spin $S$ e $T$, entrambe soggette alla stessa Hamiltoniana $H$ con coefficienti positivi ($J, K, \dots \ge 0$).
+Poiché le due copie sono indipendenti e identicamente distribuite, vale:
+\begin{equation}
+\langle S_i \rangle \langle S_j \rangle = \langle S_i \rangle \langle T_j \rangle = \langle S_i T_j \rangle_{S+T}
+\end{equation}
+dove la media $\langle \cdot \rangle_{S+T}$ è fatta sull'Hamiltoniana totale $H_{tot} = H(S) + H(T)$.
+Possiamo quindi riscrivere la correlazione connessa come:
+\begin{equation}
+\langle S_i S_j \rangle - \langle S_i \rangle \langle S_j \rangle = \langle S_i S_j \rangle - \langle S_i T_j \rangle = \langle S_i (S_j - T_j) \rangle
+\end{equation}
+
+\noindent Introduciamo ora un cambio di variabili:
+\begin{equation}
+T_k = S_k \sigma_k \quad \text{con } \sigma_k \in \{+1, -1\}
+\end{equation}
+Questa trasformazione è invertibile poiché $S_k^2 = 1$.
+L'Hamiltoniana totale del sistema combinato diventa:
+\begin{equation}
+H_{tot}(S, \sigma) = H(S) + H(S\sigma)
+\end{equation}
+
+\noindent Analizziamo i termini dell'Hamiltoniana trasformata. Per un'interazione generica a $p$ corpi con coefficiente $K_p \ge 0$:
+\begin{equation}
+- K_p S_{i_1} \dots S_{i_p} - K_p T_{i_1} \dots T_{i_p} = - K_p S_{i_1} \dots S_{i_p} (1 + \sigma_{i_1} \dots \sigma_{i_p})
+\end{equation}
+Il nuovo coefficiente efficace per l'interazione degli spin $S$ è $K^{eff}_p = K_p (1 + \sigma_{i_1} \dots \sigma_{i_p})$.
+Poiché il prodotto delle $\sigma$ vale $\pm 1$, il termine in parentesi vale $0$ o $2$.
+Dunque, per ogni configurazione fissata di $\sigma$, l'Hamiltoniana efficace per $S$ ha coefficienti non negativi ($K^{eff} \ge 0$).
+
+\noindent Possiamo ora valutare il numeratore della differenza delle medie:
+\begin{equation}
+\sum_{S, T} e^{-\beta (H(S) + H(T))} (S_i S_j - S_i T_j) = \sum_{S, \sigma} e^{-\beta (H(S) + H(S\sigma))} S_i S_j (1 - \sigma_j)
+\end{equation}
+Riordinando la somma:
+\begin{equation}
+\sum_{\sigma} (1 - \sigma_j) \left[ \sum_{S} S_i S_j e^{-\beta H_{eff}(S; \sigma)} \right]
+\end{equation}
+Il termine tra parentesi quadre è proporzionale al valore di aspettazione $\langle S_i S_j \rangle$ calcolato con l'Hamiltoniana efficace $H_{eff}$. Poiché $H_{eff}$ ha tutti i coefficienti positivi, per la prima disuguaglianza di Griffiths (correlazioni totali), questo valore è non negativo.
+Inoltre, il termine $(1 - \sigma_j)$ è sempre non negativo (vale $0$ o $2$).
+Pertanto, l'intera somma è una somma di termini non negativi.
+
+\begin{equation}
+\implies \langle S_i S_j \rangle - \langle S_i \rangle \langle S_j \rangle \ge 0
+\end{equation}
+
+\section{Bound sulla Temperatura Critica}
+
+Usiamo le disuguaglianze di Griffiths per confrontare il modello disordinato con un modello "omogeneizzato" (tipo campo medio o annealed), dove ogni accoppiamento $J_{ij}$ è sostituito dal suo valor medio:
+
+\begin{equation}
+J_{homo} = \overline{J_{ij}} = 1 \cdot p + 0 \cdot (1-p) = p
+\end{equation}
+
+\noindent La temperatura critica di questo modello omogeneo è semplicemente un riscalamento di quella del modello puro ($p=1$):
+
+\begin{equation}
+T_c^{homo}(p) = J_{homo} \cdot T_c(p=1) = p \cdot T_c(p=1)
+\end{equation}
+
+\noindent Questa relazione descrive la bisettrice nel piano $(T, p)$ della Figura \ref{fig: fase ferromag}.
+
+\begin{tcolorbox}[colback=yellow!10, colframe=yellow!60!colorG, , coltitle=black, title=\textbf{Teorema}]
+La temperatura critica del modello disordinato è sempre inferiore o uguale a quella del modello omogeneizzato:
+\begin{equation}
+T_c(p) \le T_c^{homo}(p) = p \cdot T_c(p=1)
+\end{equation}
+\end{tcolorbox}
+
+\subsection{Dimostrazione:}
+
+Vogliamo dimostrare che la magnetizzazione del modello disordinato è limitata superiormente da quella del modello omogeneo.
+Innanzitutto, definiamo rigorosamente cosa intendiamo per magnetizzazione $m$ nel contesto di un sistema disordinato. Questa grandezza coinvolge due livelli di media:
+\begin{enumerate}
+    \item La \textbf{media termica} $\langle \cdot \rangle$, che è il valore di aspettazione calcolato sulla distribuzione di Boltzmann-Gibbs per una specifica configurazione congelata (quenched) del disordine $\{J_{ij}\}$.
+    \item La \textbf{media sul disordine} $\overline{\dots}$ (o $\mathbb{E}_J[\dots]$), che è il valore di aspettazione calcolato sulla distribuzione di probabilità $P(J_{ij})$ dei coupling.
+\end{enumerate}
+
+La magnetizzazione media del sistema è quindi definita come la media sul disordine della media termica di uno spin generico (ad esempio $S_0$):
+\begin{equation}
+m = \overline{\langle S_0 \rangle}
+\end{equation}
+
+\noindent Tuttavia, c'è una sottigliezza fondamentale: in assenza di campo esterno ($h=0$), l'Hamiltoniana è invariante per l'inversione globale di tutti gli spin ($S_i \to -S_i$). Di conseguenza, la media termica $\langle S_0 \rangle$ calcolata sull'ensemble canonico completo sarebbe identicamente nulla ($m=0$) per simmetria, sia nella fase paramagnetica che in quella ferromagnetica.
+Per definire un parametro d'ordine non nullo nella fase a simmetria rotta, dobbiamo restringere la media a uno dei due stati puri (ad esempio quello positivo). Operativamente, questo si ottiene applicando un piccolo campo esterno $h$ e prendendo il limite $h \to 0^+$:
+\begin{equation}
+\langle S_0 \rangle^+ = \lim_{h \to 0^+} \langle S_0 \rangle_h
+\end{equation}
+La disuguaglianza che vogliamo dimostrare confronta quindi la magnetizzazione media nello stato positivo del sistema disordinato con quella del sistema omogeneo :
+\begin{equation}
+m = \overline{\langle S_0 \rangle^+} \le m^{homo} = \langle S_0 \rangle^+_{homo}
+\end{equation}
+dove $\langle S_0 \rangle^+_{homo}$ è calcolata nel sistema in cui tutti i coupling sono sostituiti dal loro valor medio $\overline{J_{ij}} = p$.
+
+\noindent Per dimostrare questa relazione, utilizziamo la \textbf{disuguaglianza di Jensen}. Dobbiamo mostrare che la funzione $\langle S_0 \rangle^+(\{J_{ij}\})$ è una \textbf{funzione concava} rispetto a ogni variabile di accoppiamento $J_{ij}$. Calcoliamo le derivate rispetto a un generico $J_{ij}$ (assorbendo $\beta$ nella derivazione per semplicità):
+
+\begin{enumerate}
+    \item \textbf{Derivata Prima:}
+    Derivando la media termica, scende un fattore $S_i S_j$ dalla misura di Boltzmann. Si ottiene la funzione di correlazione connessa:
+    \begin{equation}
+    \frac{\partial \langle S_0 \rangle^+}{\partial J_{ij}} = \langle S_0 S_i S_j \rangle^+ - \langle S_0 \rangle^+ \langle S_i S_j \rangle^+ \ge 0
+    \end{equation} 
+    Per la seconda disuguaglianza di Griffiths, le correlazioni connesse sono non negative. Dunque la derivata prima è positiva, indicando che la magnetizzazione cresce all'aumentare dell'interazione.
+
+    \item \textbf{Derivata Seconda:}
+    Deriviamo nuovamente l'espressione precedente rispetto a $J_{ij}$. Dobbiamo derivare un prodotto di termini. Ricordando che per spin di Ising $S_i^2 = 1$.
+    
+    \begin{equation}
+    \begin{split}
+    \frac{\partial^2 \langle S_0 \rangle^+}{\partial J_{ij}^2} &= \frac{\partial}{\partial J_{ij}} \left( \langle S_0 S_i S_j \rangle^+ - \langle S_0 \rangle^+ \langle S_i S_j \rangle^+ \right) \\
+    &= \left[ \langle S_0 (S_i S_j)^2 \rangle - \langle S_0 S_i S_j \rangle \langle S_i S_j \rangle \right] \\
+    &\quad - \left[ \left( \langle S_0 S_i S_j \rangle - \langle S_0 \rangle \langle S_i S_j \rangle \right) \langle S_i S_j \rangle + \langle S_0 \rangle \left( \langle (S_i S_j)^2 \rangle - \langle S_i S_j \rangle^{2} \right) \right]
+    \end{split}
+    \end{equation}
+    
+    Sostituendo $(S_i S_j)^2 = S_i^2 S_j^2 = 1$:
+    \begin{equation}
+    \begin{split}
+    \frac{\partial^2 \langle S_0 \rangle}{\partial J_{ij}^2} &= \left[ \langle S_0 \rangle - \langle S_0 S_i S_j \rangle \langle S_i S_j \rangle \right] \\
+    &\quad - \left[ \langle S_0 S_i S_j \rangle \langle S_i S_j \rangle - \langle S_0 \rangle \langle S_i S_j \rangle^{2} + \langle S_0 \rangle - \langle S_0 \rangle \langle S_i S_j \rangle^{2} \right]
+    \end{split}
+    \end{equation}
+    
+    Semplificando i termini simili ($\langle S_0 \rangle$ si cancella) e raccogliendo $-2 \langle S_i S_j \rangle^+$, rimane:
+   
+    \begin{equation}
+    \frac{\partial^2 \langle S_0 \rangle^+}{\partial J_{ij}^2} = -2 \langle S_i S_j \rangle^+ \left[ \langle S_0 S_i S_j \rangle^+ - \langle S_0 \rangle^+ \langle S_i S_j \rangle^+ \right]
+    \end{equation}
+    
+    Analizziamo il segno di questa espressione:
+    \begin{itemize}
+        \item $\langle S_i S_j \rangle^+ \ge 0$ per la prima disuguaglianza di Griffiths.
+        \item Il termine in parentesi quadre è la correlazione connessa $\langle S_0 S_i S_j \rangle^+_c$, che è $\ge 0$ per la seconda disuguaglianza di Griffiths.
+        \item C'è un segno meno davanti a tutto.
+    \end{itemize}
+    
+\noindent Concludiamo che la derivata seconda è non positiva ($\le 0$), quindi la funzione è \textbf{concava}.
+\end{enumerate}
+
+\begin{tcolorbox}[colback=colorD!10, colframe=colorD!60!colorE, , coltitle=black, title=\textbf{Esito della dimostrazione}]
+\noindent Poiché $\langle S_0 \rangle^+$ è una funzione concava delle variabili $\{J_{ij}\}$, possiamo applicare la disuguaglianza di Jensen:
+\begin{equation}
+\mathbb{E}_J \left[ \langle S_0 \rangle^+(\{J_{ij}\}) \right] \le \langle S_0 \rangle^+(\{\mathbb{E}_J[J_{ij}]\})
+\end{equation}
+Ovvero:
+\begin{equation}
+\overline{\langle S_0 \rangle^+} \le \langle S_0 \rangle^+_{homo}
+\end{equation}
+Questo dimostra che, a parità di temperatura, l'ordine nel sistema disordinato è sempre inferiore a quello del sistema omogeneo medio. Di conseguenza, la temperatura critica del modello disordinato deve essere più bassa: $T_c(p) \le T_c^{homo}(p) = p T_c(p=1)$ 
+\end{tcolorbox}
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.55\textwidth]{pics/19.png}
+    \caption{Confronto tra le magnetizzazioni in funzione della temperatura per $p_c~<~p~<~1$.}
+    \label{fig: fase ferromag}
+\end{figure}
+
+\newpage
+\section{Criterio di Harris Generalizzato}
+
+Il Criterio di Harris ci permette di capire se la presenza di un piccolo disordine (vicino al punto critico del sistema puro, $p \approx 1$) modifichi la classe di universalità della transizione, ovvero se gli esponenti critici cambino rispetto al caso puro.
+Se il punto fisso del sistema puro è stabile rispetto al disordine, allora il sistema disordinato su grande scala si comporta come quello puro. Se invece è instabile, il flusso del gruppo di rinormalizzazione si sposta verso un nuovo punto fisso (ad esempio un "Random Fixed Point"), implicando nuovi esponenti critici.
+
+Possiamo mappare il disordine dei legami (o dei siti) in una fluttuazione locale della temperatura critica. Immaginiamo che ogni regione dello spazio $\vec{x}$ abbia una sua temperatura critica locale $T_c(\vec{x})$ che dipende dalla configurazione microscopica del disordine in quel punto.
+Assumiamo che le fluttuazioni della temperatura critica locale siano correlate spazialmente secondo una funzione $g(\vec{r})$:
+
+\begin{equation}
+g(\vec{x}-\vec{y}) = \overline{T_c(\vec{x}) T_c(\vec{y})} - \overline{T_c}^2 \sim |\vec{x}-\vec{y}|^{-a} \quad (\text{per } |\vec{x}-\vec{y}| \gg 1)
+\end{equation}
+
+[cite_start]Dove l'esponente $a$ caratterizza il tipo di correlazione del disordine[cite: 3969]:
+\begin{itemize}
+    \item $a$ grande: disordine a corto raggio (uncorrelated).
+    \item $a$ piccolo: disordine a lungo raggio (long-range correlated).
+\end{itemize}
+
+Introduciamo la **temperatura ridotta locale** $t(\vec{x})$, normalizzata rispetto alla temperatura critica media $\overline{T_c}$:
+\begin{equation}
+t(\vec{x}) = \frac{T - T_c(\vec{x})}{\overline{T_c}}
+\end{equation}
+
+Sappiamo che in un sistema puro, la lunghezza di correlazione $\xi$ diverge come una potenza della temperatura ridotta:
+\begin{equation}
+\xi \sim t^{-\nu}
+\end{equation}
+
+Vogliamo capire se le fluttuazioni locali della temperatura ridotta sono rilevanti su una scala di lunghezza $\xi$. Per farlo, consideriamo un volume di correlazione $V \sim \xi^D$ e calcoliamo la media spaziale della temperatura ridotta in questo volume:
+\begin{equation}
+t_V = \frac{1}{V} \int_V d^D x \, t(\vec{x})
+\end{equation}
+
+Ci interessa confrontare il valor medio di questa quantità con la sua varianza (fluttuazione) dovuta al disordine. [cite_start]Calcoliamo la fluttuazione quadratica media $\Delta^2$ su tutto il sistema (o su diverse realizzazioni del disordine) [cite: 4037-4038]:
+
+\begin{equation}
+\Delta^2 = \overline{t_V^2} - \overline{t_V}^2 = \frac{1}{V^2} \int_V d^D x \int_V d^D y \left( \overline{t(\vec{x})t(\vec{y})} - \overline{t(\vec{x})} \, \overline{t(\vec{y})} \right)
+\end{equation}
+
+Il termine tra parentesi è proporzionale alla funzione di correlazione $g(\vec{x}-\vec{y})$. Sostituendo l'andamento asintotico $g(r) \sim r^{-a}$:
+
+\begin{equation}
+\Delta^2 \propto \frac{1}{V} \int_V d^D r \, g(r) \sim \xi^{-D} \int_0^\xi dr \, r^{D-1} r^{-a} = \xi^{-D} \int_0^\xi dr \, r^{D-1-a}
+\end{equation}
+
+[cite_start]L'integrale si comporta diversamente a seconda del valore di $a$ rispetto alla dimensione spaziale $D$ [cite: 4044-4045]:
+
+\begin{enumerate}
+    \item \textbf{Caso $a > D$ (Decadimento veloce/Corto raggio):}
+    L'integrale $\int_0^\xi r^{D-1-a} dr$ converge per grandi $\xi$ (il contributo dominante viene da $r$ piccoli). L'integrale è asintoticamente una costante indipendente da $\xi$.
+    \begin{equation}
+    \Delta^2 \sim \xi^{-D}
+    \end{equation}
+    
+    \item \textbf{Caso $a < D$ (Decadimento lento/Lungo raggio):}
+    L'integrale diverge per grandi $\xi$ e il suo valore è dominato dal limite superiore di integrazione.
+    \begin{equation}
+    \int_0^\xi dr \, r^{D-1-a} \sim \xi^{D-a}
+    \end{equation}
+    Sostituendo nell'espressione per la varianza:
+    \begin{equation}
+    \Delta^2 \sim \xi^{-D} \cdot \xi^{D-a} = \xi^{-a}
+    \end{equation}
+    
+    \item \textbf{Caso $a = D$ (Marginale):}
+    L'integrale dà un contributo logaritmico.
+    \begin{equation}
+    \Delta^2 \sim \xi^{-D} \log \xi
+    \end{equation}
+\end{enumerate}
+
+[cite_start]Riassumendo, la fluttuazione del disordine scala come[cite: 3982]:
+\begin{equation}
+\Delta \sim 
+\begin{cases} 
+\xi^{-D/2} & \text{se } a > D \\
+\xi^{-a/2} & \text{se } a < D
+\end{cases}
+\end{equation}
+
+Ora applichiamo il criterio di stabilità. Il disordine è una perturbazione **irrilevante** se, avvicinandosi al punto critico ($\xi \to \infty$), le fluttuazioni del disordine $\Delta$ diventano trascurabili rispetto alla distanza media dal punto critico $t$.
+Ricordando che $t \sim \xi^{-1/\nu}$, la condizione di stabilità è:
+\begin{equation}
+\frac{\Delta}{t} \to 0 \quad \text{per } \xi \to \infty
+\end{equation}
+Ovvero, l'esponente con cui decade $\Delta$ deve essere maggiore di $1/\nu$.
+
+\begin{itemize}
+    \item **Per $a > D$ (Criterio di Harris Standard):**
+    Richiediamo $D/2 > 1/\nu \implies D\nu > 2$.
+    Usando la relazione di iperscaling $\alpha = 2 - D\nu$, questa condizione equivale a richiedere $\alpha < 0$. Se il calore specifico del sistema puro non diverge (o diverge molto debolmente), il disordine è irrilevante.
+    
+    \item **Per $a < D$ (Criterio di Weinrib-Halperin):**
+    Richiediamo $a/2 > 1/\nu \implies a\nu > 2$.
+    In questo caso, la correlazione a lungo raggio del disordine rende più difficile soddisfare la condizione di stabilità.
+\end{itemize}
+
+Se queste disuguaglianze sono violate, il disordine è **rilevante**: il punto fisso puro diventa instabile e il sistema fluisce verso un nuovo punto fisso disordinato con nuovi esponenti critici (o la transizione viene distrutta/smussata).
+
+\section{Criterio di Harris Generalizzato}
+
+Il Criterio di Harris ci permette di capire se il disordine cambia la classe di universalità della transizione (cioè se gli esponenti critici cambiano rispetto al caso puro).
+Consideriamo il disordine come una fluttuazione locale della temperatura critica $T_c(\vec{x})$.
+Definiamo la funzione di correlazione spaziale delle fluttuazioni di $T_c$:
+
+\begin{equation}
+g(\vec{r}) = \overline{T_c(\vec{x}) T_c(\vec{x}+\vec{r})} - \overline{T_c}^2 \sim r^{-a} \quad (\text{per } |\vec{r}| \gg 1)
+\end{equation}
+
+Dove l'esponente $a$ caratterizza il tipo di disordine:
+\begin{itemize}
+    \item $a > D$: Disordine a corto raggio (short-range correlated).
+    \item $a < D$: Disordine a lungo raggio (long-range correlated).
+\end{itemize}
+
+Valutiamo la varianza delle fluttuazioni della temperatura ridotta locale $t(\vec{x})$ in un volume di correlazione $V \sim \xi^D$:
+
+\begin{equation}
+\Delta^2 = \overline{t_V^2} - \overline{t_V}^2 \propto \xi^{-2D} \int_V d^D x \int_V d^D y \, g(\vec{x}-\vec{y})
+\end{equation}
+
+L'integrale scala come:
+
+\begin{equation}
+\Delta^2 \sim \xi^{-D} \int_0^\xi dr \, r^{D-1} r^{-a} \sim \xi^{-D} \int_0^\xi dr \, r^{D-1-a}
+\end{equation}
+
+Il comportamento asintotico dipende dal rapporto tra $a$ e $D$:
+\begin{itemize}
+    \item \textbf{Se $a > D$ (Convergenza):} L'integrale converge a una costante. La varianza scala come $\Delta^2 \sim \xi^{-D}$. Questo recupera il criterio di Harris standard ($D\nu > 2$).
+    \item \textbf{Se $a < D$ (Divergenza):} L'integrale diverge e domina il limite superiore ($\xi^{D-a}$). La varianza scala come:
+    \begin{equation}
+    \Delta^2 \sim \xi^{-D} \cdot \xi^{D-a} = \xi^{-a}
+    \end{equation}
+    \item \textbf{Se $a = D$ (Marginale):} Si ha una correzione logaritmica $\Delta^2 \sim \xi^{-D} \log \xi$.
+\end{itemize}
+
+Perché il punto fisso puro sia stabile, le fluttuazioni del disordine $\Delta$ devono essere trascurabili rispetto alla distanza dal punto critico $t \sim \xi^{-1/\nu}$ nel limite termodinamico. Se $\Delta \gg t$, il disordine è rilevante e cambia gli esponenti critici (o distrugge la transizione).
