@@ -23,6 +23,7 @@ jobs:
               - 'src/**/*.tex'
               - 'src/**/*.png'
               - 'src/**/*.jpg'
+              - 'src/**/*.jpeg'
             site:
               - 'scripts/**'
               - '.github/workflows/publish.yml'
@@ -31,6 +32,7 @@ jobs:
   # JOB 2: COMPILAZIONE SMART (Solo cartelle modificate)
   build_pdfs:
     needs: check_changes
+    # Esegue solo se ci sono modifiche ai file LaTeX
     if: ${{ needs.check_changes.outputs.latex_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
@@ -47,10 +49,9 @@ jobs:
           touch targets.txt
           
           # Cerca i file cambiati nell'ultimo commit dentro src/
-          # Risale alla cartella genitore e controlla se esiste un main.tex
           git diff --name-only HEAD^ HEAD | grep "^src/" | while read filename; do
               dir=$(dirname "$filename")
-              # Se il file è in una sottocartella (es. src/Bio/img), risali finché non trovi main.tex
+              # Risali le cartelle finché non trovi main.tex
               while [ "$dir" != "." ] && [ "$dir" != "src" ]; do
                   if [ -f "$dir/main.tex" ]; then
                       echo "$dir/main.tex" >> targets.txt
@@ -60,17 +61,16 @@ jobs:
               done
           done
           
-          # Rimuovi duplicati (se ho modificato 2 file nella stessa cartella)
+          # Rimuovi duplicati e crea lista unica
           sort targets.txt | uniq > unique_targets.txt
           
-          echo "File da compilare:"
+          echo "File da compilare trovati:"
           cat unique_targets.txt
           
-          # Se il file è vuoto, non fare nulla
-          if [ ! -s unique_targets.txt ]; then
-             echo "HAS_TARGETS=false" >> $GITHUB_ENV
-          else
+          if [ -s unique_targets.txt ]; then
              echo "HAS_TARGETS=true" >> $GITHUB_ENV
+          else
+             echo "HAS_TARGETS=false" >> $GITHUB_ENV
           fi
 
       # 2. COMPILA SOLO I TARGET TROVATI
@@ -78,8 +78,9 @@ jobs:
         if: env.HAS_TARGETS == 'true'
         uses: xu-cheng/latex-action@v3
         
-       
-        continue-on-error: true
+        # --- FIX CRUCIALE: Questo comando ora è posizionato correttamente ---
+        continue-on-error: true 
+        # -------------------------------------------------------------------
         
         with:
           root_file_list: unique_targets.txt
@@ -91,7 +92,7 @@ jobs:
         if: env.HAS_TARGETS == 'true'
         run: |
           mkdir -p public/pdfs
-          # Cerca i main.pdf generati (saranno solo quelli delle cartelle toccate)
+          # Cerca i main.pdf generati (solo quelli delle cartelle toccate)
           find src -name "main.pdf" | while read file; do
               folder=$(basename "$(dirname "$file")")
               echo "Nuovo PDF generato per: $folder"
@@ -123,20 +124,24 @@ jobs:
           echo "Clono il sito attuale per recuperare i vecchi PDF..."
           git clone --branch gh-pages --single-branch https://github.com/${{ github.repository }}.git old_site || true
           if [ -d "old_site/pdfs" ]; then
-            cp -r old_site/pdfs/* public/pdfs/
+            # Copia ricorsiva dei vecchi PDF
+            cp -r old_site/pdfs/* public/pdfs/ || true
             echo "PDF esistenti recuperati."
+          else
+             echo "Nessun PDF precedente trovato (primo deploy?)"
           fi
           rm -rf old_site
 
       # 2. SOVRASCRIVI CON I NUOVI PDF (Se ce ne sono)
       - name: Scarica e Sovrascrivi Nuovi PDF
+        # Esegue solo se il build_pdfs ha girato
         if: needs.check_changes.outputs.latex_changed == 'true'
         uses: actions/download-artifact@v4
-        continue-on-error: true # Se non c'è artefatto (es. modificato solo README), non fallire
+        continue-on-error: true
         with:
           name: new-pdfs
           path: public/pdfs
-          merge-multiple: true # Unisce i nuovi file nella cartella esistente
+          merge-multiple: true # Unisce sovrascrivendo i file con lo stesso nome
 
       - name: Setup Python
         uses: actions/setup-python@v4
