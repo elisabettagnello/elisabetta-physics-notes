@@ -77,11 +77,13 @@ jobs:
       - name: Compila i file LaTeX modificati
         if: env.HAS_TARGETS == 'true'
         uses: xu-cheng/latex-action@v3
+        
+       
+        continue-on-error: true
+        
         with:
-          # Legge la lista dei file da compilare dal file generato prima
           root_file_list: unique_targets.txt
           work_in_root_file_dir: true
-          continue_on_error: true
           args: -pdf -file-line-error -interaction=nonstopmode -f
 
       # 3. PREPARA ARTEFATTO
