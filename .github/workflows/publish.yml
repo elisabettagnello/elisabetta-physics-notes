@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  # JOB 1: FILTRO (Verifica se ci sono modifiche ai file LaTeX o al sito)
+  # JOB 1: FILTRO (Opzionale, ma utile per saltare se tocchi solo news.txt)
   check_changes:
     runs-on: ubuntu-latest
     outputs:
@@ -23,90 +23,53 @@ jobs:
               - 'src/**/*.tex'
               - 'src/**/*.png'
               - 'src/**/*.jpg'
-              - 'src/**/*.jpeg'
             site:
               - 'scripts/**'
               - '.github/workflows/publish.yml'
               - 'news.txt'
 
-  # JOB 2: COMPILAZIONE SMART (Solo cartelle modificate)
+  # JOB 2: COMPILAZIONE ROBUSTA (Compila TUTTO ogni volta)
   build_pdfs:
     needs: check_changes
-    # Esegue solo se ci sono modifiche ai file LaTeX
+    # Se vuoi forzare la compilazione sempre, togli il cancelletto '#' alla riga sotto
     if: ${{ needs.check_changes.outputs.latex_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del codice
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 2 # Serve la storia per vedere cosa è cambiato rispetto a prima
 
-      # 1. IDENTIFICA I TARGET DA COMPILARE
-      - name: Trova cartelle modificate
-        id: find_targets
-        run: |
-          # Crea un file vuoto per la lista
-          touch targets.txt
-          
-          # Cerca i file cambiati nell'ultimo commit dentro src/
-          git diff --name-only HEAD^ HEAD | grep "^src/" | while read filename; do
-              dir=$(dirname "$filename")
-              # Risali le cartelle finché non trovi main.tex
-              while [ "$dir" != "." ] && [ "$dir" != "src" ]; do
-                  if [ -f "$dir/main.tex" ]; then
-                      echo "$dir/main.tex" >> targets.txt
-                      break
-                  fi
-                  dir=$(dirname "$dir")
-              done
-          done
-          
-          # Rimuovi duplicati e crea lista unica
-          sort targets.txt | uniq > unique_targets.txt
-          
-          echo "File da compilare trovati:"
-          cat unique_targets.txt
-          
-          if [ -s unique_targets.txt ]; then
-             echo "HAS_TARGETS=true" >> $GITHUB_ENV
-          else
-             echo "HAS_TARGETS=false" >> $GITHUB_ENV
-          fi
-
-      # 2. COMPILA SOLO I TARGET TROVATI
-      - name: Compila i file LaTeX modificati
-        if: env.HAS_TARGETS == 'true'
+      - name: Compila TUTTI i file LaTeX
         uses: xu-cheng/latex-action@v3
         
-        # --- FIX CRUCIALE: Questo comando ora è posizionato correttamente ---
+        # Ignora i warning di LaTeX (Exit Code 12)
         continue-on-error: true 
-        # -------------------------------------------------------------------
         
         with:
-          root_file_list: unique_targets.txt
+          # L'asterisco * dice: "Cerca main.tex in TUTTE le sottocartelle di src"
+          root_file: src/*/main.tex
+          
+          # Fondamentale per trovare le immagini
           work_in_root_file_dir: true
+          
           args: -pdf -file-line-error -interaction=nonstopmode -f
 
-      # 3. PREPARA ARTEFATTO
       - name: Sposta e Rinomina i PDF
-        if: env.HAS_TARGETS == 'true'
         run: |
           mkdir -p public/pdfs
-          # Cerca i main.pdf generati (solo quelli delle cartelle toccate)
+          # Cerca tutti i main.pdf generati
           find src -name "main.pdf" | while read file; do
               folder=$(basename "$(dirname "$file")")
-              echo "Nuovo PDF generato per: $folder"
+              echo "Trovato PDF: $folder"
               mv "$file" "public/pdfs/${folder}.pdf"
           done
 
       - name: Upload PDFs artifact
-        if: env.HAS_TARGETS == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: new-pdfs
+          name: compiled-pdfs
           path: public/pdfs
 
-  # JOB 3: DEPLOY (MERGE INTELLIGENTE)
+  # JOB 3: DEPLOY DEL SITO
   deploy_site:
     needs: [check_changes, build_pdfs]
     if: always()
@@ -118,30 +81,24 @@ jobs:
       - name: Prepara cartella pubblica
         run: mkdir -p public/pdfs
 
-      # 1. RECUPERA TUTTI I VECCHI PDF (Backup dal sito live)
-      - name: Recupera PDF esistenti (Base)
-        run: |
-          echo "Clono il sito attuale per recuperare i vecchi PDF..."
-          git clone --branch gh-pages --single-branch https://github.com/${{ github.repository }}.git old_site || true
-          if [ -d "old_site/pdfs" ]; then
-            # Copia ricorsiva dei vecchi PDF
-            cp -r old_site/pdfs/* public/pdfs/ || true
-            echo "PDF esistenti recuperati."
-          else
-             echo "Nessun PDF precedente trovato (primo deploy?)"
-          fi
-          rm -rf old_site
-
-      # 2. SOVRASCRIVI CON I NUOVI PDF (Se ce ne sono)
-      - name: Scarica e Sovrascrivi Nuovi PDF
-        # Esegue solo se il build_pdfs ha girato
+      # SCENARIO A: Nuovi PDF compilati -> Scaricali
+      - name: Scarica nuovi PDF
         if: needs.check_changes.outputs.latex_changed == 'true'
         uses: actions/download-artifact@v4
-        continue-on-error: true
         with:
-          name: new-pdfs
+          name: compiled-pdfs
           path: public/pdfs
-          merge-multiple: true # Unisce sovrascrivendo i file con lo stesso nome
+
+      # SCENARIO B: Nessuna modifica LaTeX -> Recupera dal sito live
+      - name: Recupera PDF esistenti
+        if: needs.check_changes.outputs.latex_changed != 'true'
+        run: |
+          echo "LaTeX non modificato. Recupero i PDF dalla versione online..."
+          git clone --branch gh-pages --single-branch https://github.com/${{ github.repository }}.git old_site || true
+          if [ -d "old_site/pdfs" ]; then
+            cp -n old_site/pdfs/* public/pdfs/ || true
+          fi
+          rm -rf old_site
 
       - name: Setup Python
         uses: actions/setup-python@v4
