@@ -8,25 +8,16 @@ SHEEP_LINK = "https://sheeptechnologies.com"
 EMAIL_LINK = "agnelloe24@gmail.com"
 GITHUB_LINK = f"https://github.com/{GITHUB_USER}"
 
-# --- COLLEZIONE ICONE (SEMPLICI E CLASSICHE) ---
+# --- ICONE ---
 ICONS = {
-    # 1. LIBRO APERTO (Biophysics)
     "open_book": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>""",
-    
-    # 2. PILA DI LIBRI (Critical Phenomena)
     "stack_books": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2c1.798 0 3.298 1.044 4.5 2.5c1.202-1.456 2.702-2.5 4.5-2.5A2.5 2.5 0 0 1 18 4.5v15"/></svg>""",
-    
-    # 3. RIGHELLO E MATITA (Lab / Misure)
     "ruler": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>""",
-    
-    # 4. LIBRO CHIUSO (Generico)
     "closed_book": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>""",
-    
-    # 5. ATOMO SEMPLICE (Fisica)
     "atom": """<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>"""
 }
 
-# --- TEMPLATE CARD HTML ---
+# --- TEMPLATE CARD ---
 card_template = """
 <div class="card">
     <div class="card-icon">
@@ -36,7 +27,6 @@ card_template = """
     <div class="card-meta">
         <span class="badge">PDF</span>
         <span class="badge">{size}</span>
-        <span>{date}</span>
     </div>
     <a href="pdfs/{filename}" class="download-btn" target="_blank">
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:18px;height:18px;"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
@@ -46,18 +36,15 @@ card_template = """
 """
 
 def get_icon_for_title(title):
-    """Sceglie l'icona in base alle parole chiave nel titolo"""
     t = title.lower()
-    
-    # MAPPATURA PERSONALIZZATA
     if "bio" in t or "neur" in t:
-        return ICONS["open_book"] # Theoretical Biophysics -> Libro Aperto
+        return ICONS["open_book"]
     elif "disordered" in t or "spin" in t or "glass" in t:
-        return ICONS["ruler"] # Sistemi disordinati -> Righello/Strumenti
+        return ICONS["ruler"]
     elif "lab" in t or "micro" in t:
-        return ICONS["closed_book"] # Laboratorio -> Libro Chiuso (Quaderno)
+        return ICONS["closed_book"]
     else:
-        return ICONS["closed_book"] # Default
+        return ICONS["closed_book"]
 
 def get_file_size(file_path):
     try:
@@ -68,6 +55,27 @@ def get_file_size(file_path):
     except:
         return "Unknown"
 
+def get_latest_news():
+    news_items = ""
+    news_file = "news.txt"
+    if os.path.exists(news_file):
+        try:
+            with open(news_file, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+                count = 0
+                for line in lines:
+                    clean_line = line.strip()
+                    if clean_line:
+                        news_items += f"<li>{clean_line}</li>\n"
+                        count += 1
+                        if count >= 5:
+                            break
+        except Exception as e:
+            print(f"Errore lettura news: {e}")
+    if not news_items:
+        news_items = "<li>Nessun aggiornamento recente.</li>"
+    return news_items
+
 def generate_index():
     pdf_dir = "public/pdfs"
     cards = ""
@@ -75,37 +83,45 @@ def generate_index():
     if not os.path.exists(pdf_dir):
         os.makedirs(pdf_dir, exist_ok=True)
 
+    # 1. Recupera la lista dei file
+    files = [f for f in os.listdir(pdf_dir) if f.endswith(".pdf")]
+
+    # 2. PULIZIA AUTOMATICA "GHOST FILES" 
+    # Se trovo "_Internship.pdf", cancello automaticamente il vecchio "Internship.pdf"
+    for filename in files:
+        if filename.startswith("_"):
+            ghost_name = filename[1:] # Toglie il trattino basso (es. "Internship.pdf")
+            ghost_path = os.path.join(pdf_dir, ghost_name)
+            
+            # Se esiste il vecchio file duplicato pubblico, distruggilo!
+            if os.path.exists(ghost_path):
+                print(f"👻 Rimosso file fantasma: {ghost_name}")
+                os.remove(ghost_path)
+
+    # 3. Rileggi la lista pulita
     files = [f for f in os.listdir(pdf_dir) if f.endswith(".pdf")]
     
     if not files:
         cards = "<div style='grid-column:1/-1; text-align:center; color:#94a3b8;'><h3>No PDFs found yet...</h3></div>"
     
     for filename in sorted(files):
-        # Pulisce il titolo
-        title = filename.replace("-", " ").replace("_", " ").replace(".pdf", "").title()
-        
-        file_path = os.path.join(pdf_dir, filename)
-        
-        try:
-            mod_time = os.path.getmtime(file_path)
-            date_str = datetime.datetime.fromtimestamp(mod_time).strftime('%d %b %Y')
-            size_str = get_file_size(file_path)
-        except:
-            date_str = "-"
-            size_str = "-"
+        # Filtra i file nascosti
+        if filename.startswith("_"):
+            continue
 
-        # Seleziona icona
+        title = filename.replace("-", " ").replace("_", " ").replace(".pdf", "").title()
+        file_path = os.path.join(pdf_dir, filename)
+        size_str = get_file_size(file_path)
         icon_svg = get_icon_for_title(title)
 
         cards += card_template.format(
             title=title, 
             filename=filename, 
-            date=date_str, 
             size=size_str,
             icon_svg=icon_svg
         )
     
-    # Leggi e compila template
+    news_html = get_latest_news()
     template_path = os.path.join(os.path.dirname(__file__), 'template.html')
     with open(template_path, "r", encoding="utf-8") as f:
         html_content = f.read()
@@ -115,12 +131,13 @@ def generate_index():
                              .replace("{{GITHUB_LINK}}", GITHUB_LINK) \
                              .replace("{{SHEEP_LINK}}", SHEEP_LINK) \
                              .replace("{{EMAIL_LINK}}", EMAIL_LINK) \
-                             .replace("{{CARDS}}", cards)
+                             .replace("{{CARDS}}", cards) \
+                             .replace("{{NEWS_ITEMS}}", news_html)
 
     with open("public/index.html", "w", encoding="utf-8") as f:
         f.write(final_html)
     
-    print("✨ Libreria generata con icone semplici (Libri, Righelli)!")
+    print("Libreria generata")
 
 if __name__ == "__main__":
     generate_index()
