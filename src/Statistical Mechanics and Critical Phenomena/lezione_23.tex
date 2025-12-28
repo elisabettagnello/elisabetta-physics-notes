@@ -1,0 +1,236 @@
+\chapter{Lezione 23}
+\label{chap:lezione_23}
+
+\begin{flushright}
+\textit{Data: 17/12/2025}
+\end{flushright}
+
+
+\section{Calcolo degli Esponenti Critici a un Loop}
+
+Riprendiamo il calcolo iniziato nella lezione precedente per determinare gli esponenti critici tramite il Gruppo di Rinormalizzazione (RG) nello spazio dei momenti. Il nostro obiettivo è determinare la funzione $A$ che ci fornirà asintoticamente l'esponente critico $\nu$.
+
+Il quadro concettuale si basa sull'interazione tra tre funzioni fondamentali:
+\begin{itemize}
+    \item La funzione $\lambda$: rappresenta il coupling rinormalizzato.
+    \item La funzione $A$: diverrà il nuovo coupling rinormalizzato associato alla massa (o meglio, alla dimensione anomala della massa).
+    \item La funzione $\beta$: ci permetterà di ottenere il punto fisso $\lambda_c$.
+\end{itemize}
+
+
+Lavoreremo all'ordine più basso rilevante in $g$ (one-loop). Per questo calcolo, utilizziamo il diagramma a bolla (bubble) per la funzione di correlazione a due punti e il diagramma pertinente per la funzione a quattro punti.
+
+\subsection{Rinormalizzazione della Massa}
+
+Consideriamo la funzione di correlazione connessa a due punti a un loop, $G(p)$. L'espressione, includendo le correzioni radiative, è:
+
+\begin{equation}
+G(p) = \frac{1}{p^2 + \mu - \Sigma}
+\end{equation}
+
+dove $\Sigma$ rappresenta la \textbf{self-energy a un loop}. Nel diagramma a "tadpole" (o bubble locale), la self-energy calcolata è:
+
+\begin{equation}
+\Sigma = -\frac{1}{2} g \int \frac{d^D q}{(2\pi)^D} \frac{1}{q^2 + m^2}
+\end{equation}
+
+Il fattore $1/2$ deriva dalla molteplicità del diagramma (simmetria delle linee interne).
+Definiamo la massa quadrata rinormalizzata come $m^2 = \mu - \Sigma$. Pertanto, la massa nuda quadrata $\mu$ si esprime come:
+
+\begin{equation}
+\mu = m^2 + \Sigma = m^2 + \frac{1}{2} g \int \frac{d^D q}{(2\pi)^D} \frac{1}{q^2 + m^2}
+\end{equation}
+
+Utilizzando i parametri di Feynman per svolgere l'integrale (risultato ottenuto nelle lezioni precedenti), otteniamo:
+
+\begin{equation}
+\mu = m^2 + \frac{1}{2} \frac{g}{(4\pi)^{D/2}} (m^2)^{\frac{D}{2}-1} \Gamma\left(1 - \frac{D}{2}\right)
+\end{equation}
+
+\subsection{Calcolo della Funzione A}
+
+Il nostro obiettivo è calcolare $A$, che dipende dalla derivata di $\mu$ rispetto a $m^2$. Deriviamo l'espressione precedente rispetto a $m^2$:
+
+\begin{equation}
+\frac{d\mu}{dm^2} = 1 + \frac{1}{2} \frac{g}{(4\pi)^{D/2}} \Gamma\left(1 - \frac{D}{2}\right) \left(\frac{D}{2}-1\right) (m^2)^{\frac{D}{2}-2}
+\end{equation}
+
+\noindent Notiamo che $\Gamma(1 - D/2) \cdot (D/2 - 1) = -\Gamma(1 - D/2) \cdot (1 - D/2)$. Utilizzando la proprietà della funzione gamma $z\Gamma(z) = \Gamma(z+1)$, possiamo semplificare. 
+
+\noindent L'espressione per la derivata logaritmica a un loop, in termini della costante di accoppiamento adimensionale $\tilde{g} = g m^{D-4}$, risulta essere:
+
+\begin{equation}
+\frac{d\mu}{dm^2} = 1 + \frac{1}{2} \frac{\Gamma(2 - \frac{D}{2})}{(4\pi)^{D/2}} \tilde{g}
+\end{equation}
+
+\noindent Da questa espressione, calcoliamo il logaritmo e sviluppiamo al primo ordine in $\tilde{g}$:
+
+\begin{equation}
+\ln\left(\frac{d\mu}{dm^2}\right) \simeq \frac{1}{2} \frac{\Gamma(2 - \frac{D}{2})}{(4\pi)^{D/2}} \tilde{g}
+\end{equation}
+
+\noindent La funzione $A(\tilde{g})$ è definita come la derivata logaritmica rispetto al logaritmo della massa quadrata (ovvero moltiplicando per $m^2 \frac{d}{dm^2}$):
+
+\begin{equation}
+A(\tilde{g}) = m^2 \frac{d}{dm^2} \left[ \ln\left(\frac{d\mu}{dm^2}\right) \right]
+\end{equation}
+
+\noindent La derivata di $(m^2)^{\frac{D-4}{2}}$ produce un fattore $\frac{D-4}{2} = - \frac{4-D}{2}$.
+
+\noindent Inoltre, ricordiamo che $\Gamma(2~-~D/2)~=~\frac{\Gamma(3~-~D/2)}{2 - D/2}$. Combinando i fattori, otteniamo:
+
+\begin{equation}
+A(\tilde{g}) = -\frac{1}{2} \frac{\Gamma(3 - \frac{D}{2})}{(4\pi)^{D/2}} \tilde{g}
+\end{equation}
+
+
+\noindent Dobbiamo ora esprimere questo risultato in termini del coupling rinormalizzato $\lambda$ invece che del coupling nudo adimensionale $\tilde{g}$. Al primo ordine, la relazione è di identità: $\tilde{g} \simeq \lambda$. Quindi definiamo la funzione $\bar{A}(\lambda)$:
+
+\begin{tcolorbox}[colback=colorA!10, colframe=colorB!60!colorA,  title=\textbf{Funzione $\bar{A}(\lambda)$}]
+\begin{equation}
+\bar{A}(\lambda) = -\frac{1}{2} \frac{\Gamma(3 - \frac{D}{2})}{(4\pi)^{D/2}} \lambda
+\end{equation}
+\end{tcolorbox}
+
+\subsection{La Funzione Beta e il Punto Fisso}
+
+Per trovare il valore critico di $\lambda$ (il punto fisso), dobbiamo studiare la funzione $\beta$.
+Ricordiamo la relazione tra il coupling rinormalizzato $\lambda$ e $\tilde{g}$ calcolata nelle lezioni precedenti:
+
+\begin{equation}
+\lambda = \tilde{g} - \frac{3}{2} \tilde{g}^2 \frac{\Gamma(2 - \frac{D}{2})}{(4\pi)^{D/2}} + O(\tilde{g}^3)
+\end{equation}
+
+\noindent Il fattore $3/2$ deriva dalla combinatoria del diagramma a un loop per la funzione a 4 punti: $1/2$ per la simmetria delle linee interne e un fattore $3$ per i canali topologici. La funzione $\beta(\tilde{g})$ è definita come $\tilde{g} \frac{\partial \lambda}{\partial \tilde{g}}$. Calcolando la derivata dell'espressione sopra:
+
+\begin{equation}
+\beta(\tilde{g}) \approx \tilde{g} - 3 \frac{\Gamma(2 - \frac{D}{2})}{(4\pi)^{D/2}} \tilde{g}^2
+\end{equation}
+
+\noindent Ora dobbiamo calcolare la funzione $\bar{\beta}(\lambda)$ esprimendo tutto in termini di $\lambda$. Invertiamo la relazione $\lambda(\tilde{g})$ per ottenere $\tilde{g} \approx \lambda + \frac{3}{2} c \lambda^2$ (dove $c$ è la costante geometrica) e sostituiamo.
+Tenendo solo i termini fino all'ordine $\lambda^2$, otteniamo la forma finale della funzione beta rinormalizzata:
+
+\begin{tcolorbox}[colback=colorA!10, colframe=colorB!60!colorA,  title=\textbf{Funzione $\bar{\beta}(\lambda)$}]
+\begin{equation}
+\bar{\beta}(\lambda) \simeq \lambda \left[ 1 - \frac{3}{2} \frac{\Gamma(2 - \frac{D}{2})}{(4\pi)^{D/2}} \lambda \right]
+\end{equation}
+\end{tcolorbox}
+
+
+\noindent Il punto fisso critico si trova imponendo $\bar{\beta}(\lambda_c) = 0$ (escludendo la soluzione banale $\lambda=0$):
+
+\begin{equation}
+1 - \frac{3}{2} \frac{\Gamma(2 - \frac{D}{2})}{(4\pi)^{D/2}} \lambda_c = 0 \quad \Longrightarrow \quad \lambda_c = \frac{2}{3} \frac{(4\pi)^{D/2}}{\Gamma(2 - \frac{D}{2})}
+\end{equation}
+
+\noindent Utilizzando la proprietà $\Gamma(2 - D/2) = \frac{\Gamma(3 - D/2)}{2 - D/2}$, possiamo riscrivere $\lambda_c$ in una forma utile per la sostituzione successiva:
+
+\begin{tcolorbox}[colback=colorA!10, colframe=colorB!60!colorA,  title=\textbf{Punto fisso $\lambda_c$}]
+\begin{equation}
+\lambda_c = \frac{1}{3} \frac{(4\pi)^{D/2} (4-D)}{\Gamma(3 - \frac{D}{2})}
+\end{equation}
+\end{tcolorbox}
+
+\subsection{Calcolo dell'Esponente Critico}
+
+Ora possiamo calcolare il valore di $A$ al punto critico, inserendo $\lambda_c$ nell'espressione di $\bar{A}(\lambda)$ trovata precedentemente:
+
+\begin{equation}
+\bar{A}(\lambda_c) = -\frac{1}{2} \frac{\Gamma(3 - \frac{D}{2})}{(4\pi)^{D/2}} \left[ \frac{1}{3} \frac{(4\pi)^{D/2} (4-D)}{\Gamma(3 - \frac{D}{2})} \right]
+\end{equation}
+
+\noindent Semplificando i termini (la Gamma e i fattori $\pi$ si cancellano), otteniamo:
+
+\begin{equation}
+\bar{A}(\lambda_c) = -\frac{1}{2} \cdot \frac{1}{3} (4-D) = - \frac{4-D}{6}
+\end{equation}
+
+\noindent Dalla teoria generale del gruppo di rinormalizzazione, sappiamo che questo valore è legato all'esponente critico $\nu$ dalla relazione $\bar{A}(\lambda_c) = \frac{1}{2\nu} - 1$. Pertanto:
+
+\begin{equation}
+\frac{1}{2\nu} = 1 - \frac{4-D}{6} 
+\end{equation}
+
+\begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Esponente Critico}]
+\begin{equation}
+    \nu_{1 \, loop} = \frac{1}{2} \, \frac{1}{1 -  \frac{4-D}{6}} \quad \quad \quad \quad \text{, per 
+ } D\leq 4
+\end{equation}
+\end{tcolorbox}
+
+\subsubsection{Analisi del Risultato e Confronto con gli Esperimenti}
+
+Analizziamo il risultato in diverse dimensioni $D$:
+
+\begin{itemize}
+    \item Per $\mathbf{D > 4}$: L'esponente si riduce a $\nu = 1/2$. Questo \textbf{concorda con il risultato di Campo Medio e quello Gaussiano}. Per dimensioni superiori a 4, il punto fisso stabile è quello gaussiano ($\lambda=0$).
+    \item Per $\mathbf{D = 3}$: Sostituendo $D=3$ nella formula:
+    \begin{equation}
+    \nu_{1-loop} = \frac{1}{2} \frac{1}{1 - 1/6} = \frac{1}{2} \frac{1}{5/6} = \frac{3}{5} = 0.6
+    \end{equation}
+    Il valore sperimentale misurato è $\nu_{\text{exp}} \approx 0.63$. Il risultato a un loop è sorprendentemente vicino alla realtà (il calcolo a due loop fornisce esattamente 0.63). Questo è uno dei grandi successi del RG: predire osservabili fisiche misurabili (come l'esponente della divergenza della suscettività magnetica) partendo da principi primi.
+    \item Per $\mathbf{D = 2}$: La formula dà $\nu = \frac{1}{2} \frac{1}{1 - 1/3} = 0.75$. Sappiamo dalla soluzione esatta del modello di Ising 2D (Onsager) che $\nu = 1$. \textbf{L'approssimazione a un loop è meno accurata in bassa dimensione.}
+\end{itemize}
+
+\section{Gruppo di Rinormalizzazione nello Spazio Reale}
+
+Passiamo ora a un approccio diverso alla rinormalizzazione: il \textbf{Real Space Renormalization Group}.
+Fino ad ora abbiamo lavorato in una teoria continua (spazio dei momenti). L'approccio nello spazio reale è più "ingenuo" ma fisicamente intuitivo.
+
+L'idea fondamentale è il \textit{coarse graining} (sfocatura): se siamo interessati a fenomeni su scale dell'ordine di chilometri (o comunque $\gg$ spazio reticolare), i dettagli microscopici non dovrebbero importare.
+La domanda è: come eliminare i gradi di libertà superflui su piccola scala mantenendo la fisica a grande scala?
+
+\noindent Questo approccio evidenzia il concetto di \textbf{Universalità}: vicino al punto critico, sistemi microscopicamente molto diversi (es. reticolo quadrato vs reticolo triangolare) mostrano lo stesso comportamento macroscopico (stessi esponenti critici), anche se dettagli non universali come la temperatura critica $T_c$ possono differire.
+
+\subsection{Comportamento di Scaling del Sistema}
+
+Prima di addentrarci nei dettagli tecnici del RG nello spazio reale, introduciamo l'idea di \textbf{Scaling}. È un approccio fenomenologico simile alla relazione tra Termodinamica e Meccanica Statistica: la Termodinamica descrive la struttura matematica delle grandezze senza spiegarne il "perché" microscopico, compito che spetta alla Meccanica Statistica.
+
+Qui faremo lo stesso: assumeremo che la lunghezza di correlazione diverga e ne dedurremo le conseguenze, senza conoscere l'Hamiltoniana specifica.
+
+\subsubsection{Ipotesi di Scaling}
+
+Definiamo il parametro ridotto $\theta = \frac{T - T_c}{T_c}$ (o analogamente in termini di massa $\mu$).
+Le scale di lunghezza fondamentali sono due:
+\begin{enumerate}
+    \item $\xi$: Lunghezza di correlazione (dimensione tipica delle "droplet" di spin allineati).
+    \item $a$: Passo reticolare (scala microscopica o cutoff dell'impulso).
+\end{enumerate}
+
+L'ipotesi fondamentale è che ci mettiamo nella situazione in cui:
+\begin{equation}
+\xi \gg a
+\end{equation}
+In questo limite, e per $a \to 0$ (limite continuo/critico), la fisica non deve dipendere da $a$.
+
+\subsection{Funzioni di Correlazione e Leggi di Potenza}
+
+Consideriamo la funzione di correlazione $G(r)$ per un campo scalare, dove $r = |\vec{x}|$.
+Assumiamo che il rapporto tra funzioni di correlazione a distanze diverse dipenda solo dai rapporti delle distanze e dal passo reticolare:
+\begin{equation}
+\frac{G(r_1)}{G(r_2)} = \gamma\left(\frac{r_1}{r_2}, \frac{r_1}{a}\right)
+\end{equation}
+
+\noindent Nel limite critico $a \to 0$ (con $r_1, r_2 \gg a$), la dipendenza da $a$ sparisce:
+\begin{equation}
+\frac{G(r_1)}{G(r_2)} \approx \gamma\left(\frac{r_1}{r_2}\right)
+\end{equation}
+Questa struttura implica una proprietà di omogeneità. Se consideriamo tre distanze $r_1, r_2, r_3$, deve valere la relazione di consistenza:
+\begin{equation}
+\frac{G(r_3)}{G(r_1)} = \frac{G(r_3)}{G(r_2)} \frac{G(r_2)}{G(r_1)} \quad \Longrightarrow \quad \gamma\left(\frac{r_3}{r_1}\right) = \gamma\left(\frac{r_3}{r_2}\right) \gamma\left(\frac{r_2}{r_1}\right)
+\end{equation}
+L'unica funzione matematica che soddisfa questa proprietà (assenza di una scala di lunghezza intrinseca) è la \textbf{Legge di Potenza}. Non sono ammesse funzioni esponenziali, poiché richiederebbero una scala caratteristica.
+
+Abbiamo quindi dimostrato, basandoci solo sull'ipotesi di invarianza di scala, che al punto critico la funzione di correlazione deve comportarsi come:
+\begin{equation}
+G(r) \sim \frac{1}{r^{D-2+\eta}}
+\end{equation}
+dove abbiamo introdotto l'esponente $\eta$.
+
+\subsubsection{Dimensione Anomala $\eta$}
+L'esponente $\eta$ è detto \textbf{dimensione anomala}.
+\begin{itemize}
+    \item In teoria di Campo Medio: $\eta = 0$.
+    \item Se $\eta \neq 0$, la teoria è scale-invariant ma non banale (interagente/non Mean Field). Misura quanto la teoria si discosta dal comportamento di campo medio.
+\end{itemize}
+
