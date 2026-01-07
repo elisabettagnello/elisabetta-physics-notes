@@ -41,9 +41,8 @@ card_template = """
 def get_icon_for_title(title):
     t = title.lower()
     if "bio" in t or "neur" in t: return ICONS["open_book"]
-    elif "critical" in t or "phenomena" in t: return ICONS["stack_books"]
     elif "disordered" in t or "spin" in t or "glass" in t: return ICONS["ruler"]
-    elif "lab" in t or "micro" in t: return ICONS["closed_book"]
+    elif "Lab" in t or "micro" in t: return ICONS["closed_book"]
     elif "stat" in t or "mech" in t or "non" in t: return ICONS["atom"]
     else: return ICONS["closed_book"]
 
