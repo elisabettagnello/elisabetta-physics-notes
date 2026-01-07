@@ -43,7 +43,6 @@ def get_icon_for_title(title):
     if "bio" in t or "neur" in t: return ICONS["open_book"]
     elif "disordered" in t or "spin" in t or "glass" in t: return ICONS["ruler"]
     elif "Lab" in t or "micro" in t: return ICONS["closed_book"]
-    elif "stat" in t or "mech" in t or "non" in t: return ICONS["atom"]
     else: return ICONS["closed_book"]
 
 def get_file_size(file_path):
