@@ -47,12 +47,11 @@ Pertanto, assumiamo che $x$ si connetta a $y_1$ e non dividiamo più per $2!$.
 
 \hfill
 
-\noindent Esistono due topologie connesse distinte per la funzione a due punti all'ordine $g^2$: il diagramma "Cactus" e il diagramma "Hamburger".
+\noindent Esistono tre topologie connesse distinte per la funzione a due punti all'ordine $g^2$: il diagramma "Cactus", il diagramma "Hamburger" e il diagramma a doppia bolla.
 
-\subsubsection{Il Diagramma Cactus (Double Tadpole)}
+\subsubsection{Il Diagramma Doppia Bolla (Double Tadpole)}
 
-
-Questo diagramma è "riducibile a una particella" (one-particle reducible), ovvero può essere separato in due parti disconnesse tagliando una singola linea interna.
+Questo diagramma è costituito da due "tadpole" separati lungo la linea di propagazione principale. È "riducibile a una particella" (1PR).
 
 \begin{itemize}
     \item \textbf{Struttura:}
@@ -63,7 +62,6 @@ Questo diagramma è "riducibile a una particella" (one-particle reducible), ovve
         multiplicity/.style={font=\small\bfseries, color=red!70!black}
     ]
     \begin{scope}[shift={(0,0)}]
-        
         
         % Linea di base
         \draw[thick] (0,0) -- (3.5,0);
@@ -81,7 +79,6 @@ Questo diagramma è "riducibile a una particella" (one-particle reducible), ovve
         % Molteplicità
         \node[multiplicity] at (0, 0.5) {$\mathbf{144 \times}$};
         
-     
     \end{scope}
     \end{tikzpicture}
     \end{center}
@@ -98,10 +95,65 @@ Questo diagramma è "riducibile a una particella" (one-particle reducible), ovve
     \item \textbf{Molteplicità Totale:} $4 \times 4 \times 3 \times 3 \times 1 = \mathbf{144}$.
 \end{itemize}
 
+\subsubsection{Il Diagramma Cactus (Nested Tadpole)}
+
+Questo diagramma rappresenta una correzione annidata: un tadpole che "cresce" sopra un altro tadpole. Anche questo diagramma è 1PR, ma ha una topologia distinta rispetto alla catena lineare.
+
+\begin{itemize}
+    \item \textbf{Struttura:}
+       \begin{center}
+    \begin{tikzpicture}[scale=1.5, 
+        vertex/.style={circle, fill=black, inner sep=1.5pt},
+        label_node/.style={font=\small},
+        multiplicity/.style={font=\small\bfseries, color=red!70!black}
+    ]
+    \begin{scope}[shift={(0,0)}]
+        
+        % Linea di base
+        \draw[thick] (0,0) -- (3.0,0);
+        
+        % Vertici Base
+        \node[vertex, label=below:$x$] (x) at (0,0) {};
+        \node[vertex, label=below:$y_1$] (y1) at (1.5,0) {};
+        \node[vertex, label=below:$0$] (z) at (3.0,0) {};
+        
+        % Vertice Superiore (Annidato)
+        \node[vertex, label=right:$y_2$] (y2) at (1.5, 1.2) {};
+        
+        % Bolla tra y1 e y2
+        \draw[thick] (y1) to[bend left=45] (y2);
+        \draw[thick] (y1) to[bend right=45] (y2);
+        
+        % Loop (Cappello) su y2
+        \draw[thick] (y2) .. controls (1.0, 2.0) and (2.0, 2.0) .. (y2);
+        
+        % Molteplicità
+        \node[multiplicity] at (0, 0.5) {$\mathbf{144 \times}$};
+        
+    \end{scope}
+    \end{tikzpicture}
+    \end{center}
+    
+    \item \textbf{Calcolo della Molteplicità:}
+    \begin{enumerate}
+        \item Connettere $\varphi(x)$ a $y_1$: \textbf{4} modi.
+        \item Connettere $\varphi(0)$ a $y_1$: \textbf{3} modi.
+        \item Connettere $y_1$ a $y_2$ con una doppia linea (bolla):
+            \begin{itemize}
+                \item $y_1$ ha 2 gambe rimaste: \textbf{1} modo per usarle entrambe.
+                \item $y_2$ ha 4 gambe: scegliamo 2 gambe in $\binom{4}{2} = 6$ modi.
+                \item Ci sono \textbf{2} modi per connettere le coppie di linee.
+                \item Totale parziale: $1 \times 6 \times 2 = \mathbf{12}$ modi.
+            \end{itemize}
+        \item Formare un loop su $y_2$ con le 2 gambe rimaste: \textbf{1} modo.
+    \end{enumerate}
+    
+    \item \textbf{Molteplicità Totale:} $4 \times 3 \times 12 \times 1 = \mathbf{144}$.
+\end{itemize}
+
 \subsubsection{Il Diagramma Hamburger (Setting Sun)}
 
-
-Questo diagramma connette $y_1$ e $y_2$ tramite tre linee interne. Non può essere separato tagliando una singola linea (è irriducibile).
+Questo diagramma connette $y_1$ e $y_2$ tramite tre linee interne. Non può essere separato tagliando una singola linea (è irriducibile, 1PI).
 
 \begin{itemize}
     \item \textbf{Struttura:} 
@@ -112,7 +164,7 @@ Questo diagramma connette $y_1$ e $y_2$ tramite tre linee interne. Non può esse
         multiplicity/.style={font=\small\bfseries, color=red!70!black}
     ]
     \begin{scope}[shift={(0,0)}]
-      
+       
         % Gambe esterne
         \draw[thick] (0,0) -- (1,0); 
         \draw[thick] (2.5,0) -- (3.5,0); 
@@ -130,8 +182,6 @@ Questo diagramma connette $y_1$ e $y_2$ tramite tre linee interne. Non può esse
         
         % Molteplicità
         \node[multiplicity] at (0, 0.5) {$\mathbf{96 \times}$};
-        
-        
         
     \end{scope}
     \end{tikzpicture}
@@ -166,18 +216,25 @@ Dove:
 
 \subsection*{Applicazione della Regola}
 \begin{itemize}
-    \item \textbf{Diagramma Cactus:}
+    \item \textbf{Diagramma Doppia Bolla (Double Tadpole):}
     \begin{itemize}
-        \item Fattore base: $24^2$ (due vertici).
-        \item Fattore di simmetria $S$: Ogni loop tadpole ha una simmetria di 2 (possiamo scambiare i due estremi della linea che forma il loop). Avendo due tadpole, $S = 2 \times 2 = 4$.
-        \item Risultato: $\frac{24 \times 24}{4} = 144$. Coincide con il conteggio delle contrazioni.
+        \item Fattore base: $24^2 = 576$.
+        \item Fattore di simmetria $S$: Ogni loop tadpole ha una simmetria di 2. Avendo due tadpole distinti, $S = 2 \times 2 = 4$.
+        \item Risultato: $\frac{576}{4} = 144$.
+    \end{itemize}
+
+    \item \textbf{Diagramma Cactus (Nested):}
+    \begin{itemize}
+        \item Fattore base: $24^2 = 576$.
+        \item Fattore di simmetria $S$: Ci sono 2 linee equivalenti che formano la bolla tra $y_1$ e $y_2$ ($S_{bolla}=2$). C'è un loop su $y_2$ ($S_{loop}=2$). I vertici $y_1$ e $y_2$ sono topologicamente distinti. Totale $S = 2 \times 2 = 4$.
+        \item Risultato: $\frac{576}{4} = 144$.
     \end{itemize}
     
     \item \textbf{Diagramma Hamburger:}
     \begin{itemize}
-        \item Fattore base: $24^2$.
-        \item Fattore di simmetria $S$: Ci sono 3 linee parallele tra $y_1$ e $y_2$. Possiamo permutare queste linee in $3! = 6$ modi senza cambiare la topologia.
-        \item Risultato: $\frac{24 \times 24}{6} = 96$. Coincide con il conteggio delle contrazioni.
+        \item Fattore base: $24^2 = 576$.
+        \item Fattore di simmetria $S$: Ci sono 3 linee parallele tra $y_1$ e $y_2$. Possiamo permutare queste linee in $3! = 6$ modi.
+        \item Risultato: $\frac{576}{6} = 96$.
     \end{itemize}
 \end{itemize}
 
@@ -196,4 +253,12 @@ In 0-D, l'integrale funzionale si riduce a un integrale standard su una variabil
     \langle z^2 \rangle = \frac{\int dz \, z^2 \, e^{-\frac{z^2}{2} - \frac{g}{24}z^4}}{\int dz \, e^{-\frac{z^2}{2} - \frac{g}{24}z^4}}
 \end{equation}
 
-\noindent Espandendo l'esponenziale e calcolando i momenti usando l'integrazione Gaussiana ($\langle z^{2n} \rangle_0 = (2n-1)!!$), possiamo verificare che la somma dei pesi dei diagrammi ($144 + 96 + \dots$) corrisponda esattamente ai coefficienti dell'espansione esatta.
+\noindent Espandendo l'esponenziale e calcolando i momenti usando l'integrazione Gaussiana
+\begin{equation}
+    \langle z^{2n} \rangle_0 = (2n-1)!!
+\end{equation}
+possiamo verificare che la somma dei pesi dei tre diagrammi connessi 
+\begin{equation}
+    144_{\text{doppia bolla}} + 144_{\text{cactus}} + 96_{\text{hamburger}} = 384
+\end{equation}
+corrisponda esattamente al coefficiente dell'espansione esatta all'ordine $g^2$.
