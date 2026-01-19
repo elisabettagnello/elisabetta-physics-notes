@@ -38,13 +38,13 @@ Il fattore $1/2$ deriva dalla molteplicità del diagramma (simmetria delle linee
 Definiamo la massa quadrata rinormalizzata come $m^2 = \mu - \Sigma$. Pertanto, la massa nuda quadrata $\mu$ si esprime come:
 
 \begin{equation}
-\mu = m^2 + \Sigma = m^2 + \frac{1}{2} g \int \frac{d^D q}{(2\pi)^D} \frac{1}{q^2 + m^2}
+\mu = m^2 + \Sigma = m^2 - \frac{1}{2} g \int \frac{d^D q}{(2\pi)^D} \frac{1}{q^2 + m^2}
 \end{equation}
 
 Utilizzando i parametri di Feynman per svolgere l'integrale (risultato ottenuto nelle lezioni precedenti), otteniamo:
 
 \begin{equation}
-\mu = m^2 + \frac{1}{2} \frac{g}{(4\pi)^{D/2}} (m^2)^{\frac{D}{2}-1} \Gamma\left(1 - \frac{D}{2}\right)
+\mu = m^2 - \frac{1}{2} \frac{g}{(4\pi)^{D/2}} (m^2)^{\frac{D}{2}-1} \Gamma\left(1 - \frac{D}{2}\right)
 \end{equation}
 
 \subsection{Calcolo della Funzione A}
@@ -52,7 +52,7 @@ Utilizzando i parametri di Feynman per svolgere l'integrale (risultato ottenuto 
 Il nostro obiettivo è calcolare $A$, che dipende dalla derivata di $\mu$ rispetto a $m^2$. Deriviamo l'espressione precedente rispetto a $m^2$:
 
 \begin{equation}
-\frac{d\mu}{dm^2} = 1 + \frac{1}{2} \frac{g}{(4\pi)^{D/2}} \Gamma\left(1 - \frac{D}{2}\right) \left(\frac{D}{2}-1\right) (m^2)^{\frac{D}{2}-2}
+\frac{d\mu}{dm^2} = 1 - \frac{1}{2} \frac{g}{(4\pi)^{D/2}} \Gamma\left(1 - \frac{D}{2}\right) \left(\frac{D}{2}-1\right) (m^2)^{\frac{D}{2}-2}
 \end{equation}
 
 \noindent Notiamo che $\Gamma(1 - D/2) \cdot (D/2 - 1) = -\Gamma(1 - D/2) \cdot (1 - D/2)$. Utilizzando la proprietà della funzione gamma $z\Gamma(z) = \Gamma(z+1)$, possiamo semplificare. 
