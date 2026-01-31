@@ -1,0 +1,30 @@
+% File: lezione_01.tex
+\chapter{Lezione 1}
+\label{chap:lezione_01} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 01/10/2025}
+\end{flushright}
+
+
+\section{Invarianza di Scala}
+
+Uno dei concetti fondamentali nella fisica dei sistemi complessi è l'invarianza di scala. Questa proprietà descrive sistemi le cui caratteristiche statistiche non cambiano sotto una trasformazione di scala, ovvero un ingrandimento o una riduzione (zoom).
+
+Consideriamo una trasformazione di scala sulla variabile $\epsilon$:
+\begin{equation}
+\epsilon \rightarrow \epsilon' = r\epsilon
+\end{equation}
+dove $r$ è il fattore di scala. Un sistema presenta invarianza di scala se una sua proprietà $S(\epsilon)$ si trasforma come segue:
+\begin{equation}
+S(\epsilon') = S(r\epsilon) = A(r)S(\epsilon)
+\end{equation}
+dove $A(r)$ è una funzione che dipende solo dal fattore di scala $r$ e non dalla scala originale $\epsilon$.
+
+Si può dimostrare matematicamente che l'unica funzione che soddisfa questa relazione è la legge di potenza (power-law):
+\begin{equation}
+S(\epsilon) = a\epsilon^k
+\end{equation}
+dove $a$ e $k$ sono costanti.
+
+Un esempio classico è il problema della misurazione della lunghezza della costa della Bretagna. A seconda della scala di misura (la lunghezza del "righello" utilizzato), la lunghezza totale misurata cambia. Questo perché a scale più piccole si possono cogliere dettagli e anfratti che vengono ignorati a scale più grandi. Se si osserva una foto di una roccia senza alcun riferimento dimensionale, è impossibile determinarne la grandezza reale. Zoomando sull'immagine, si continuano a osservare strutture statisticamente simili a quelle visibili a una scala più grande. L'invarianza di scala è il segnale matematico di questa proprietà.

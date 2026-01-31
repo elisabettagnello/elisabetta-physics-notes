@@ -1,0 +1,535 @@
+\chapter{Lezione 6}
+\label{chap:lezione_06} 
+
+\begin{flushright}
+\textit{Data: 16/10/2025}
+\end{flushright}
+
+\section{Il Modello di Yule-Simon per Generi e Specie}
+
+In questa sezione analizziamo il modello di Yule-Simon (1925) nella sua accezione biologica originale, distinta dall'applicazione alla Legge di Zipf per i testi vista precedentemente. L'obiettivo del modello, presentato originariamente in un articolo su \textit{Nature} del 1922 relativo alla flora della Nuova Zelanda, è spiegare la distribuzione statistica di generi e specie.
+
+\subsubsection{Definizione e Dinamica del Modello}
+Consideriamo un sistema in evoluzione in cui:
+\begin{itemize}
+    \item Il \textbf{tempo} $n$ è scandito dal numero di \textit{Generi} presenti nel sistema.
+    \item Ad ogni passo temporale (da $n$ a $n+1$), avvengono due eventi deterministici:
+    \begin{enumerate}
+        \item Viene introdotto esattamente \textbf{1 nuovo Genere} (innovazione tassonomica).
+        \item Vengono introdotte \textbf{$m$ nuove Specie}.
+    \end{enumerate}
+\end{itemize}
+
+\noindent Questo è un \textbf{Quenched Model}: il tasso di innovazione non è probabilistico ma strutturale ($p = \frac{1}{m+1}$ costante).
+L'elemento stocastico risiede nell'assegnazione delle $m$ nuove specie ai generi esistenti. Questa assegnazione segue la regola dell'\textit{attaccamento preferenziale} (\textbf{Rich-get-Richer}): la probabilità che un genere $i$ acquisisca una nuova specie è proporzionale al numero di specie $K_i$ che già possiede.
+
+\noindent Sia $N_{tot}(n) = n(m+1)$ il numero totale di specie al tempo $n$. La probabilità $P_i$ di assegnare una nuova specie al genere $i$ è:
+\begin{equation}
+    P_i = \frac{K_i}{\sum_j K_j} = \frac{K_i}{n(m+1)}
+\end{equation}
+Poiché ad ogni step inseriamo $m$ specie, dobbiamo ripetere questo processo $m$ volte. La probabilità totale che il genere $i$ acquisisca una nuova specie nell'intervallo temporale unitario è dunque:
+\begin{equation}
+    \mathbb{P}(K_i \to K_i + 1) \approx m \cdot \frac{K_i}{n(m+1)} = \frac{m}{m+1} \frac{K_i}{n}
+\end{equation}
+
+\subsection{Master Equation}
+Definiamo $P_{k,n}$ come la frazione di generi aventi $k$ specie al tempo $n$. Il numero assoluto di tali generi è $N_{k,n} = n P_{k,n}$.
+Scriviamo la Master Equation che governa l'evoluzione di $N_{k,n}$.
+Per $k > 1$, la variazione del numero di generi con $k$ specie è data dal flusso in entrata (da generi con $k-1$ specie) meno il flusso in uscita (generi con $k$ specie che ne acquisiscono un'altra):
+\begin{equation}
+    (n+1)P_{k,n+1} - n P_{k,n} = \frac{m}{m+1} \left[ (k-1)P_{k-1,n} - k P_{k,n} \right]
+\end{equation}
+A sinistra abbiamo la variazione temporale discreta, a destra i termini di guadagno e perdita.
+Per $k=1$, dobbiamo considerare anche il termine sorgente (il nuovo genere introdotto ad ogni step, che nasce con 1 specie):
+\begin{equation}
+    (n+1)P_{1,n+1} - n P_{1,n} = 1 - \frac{m}{m+1} \cdot 1 \cdot P_{1,n}
+\end{equation}
+Il termine "$1$" rappresenta il nuovo genere; il termine sottrattivo rappresenta i generi con 1 specie che ne acquisiscono una seconda, diventando generi con 2 specie.
+
+\subsection{Soluzione Asintotica}
+Nel limite di tempi lunghi ($n \to \infty$), assumiamo una soluzione stazionaria $P_{k,n} \to P_k$.
+L'equazione per $k=1$ diventa:
+\begin{equation}
+    (m+1)P_1 = m P_1 + 1 - \frac{m}{m+1} P_1
+\end{equation}
+Isoliamo $P_1$ attraverso i seguenti passaggi algebrici:
+\begin{equation}
+    P_1 \left( m+1 - m + \frac{m}{m+1} \right) = 1
+\end{equation}
+\begin{equation}
+    P_1 \left( 1 + \frac{m}{m+1} \right) = 1 \implies P_1 \left( \frac{2m+1}{m+1} \right) = 1
+\end{equation}
+Da cui otteniamo il risultato fondamentale per i generi con una sola specie:
+\begin{equation}
+    P_1 = \frac{m+1}{2m+1}
+\end{equation}
+Per il caso generico $k$, l'equazione stazionaria è:
+\begin{equation}
+    P_k = \frac{m}{m+1} \left[ (k-1)P_{k-1} - k P_k \right]
+\end{equation}
+Risolviamo per $P_k$:
+\begin{equation}
+    P_k \left( 1 + \frac{mk}{m+1} \right) = \frac{m}{m+1}(k-1)P_{k-1}
+\end{equation}
+Sviluppiamo il termine tra parentesi a sinistra:
+\begin{equation}
+    1 + \frac{mk}{m+1} = \frac{m+1+mk}{m+1} = \frac{m(1 + \frac{1}{m} + k)}{m+1}
+\end{equation}
+Sostituendo nell'equazione:
+\begin{equation}
+    P_k \frac{m(k + 1 + 1/m)}{m+1} = \frac{m(k-1)}{m+1} P_{k-1}
+\end{equation}
+Semplificando il fattore $\frac{m}{m+1}$ da entrambi i lati, otteniamo la relazione ricorsiva pulita:
+\begin{equation}
+    P_k = \frac{k-1}{k + 1 + \frac{1}{m}} P_{k-1}
+\end{equation}
+
+\subsubsection{Svolgimento della Ricorsione e Funzione Beta}
+Iterando la relazione ricorsiva fino a $P_1$, otteniamo:
+\begin{equation}
+    P_k = P_1 \prod_{j=2}^{k} \frac{j-1}{j + 1 + \frac{1}{m}} = P_1 \frac{(k-1)!}{(k+1+\frac{1}{m})(k+\frac{1}{m})\cdots(3+\frac{1}{m})}
+\end{equation}
+Per esprimere questo prodotto in termini di funzioni Gamma, moltiplichiamo e dividiamo per completare i termini mancanti nel denominatore, specificamente $\Gamma(2 + \frac{1}{m})$:
+\begin{equation}
+    P_k = P_1 \frac{\Gamma(k) \Gamma(2+\frac{1}{m})}{\Gamma(k + 2 + \frac{1}{m})}
+\end{equation}
+Ricordando che $P_1 = \frac{m+1}{2m+1}$, che possiamo riscrivere manipolando i termini $\Gamma$, si giunge alla forma compatta in termini della funzione Beta di Eulero $B(a,b) = \frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}$:
+\begin{equation}
+    P_k \propto B\left(k, 2 + \frac{1}{m}\right)
+\end{equation}
+Utilizzando l'approssimazione di Stirling per $k$ grandi ($B(k, \beta) \sim k^{-\beta}$), otteniamo il comportamento asintotico a legge di potenza:
+\begin{equation}
+    P_k \sim k^{-\left(2 + \frac{1}{m}\right)}
+\end{equation}
+L'esponente della distribuzione è quindi $\beta = 2 + \frac{1}{m} = 1 + \frac{1}{1-p}$, confermando il risultato già ottenuto in precedenza.
+
+\section{Random Walks}
+
+Perché analizzare nuovamente i Random Walks (RW) in un corso di Sistemi Complessi, dato che sono stati trattati in corsi precedenti? La motivazione risiede nella ricerca di meccanismi universali in grado di generare \textbf{leggi di potenza} (power laws). Abbiamo visto come il modello di Yule-Simon generi tali leggi attraverso meccanismi di crescita; vedremo ora come anche un semplice Random Walk, pur privo di correlazioni complesse o memoria a lungo termine, produca naturalmente leggi di potenza nella distribuzione dei tempi di primo ritorno.
+
+\subsection{Il Modello 1D a Tempo Discreto}
+Consideriamo un camminatore aleatorio unidimensionale.
+\begin{itemize}
+    \item La variabile $x(t)$ indica la posizione al tempo $t$.
+    \item Si parte dall'origine: $x(0) = 0$.
+    \item Ad ogni passo temporale, la posizione varia di $\Delta x = \pm 1$ con probabilità simmetrica $p = q = 1/2$.
+\end{itemize}
+
+Una proprietà fondamentale della topologia di questo cammino è che, partendo dall'origine, ogni ritorno all'origine ($x(t)=0$) deve necessariamente avvenire a un tempo \textbf{pari} ($t=2m$). Infatti, ogni passo a destra deve essere compensato da un passo a sinistra per tornare a zero, implicando che il numero totale di passi deve essere la somma di due numeri uguali, e quindi pari. Definiamo due quantità probabilistiche distinte:
+
+\begin{enumerate}
+    \item \textbf{Probabilità di Ritorno ($u_{2n}$):}
+    Indichiamo con $u_{2n}$ la probabilità che il camminatore si trovi all'origine al tempo $t=2n$.
+    Questa definizione non specifica se sia la prima volta che il camminatore torna, o se vi siano stati ritorni intermedi.
+    Per convenzione e coerenza logica, definiamo:
+    \begin{equation}
+        u_0 := 1
+    \end{equation}
+    poiché al tempo $t=0$ il camminatore è certamente nell'origine.
+
+    \item \textbf{Probabilità di Primo Ritorno ($f_{2n}$):}
+    Indichiamo con $f_{2n}$ la probabilità che il camminatore ritorni all'origine per la \textit{prima volta assoluta} esattamente al tempo $t=2n$.
+    Evidentemente, per $t=0$, non si può parlare di "ritorno", quindi:
+    \begin{equation}
+        f_0 := 0
+    \end{equation}
+\end{enumerate}
+
+\subsection{Relazione Ricorsiva tra $u_{2n}$ e $f_{2n}$}
+
+Esiste una relazione causale stretta tra le probabilità di ritorno generico e quelle di primo ritorno. Affinché il camminatore si trovi all'origine al tempo $t=2n$, deve essersi verificato il \textbf{primo ritorno} in un qualche istante intermedio $t=2m$ (con $1 \le m \le n$), e successivamente il camminatore deve aver compiuto un percorso che, partendo da zero, lo ha riportato a zero dopo l'intervallo di tempo rimanente $2n - 2m$.
+
+\noindent Poiché gli eventi di "primo ritorno al tempo $2m$" sono mutuamente esclusivi per diversi valori di $m$, possiamo scrivere la probabilità totale $u_{2n}$ come somma delle probabilità congiunte:
+\begin{equation}
+    u_{2n} = \sum_{m=1}^{n} \text{Prob}(\text{Primo ritorno a } 2m) \times \text{Prob}(\text{Ritorno a } 2n | \text{Primo ritorno a } 2m)
+\end{equation}
+Il secondo termine, data l'invarianza temporale del processo (il cammino "ricomincia" ogni volta che tocca lo zero), è semplicemente la probabilità di un ritorno (qualsiasi) in un intervallo di durata $2n-2m$. Otteniamo quindi l'equazione di convoluzione discreta:
+\begin{equation} \label{eq:convoluzione}
+    u_{2n} = \sum_{m=1}^{n} f_{2m} u_{2n-2m} \quad \quad \quad  \text{, per } n \ge 1
+\end{equation}
+
+\begin{itemize}
+    \item Se $m=n$, il termine nella somma è $f_{2n} u_0 = f_{2n} \cdot 1$. Questo rappresenta il caso in cui il ritorno a $2n$ è esso stesso il primo ritorno.
+    \item Se $m < n$, stiamo considerando traiettorie che hanno toccato lo zero per la prima volta a $2m$ e poi, potenzialmente, altre volte prima di arrivare a $2n$.
+\end{itemize}
+
+\subsection{Metodo delle Funzioni Generatrici}
+
+Per risolvere l'equazione ricorsiva (\ref{eq:convoluzione}), che coinvolge una convoluzione, lo strumento matematico più potente è quello delle Funzioni Generatrici. Esse "codificano" l'intera sequenza di probabilità in una serie di potenze.
+Definiamo le seguenti funzioni generatrici nella variabile complessa (o formale) $z$:
+
+\begin{equation}
+    F(z) := \sum_{m=1}^{\infty} f_{2m} z^m
+\end{equation}
+
+\begin{equation}
+    U(z) := \sum_{n=0}^{\infty} u_{2n} z^n
+\end{equation}
+Il nostro obiettivo è trovare una relazione funzionale tra $F(z)$ e $U(z)$ sfruttando la convoluzione.
+
+\subsection{Derivazione della Relazione $U(z) - F(z)$}
+Partiamo dalla definizione di $U(z)$ e separiamo il termine $n=0$ (dove $u_0=1$) dalla somma:
+\begin{equation}
+    U(z) = u_0 + \sum_{n=1}^{\infty} u_{2n} z^n = 1 + \sum_{n=1}^{\infty} u_{2n} z^n
+\end{equation}
+Sostituiamo nell'argomento della somma l'espressione di $u_{2n}$ data dall'equazione (\ref{eq:convoluzione}):
+\begin{equation}
+    U(z) = 1 + \sum_{n=1}^{\infty} \left( \sum_{m=1}^{n} f_{2m} u_{2n-2m} \right) z^n
+\end{equation}
+Possiamo riscrivere $z^n$ come $z^m \cdot z^{n-m}$ per associare le potenze ai rispettivi termini:
+\begin{equation}
+    U(z) = 1 + \sum_{n=1}^{\infty} \sum_{m=1}^{n} (f_{2m} z^m) (u_{2n-2m} z^{n-m})
+\end{equation}
+
+A questo punto dobbiamo invertire l'ordine di sommatoria. Nello spazio bidimensionale $(n, m)$, la doppia somma copre un'area triangolare definita da $1 \le m \le n < \infty$. Possiamo coprire questo triangolo in due modi:
+\begin{enumerate}
+    \item \textbf{Fissando $n$ (fette verticali):} Si somma su $m$ che va da $1$ a $n$. È quello che stiamo facendo ora.
+    \item \textbf{Fissando $m$ (fette orizzontali):} Se fissiamo prima $m$ (che può andare da $1$ a $\infty$), allora $n$ deve partire da $m$ e andare a $\infty$.
+\end{enumerate}
+
+Procediamo con il secondo metodo (scambio delle somme):
+\begin{equation}
+    \sum_{n=1}^{\infty} \sum_{m=1}^{n} [...] = \sum_{m=1}^{\infty} \sum_{n=m}^{\infty} (f_{2m} z^m) (u_{2n-2m} z^{n-m})
+\end{equation}
+Poiché il termine $f_{2m} z^m$ non dipende dall'indice $n$, possiamo portarlo fuori dalla somma interna:
+\begin{equation}
+    = \sum_{m=1}^{\infty} f_{2m} z^m \left[ \sum_{n=m}^{\infty} u_{2n-2m} z^{n-m} \right]
+\end{equation}
+Effettuiamo ora un cambio di variabile nella somma interna. Poniamo $k = n - m$.
+Quando $n=m$, $k=0$. Quando $n \to \infty$, $k \to \infty$.
+\begin{equation}
+    = \sum_{m=1}^{\infty} f_{2m} z^m \left[ \sum_{k=0}^{\infty} u_{2k} z^k \right]
+\end{equation}
+Riconosciamo immediatamente le definizioni delle funzioni generatrici:
+\begin{equation}
+    = F(z) \cdot U(z)
+\end{equation}
+Abbiamo quindi dimostrato la relazione fondamentale:
+\begin{equation}
+    U(z) = 1 + F(z)U(z)
+\end{equation}
+Da cui possiamo isolare la funzione incognita $F(z)$:
+\begin{equation} \label{eq:F_from_U}
+    F(z) = 1 - \frac{1}{U(z)}
+\end{equation}
+Per calcolare la distribuzione dei primi ritorni $F(z)$, dobbiamo quindi prima calcolare esplicitamente $U(z)$.
+
+\subsection{Calcolo Esplicito di $U(z)$}
+
+La probabilità $u_{2n}$ è determinata dal rapporto tra il numero di percorsi favorevoli e il numero totale di percorsi possibili di lunghezza $2n$.
+\begin{itemize}
+    \item \textbf{Totale percorsi:} Ogni passo ha 2 possibilità ($+1$ o $-1$). In $2n$ passi, ci sono $2^{2n}$ configurazioni totali.
+    \item \textbf{Percorsi favorevoli:} Per tornare all'origine, il numero di passi a destra ($n_{\text{up}}$) deve essere uguale al numero di passi a sinistra ($n_{\text{down}}$). Essendo $n_{\text{up}} + n_{\text{down}} = 2n$, deve essere $n_{\text{up}} = n$.
+    Il numero di modi per scegliere quali $n$ passi siano "up" su $2n$ totali è dato dal coefficiente binomiale $\binom{2n}{n}$.
+\end{itemize}
+Quindi:
+\begin{equation}
+    u_{2n} = \binom{2n}{n} \left(\frac{1}{2}\right)^{2n} = \binom{2n}{n} \frac{1}{4^n}
+\end{equation}
+
+\textit{Digressione asintotica:} Usando l'approssimazione di Stirling ($n! \approx \sqrt{2\pi n} (n/e)^n$), si può mostrare che $u_{2n} \sim \frac{1}{\sqrt{\pi n}}$, ovvero decade come una legge di potenza $n^{-1/2}$. Tuttavia, per il calcolo della funzione generatrice useremo l'espressione esatta.
+
+\hfill
+
+\noindent Sostituiamo l'espressione combinatoria nella definizione di $U(z)$:
+\begin{equation}
+    U(z) = \sum_{n=0}^{\infty} \binom{2n}{n} \frac{1}{4^n} z^n = \sum_{n=0}^{\infty} \binom{2n}{n} \left(\frac{z}{4}\right)^n
+\end{equation}
+Vogliamo dimostrare che questa serie converge alla funzione algebrica:
+\begin{equation}
+    U(z) = \frac{1}{\sqrt{1-z}} 
+\end{equation}
+Per fare ciò, dobbiamo espandere in serie di Taylor la funzione $(1-z)^{-1/2}$ utilizzando il Teorema Binomiale Generalizzato (Binomio di Newton esteso agli esponenti reali negativi).
+L'espansione è data da:
+\begin{equation}
+    (1-z)^{-1/2} = \sum_{k=0}^{\infty} \binom{-1/2}{k} (-z)^k = \sum_{k=0}^{\infty} \binom{-1/2}{k} (-1)^k z^k
+\end{equation}
+Dobbiamo procedere passo dopo passo per ricondurre il coefficiente binomiale $\binom{-1/2}{k}$ a una forma nota.
+
+
+\subsubsection{Sviluppo del Coefficiente Binomiale Frazionario}
+Per definizione generalizzata del coefficiente binomiale:
+\begin{equation}
+    \binom{\alpha}{k} = \frac{\alpha (\alpha-1) (\alpha-2) \dots (\alpha-k+1)}{k!}
+\end{equation}
+Ponendo $\alpha = -1/2$, il numeratore diventa un prodotto di $k$ termini:
+\begin{equation}
+    \text{Num} = \left(-\frac{1}{2}\right) \left(-\frac{3}{2}\right) \left(-\frac{5}{2}\right) \dots \left(-\frac{1}{2} - k + 1\right)
+\end{equation}
+L'ultimo termine della produttoria può essere scritto come:
+\begin{equation}
+    -\frac{1}{2} - k + 1 = -\frac{1}{2} - \frac{2k}{2} + \frac{2}{2} = -\frac{2k-1}{2}
+\end{equation}
+Quindi il numeratore è:
+\begin{equation}
+    \text{Num} = \left(-\frac{1}{2}\right) \left(-\frac{3}{2}\right) \left(-\frac{5}{2}\right) \dots \left(-\frac{2k-1}{2}\right)
+\end{equation}
+
+\textbf{Passo 1: Estrazione del segno e delle potenze di 2.}
+Poiché ci sono $k$ termini nel prodotto, possiamo fattorizzare $(-1/2)$ da ciascuno di essi:
+\begin{equation}
+    \text{Num} = \left(-\frac{1}{2}\right)^k \underbrace{\left[ 1 \cdot 3 \cdot 5 \cdot \dots \cdot (2k-1) \right]}_{\text{Prodotto dei numeri dispari}}
+\end{equation}
+
+\textbf{Passo 2: Completamento del Fattoriale.}
+Il termine tra parentesi quadre è il \textit{semifattoriale} dispari $(2k-1)!!$. Non sappiamo calcolarlo direttamente con i fattoriali standard.
+L'artificio matematico necessario consiste nel moltiplicare e dividere per il prodotto di tutti i numeri \textbf{pari} mancanti fino a $2k$:
+\begin{equation}
+    [1 \cdot 3 \cdot \dots \cdot (2k-1)] \cdot \frac{2 \cdot 4 \cdot 6 \cdot \dots \cdot 2k}{2 \cdot 4 \cdot 6 \cdot \dots \cdot 2k}
+\end{equation}
+Il numeratore ora contiene tutti gli interi da 1 a $2k$, quindi diventa semplicemente $(2k)!$
+Analizziamo il denominatore (prodotto dei pari). Possiamo estrarre un fattore 2 da ciascuno dei $k$ termini:
+\begin{equation}
+    \text{Denom Pari} = (2\cdot 1) \cdot (2\cdot 2) \cdot (2\cdot 3) \cdot \dots \cdot (2\cdot k) = 2^k (1 \cdot 2 \cdot 3 \cdot \dots \cdot k) = 2^k k!
+\end{equation}
+
+Sostituendo queste espressioni nel numeratore originale del binomiale:
+\begin{equation}
+    \text{Num del binomiale} = \left(-\frac{1}{2}\right)^k \frac{(2k)!}{2^k k!} = \frac{(-1)^k}{2^k} \frac{(2k)!}{2^k k!} = \frac{(-1)^k}{2^{2k}} \frac{(2k)!}{k!}
+\end{equation}
+
+\textbf{Passo 3: Ricostruzione del coefficiente finale.}
+Ora reinseriamo questo risultato nella definizione completa di $\binom{-1/2}{k}$, dividendo per il $k!$ che era al denominatore fin dall'inizio:
+\begin{equation}
+    \binom{-1/2}{k} = \frac{\text{Num}}{k!} = \frac{1}{k!} \left[ \frac{(-1)^k}{4^k} \frac{(2k)!}{k!} \right] = \frac{(-1)^k}{4^k} \frac{(2k)!}{k! k!}
+\end{equation}
+Riconoscendo che $\frac{(2k)!}{k! k!} = \binom{2k}{k}$, otteniamo il risultato fondamentale:
+\begin{equation}
+    \binom{-1/2}{k} = \left(-\frac{1}{4}\right)^k \binom{2k}{k}
+\end{equation}
+
+\hfill
+
+\noindent Sostituiamo il coefficiente appena calcolato nell'espansione binomiale di $(1-z)^{-1/2}$:
+\begin{equation}
+    (1-z)^{-1/2} = \sum_{k=0}^{\infty} \left[ \left(-\frac{1}{4}\right)^k \binom{2k}{k} \right] (-1)^k z^k
+\end{equation}
+I termini $(-1)^k$ e il segno meno dentro $(-1/4)^k$ si cancellano (poiché $(-1)^{2k} = 1$):
+\begin{equation}
+    = \sum_{k=0}^{\infty} \binom{2k}{k} \left(\frac{1}{4}\right)^k z^k = \sum_{k=0}^{\infty} \binom{2k}{k} \left(\frac{z}{4}\right)^k
+\end{equation}
+Questa serie è identica all'espressione di $U(z)$ che avevamo derivato combinatoricamente.
+Dunque, abbiamo dimostrato che:
+\begin{equation}
+    U(z) = \frac{1}{\sqrt{1-z}}
+\end{equation}
+
+\subsection{Risultato Finale e Legge di Potenza}
+
+Ora possiamo tornare all'equazione (\ref{eq:F_from_U}) per trovare la funzione generatrice dei primi ritorni:
+\begin{equation}
+    F(z) = 1 - \frac{1}{U(z)} = 1 - \sqrt{1-z}
+\end{equation}
+
+Sviluppando in serie di Taylor il termine $\sqrt{1-z}$ (analogamente a quanto fatto prima, ma con esponente $+1/2$), si ottengono i coefficienti $f_{2n}$.
+L'analisi asintotica di questi coefficienti per $n$ grandi mostra che:
+\begin{equation}
+    f_{2n} \sim n^{-3/2}
+\end{equation}
+Abbiamo ottenuto che la distribuzione dei tempi di primo ritorno per un Random Walk 1D decade come una legge di potenza con esponente $\alpha = 3/2$.
+Questa è nota come \textbf{Distribuzione di Levy}.
+Il risultato è significativo perché dimostra che non è necessario introdurre dinamiche complesse o correlazioni strutturate per ottenere comportamenti di scaling (legge di potenza): anche un processo stocastico semplice e privo di memoria come il Random Walk genera naturalmente invarianza di scala nella statistica dei ritorni. Il RW funge quindi da modello fondamentale per i Sistemi Complessi.
+
+\section{Leggi di Potenza in Fenomeni Critici}
+I fenomeni critici rappresentano un esempio paradigmatico dell'emersione di invarianza di scala (\textit{scale invariance}) e leggi di potenza nei sistemi fisici. Un esempio classico è la transizione di fase paramagnetica-ferromagnetica.
+Sia $m$ il parametro d'ordine (magnetizzazione).
+\begin{itemize}
+    \item Per $T > T_c$ (alta temperatura): il sistema è disordinato, $m=0$.
+    \item Per $T < T_c$: emerge un ordine spontaneo, $m \neq 0$.
+\end{itemize}
+In prossimità della temperatura critica $T_c$, le grandezze fisiche non scalano in modo esponenziale, ma secondo leggi di potenza. Ad esempio, la funzione di correlazione spaziale delle fluttuazioni decade come:
+\begin{equation}
+    G(r) \sim \frac{1}{|r|^{d-2+\eta}}
+\end{equation}
+La lunghezza di correlazione $\xi$, che rappresenta la scala caratteristica delle fluttuazioni connesse, diverge al punto critico:
+\begin{equation}
+    \xi \sim |T - T_c|^{-\nu}
+\end{equation}
+Questa divergenza implica che il sistema diventa invariante per cambio di scala: non esiste più una lunghezza caratteristica che domini la fisica del sistema. Kenneth Wilson (Nobel 1982) formalizzò l'approccio per trattare questi sistemi attraverso il \textbf{Gruppo di Rinormalizzazione} (RG).
+
+\subsection{Percolazione e Ipotesi di Scaling}
+
+Analizziamo il fenomeno della percolazione come modello geometrico di transizione di fase. Consideriamo un reticolo quadrato 2D dove ogni sito è occupato con probabilità $p$. Esiste una probabilità critica $p_c$ (per il reticolo quadrato $p_c \approx 0.5927$) sopra la quale compare un cluster gigante che attraversa l'intero sistema.
+Al punto critico $p_c$, la struttura dei cluster è frattale. Cerchiamo di determinare la forma della distribuzione delle dimensioni dei cluster, $P(s)$, definita come la probabilità che un sito scelto a caso appartenga a un cluster di area $s$.
+
+\subsubsection{Analisi Dimensionale e Scaling}
+Cerchiamo una relazione funzionale per $P(s)$. Supponiamo che essa dipenda dalle grandezze caratteristiche del sistema:
+\begin{itemize}
+    \item $s$: dimensione (area) del cluster in esame.
+    \item $a$: area della cella elementare del reticolo (cutoff ultravioletto).
+    \item $\langle s \rangle$: dimensione media dei cluster (che diverge a $p_c$).
+\end{itemize}
+Per costruire una funzione adimensionale, dobbiamo combinare queste grandezze. I possibili gruppi adimensionali sono $s/a$ e $s/\langle s \rangle$.
+Assumiamo una forma di scaling generalizzata:
+\begin{equation}
+    P(s) = C s^{-\tau} f\left( \frac{s}{a}, \frac{a}{\langle s \rangle} \right)
+\end{equation}
+dove $\tau$ è un esponente critico (Fisher exponent) e $f$ è una funzione di scaling universale. La condizione di normalizzazione richiede $\sum_s P(s) = 1$.
+
+
+\noindent Effettuiamo una trasformazione di scala spaziale, riducendo la risoluzione del sistema.
+Riscaliamo l'unità di lunghezza (o area) di un fattore $\lambda$:
+\begin{equation}
+    a \to a' = \frac{a}{\lambda}
+\end{equation}
+Sotto questa trasformazione, ci aspettiamo che la distribuzione mantenga la stessa forma funzionale, ma con parametri rinormalizzati:
+\begin{equation}
+    P(s) = C' s^{-\tau} f\left( \frac{s}{a/\lambda}, \frac{a/\lambda}{\langle s \rangle'} \right) = C' s^{-\tau} f\left( \frac{s \lambda}{a}, \frac{a}{\lambda \langle s \rangle'} \right)
+\end{equation}
+Se osserviamo il sistema a una scala più grossolana (zoom out, quindi cella elementare effettiva più grande), la dimensione media dei cluster misurata in unità del reticolo deve cambiare.
+
+\subsubsection{Condizione di Punto Critico}
+Esiste una sola situazione in cui la dimensione media dei cluster rimane invariante sotto riscalamento (a parte fattori di scala banali), ovvero quando essa è infinita:
+\begin{equation}
+    \langle s \rangle \to \infty
+\end{equation}
+In questo regime (punto critico), il termine $a/\langle s \rangle$ tende a 0 e scompare dalla dipendenza della funzione $f$. La distribuzione diventa una pura legge di potenza (Power Law):
+\begin{equation}
+    P(s) \sim s^{-\tau}
+\end{equation}
+In tutti gli altri casi (fuori dal punto critico), la funzione di cutoff $f$ introduce una scala caratteristica che rompe l'invarianza di scala (spesso un cutoff esponenziale $e^{-s/s_{\xi}}$).
+L'invarianza di scala, espressa dalla relazione $P(\lambda s) = g(\lambda) P(s)$, è possibile solo ed esclusivamente al punto critico.
+
+\subsection{Rinormalizzazione nello Spazio Reale}
+
+Applichiamo ora concretamente il Gruppo di Rinormalizzazione nello spazio reale (\textit{Real Space Renormalization Group}) a un sistema 1D.
+Immaginiamo una catena di siti, ciascuno occupato (nero) con probabilità $p$ e vuoto (bianco) con probabilità $1-p$.
+
+\subsubsection{La Trasformazione $\mathcal{R}_2(p)$}
+Definiamo una trasformazione a blocchi (\textbf{Block Spin transformation}) con fattore di scala $b=2$:
+\begin{enumerate}
+    \item Raggruppiamo i siti a coppie vicine (blocchi di 2).
+    \item Definiamo lo stato del blocco rinormalizzato (super-sito) basandoci su una regola deterministica.
+    \item \textbf{Regola:} Il blocco è considerato "nero" (occupato) se e solo se \textbf{entrambi} i siti costituenti sono neri. Altrimenti è bianco.
+\end{enumerate}
+Questa regola è dettata dalla necessità di preservare la connettività: in 1D, basta un solo sito vuoto per interrompere il flusso.
+La probabilità $p'$ che il blocco rinormalizzato sia nero è data dalla probabilità congiunta che i due siti originali siano neri. Essendo eventi indipendenti:
+\begin{equation}
+    p' = \mathcal{R}_2(p) = p \cdot p = p^2
+\end{equation}
+Questa è la nostra \textbf{Mappa di Rinormalizzazione}.
+
+\subsubsection{Analisi dei Punti Fissi}
+I punti fissi $p^*$ della trasformazione sono le soluzioni di $p^* = \mathcal{R}_2(p^*)$:
+\begin{equation}
+    p^* = (p^*)^2 \implies p^*(1 - p^*) = 0
+\end{equation}
+Abbiamo due punti fissi: $p^* = 0$ e $p^* = 1$.
+
+\noindent Per determinare la natura dei punti fissi, linearizziamo la mappa nell'intorno di $p^*$. Sia $p_n$ il valore alla $n$-esima iterazione e consideriamo una piccola perturbazione $\epsilon_n$:
+\begin{equation}
+    p_n = p^* + \epsilon_n
+\end{equation}
+Sviluppando al primo ordine:
+\begin{equation}
+    p_{n+1} = \mathcal{R}(p_n) \approx \mathcal{R}(p^*) + \mathcal{R}'(p^*) \epsilon_n = p^* + \lambda \epsilon_n
+\end{equation}
+dove l'autovalore di stabilità è $\lambda = \frac{d\mathcal{R}}{dp}\big|_{p^*}$.
+Calcoliamo la derivata:
+\begin{equation}
+    \frac{d}{dp}(p^2) = 2p
+\end{equation}
+Valutiamo la stabilità:
+\begin{itemize}
+    \item Per $p^* = 0$: $\lambda = 2(0) = 0$. Poiché $|\lambda| < 1$, il punto fisso è \textbf{Stabile}. Qualsiasi $p < 1$ tenderà a 0 iterando la mappa.
+    \item Per $p^* = 1$: $\lambda = 2(1) = 2$. Poiché $|\lambda| > 1$, il punto fisso è \textbf{Instabile}.
+\end{itemize}
+
+\textbf{Interpretazione Fisica:} In 1D, il sistema è percolante solo se $p=1$. Qualsiasi imperfezione ($p < 1$), se vista su scala sufficientemente grande (dopo molte rinormalizzazioni), interrompe la connessione. Il sistema fluisce verso la fase disordinata ($p=0$). Il punto $p=1$ è il punto critico "banale".
+
+\subsection{Percolazione 2D}
+
+Consideriamo ora un reticolo triangolare 2D. Questo sistema presenta una transizione di fase non banale.
+Eseguiamo una rinormalizzazione raggruppando 3 siti (un triangolo elementare) in un singolo super-sito (blocco).
+\begin{itemize}
+    \item \textbf{Fattore di scala spaziale ($b$):} La geometria del reticolo implica che se il lato del triangolo piccolo è $1$, il lato del triangolo che connette i centri dei blocchi adiacenti è $\sqrt{3}$. Quindi $b = \sqrt{3}$.
+    \item \textbf{Regola di Rinormalizzazione (Majority Rule):} Definiamo il blocco come "nero" se la maggioranza dei suoi siti (2 o 3) è nera.
+\end{itemize}
+
+Calcoliamo la probabilità rinormalizzata $p'$ sommando le probabilità delle configurazioni che soddisfano la regola.
+Le configurazioni possibili di 3 siti sono $2^3 = 8$. Quelle vincenti sono:
+\begin{enumerate}
+    \item \textbf{3 siti neri:} C'è 1 sola configurazione (N-N-N). Probabilità: $p^3$.
+    \item \textbf{2 siti neri e 1 bianco:} Ci sono $\binom{3}{2} = 3$ configurazioni possibili (N-N-B, N-B-N, B-N-N). Ciascuna ha probabilità $p^2(1-p)$. Il contributo totale è $3p^2(1-p)$.
+\end{enumerate}
+
+La mappa di rinormalizzazione è dunque:
+\begin{equation}
+    p' = R(p) = p^3 + 3p^2(1-p)
+\end{equation}
+Sviluppando l'algebra:
+\begin{equation}
+    p' = p^3 + 3p^2 - 3p^3 = 3p^2 - 2p^3
+\end{equation}
+
+\subsubsection{Punti Fissi e Criticità}
+Risolviamo l'equazione di punto fisso $p = R(p)$:
+\begin{equation}
+    3p^2 - 2p^3 = p
+\end{equation}
+Portiamo tutto a sinistra e fattorizziamo:
+\begin{equation}
+    2p^3 - 3p^2 + p = 0 \implies p(2p^2 - 3p + 1) = 0
+\end{equation}
+Risolvendo l'equazione quadratica $2p^2 - 3p + 1 = 0$:
+\begin{equation}
+    p_{1,2} = \frac{3 \pm \sqrt{9 - 8}}{4} = \frac{3 \pm 1}{4} \implies p \in \{1, \frac{1}{2}\}
+\end{equation}
+I punti fissi sono quindi tre:
+\begin{itemize}
+    \item $p^* = 0$: Fase vuota (Stabile).
+    \item $p^* = 1$: Fase piena (Stabile).
+    \item $p^* = 1/2$: \textbf{Punto Critico $p_c$} (Instabile).
+\end{itemize}
+Questo modello prevede correttamente l'esistenza di una soglia di percolazione non banale a $p_c = 0.5$.
+
+\subsubsection{Esponente Critico}
+Dalla teoria dello scaling, la lunghezza di correlazione diverge vicino al punto critico come:
+\begin{equation}
+    \xi \sim |p - p_c|^{-\nu}
+\end{equation}
+Vogliamo calcolare l'esponente critico $\nu$ usando la mappa RG.
+Consideriamo la trasformazione della lunghezza di correlazione e della "distanza dal punto critico" $\delta p = p - p_c$ sotto un passo di rinormalizzazione.
+
+\begin{enumerate}
+    \item \textbf{Trasformazione spaziale:} Poiché abbiamo riscalato il sistema di un fattore $b = \sqrt{3}$, la nuova lunghezza di correlazione $\xi'$ (misurata nelle nuove unità) sarà più piccola:
+    \begin{equation} \label{eq:xi_scaling}
+        \xi' = \frac{\xi}{b}
+    \end{equation}
+
+    \item \textbf{Trasformazione del parametro:} Linearizziamo la mappa $R(p)$ attorno al punto instabile $p_c = 1/2$:
+    \begin{equation}
+        p' - p_c \approx \Lambda (p - p_c) \quad \text{con} \quad \Lambda = \frac{dR}{dp}\bigg|_{p_c}
+    \end{equation}
+    Calcoliamo la derivata (il Jacobiano 1D):
+    \begin{equation}
+        R'(p) = \frac{d}{dp}(3p^2 - 2p^3) = 6p - 6p^2 = 6p(1-p)
+    \end{equation}
+    Valutata nel punto critico $p_c = 1/2$:
+    \begin{equation}
+        \Lambda = R'(1/2) = 6 \cdot \frac{1}{2} \cdot \left(1 - \frac{1}{2}\right) = 6 \cdot \frac{1}{4} = \frac{3}{2}
+    \end{equation}
+    Quindi, ad ogni passo, la distanza dal punto critico viene amplificata di un fattore $\Lambda = 1.5$.
+\end{enumerate}
+Ora colleghiamo le due trasformazioni usando la definizione di scaling $\xi \sim (\delta p)^{-\nu}$.
+Per il sistema rinormalizzato deve valere la stessa legge:
+\begin{equation}
+    \xi' \sim (\delta p')^{-\nu}
+\end{equation}
+Sostituendo le relazioni trovate ($\xi' = \xi/b$ e $\delta p' = \Lambda \delta p$):
+\begin{equation}
+    \frac{\xi}{b} \sim (\Lambda \delta p)^{-\nu} = \Lambda^{-\nu} (\delta p)^{-\nu}
+\end{equation}
+Poiché $(\delta p)^{-\nu} \sim \xi$, otteniamo:
+\begin{equation}
+    \frac{\xi}{b} = \Lambda^{-\nu} \xi \implies b = \Lambda^{\nu}
+\end{equation}
+Estraendo $\nu$ mediante i logaritmi:
+\begin{equation}
+    \nu = \frac{\ln b}{\ln \Lambda}
+\end{equation}
+Sostituendo i valori numerici del nostro modello ($b=\sqrt{3}$, $\Lambda=3/2$):
+\begin{equation}
+    \nu = \frac{\ln \sqrt{3}}{\ln (3/2)} = \frac{\frac{1}{2} \ln 3}{\ln 3 - \ln 2} \approx 1.35
+\end{equation}
+Il valore esatto dell'esponente $\nu$ per la percolazione 2D è $4/3 \approx 1.33$. Il nostro semplice modello di rinormalizzazione nello spazio reale fornisce un risultato sorprendentemente accurato (errore $\sim 1.5\%$), catturando l'essenza della fisica dei fenomeni critici senza calcoli complessi.

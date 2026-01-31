@@ -1,0 +1,562 @@
+\chapter{Lezione 8}
+\label{chap:lezione_08} 
+
+\begin{flushright}
+\textit{Data: 23/10/2025}
+\end{flushright}
+
+\section{Passeggiate e Cammini}
+
+	\begin{description}
+		\item[Passeggiata (Walk):] Una passeggiata su una rete è una qualsiasi sequenza di nodi tale che ogni coppia consecutiva di nodi sia connessa da un arco (edge). In termini matematici, una passeggiata può visitare lo stesso nodo e lo stesso arco più volte. È la definizione con il minor numero di vincoli possibili.
+		
+		\item[Cammino (Path):] Un cammino è una passeggiata auto-evitante (\textit{self-avoiding}). Non visita mai lo stesso nodo o lo stesso arco due volte.
+	\end{description}
+	
+	\subsection{Passeggiate e Matrice di Adiacenza}
+	La matrice di adiacenza $A$ può essere utilizzata per contare il numero di passeggiate tra i nodi. Adottiamo la convenzione per cui $A_{ij} = 1$ se esiste un collegamento \textbf{da} $j$ \textbf{a} $i$.
+	
+	\begin{itemize}
+		\item \textbf{Lunghezza 2:} Il numero di passeggiate di lunghezza 2 dal nodo $j$ al nodo $i$ è dato dalla somma su tutti i possibili nodi intermedi $k$:
+		$$N_{ij}^{(2)} = \sum_{k=1}^{n} A_{ik} A_{kj} = [A^2]_{ij}$$
+		Questo perché il prodotto $A_{ik}A_{kj}$ è non nullo (uguale a 1) solo se esiste la passeggiata $j \to k \to i$. Si noti che la somma avviene su tutti i $k$, senza imporre che il percorso sia auto-evitante.
+		
+		\item \textbf{Lunghezza 3:} Analogamente, per le passeggiate di lunghezza 3 da $j$ a $i$ (attraverso i passaggi intermedi $l$ e $k$):
+		$$N_{ij}^{(3)} = \sum_{k,l=1}^{n} A_{ik} A_{kl} A_{lj} = [A^3]_{ij}$$
+		
+		\item \textbf{Lunghezza r:} In generale, il numero di passeggiate di lunghezza $r$ da $j$ a $i$ corrisponde all'elemento $(i, j)$ della matrice $A^r$:
+		$$N_{ij}^{(r)} = [A^r]_{ij}$$
+	\end{itemize}
+	
+	\subsection{Cicli}
+	Un ciclo è una passeggiata che inizia e termina nello stesso nodo.
+	\begin{itemize}
+		\item Il numero di cicli di lunghezza $r$ che iniziano e finiscono nel nodo $i$ è dato dall'elemento diagonale:
+		$$N_{ii}^{(r)} = [A^r]_{ii}$$
+		
+		\item Il numero totale di cicli di lunghezza $r$ nell'intera rete è la somma degli elementi diagonali, ovvero la traccia di $A^r$:
+		$$L_r = \sum_{i=1}^{n} N_{ii}^{(r)} = \sum_{i=1}^{n} [A^r]_{ii} = \text{Tr}(A^r)$$
+	\end{itemize}
+	
+	Contare il numero preciso di percorsi o cicli \textit{distinti} non è banale. Il metodo della traccia conta le permutazioni (es. $1 \to 2 \to 3 \to 1$ e $2 \to 3 \to 1 \to 2$) e (per grafi non orientati) le direzioni opposte (es. $1 \to 2 \to 3 \to 1$ e $1 \to 3 \to 2 \to 1$) come passeggiate distinte, anche se tracciano lo stesso ciclo geometrico.
+	
+	\subsection*{Esempi}
+	\subsubsection{Grafo Triangolare Non Orientato}
+	Si consideri un semplice grafo non orientato di 3 nodi, completamente connesso (un triangolo).
+	La matrice di adiacenza $A$ e il suo quadrato $A^2$ sono:
+	$$A = \begin{pmatrix} 0 & 1 & 1 \\ 1 & 0 & 1 \\ 1 & 1 & 0 \end{pmatrix} \quad \implies \quad A^2 = \begin{pmatrix} 2 & 1 & 1 \\ 1 & 2 & 1 \\ 1 & 1 & 2 \end{pmatrix}$$
+	
+	\begin{itemize}
+		\item $A^2_{11} = 2$: Esistono 2 passeggiate di lunghezza 2 dal nodo 1 a se stesso. Queste sono $1 \to 2 \to 1$ e $1 \to 3 \to 1$ 
+		\item $A^2_{12} = 1$: Esiste 1 passeggiata di lunghezza 2 dal nodo 2 al nodo 1. Questa è $2 \to 3 \to 1$.
+	\end{itemize}
+
+	Il cubo di $A$ è:
+	$$A^3 = \begin{pmatrix} 2 & 3 & 3 \\ 3 & 2 & 3 \\ 3 & 3 & 2 \end{pmatrix}$$
+	
+	\begin{itemize}
+		\item $A^3_{11} = 2$: Esistono 2 cicli di lunghezza 3 che iniziano al nodo 1: $1 \to 2 \to 3 \to 1$ e $1 \to 3 \to 2 \to 1$.
+		\item $\text{Tr}(A^3) = 2+2+2 = 6$. Questi sono i 6 cicli totali di lunghezza 3 (2 per ogni nodo di partenza).
+	\end{itemize}
+	
+	\subsubsection{Grafo Triangolare Orientato}
+	Si consideri un ciclo orientato $2 \to 1$, $1 \to 3$, $3 \to 2$.
+	La matrice di adiacenza $A$ (con $A_{ij}$ definita come $j \to i$) e il suo quadrato $A^2$ sono:
+	$$A = \begin{pmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & 0 & 0 \end{pmatrix} \quad \implies \quad A^2 = \begin{pmatrix} 0 & 0 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix}$$
+	
+	\begin{itemize}
+		\item La diagonale di $A^2$ è composta interamente da zeri, il che significa che non esistono loop di lunghezza 2 (il loop più piccolo possibile è di lunghezza 3).
+		\item $A^2_{13} = 1$: Esiste una passeggiata di lunghezza 2 dal nodo 3 al nodo 1, che corrisponde a $3 \to 2 \to 1$
+	\end{itemize}
+	
+	%==================================================================
+	% PARTE 2: LAPLACIANO, RANDOM WALKS
+	%==================================================================
+	
+	\section{La Matrice Laplaciana}
+	Per un \textbf{grafo non orientato e \color{colorF}{non pesato}}, la \textbf{matrice Laplaciana} $L$ è definita come:
+    \begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Matrice Laplaciana}]
+\begin{equation}
+L_{ij} = \begin{cases}
+		k_i & \text{se } i = j \\
+		-1  & \text{se } i \neq j \text{ e } A_{ij} \neq 0 \\
+		0   & \text{altrimenti}
+	\end{cases}
+\end{equation}
+\end{tcolorbox}
+
+	Dove $k_i$ è il grado del nodo $i$.
+	
+	\noindent In forma matriciale, si può scrivere come:
+	\begin{equation}
+	    L=D-A
+	\end{equation}
+	dove $D$ è la \textbf{matrice diagonale dei gradi} ($D_{ii} = k_i$) e $A$ è la \textbf{matrice di adiacenza}. Ciò è equivalente alla definizione compatta:
+    \begin{equation}
+        L_{ij} = \delta_{ij} k_i - A_{ij}
+    \end{equation}
+	
+	
+	\subsection{Il Laplaciano Discreto}
+	Il nome deriva dalla sua relazione con l'operatore Laplaciano continuo $\nabla^2$.
+	In uno spazio continuo 1D, la derivata seconda è $\frac{\partial^2 \phi}{\partial x^2}$. Un'approssimazione alle differenze finite è:
+	\begin{equation}
+	    \frac{\partial^2 \phi}{\partial x^2} \approx [\phi(x+1) - \phi(x)] - [\phi(x) - \phi(x-1)] = \phi(x+1) + \phi(x-1) - 2\phi(x)
+	\end{equation}
+	In generale, l'operatore Laplaciano discreto è spesso definito come la somma dei vicini meno $k$ volte il valore centrale, con $k$ numero totale di vicini:
+    \begin{equation}
+        \nabla^2 \phi_i \approx \left( \sum_{\text{vicini } j} \phi_j \right) - k_i \phi_i
+    \end{equation}
+	Consideriamo ora un campo scalare $\vec{\phi} = (\phi_1, ..., \phi_n)^T$ definito sui nodi di una rete. Vediamo come agisce la matrice $L$ su di esso. L'$i$-esima componente del vettore $L\vec{\phi}$ è:
+    \begin{equation}
+        (L\vec{\phi})_i = \sum_{j} L_{ij}\phi_j = \sum_{j} (\delta_{ij}k_i - A_{ij})\phi_j = k_i \phi_i - \sum_{j} A_{ij}\phi_j
+    \end{equation}
+	Poiché $A_{ij}$ è non nullo solo per i vicini di $i$, l'espressione diventa:
+    \begin{equation}
+(L\vec{\phi})_i = k_i \phi_i - \sum_{j, \text{ vicini di } i} \phi_j
+    \end{equation}
+	Questa può essere riscritta come:
+    \begin{equation}
+        (L\vec{\phi})_i = \sum_{j, \text{ vicini di } i} (\phi_i - \phi_j)
+    \end{equation}
+	Si noti che $(L\vec{\phi})_i = -(\nabla^2 \phi_i)$. Il Laplaciano del grafo $L = D-A$ corrisponde al \textbf{negativo} dell'operatore Laplaciano discreto standard. Esso misura la differenza totale tra il valore del campo nel nodo $i$ e i valori nei suoi vicini.
+	
+	\subsubsection{Esempio}
+	Consideriamo il seguente grafo quasi-bipartito:
+    \begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        \tikzset{
+            node_style/.style={circle, fill=colorC, text=white, font=\large, minimum size=0.9cm},
+            edge_style/.style={color=colorE, line width=1.2pt}
+        }
+        % Nodi
+        \node[node_style] (1) at (0, 2.5) {1};
+        \node[node_style] (2) at (3, 2.5) {2};
+        \node[node_style] (3) at (-0.5, 0) {3};
+        \node[node_style] (4) at (1.5, -0.5) {4};
+        \node[node_style] (5) at (3.5, 0) {5};
+        % Archi
+        \foreach \i in {1,2} {
+            \foreach \j in {3,4,5} {
+                \draw[edge_style] (\i) -- (\j);
+            }
+        }
+    \end{tikzpicture}
+\end{figure}
+
+La matrice di adiacenza $A$ e la matrice dei gradi $D$ sono:
+	$$ A = \begin{pmatrix}
+		0 & 0 & 1 & 1 & 1 \\
+		0 & 0 & 1 & 1 & 1 \\
+		1 & 1 & 0 & 0 & 0 \\
+		1 & 1 & 0 & 0 & 0 \\
+		1 & 1 & 0 & 0 & 0 
+	\end{pmatrix} \quad
+	D = \begin{pmatrix}
+		3 & 0 & 0 & 0 & 0 \\
+		0 & 3 & 0 & 0 & 0 \\
+		0 & 0 & 2 & 0 & 0 \\
+		0 & 0 & 0 & 2 & 0 \\
+		0 & 0 & 0 & 0 & 2 
+	\end{pmatrix} $$
+	
+	Il Laplaciano $L = D - A$ risulta:
+	$$ L = \begin{pmatrix}
+		3 &  0 & -1 & -1 & -1 \\
+		0 &  3 & -1 & -1 & -1 \\
+		-1 & -1 &  2 &  0 &  0 \\
+		-1 & -1 &  0 &  2 &  0 \\
+		-1 & -1 &  0 &  0 &  2 
+	\end{pmatrix} $$
+	
+	\subsection{Proprietà del Laplaciano}
+	\begin{enumerate}
+		\item \textbf{Somma di Riga/Colonna:} La somma di tutti gli elementi in qualsiasi riga (e colonna) è 0.
+        \begin{equation}
+            \sum_{j} L_{ij} = \sum_{j} (\delta_{ij}k_i - A_{ij}) = k_i - \sum_{j} A_{ij} = k_i - k_i = 0
+        \end{equation}
+		Essendo $L$ simmetrica per un grafo non orientato, anche la somma su colonna è nulla.
+		
+		\item \textbf{Autovalori Reali:} $L$ è una matrice \textbf{reale e simmetrica}, quindi è \textbf{hermitiana} 
+        $L^\dagger = L^T = L$
+        Di conseguenza, \textbf{tutti i suoi autovalori sono reali}.
+		
+		\textit{Dimostrazione:}
+        
+		Si parte dall'equazione agli autovalori $L\vec{v} = \lambda\vec{v}$.
+		Si prende la trasposta coniugata di entrambi i membri: $(L\vec{v})^\dagger = (\lambda\vec{v})^\dagger$, che fornisce $\vec{v}^\dagger L^\dagger = \lambda^* \vec{v}^\dagger$.
+		Poiché $L$ è hermitiana, $L^\dagger = L$, quindi $\vec{v}^\dagger L = \lambda^* \vec{v}^\dagger$.
+		Moltiplicando l'equazione originale a sinistra per $\vec{v}^\dagger$:
+        \begin{equation}
+            \vec{v}^\dagger L \vec{v} = \lambda \vec{v}^\dagger \vec{v}
+        \end{equation}
+		Moltiplicando l'equazione trasposta a destra per $\vec{v}$:
+        \begin{equation}
+           \vec{v}^\dagger L \vec{v} = \lambda^* \vec{v}^\dagger \vec{v} 
+        \end{equation}
+		Uguagliando le due espressioni si ottiene:
+        \begin{equation}
+            \lambda \vec{v}^\dagger \vec{v} = \lambda^* \vec{v}^\dagger \vec{v} \implies (\lambda - \lambda^*) \vec{v}^\dagger \vec{v} = 0
+        \end{equation}
+		Poiché $\vec{v}$ è un autovettore, è non nullo, e $\vec{v}^\dagger \vec{v} = ||\vec{v}||^2$ è un numero reale positivo.
+		Pertanto, deve essere $\lambda - \lambda^* = 0$, il che implica $\lambda = \lambda^*$, ovvero $\lambda$ è reale.
+		
+		\item \textbf{Semidefinita Positiva:} Tutti gli autovalori di $L$ sono non negativi ($\lambda \ge 0$).
+		
+		\textit{Dimostrazione:}
+        
+        Espandiamo la forma quadratica $\vec{v}^T L \vec{v}$.
+\begin{equation}
+	\vec{v}^T L \vec{v} = \sum_{i,j} L_{ij} v_i v_j = \sum_{i} L_{ii} v_i^2 + \sum_{i \neq j} L_{ij} v_i v_j
+\end{equation}
+Usando la definizione $L_{ij} = \delta_{ij}k_i - A_{ij}$:
+\begin{equation}
+	= \sum_{i} k_i v_i^2 - \sum_{i \neq j} A_{ij} v_i v_j
+\end{equation}
+Assumendo assenza di self-loops, $A_{ii}=0$, quindi $\sum_{i \neq j} A_{ij} v_i v_j = \sum_{i,j} A_{ij} v_i v_j$
+\begin{equation}
+	= \sum_{i} k_i v_i^2 - \sum_{i,j} A_{ij} v_i v_j
+\end{equation}
+Consideriamo ora l'espressione $\frac{1}{2} \sum_{i,j} A_{ij} (v_i - v_j)^2$:
+\begin{equation}
+	= \frac{1}{2} \sum_{i,j} A_{ij} (v_i^2 + v_j^2 - 2v_i v_j)
+\end{equation}
+\begin{equation}
+	= \frac{1}{2} \left( \sum_{i,j} A_{ij} v_i^2 + \sum_{i,j} A_{ij} v_j^2 - 2\sum_{i,j} A_{ij} v_i v_j \right)
+\end{equation}
+Poiché $A$ è simmetrica, $\sum_{j} A_{ij} = k_i$ e $\sum_{i} A_{ij} = k_j$:
+\begin{equation}
+	= \frac{1}{2} \left( \sum_{i} v_i^2 \left(\sum_{j} A_{ij}\right) + \sum_{j} v_j^2 \left(\sum_{i} A_{ij}\right) - 2\sum_{i,j} A_{ij} v_i v_j \right)
+\end{equation}
+\begin{equation}
+	= \frac{1}{2} \left( \sum_{i} k_i v_i^2 + \sum_{j} k_j v_j^2 - 2\sum_{i,j} A_{ij} v_i v_j \right)
+\end{equation}
+Essendo $i$ e $j$ indici muti, $\sum_{i} k_i v_i^2 = \sum_{j} k_j v_j^2$.
+\begin{equation}
+	= \frac{1}{2} \left( 2\sum_{i} k_i v_i^2 - 2\sum_{i,j} A_{ij} v_i v_j \right) = \sum_{i} k_i v_i^2 - \sum_{i,j} A_{ij} v_i v_j
+\end{equation}
+Questa è esattamente $\vec{v}^T L \vec{v}$.
+Abbiamo quindi dimostrato:
+\begin{equation}
+	\vec{v}^T L \vec{v} = \frac{1}{2} \sum_{i,j} A_{ij} (v_i - v_j)^2
+\end{equation}
+Dall'equazione agli autovalori, $\vec{v}^T L \vec{v} = \lambda ||\vec{v}||^2$.
+\begin{equation}
+	\lambda = \frac{\frac{1}{2} \sum_{i,j} A_{ij} (v_i - v_j)^2}{||\vec{v}||^2}
+\end{equation}
+Poiché $A_{ij} \ge 0$ e $(v_i - v_j)^2 \ge 0$, il numeratore è non negativo. Il denominatore è positivo. Di conseguenza, $\lambda \ge 0$.
+		
+		
+		\item \textbf{Autovalore Nullo:} Esiste almeno un autovalore uguale a 0.
+		Consideriamo il vettore $\vec{v}_0 = (1, 1, ..., 1)^T$.
+		\begin{equation}
+		     (L \vec{v}_0)_i = \sum_{j} L_{ij} (1) = 0
+		\end{equation}
+       Questo perché ogni riga di $L$ somma a zero.
+		Pertanto, $L \vec{v}_0 = 0 \cdot \vec{v}_0$. Ciò dimostra che $\lambda_1 = 0$ è un autovalore con autovettore corrispondente $\vec{v}_0$ (o la sua versione normalizzata $(1/\sqrt{n}, ..., 1/\sqrt{n})^T$).
+		
+		\item \textbf{Non Invertibile:} Poiché $L$ ha almeno un autovalore nullo, il suo determinante è 0 ($\det(L) = \prod \lambda_i = 0$). Ciò implica che $L$ non è invertibile.
+		
+		\item \textbf{Molteplicità di $\mathbf{\lambda=0}$:} La molteplicità algebrica dell'autovalore nullo corrisponde al numero di componenti disconnesse nel grafo.
+		Se la rete ha $C$ componenti disconnesse, $L$ sarà una matrice a blocchi diagonali (dopo un riordinamento dei nodi). Ogni blocco rappresenta il Laplaciano per quella componente, e ogni componente possiede il proprio autovalore nullo. È possibile costruire $C$ autovettori linearmente indipendenti per $\lambda=0$ (es. $(1,1,..,0,0)$ per la componente 1, $(0,0,..,1,1)$ per la componente 2, ecc.).
+		Se esiste un solo autovalore nullo (molteplicità 1), la rete è completamente connessa.
+	\end{enumerate}
+	
+	\section{Random Walks}
+	Consideriamo ora un processo dinamico su un grafo connesso non orientato: la passeggiata aleatoria (Random Walk). Il processo è definito come segue:
+	\begin{itemize}
+		\item Si inizia da un nodo casuale.
+		\item A ogni passo temporale discreto, il camminatore situato sul nodo $j$ (con grado $k_j$) si sposta su uno dei suoi $k_j$ vicini.
+		\item La scelta del vicino avviene uniformemente a caso, quindi la probabilità di spostarsi verso uno specifico vicino $i$ è $1/k_j$.
+		\item Il camminatore non può rimanere sullo stesso nodo; deve necessariamente muoversi.
+	\end{itemize}
+	
+	\subsection{Master Equation}
+	Sia $P_i(t)$ la probabilità che il camminatore si trovi al nodo $i$ al tempo $t$.
+	Per trovarsi al nodo $i$ al tempo $t$, il camminatore deve essere stato in un nodo vicino $j$ al tempo $t-1$ e poi essersi spostato da $j$ a $i$. La probabilità di questo evento è la somma su tutti i nodi $j$:
+	\begin{equation}
+	    P_i(t) = \sum_{j} \mathbb{P}(j \to i) P_j(t-1)
+	\end{equation}
+	La probabilità di transizione $\mathbb{P}(j \to i)$ è $1/k_j$ se $j$ è connesso a $i$ ($A_{ij}=1$), e 0 altrimenti.
+	\begin{equation}
+	    P_i(t) = \sum_{j=1}^{n} A_{ij} \frac{1}{k_j} P_j(t-1)
+	\end{equation}
+	La somma è su tutti i $j$, ma $A_{ij}$ (o $A_{ji}$ dato che non è orientato) la vincola ai soli vicini di $i$.
+	
+	\noindent In forma matriciale, sia $\vec{P}(t)$ il vettore delle probabilità:
+	\begin{equation}
+	    \vec{P}(t) = (A D^{-1}) \vec{P}(t-1)
+	\end{equation}
+	dove $D^{-1}$ è la matrice diagonale con elementi $(D^{-1})_{jj} = \frac{1}{k_j}$
+	
+	\subsection{Stato Stazionario}
+	Cerchiamo la distribuzione stazionaria $\vec{P} = \vec{P}(\infty)$ per $t \to \infty$. 
+    
+    \noindent In questo limite, $\vec{P}(t) = \vec{P}(t-1) = \vec{P}$. L'equazione diventa un problema agli autovalori:
+	\begin{equation}
+	    \vec{P} = (A D^{-1}) \vec{P} \quad \longrightarrow \quad (\mathbb{I} - A D^{-1}) \vec{P} = 0
+	\end{equation}
+	Moltiplicando per $D$ a sinistra (assumendo $k_i \neq 0$ per ogni $i$):
+    \begin{equation}
+        D(\mathbb{I} - A D^{-1}) \vec{P} = (D - A) D^{-1} \vec{P} = 0 \quad \longrightarrow \quad (D^{-1} \vec{P}) = 0
+    \end{equation}
+	Questa equazione implica che il vettore $(D^{-1} \vec{P})$ sia l'autovettore del Laplaciano $L$ corrispondente all'autovalore $\lambda = 0$.
+	Assumendo che il grafo sia connesso, esiste un solo autovettore per $\lambda=0$ (a meno di una costante $a$), che sappiamo essere $\vec{v}_0 = (1, 1, ..., 1)^T$.
+	\begin{equation}
+	    D^{-1} \vec{P} = a \vec{v}_0 = (a, a, ..., a)^T \quad \longrightarrow \quad \vec{P} = a D \vec{v}_0
+	\end{equation}
+	In componenti, questo corrisponde a:
+	\begin{equation}
+    P_i = a k_i
+    \end{equation}
+    La probabilità di trovarsi in uno specifico nodo $i$ nello stato stazionario è proporzionale al suo grado $k_i$.
+	
+	\noindent Troviamo la costante di normalizzazione $a$ imponendo $\sum P_i = 1$:
+	\begin{equation}
+	    \sum_{i} P_i = a \sum_{i} k_i = a (2m) = 1 \implies a = \frac{1}{2m}
+	\end{equation}
+	Dove $m$ è il numero totale di archi.
+	
+	\noindent La distribuzione di probabilità stazionaria è dunque:
+     \begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Distribuzione di Probabilità Stazionaria}]
+\begin{equation}
+	    P_i (\infty)= \frac{k_i}{\sum_j k_j} = \frac{k_i}{2m}
+	\end{equation}
+\end{tcolorbox}
+	Questa rappresenta una sorta di \textbf{attaccamento preferenziale} nel tempo: \textbf{il camminatore aleatorio trascorre più tempo sui nodi altamente connessi}.
+	
+	\subsubsection{Probabilità di transizione nello Stato Stazionario}
+	Per attraversare $i \to j$, il camminatore deve prima trovarsi al nodo $i$ (Prob. $P_i$) e poi scegliere di spostarsi verso $j$ (Prob. $1/k_i$).
+	
+	\begin{equation}
+	    \mathbb{P}(i \to j) = P_i \cdot \frac{1}{k_i} = \left( \frac{k_i}{2m} \right) \cdot \frac{1}{k_i} = \frac{1}{2m}
+	\end{equation}
+
+     \begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Risultato Notevole:}]
+in una rete non orientata, la probabilità di attraversare un \textbf{qualsiasi} collegamento è identica e indipendente dai gradi dei nodi. Tutti gli archi hanno la stessa probabilità di essere attraversati.
+	
+\end{tcolorbox}
+	%==================================================================
+	% PARTE 3: MISURE DI CENTRALITÀ
+	%==================================================================
+	
+	\section{Misure di Centralità}
+	Le \textbf{misure di centralità} sono metodi per classificare i nodi in base alla loro "importanza". La definizione di importanza varia a seconda del contesto. Una misura semplice è la \textbf{Degree Centrality} (Centralità di Grado): si ordinano i nodi in base al loro grado $k_i$.
+
+Esploreremo ora misure più complesse basate su equazioni autoconsistenti.
+
+	
+	\subsection{Eigenvector Centrality (Centralità di Autovettore)}
+	L'idea fondamentale è che l'importanza di un nodo è determinata dall'importanza dei suoi vicini. Un nodo è importante se è connesso ad altri nodi importanti. Possiamo esprimere questo concetto tramite un'equazione autoconsistente. 
+    
+    Sia $x_i$ la centralità del nodo $i$.
+	\begin{equation}
+	    x_i = \frac{1}{\lambda} \sum_{j} A_{ij} x_j
+	\end{equation}
+	Qui $A_{ij}$ è la matrice di adiacenza (usando la convenzione $j \to i$) e $\lambda$ è una costante di proporzionalità.
+	In forma matriciale, questa è l'equazione agli autovalori:
+    \begin{equation}
+        \lambda x_i = \sum_{j} A_{ij} x_j \implies \lambda \vec{x} = A \vec{x}
+    \end{equation}
+	Il vettore di centralità $\vec{x}$ è un autovettore della matrice di adiacenza $A$.
+	
+	\textit{Quale autovettore?} La matrice di adiacenza possiede $n$ autovettori. Necessitiamo di una misura di centralità in cui tutti gli $x_i$ siano reali e positivi (o almeno non negativi).
+	
+	Il \textbf{Teorema di Perron-Frobenius} fornisce la risposta:
+    \begin{tcolorbox}[colback=colorC!15, colframe=colorC!70!colorB,  title=\textbf{Teorema di Perron-Frobenius:}]
+
+		Per ogni matrice $A$ irriducibile e non negativa (come la matrice di adiacenza di un grafo connesso), il suo autovalore più grande $\lambda_1$ è reale e positivo. Le componenti dell'autovettore corrispondente $\vec{v}_1$ sono anch'esse tutte positive.
+
+\end{tcolorbox}
+	
+	
+	Pertanto, il vettore della \textbf{Eigenvector Centrality} $\vec{x}$ è definito come l'autovettore principale della matrice di adiacenza (quello corrispondente all'autovalore massimo $\lambda_1$).
+    
+    \hfill
+    
+	\noindent \textit{Dimostrazione:}
+    
+	Si considera un vettore casuale $\vec{x}(0)$ con tutte le componenti non negative.
+	Iteriamo l'applicazione di $A$: $\vec{x}(t) = A \vec{x}(t-1) = A^t \vec{x}(0)$.
+	Possiamo decomporre $\vec{x}(0)$ nella base degli autovettori $\vec{v}_i$ di $A$:
+    \begin{equation}
+        \vec{x}(0) = \sum_{i=1}^n c_i \vec{v}_i
+    \end{equation}
+    Applicando $A^t$ si ottiene:
+    \begin{equation}
+        \vec{x}(t) = A^t \sum_{i=1}^n c_i \vec{v}_i = \sum_{i=1}^n c_i (A^t \vec{v}_i) = \sum_{i=1}^n c_i \lambda_i^t \vec{v}_i
+    \end{equation}
+	Sia $\lambda_1$ l'autovalore massimo ($\lambda_1 > |\lambda_i|$ per $i \ge 2$). Possiamo fattorizzarlo:
+    \begin{equation}
+      \vec{x}(t) = \lambda_1^t \left( c_1 \vec{v}_1 + \sum_{i=2}^n c_i \left(\frac{\lambda_i}{\lambda_1}\right)^t \vec{v}_i \right)  
+    \end{equation}
+	Per $t \to \infty$, il termine $\left(\frac{\lambda_i}{\lambda_1}\right)^t \to 0$ per tutti gli $i \ge 2$.
+	Di conseguenza, per grandi $t$, il vettore $\vec{x}(t)$ converge in direzione all'autovettore principale:
+    \begin{equation}
+        \vec{x}(t) \approx c_1 \lambda_1^t \vec{v}_1
+    \end{equation}
+	Poiché $A$ è una matrice non negativa e $\vec{x}(0)$ è non negativo, $\vec{x}(1) = A\vec{x}(0)$ deve essere non negativo. Per induzione, $\vec{x}(t)$ deve essere non negativo per ogni $t$.
+	Essendo $\vec{x}(t)$ non negativo e $c_1 \lambda_1^t$ uno scalare, l'autovettore $\vec{v}_1$ deve avere tutte le componenti non negative. Il teorema completo garantisce che siano strettamente positive. Questo giustifica il suo utilizzo come misura di centralità.
+
+\hfill 
+
+   \noindent  \textbf{Limitazione della Eigenvector Centrality:} Questo metodo fallisce per i grafi orientati, specialmente quelli con o nodi senza collegamenti in ingresso.
+	
+	Si consideri un nodo A senza link in ingresso. La riga $i=A$ nella matrice di adiacenza (usando $A_{ij}$ come $j \to i$) sarà composta da zeri.
+	Allora la centralità $x_A$ sarà:
+	$$x_A = \frac{1}{\lambda_1} \sum_{j} A_{Aj} x_j = \frac{1}{\lambda_1} \sum_{j} (0) x_j = 0$$
+	
+	Se un nodo B ha un link in ingresso solo da A, anche la sua centralità $x_B$ sarà 0, poiché $x_A=0$. Questo problema si propaga, portando molti nodi ad avere centralità nulla semplicemente a causa della natura orientata della rete.
+    
+	\subsection{Katz Centrality}
+	Per risolvere il problema della Eigenvector Centrality, la \textbf{Katz Centrality} introduce una piccola costante positiva $\beta$ per ogni nodo. Questo assicura una centralità di "base", anche per nodi senza collegamenti entranti. L'equazione diventa (usando $\alpha$ come parametro):
+    \begin{equation}
+        x_i = \alpha \sum_{j} A_{ij} x_j + \beta
+    \end{equation}
+    In forma matriciale, usando $\vec{1}$ come vettore unitario:
+    \begin{equation}
+        \vec{x} = \alpha A \vec{x} + \beta \vec{1}
+    \end{equation}
+	Possiamo risolvere per $\vec{x}$:
+    \begin{equation}
+       (\mathbb{I} - \alpha A) \vec{x} = \beta \vec{1} \quad 
+	\longrightarrow \quad \vec{x} = \beta (\mathbb{I} - \alpha A)^{-1} \vec{1} 
+    \end{equation}
+	
+	Il rapporto $\alpha / \beta$ è l'unico parametro rilevante, quindi spesso si pone $\beta = 1$. Il parametro $\alpha$ regola ora l'importanza relativa della componente dell'autovettore (struttura della rete) rispetto alla componente costante $\beta$ (importanza di base).
+	\begin{itemize}
+		\item Se $\alpha \to 0$, tutti i nodi hanno la stessa centralità $x_i = \beta$.
+		\item Se $\beta \to 0$, recuperiamo la Eigenvector Centrality.
+	\end{itemize}
+	
+	\subsubsection{Condizione di Invertibilità}
+	La soluzione $\vec{x} = \beta (\mathbb{I} - \alpha A)^{-1} \vec{1}$ richiede che la matrice $(\mathbb{I} - \alpha A)$ sia invertibile.
+	Ciò significa che il suo determinante deve essere non nullo:
+	\begin{equation}
+	  \det(\mathbb{I} - \alpha A) \neq 0 
+	\end{equation}	
+	Questo è equivalente a:
+	\begin{equation}
+	    \det(\alpha^{-1} \mathbb{I} - A) \neq 0
+	\end{equation}
+	Il determinante è zero se $\alpha^{-1}$ è un autovalore di $A$. Aumentando $\alpha$ da 0, le centralità divergeranno quando $\alpha^{-1}$ incontra l'autovalore \textit{massimo} $\lambda_1$ di $A$.
+	
+	Pertanto, dobbiamo scegliere $\alpha$ tale che:
+	\begin{equation}
+	    \alpha^{-1} > \lambda_1 \quad \implies \quad \alpha < \frac{1}{\lambda_1}
+	\end{equation}
+	Questo assicura che la matrice sia invertibile e che i punteggi di centralità siano finiti e positivi. 
+    
+\hfill
+
+    \noindent \textbf{Limitazione della Katz Centrality:} Un nodo con centralità molto alta (come Amazon) che linka a milioni di altri nodi (es. venditori) trasferisce la sua intera centralità a tutti loro. Questo "sovraccarica" la centralità dei nodi puntati da un grande hub.
+	
+	\subsection{PageRank Centrality}
+	La \textbf{PageRank Centrality} (che prende il nome da Larry Page) risolve il problema della Katz Centrality dividendo la centralità trasferita per il \textbf{grado uscente} ($k_j^{\text{out}}$) del nodo $j$ che sta inviando "l'importanza".
+	
+	L'equazione del PageRank è:
+    \begin{equation}
+        x_i = \alpha \sum_{j} A_{ij} \frac{x_j}{k_j^{\text{out}}} + \beta
+    \end{equation}
+	Il termine $k_j^{\text{out}}$ deve essere gestito se $k_j^{\text{out}} = 0$. Una correzione comune è usare $k_j^{\text{out}} = \max(k_j^{\text{out}}, 1)$
+	
+	\noindent Questa è una distribuzione "democratica" dell'importanza: il nodo $j$ divide la sua importanza $x_j$ equamente tra tutti i $k_j^{\text{out}}$ nodi a cui si collega.
+	In forma matriciale:
+    \begin{equation}
+        \vec{x} = \alpha (A D_{\text{out}}^{-1}) \vec{x} + \beta \vec{1}
+    \end{equation}
+	dove $D_{\text{out}}^{-1}$ è la matrice diagonale di $1/k_j^{\text{out}}$
+	
+	La soluzione è:
+	\begin{equation}
+	    \vec{x} = \beta (\mathbb{I} - \alpha A D_{\text{out}}^{-1})^{-1} \vec{1}
+	\end{equation}
+	
+	Nuovamente, dobbiamo assicurare che la matrice $(\mathbb{I} - \alpha A D_{\text{out}}^{-1})$ sia invertibile.
+	Ciò richiede $\alpha < 1/\lambda_1(A D_{\text{out}}^{-1})$, dove $\lambda_1$ è l'autovalore massimo della matrice $W = A D_{\text{out}}^{-1}$ (la matrice di transizione della passeggiata aleatoria).
+	
+	\begin{itemize}
+		\item Per una rete \textbf{non orientata}, $k_j^{\text{out}} = k_j$, e si può dimostrare che $\lambda_1(A D^{-1}) = 1$. La condizione diventa $\alpha < 1$.
+		\item Per una rete \textbf{orientata}, non esiste una regola generale. Il valore usato da Google era notoriamente $\alpha = 0.85$.
+	\end{itemize}
+	
+	\subsubsection{Esempio PageRank: Grafo a Percorso Non Orientato}
+	Consideriamo la seguente rete:
+    \begin{figure}[h]
+        \centering
+    \begin{tikzpicture}[scale=0.5]
+    % Definizione dello stile per i nodi
+    \tikzset{
+        node_style/.style={
+            circle,
+            fill=colorC,      
+            text=white,      % Colore del testo b
+            minimum size=1cm, % Dimensione minima per uniformità
+            inner sep=2pt
+        },
+        edge_style/.style={
+            color=colorD,       
+            line width=1.5pt % Spessore della linea
+        }
+    }
+
+    % Posizionamento dei nodi per formare la 'V'
+    \node[node_style] (2) at (0, 0) {2}; % Nodo centrale
+    \node[node_style] (1) at (4, 1.5) {1}; % Nodo in alto a destra
+    \node[node_style] (3) at (4, -1.5) {3}; % Nodo in basso a destra
+
+    % Disegno degli archi
+    \draw[edge_style] (1) -- (2);
+    \draw[edge_style] (2) -- (3);
+
+\end{tikzpicture}
+    \end{figure}
+	
+	$$ A = \begin{pmatrix} 0 & 1 & 0 \\ 1 & 0 & 1 \\ 0 & 1 & 0 \end{pmatrix} \quad
+	D = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 1 \end{pmatrix} \quad
+	D^{-1} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1/2 & 0 \\ 0 & 0 & 1 \end{pmatrix} $$
+	
+	Dobbiamo calcolare $M = (\mathbb{I} - \alpha A D^{-1})$:
+	$$M = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} - \alpha \begin{pmatrix} 0 & 1 & 0 \\ 1 & 0 & 1 \\ 0 & 1 & 0 \end{pmatrix} \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1/2 & 0 \\ 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} 1 & -\alpha/2 & 0 \\ -\alpha & 1 & -\alpha \\ 0 & -\alpha/2 & 1 \end{pmatrix}$$
+	
+	Il determinante è $\det(M) = 1(1 - \alpha^2/2) - (-\alpha/2)(-\alpha) = 1 - \alpha^2/2 - \alpha^2/2 = 1 - \alpha^2$.
+	Il determinante è 0 per $\alpha = \pm 1$. Come previsto per un grafo non orientato, dobbiamo scegliere $\alpha < 1$.
+	
+	Il vettore di centralità è $\vec{x} = \beta (M)^{-1} \vec{1}$. Ponendo $\beta=1$:
+	$$M^{-1} = \frac{1}{\det(M)} (\text{Cof}(M))^T = \frac{1}{1-\alpha^2} \begin{pmatrix} 1-\alpha^2/2 & \alpha/2 & \alpha^2/2 \\ \alpha & 1 & \alpha \\ \alpha^2/2 & \alpha/2 & 1-\alpha^2/2 \end{pmatrix}$$
+	
+	Moltiplicando per $\vec{1} = (1, 1, 1)^T$ (ovvero sommando le righe di $M^{-1}$):
+	$$x_1 = \frac{1}{1-\alpha^2} (1 - \alpha^2/2 + \alpha/2 + \alpha^2/2) = \frac{1 + \alpha/2}{1 - \alpha^2}$$
+	$$x_2 = \frac{1}{1-\alpha^2} (\alpha + 1 + \alpha) = \frac{1 + 2\alpha}{1 - \alpha^2}$$
+	$$x_3 = \frac{1}{1-\alpha^2} (\alpha^2/2 + \alpha/2 + 1 - \alpha^2/2) = \frac{1 + \alpha/2}{1 - \alpha^2}$$
+	
+	Da questo risultato osserviamo:
+	\begin{itemize}
+		\item $x_1 = x_3$, il che è ragionevole data la simmetria della rete.
+		\item $x_2 > x_1$ (poiché $\alpha > 0$), quindi il nodo 2 possiede la centralità più alta.
+		\item Questo ordinamento ($2 > 1 = 3$) corrisponde al grado dei nodi ($k_2=2, k_1=k_3=1$). Per reti più grandi e complesse, le classifiche ottenute tramite PageRank e semplice grado differiranno spesso.
+	\end{itemize}
+
+    
+	\subsection{Betweenness Centrality}
+	Questa misura segue una filosofia diversa, basata sul flusso di informazione e sui cammini minimi. Un nodo è importante se si trova su molti \textbf{cammini minimi} (geodetiche) tra altre coppie di nodi nella rete. Misura quanto un nodo sia "in mezzo" agli altri.
+
+	\begin{enumerate}
+		\item Per ogni coppia di nodi $(s, t)$ nella rete, si calcolano tutti i cammini minimi tra di essi (es. usando l'algoritmo di Dijkstra).
+		\item Sia $g_{st}$ il numero totale di cammini minimi tra $s$ e $t$. (Può esserci più di un percorso della stessa lunghezza minima).
+		\item Sia $n_{st}(i)$ il numero di quei cammini minimi che passano attraverso il nodo $i$.
+		\item La betweenness centrality $x_i$ del nodo $i$ è la somma delle frazioni dei cammini minimi che passano per $i$, sommata su tutte le possibili coppie $(s, t)$ dove $s \neq t$:
+        \begin{equation}
+            x_i = \sum_{s \neq t} \frac{n_{st}(i)}{g_{st}}
+        \end{equation}
+		
+	\end{enumerate}
+	
+	Per normalizzare questo valore, si può dividere per il numero totale di coppie, che è $n(n-1)$ (per grafi orientati) o $n(n-1)/2$ (per grafi non orientati). Una normalizzazione comune per grafi non orientati è:
+    \begin{equation}
+        x_i^{\text{norm}} = \frac{2}{n(n-1)} \sum_{s < t} \frac{n_{st}(i)}{g_{st}}
+    \end{equation}
+	
+	Questa misura è computazionalmente onerosa ($O(nm)$ o $O(n^3)$) ma è molto efficace per identificare nodi critici o "colli di bottiglia" (bottlenecks) in una rete, ovvero nodi cruciali per la comunicazione o il trasporto.
+	

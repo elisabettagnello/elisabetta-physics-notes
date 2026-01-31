@@ -1,0 +1,239 @@
+\chapter{Lezione 2}
+\label{chap:lezione_02} 
+
+\begin{flushright}
+\textit{Data: 02/10/2025}
+\end{flushright}
+
+
+\section{Funzione di Densità di Probabilità (PDF)}
+
+Consideriamo una variabile casuale (random variable, R.V.) continua $X$ e la sua funzione di densità di probabilità (Probability Density Function, PDF) $\rho(x)$. La probabilità che la variabile $X$ assuma un valore compreso nell'intervallo infinitesimo $[x, x+dx]$ è data da:
+\begin{equation}
+P(x \le X < x+dx) = \rho(x)dx
+\end{equation}
+La PDF deve soddisfare la condizione di normalizzazione, ovvero l'integrale su tutto il dominio $D$ della variabile deve essere uguale a 1:
+\begin{equation}
+\int_D \rho(x)dx = 1
+\end{equation}
+La probabilità che $X$ cada in un intervallo finito $[a,b]$ si calcola integrando la PDF su quell'intervallo:
+\begin{equation}
+P(a < X < b) = \int_a^b \rho(x)dx
+\end{equation}
+Il valore atteso (o valore di aspettazione) di un'osservabile $O(x)$ si calcola come:
+\begin{equation}
+\langle O \rangle = \int_D \rho(x)O(x)dx
+\end{equation}
+In pratica, spesso non conosciamo la vera PDF $\rho(x)$. Quello che facciamo è acquisire dati tramite esperimenti o altre fonti. A partire da un set di $N$ misure $\{o_i\}$, possiamo calcolare uno stimatore del valore atteso, ovvero la media campionaria:
+\begin{equation}
+\langle O \rangle_{EST} = \frac{1}{N}\sum_{i=1}^N o_i
+\end{equation}
+Per la legge dei grandi numeri, nel limite in cui il numero di misure $N$ tende a infinito, lo stimatore converge al vero valore atteso:
+\begin{equation}
+\lim_{N \to +\infty} \langle O \rangle_{EST} \to \langle O \rangle
+\end{equation}
+
+
+
+Consideriamo ora una variabile casuale discreta $Z$, che può assumere un insieme discreto di valori. L'equivalente del valore atteso si calcola tramite una sommatoria. Se abbiamo $N$ osservazioni $o_i$ della nostra osservabile, il limite della media campionaria può essere espresso come:
+\begin{equation}
+\lim_{N \to \infty} \frac{1}{N} \sum_{i=1}^N o_i = \lim_{N \to \infty} \sum_{z=z_{min}}^{z_{max}} O_z f_z
+\end{equation}
+dove $O_z$ è il valore dell'osservabile quando la variabile casuale è $z$, e $f_z = N_z/N$ è la frequenza con cui si osserva il valore $z$ (con $N_z$ numero di occorrenze di $z$). Nel limite $N \to \infty$, la frequenza $f_z$ converge alla probabilità $p_z$ di osservare il valore $z$. Pertanto, il valore atteso diventa:
+\begin{equation}
+\langle O \rangle = \sum_{z=z_{min}}^{z_{max}} O_z p_z
+\end{equation}
+
+\subsubsection{Esempio di una distribuzione con media non definita:}
+
+Non tutte le distribuzioni di probabilità hanno momenti finiti. Consideriamo la seguente distribuzione a legge di potenza per $x \ge 1$:
+\begin{equation}
+\rho(x) = \frac{1}{2}x^{-3/2}
+\end{equation}
+Calcoliamo il valore atteso di $x$:
+\begin{equation}
+\langle x \rangle = \int_1^\infty x \rho(x) dx = \int_1^\infty x \left(\frac{1}{2}x^{-3/2}\right) dx = \frac{1}{2} \int_1^\infty x^{-1/2} dx = \left[x^{1/2}\right]_1^\infty \to \infty
+\end{equation}
+Il valore atteso diverge. Questo ha una conseguenza pratica importante. Se campioniamo $N$ valori da questa distribuzione e calcoliamo la media, questo valore non convergerà. Anzi, all'aumentare di $N$, la media campionaria tenderà a crescere, poiché aumenta la probabilità di campionare valori molto grandi dalla "coda" pesante della distribuzione. Questo comportamento della media campionaria può essere un segnale empirico che la distribuzione sottostante non ha un valore atteso finito.
+
+\subsection{Funzioni di Variabili Casuali}
+
+Spesso siamo interessati alla distribuzione di una variabile casuale $Y$ che è funzione di un'altra variabile casuale $X$ di cui conosciamo la distribuzione, $y=f(x)$. Se la funzione $f$ è invertibile, $x=f^{-1}(y)$, la probabilità che la variabile $X$ si trovi nell'intervallo $[x, x+dx]$ deve essere uguale alla probabilità che la variabile $Y$ si trovi nell'intervallo corrispondente $[y, y+dy]$. Questo principio di conservazione della probabilità si scrive come:
+\begin{equation}
+\tilde{\rho}(y)|dy| = \rho(x)|dx|
+\end{equation}
+Da cui si ottiene la PDF per $Y$:
+\begin{equation}
+\tilde{\rho}(y) = \rho(x) \left|\frac{dx}{dy}\right|  
+\end{equation}
+Il valore assoluto è necessario perché le probabilità devono essere positive.
+
+\subsection{Funzione Cumulativa Inferiore}
+
+Un caso particolarmente importante e utile di funzione di variabile casuale è la funzione di ripartizione (o cumulativa inferiore, CDF):
+\begin{equation}
+y = P_<(x) = \int_a^x \rho(x')dx'
+\end{equation}
+dove la variabile $X$ è definita nell'intervallo $[a,b]$. Per costruzione, la variabile $Y$ è definita nell'intervallo $[0,1]$, poiché $P_<(a)=0$ e $P_<(b)=1$.
+
+Per trovare la distribuzione di $Y$, calcoliamo la derivata di $y$ rispetto a $x$:
+\begin{equation}
+\frac{dy}{dx} = \rho(x)
+\end{equation}
+Usando la formula di trasformazione, otteniamo la PDF di $Y$:
+\begin{equation}
+\tilde{\rho}(y) = \rho(x) \left|\frac{dx}{dy}\right| = \rho(x) \frac{1}{\rho(x)} = 1
+\end{equation}
+Questo significa che la variabile $Y$ è distribuita uniformemente nell'intervallo $[0,1]$.
+
+Questo risultato è estremamente potente e fornisce un metodo generale per generare numeri casuali secondo una qualsiasi distribuzione $\rho(x)$ desiderata:
+\begin{enumerate}
+    \item Generare un numero casuale $y$ da una distribuzione uniforme in $[0,1]$.
+    \item Calcolare la funzione di ripartizione $P_<(x)$ per la distribuzione $\rho(x)$.
+    \item Invertire la relazione $y = P_<(x)$ per ottenere $x = P_<^{-1}(y)$.
+    \item Il valore di $x$ così ottenuto sarà un numero casuale distribuito secondo $\rho(x)$.
+\end{enumerate}
+
+\textbf{Esempio:} Generare numeri casuali da $\rho(x) = cx^{-2}$ per $x \in [a,b]$.
+Prima normalizziamo la distribuzione:
+\begin{equation}
+\int_a^b c x^{-2} dx = c \left[-\frac{1}{x}\right]_a^b = c\left(\frac{1}{a} - \frac{1}{b}\right) = 1 \implies c = \frac{1}{\frac{1}{a}-\frac{1}{b}}
+\end{equation}
+Calcoliamo la CDF:
+\begin{equation}
+y = P_<(x) = \int_a^x c(x')^{-2} dx' = c\left(-\frac{1}{x} + \frac{1}{a}\right)
+\end{equation}
+Infine, invertiamo la relazione per trovare $x(y)$:
+\begin{equation}
+x = \frac{c}{c/a - y}
+\end{equation}
+Generando valori di $y$ uniformi in $[0,1]$ e inserendoli in questa formula, si ottengono valori di $x$ distribuiti come $x^{-2}$.
+
+\section{Somma di Variabili Casuali e Funzione Caratteristica}
+
+Consideriamo due variabili casuali indipendenti $X_1$ e $X_2$, con PDF $\rho_1(x_1)$ e $\rho_2(x_2)$. Vogliamo trovare la distribuzione della loro somma $X = X_1 + X_2$. La PDF di $X$, $\rho(x)$, è data dalla convoluzione delle due PDF:
+\begin{equation}
+\rho(x) = \int_{-\infty}^{+\infty} dx_1 \rho_1(x_1) \rho_2(x-x_1)
+\end{equation}
+Questo integrale può essere complicato da calcolare direttamente. Un metodo più agevole passa attraverso l'uso della \textbf{funzione caratteristica}, che è definita come la trasformata di Fourier della PDF:
+\begin{equation}
+\hat{\rho}(z) = \int_D e^{izx} \rho(x) dx
+\end{equation}
+La PDF può essere recuperata tramite l'antitrasformata di Fourier:
+\begin{equation}
+\rho(x) = \frac{1}{2\pi} \int_{-\infty}^{+\infty} e^{-izx} \hat{\rho}(z) dz
+\end{equation}
+La proprietà fondamentale è che la funzione caratteristica della somma di due variabili casuali indipendenti è il prodotto delle loro funzioni caratteristiche individuali:
+\begin{equation}
+\hat{\rho}_X(z) = \hat{\rho}_{X_1}(z) \cdot \hat{\rho}_{X_2}(z)
+\end{equation}
+
+\textbf{\textit{Dimostrazione:}}
+\begin{align*}
+\hat{\rho}(z) &= \int e^{izx} \rho(x) dx = \int e^{izx} \left( \int \rho_1(x_1) \rho_2(x-x_1) dx_1 \right) dx \\
+&= \iint e^{izx} \rho_1(x_1) \rho_2(x-x_1) dx_1 dx
+\end{align*}
+Per scambiare l'ordine di integrazione (usando il teorema di Fubini), si verifica che l'integrale del valore assoluto converga, il che è vero poiché le PDF sono normalizzate. 
+
+Con il cambio di variabile $y=x-x_1$ (e quindi $x=y+x_1$), l'integrale diventa:
+\begin{align*}
+\hat{\rho}(z) &= \int \rho_1(x_1) \left( \int \rho_2(y) e^{iz(y+x_1)} dy \right) dx_1 \\
+&= \int \rho_1(x_1) e^{izx_1} dx_1 \int \rho_2(y) e^{izy} dy \\
+&= \hat{\rho}_1(z) \hat{\rho}_2(z)
+\end{align*}
+
+\subsection{Cumulanti e Momenti}
+
+La funzione caratteristica è uno strumento potente per calcolare i momenti e i cumulanti di una distribuzione. I \textbf{momenti} di ordine $n$ sono definiti come $\mu_n = \langle x^n \rangle$. Si possono ottenere derivando la funzione caratteristica:
+\begin{equation}
+\mu_n = \langle x^n \rangle = \left[\frac{1}{i}\frac{d}{dz}\right]^n \hat{\rho}(z) \bigg|_{z=0}
+\end{equation}
+Ad esempio, $\mu_1 = \langle x \rangle$ e $\mu_2 = \langle x^2 \rangle$.
+
+I \textbf{cumulanti} $C_n$ sono definiti in modo simile, ma a partire dal logaritmo della funzione caratteristica:
+\begin{equation}
+C_n = \left[\frac{1}{i}\frac{d}{dz}\right]^n \log\hat{\rho}(z) \bigg|_{z=0}
+\end{equation}
+I primi cumulanti sono legati ai momenti in modo semplice:
+\begin{itemize}
+    \item $C_1 = \langle x \rangle = \mu$ (la media)
+    \item $C_2 = \langle x^2 \rangle - \langle x \rangle^2 = \sigma^2$ (la varianza)
+    \item $C_3 = \langle (x-\mu)^3 \rangle$ (legato alla skewness, $\gamma_1 = C_3/\sigma^3$)
+    \item $C_4 = \langle (x-\mu)^4 \rangle - 3\sigma^4$ (legato alla curtosi, $\gamma_2 = C_4/\sigma^4$)
+\end{itemize}
+La proprietà più importante dei cumulanti deriva dalla relazione del prodotto per la funzione caratteristica della somma di variabili indipendenti. Prendendo il logaritmo, si ha $\log \hat{\rho}_X(z) = \log \hat{\rho}_{X_1}(z) + \log \hat{\rho}_{X_2}(z)$. Poiché la derivata è un operatore lineare, ne consegue che \textbf{i cumulanti della somma sono la somma dei cumulanti}:
+\begin{equation}
+C_{n,X} = C_{n,X_1} + C_{n,X_2}
+\end{equation}
+
+\subsection{Il Teorema del Limite Centrale}
+
+Consideriamo la somma $X_N = \sum_{n=1}^N x_n$ di $N$ variabili casuali indipendenti e identicamente distribuite (i.i.d.), ciascuna con media $\mu_0$ e varianza $\sigma_0^2$. Per la proprietà di additività dei cumulanti:
+\begin{itemize}
+    \item $C_{1,X_N} = \sum C_{1,x_n} = N\mu_0$
+    \item $C_{2,X_N} = \sum C_{2,x_n} = N\sigma_0^2$
+    \item $C_{n,X_N} = N C_{n,1}$
+\end{itemize}
+Ora consideriamo la media campionaria $Y = X_N/N$. Usando le proprietà di trasformazione, si può dimostrare che la funzione caratteristica di $Y$ è $\hat{\rho}_Y(z) = \hat{\rho}_{X_N}(z/N)$. Questo implica che i cumulanti scalano come $C_{n,Y} = N^{-n}C_{n,X_N} = N^{1-n}C_{n,1}$.
+Nel limite $N \to \infty$:
+\begin{itemize}
+    \item $C_{1,Y} = N^0 C_{1,1} = \mu_0 \to \mu_0$ (Legge dei Grandi Numeri)
+    \item $C_{2,Y} = N^{-1} C_{2,1} = \frac{\sigma_0^2}{N} \to 0$
+    \item $C_{n,Y} = N^{1-n} C_{n,1} \to 0$ per $n \ge 2$.
+\end{itemize}
+Una distribuzione con varianza e tutti i cumulanti superiori nulli è una funzione delta di Dirac centrata sulla media.
+
+Per ottenere una distribuzione non degenere, dobbiamo standardizzare la variabile in modo diverso. Definiamo la variabile standardizzata $V$:
+\begin{equation}
+V = \frac{X_N - N\mu_0}{\sqrt{N}\sigma_0} = \frac{Y - \mu_0}{\sigma_0/\sqrt{N}}
+\end{equation}
+Si può dimostrare che i cumulanti di $V$ sono:
+\begin{itemize}
+    \item $C_{1,V} = 0$ (la media è zero)
+    \item $C_{2,V} = 1$ (la varianza è uno)
+    \item $C_{n,V} \propto N^{1-n/2} \to 0$ per $n \ge 3$
+\end{itemize}
+L'unica distribuzione con i primi due cumulanti finiti (0 e 1) e tutti gli altri nulli è la \textbf{distribuzione Gaussiana standard}. Questo dimostra il Teorema del Limite Centrale: la somma (o media) di un gran numero di variabili i.i.d. (con media e varianza finite) tende a una distribuzione Gaussiana, indipendentemente dalla distribuzione delle singole variabili.
+
+\section{Leggi di Potenza (Power-Laws)}
+
+Una variabile casuale segue una legge di potenza se la sua PDF ha la forma:
+\begin{equation}
+\rho(x) = \begin{cases} cx^{-\alpha} & \text{per } x \ge m \\ 0 & \text{per } x < m \end{cases}
+\end{equation}
+dove $\alpha > 0$ è l'esponente, $m > 0$ è il valore minimo, e $c$ è la costante di normalizzazione.
+La normalizzazione richiede $\int_m^\infty cx^{-\alpha} dx = 1$. L'integrale converge solo se $\alpha > 1$. In tal caso:
+\begin{equation}
+c = (\alpha-1)m^{\alpha-1}
+\end{equation}
+Una caratteristica distintiva delle leggi di potenza è che appaiono come una linea retta su un grafico in scala log-log:
+\begin{equation}
+\log(\rho(x)) = \log(c) - \alpha \log(x)
+\end{equation}
+Questa è l'equazione di una retta con pendenza $-\alpha$.
+
+\subsection{Stima dei Parametri: Metodo della Massima Verosimiglianza}
+
+Supponiamo di avere un insieme di dati $\{x_i\}_{i=1...N}$ e di ipotizzare che provengano da una distribuzione a legge di potenza con un dato $m$ ma $\alpha$ sconosciuto. Per stimare $\alpha$, usiamo il \textbf{metodo della massima verosimiglianza} (Maximum Likelihood Estimation, MLE). Questo metodo cerca il valore del parametro $\alpha$ che massimizza la probabilità (verosimiglianza) di osservare i dati dati.
+
+La funzione di verosimiglianza $\mathcal{L}(\alpha)$ è il prodotto delle probabilità di ogni singola osservazione:
+\begin{equation}
+\mathcal{L}(\alpha) = \prod_{i=1}^N \rho(x_i|\alpha) = \prod_{i=1}^N \frac{\alpha-1}{m} \left(\frac{x_i}{m}\right)^{-\alpha} = \left(\frac{\alpha-1}{m}\right)^N \prod_{i=1}^N \left(\frac{x_i}{m}\right)^{-\alpha}
+\end{equation}
+È più comodo massimizzare il logaritmo della verosimiglianza (log-likelihood), $L(\alpha) = \log\mathcal{L}(\alpha)$:
+\begin{equation}
+L(\alpha) = N\log(\alpha-1) - N\log(m) - \alpha \sum_{i=1}^N \log\left(\frac{x_i}{m}\right)
+\end{equation}
+Per trovare il massimo, deriviamo rispetto ad $\alpha$ e poniamo la derivata uguale a zero:
+\begin{equation}
+\frac{dL(\alpha)}{d\alpha} = \frac{N}{\alpha-1} - \sum_{i=1}^N \log\left(\frac{x_i}{m}\right) = 0
+\end{equation}
+Risolvendo per $\alpha$, otteniamo lo stimatore di massima verosimiglianza $\hat{\alpha}$:
+\begin{equation}
+\hat{\alpha} = 1 + N \left[ \sum_{i=1}^N \log\left(\frac{x_i}{m}\right) \right]^{-1}
+\end{equation}
+Questo può essere scritto in modo più compatto come:
+\begin{equation}
+\hat{\alpha} = 1 + \frac{1}{\langle \ln(x/m) \rangle}
+\end{equation}
+
