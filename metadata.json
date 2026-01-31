@@ -21,6 +21,13 @@
     "title": "Lab. Biosistemi I",
     "code": "FIS/01",
     "year": "Magistrale",
+    "order": 5
+  }
+},
+"Physics_of_Complex_Systems": {
+    "title": "Physics of Complex Systems",
+    "code": "FIS/03",
+    "year": "Magistrale",
     "order": 4
   }
 }
