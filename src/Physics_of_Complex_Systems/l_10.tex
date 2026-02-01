@@ -1,0 +1,509 @@
+\chapter{Lezione 10}
+\label{chap:lezione_10} 
+
+\begin{flushright}
+\textit{Data: 30/10/2025}
+\end{flushright}
+
+\section{Modelli di Crescita delle Reti: Il Modello Barabási-Albert}
+
+Si analizzano i modelli dinamici per la generazione di reti, con particolare riferimento al modello Barabási-Albert (BA), introdotto nel 1999 per spiegare l'emergere delle proprietà \textit{Scale-Free} nelle reti reali.
+
+\subsection{Meccanismo di Attaccamento Preferenziale}
+
+Il modello si fonda sul meccanismo dell'\textit{Attaccamento Preferenziale} (Preferential Attachment), riassumibile nel principio "the rich get richer". 
+La dinamica di evoluzione della rete è definita come segue:
+\begin{enumerate}
+    \item \textbf{Condizione Iniziale:} Si parte da un nucleo di $n_0$ nodi esistenti.
+    \item \textbf{Crescita:} Ad ogni passo temporale $t$, viene aggiunto un nuovo nodo alla rete.
+    \item \textbf{Connessione:} Il nuovo nodo crea $m$ collegamenti ($m \le n_0$) verso nodi già presenti nel sistema.
+    \item \textbf{Regola di Attaccamento:} La probabilità $\mathbb{P}(k_i)$ che un nuovo collegamento si attacchi al nodo $i$-esimo dipende linearmente dal grado $k_i$ di tale nodo.
+\end{enumerate}
+
+Formalmente, la probabilità di connessione è data da:
+\begin{equation}
+    \mathbb{P}(k_i) = \frac{k_i}{\sum_j k_j}
+\end{equation}
+Poiché ogni nuovo nodo porta $m$ nuovi archi, il denominatore rappresenta la somma totale dei gradi nella rete al tempo $t$. 
+Notiamo che:
+\begin{itemize}
+    \item Il numero di nodi cresce linearmente: $n(t) = n_0 + t$.
+    \item Il numero totale di archi al tempo $t$ è $m_{tot} = m \cdot t$ (assumendo $t$ grande e trascurando i collegamenti iniziali).
+    \item La somma dei gradi è il doppio del numero di archi: $\sum_j k_j = 2 m t$.
+\end{itemize}
+Per definizione, questo modello genera una rete con una Componente Gigante (GC) unitaria.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        % Nodo centrale Hub
+        \node[circle, draw=black, fill=colorC!40, minimum size=1.2cm] (hub) at (0,0) {\textbf{Hub}};
+        
+        % Nodi periferici esistenti
+        \foreach \angle in {0, 60, 120, 180, 240, 300} {
+            \node[circle, draw=black, fill=colorA!40, minimum size=0.5cm] (n\angle) at (\angle:2cm) {};
+            \draw (hub) -- (n\angle);
+        }
+        
+        % Nuovo nodo
+        \node[circle, draw=black, fill=colorE!40, minimum size=0.8cm, label=above:New Node] (new) at (4,1) {};
+        
+        % Frecce di probabilità
+        \draw[->, dashed, thick, colorE] (new) -- (hub) node[midway, above, sloped] {High $P$};
+        \draw[->, dashed, thin, gray] (new) -- (n0) node[midway, below, sloped] {Low $P$};
+    \end{tikzpicture}
+    \caption{Rappresentazione schematica dell'attaccamento preferenziale. Il nuovo nodo ha una probabilità maggiore di connettersi all'Hub (grado elevato) rispetto ai nodi periferici.}
+\end{figure}
+
+\subsection{Approssimazione nel Continuo}
+
+Per derivare la distribuzione dei gradi, trattiamo $k_i$ come una variabile continua nel tempo. L'evoluzione temporale del grado del nodo $i$ è descritta dall'equazione differenziale:
+\begin{equation}
+    \frac{\partial k_i}{\partial t} = m \cdot \mathbb{P}(k_i) = m \frac{k_i}{\sum_j k_j}
+\end{equation}
+Sostituendo la somma dei gradi $\sum_j k_j = 2mt$:
+\begin{equation}
+    \frac{\partial k_i}{\partial t} = m \frac{k_i}{2mt} = \frac{k_i}{2t}
+\end{equation}
+Separando le variabili e integrando tra il tempo di nascita del nodo $t_i$ e il tempo corrente $t$:
+\begin{equation}
+    \int_{k_i(t_i)}^{k_i(t)} \frac{dk_i}{k_i} = \int_{t_i}^{t} \frac{dt'}{2t'}
+\end{equation}
+La condizione iniziale è che al momento della nascita $t_i$, il nodo ha grado $m$, ovvero $k_i(t_i) = m$.
+\begin{equation}
+    \ln\left(\frac{k_i(t)}{m}\right) = \frac{1}{2} \ln\left(\frac{t}{t_i}\right)
+\end{equation}
+Esponenziando entrambi i membri otteniamo la legge di potenza temporale:
+\begin{equation}
+    k_i(t) = m \left( \frac{t}{t_i} \right)^{\beta} \quad \text{con } \beta = \frac{1}{2}
+\end{equation}
+
+\subsection{Derivazione della Distribuzione del Grado $P(k)$}
+
+La probabilità che un nodo abbia un grado $k_i(t)$ inferiore a un valore soglia $k$ è equivalente alla probabilità che il suo tempo di nascita $t_i$ sia successivo a un certo istante (poiché i nodi più vecchi hanno grado maggiore).
+Dalla relazione precedente ricaviamo $t_i$:
+\begin{equation}
+    k = m \left( \frac{t}{t_i} \right)^{1/2} \implies t_i = t \left( \frac{m}{k} \right)^2
+\end{equation}
+Assumiamo che i tempi di inserimento $t_i$ siano uniformemente distribuiti nell'intervallo $[0, t]$. La funzione di distribuzione cumulativa per $t_i$ è $F(t_i) = t_i / t$.
+La probabilità cumulativa per il grado è:
+\begin{equation}
+    P(k_i(t) < k) = P\left( t_i > \frac{m^2 t}{k^2} \right) = 1 - P\left( t_i \le \frac{m^2 t}{k^2} \right)
+\end{equation}
+Sostituendo la distribuzione uniforme (assumendo $n_0 \ll t$):
+\begin{equation}
+    P(k_i(t) < k) = 1 - \frac{1}{t} \left( \frac{m^2 t}{k^2} \right) = 1 - \frac{m^2}{k^2}
+\end{equation}
+La densità di probabilità $P(k)$ si ottiene derivando la cumulativa rispetto a $k$:
+\begin{equation}
+    P(k) = \frac{\partial}{\partial k} \left( 1 - \frac{m^2}{k^2} \right) = -(-2) m^2 k^{-3} = 2m^2 k^{-3}
+\end{equation}
+Si ottiene quindi il celebre risultato che la distribuzione dei gradi decade come una legge di potenza con esponente $\gamma = 3$:
+\begin{tcolorbox}[colback=colorC!15, colframe=colorC!70!colorB,  title=\textbf{Decadimento della Distribuzione dei Gradi a Legge di Potenza}]
+\begin{equation}
+    P(k) \sim k^{-3}
+    \label{eq: 10.1}
+\end{equation}
+\end{tcolorbox}
+
+\subsection{In-Degree Distribution}
+
+Per analizzare più in dettaglio la struttura della rete, è utile distinguere tra i collegamenti uscenti ed entranti. Nel modello Barabási-Albert, ogni nuovo nodo introdotto nella rete genera $m$ collegamenti verso nodi preesistenti. Pertanto, il grado uscente (out-degree) è fisso per ogni nodo e pari a $m$.
+La variabilità del grado totale $k$ è determinata interamente dal grado entrante (in-degree), che denotiamo con $q$.
+
+La relazione tra il grado totale $k$ e il grado entrante $q$ è data da:
+\begin{equation}
+    k = q + m
+\end{equation}
+Dove $m$ rappresenta il numero di link che il nodo stabilisce al momento della sua nascita (out-degree costante).
+
+Consideriamo la probabilità di attaccamento preferenziale. La probabilità $\mathbb{P}(k_i)$ che un nuovo nodo si connetta al nodo $i$ è proporzionale al grado totale di $i$. Possiamo riscrivere questa probabilità in termini di in-degree $q_i$:
+\begin{equation}
+    \mathbb{P}(q_i) = \frac{k_i}{\sum_j k_j} = \frac{q_i + m}{\sum_j (q_j + m)}
+\end{equation}
+Al denominatore, la somma è estesa a tutti i nodi presenti al tempo $t$. Se al tempo $t$ ci sono $t$ nodi (assumendo $n_0 \ll t$), la somma dei gradi totali è pari a due volte il numero totale di archi ($m \cdot t$):
+\begin{equation}
+    \sum_j k_j = 2 m t
+\end{equation}
+Pertanto, la probabilità che un singolo nuovo link si connetta a un nodo con in-degree $q$ è:
+\begin{equation}
+    \mathbb{P}(q) = \frac{q + m}{2 m t}
+\end{equation}
+Poiché ogni nuovo nodo introduce $m$ nuovi collegamenti, la probabilità complessiva che un nodo con in-degree $q$ riceva un nuovo collegamento durante un passo temporale è:
+\begin{equation}
+    P(\text{link} \to q) = m \cdot \mathbb{P}(q) = m \frac{q + m}{2 m t} = \frac{q + m}{2 t}
+\end{equation}
+
+\subsection{Approccio della Master Equation}
+
+L'approccio della Master Equation ci permette di descrivere l'evoluzione temporale esatta della distribuzione dei gradi.
+Definiamo $N(q, t)$ come il numero medio di nodi che possiedono in-degree pari a $q$ al tempo $t$.
+La probabilità che un nodo scelto a caso al tempo $t$ abbia in-degree $q$ è data da:
+\begin{equation}
+    P(q, t) = \frac{N(q, t)}{t}
+\end{equation}
+
+L'evoluzione del numero di nodi $N(q, t)$ dal tempo $t$ al tempo $t+1$ è governata dai flussi di probabilità tra gli stati (i diversi valori di $q$).
+Dobbiamo considerare tre contributi:
+\begin{enumerate}
+    \item Guadagno da $q-1$: Un nodo che ha in-degree $q-1$ riceve un nuovo collegamento e il suo grado diventa $q$.
+    \item Perdita da $q$: Un nodo che ha già in-degree $q$ riceve un nuovo collegamento e il suo grado diventa $q+1$.
+    \item Nuovo nodo: Ad ogni passo temporale viene introdotto un nuovo nodo. Questo nodo nasce con in-degree $q=0$ (poiché i suoi link sono solo uscenti).
+\end{enumerate}
+
+\noindent Scriviamo l'equazione di bilancio per $N(q, t+1)$. Per $q > 0$:
+\begin{equation}
+    N(q, t+1) = N(q, t) + \underbrace{\frac{m[(q-1) + m]}{2mt} N(q-1, t)}_{\text{Guadagno da } q-1} - \underbrace{\frac{m[q + m]}{2mt} N(q, t)}_{\text{Perdita verso } q+1}
+\end{equation}
+Semplificando i termini $m$ e $t$:
+\begin{equation}
+    N(q, t+1) = N(q, t) + \frac{q - 1 + m}{2t} N(q-1, t) - \frac{q + m}{2t} N(q, t)
+\end{equation}
+
+\noindent Per $q = 0$: il nuovo nodo entra sempre con in-degree 0. Inoltre, nodi con $q=0$ possono ricevere un link e passare a $q=1$.
+\begin{equation}
+    N(0, t+1) = N(0, t) + 1 - \frac{m}{2t} N(0, t)
+\end{equation}
+Il termine $+1$ rappresenta il nuovo nodo aggiunto al sistema al tempo $t+1$.
+
+\subsubsection{Soluzione nello Stato Stazionario}
+
+Cerchiamo una soluzione stazionaria in cui la distribuzione di probabilità $P(q)$ non dipenda dal tempo per $t \to \infty$.
+Assumiamo $N(q, t) = t P(q)$ e sostituendo nella Master Equation per $q > 0$:
+\begin{equation}
+    P_q = \frac{1}{2}(q - 1 + m) P_{q-1} - \frac{1}{2}(q + m) P_q
+\end{equation}
+Raggruppiamo i termini con $P(q)$ a sinistra e otteniamo la relazione ricorsiva fondamentale:
+\begin{equation}
+    P_q^\infty  = P_{q-1}^\infty  \frac{q + m - 1}{q + m + 2}
+\end{equation}
+
+\noindent Analizziamo ora l'equazione per $q=0$ nel limite stazionario. Si trova la seguente relazione:
+\begin{equation}
+ P_0^\infty = \frac{2}{m + 2}
+\end{equation}
+
+\subsection{Soluzione Esatta e Comportamento Asintotico}
+
+Utilizzando la relazione ricorsiva, possiamo scrivere $P(q)$ come prodotto:
+\begin{equation}
+    P_q^\infty  = P_0^\infty  \prod_{j=1}^{q} \frac{j + m - 1}{j + m + 2}
+\end{equation}
+Questa espressione può essere riscritta utilizzando la funzione Gamma di Eulero, $\Gamma(x)$, sfruttando la proprietà $\Gamma(x+1) = x \Gamma(x)$.
+La relazione ricorsiva $P(q) / P(q-1)$ suggerisce la forma:
+\begin{equation}
+    P(q) = \frac{2}{m+2} \frac{\Gamma(q+m) \Gamma(m+3)}{\Gamma(m) \Gamma(q+m+3)}
+\end{equation}
+Verifichiamo i termini costanti. Sapendo che $P(0) = \frac{2}{m+2}$, l'espressione generale diventa:
+\begin{equation}
+    P(q) = \frac{\Gamma(m+3)}{\Gamma(m)} \frac{\Gamma(q+m)}{\Gamma(q+m+3)}
+\end{equation}
+Il pre-fattore $\frac{\Gamma(m+3)}{\Gamma(m)} = (m+2)(m+1)m! / (m-1)! \dots$ è una costante di normalizzazione.
+
+\noindent  Per studiare il comportamento asintotico per grandi $q$ ($q \gg 1$), utilizziamo l'approssimazione di Stirling o la proprietà asintotica del rapporto di funzioni Gamma:
+\begin{equation}
+    \frac{\Gamma(z+a)}{\Gamma(z+b)} \approx z^{a-b} \quad \text{per } z \to \infty
+\end{equation}
+Nel nostro caso, $z = q$, $a = m$, $b = m+3$.
+\begin{equation}
+    \frac{\Gamma(q+m)}{\Gamma(q+m+3)} \approx q^{m - (m+3)} = q^{-3}
+\end{equation}
+Quindi, la distribuzione del grado entrante segue una legge di potenza:
+\begin{equation}
+    P(q) \sim q^{-3}
+\end{equation}
+
+Poiché per grandi $q$ si ha $k \approx q$ (dato che $k = q+m$ e $m$ è costante), la distribuzione del grado totale $P(k)$ avrà lo stesso esponente asintotico:
+\begin{equation}
+    P(k) \sim k^{-3}
+\end{equation}
+Questo conferma rigorosamente il risultato riportato nell'Equazione \ref{eq: 10.1}, dimostrando che l'esponente $\gamma = 3$ è una proprietà robusta del modello Barabási-Albert.
+
+
+\newpage
+\section{Dinamiche di Diffusione Epidemica}
+
+La modellizzazione matematica in epidemiologia vanta una storia lunga e ricca, che risale agli anni '20 con la teoria di Kermack-McKendrick. L'idea fondamentale, seppur semplice, si rivela estremamente potente: è possibile suddividere la popolazione in diversi \textit{compartimenti} che rappresentano gli stadi della malattia e utilizzare le dimensioni relative di tali compartimenti per modellare l'evoluzione temporale del contagio.
+
+Sebbene nasca in ambito biologico, questa teoria ha trovato una forte sinergia con la \textit{Network Science}. Oggi, i modelli epidemici sono utilizzati per comprendere non solo la diffusione di patogeni biologici, ma anche la propagazione di idee, virus informatici o "meme" sui social network.
+Le domande centrali a cui questi modelli cercano di rispondere sono:
+\begin{itemize}
+    \item Come si diffonde un'infezione all'interno di una popolazione?
+    \item La malattia evolverà in una pandemia globale o si estinguerà localmente?
+    \item Qual è la strategia di vaccinazione ottimale?
+\end{itemize}
+
+\subsubsection{Dinamica Co-evolutiva}
+È fondamentale considerare che esistono due popolazioni interagenti:
+\begin{enumerate}
+    \item \textbf{Ospiti (Hosts):} Gli individui che contraggono il virus.
+    \item \textbf{Patogeni (Virus):} Gli agenti infettivi che evolvono per eludere il sistema immunitario dell'ospite.
+\end{enumerate}
+Questo sistema è intrinsecamente co-evolutivo. Ad esempio, nel caso dell'influenza stagionale, i vaccini devono essere aggiornati regolarmente per adattarsi ai ceppi dominanti che emergono dalla pressione selettiva.
+
+\hfill
+
+\noindent Iniziamo analizzando i modelli in approssimazione di \textbf{well-mixed population} (popolazione ben mescolata), dove si assume che ogni individuo possa interagire con chiunque altro con la stessa probabilità.
+
+\subsection{Il Modello SI (Susceptible-Infected)}
+Il modello più semplice divide la popolazione $N$ in due classi:
+\begin{itemize}
+    \item \textbf{S (Susceptible):} Individui sani ma suscettibili all'infezione.
+    \item \textbf{I (Infected):} Individui infetti in grado di trasmettere la malattia.
+\end{itemize}
+Sia $\beta$ il tasso di infezione, che dipende dalla contagiosità del patogeno e dalla frequenza dei contatti sociali. La dinamica segue la \textbf{Legge di Azione di Massa}: la variazione degli infetti è proporzionale al prodotto tra il numero di suscettibili e la frazione di infetti presenti.
+Le equazioni differenziali che governano il sistema sono:
+\begin{align}
+    \frac{dI(t)}{dt} &= \beta S(t) \frac{I(t)}{N} \\
+    \frac{dS(t)}{dt} &= -\beta S(t) \frac{I(t)}{N}
+\end{align}
+Con la condizione di normalizzazione $S(t) + I(t) = N$.
+Passando alle variabili normalizzate $s(t) = S(t)/N$ e $i(t) = I(t)/N$, otteniamo:
+\begin{equation}
+    \frac{di}{dt} = \beta s i = \beta (1-i) i
+\end{equation}
+La soluzione di questa equazione differenziale è la \textbf{funzione logistica}:
+\begin{equation}
+    i(t) = \frac{i(0) e^{\beta t}}{1 - i(0) + i(0)e^{\beta t}}
+\end{equation}
+Questo modello prevede che, per $t \to \infty$, l'intera popolazione venga infettata ($i \to 1$). È un modello adatto per malattie incurabili senza recupero, ma limitato per la maggior parte dei casi reali.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+    \begin{axis}[
+        width=8cm, height=6cm,
+        xlabel={$t$}, 
+        ymin=0, ymax=1.1, xmin=0, xmax=10,
+        axis lines=left,
+        grid=major,
+        legend pos=outer north east
+       ]
+    % Curva degli Infetti i(t) - Crescita Logistica
+    \addplot[domain=0:10, samples=100, thick, colorC] {1/(1 + 99*exp(-1*x))};
+    \addlegendentry{$i(t)$}
+    
+    % Curva dei Suscettibili s(t) - Decadimento (s = 1 - i)
+    \addplot[domain=0:10, samples=100, thick, colorE, dashed] {1 - (1/(1 + 99*exp(-1*x)))};
+    \addlegendentry{$s(t)$}
+    \end{axis}
+\end{tikzpicture}
+\caption{Andamento complementare di suscettibili $s(t)$ e infetti $i(t)$ nel modello SI.}
+\end{figure}
+
+\subsection{Il Modello SIR (Susceptible-Infected-Recovered)}
+Per descrivere malattie da cui si può guarire (o morire), acquisendo immunità, si introduce il compartimento \textbf{R (Recovered)}.
+\begin{itemize}
+    \item $S \to I$: transizione con tasso $\beta$ (infezione).
+    \item $I \to R$: transizione con tasso $\mu$ (guarigione/rimozione).
+\end{itemize}
+Il sistema di equazioni differenziali è:
+\begin{align}
+    \frac{ds}{dt} &= -\beta s i \\
+    \frac{di}{dt} &= \beta s i - \mu i \\
+    \frac{dr}{dt} &= \mu i
+\end{align}
+Dove $\mu$ è il tasso di recupero, inverso del tempo medio di infezione $\tau \sim 1/\mu$. La probabilità di rimanere infetti per un tempo $\tau$ decade esponenzialmente come $P(\tau) \sim e^{-\mu \tau}$.
+
+\subsubsection{Derivazione della Dimensione Finale dell'Epidemia}
+Dividendo la prima equazione per la terza, eliminiamo la dipendenza temporale:
+\begin{equation}
+    \frac{ds}{dr} = \frac{-\beta s i}{\mu i} = -\frac{\beta}{\mu} s
+\end{equation}
+Definiamo il \textbf{Basic Reproduction Number} come $R_0 = \frac{\beta}{\mu}$. Integrando l'equazione differenziale tra lo stato iniziale (tempo 0) e un tempo generico $t$:
+\begin{equation}
+    \int_{s(0)}^{s(t)} \frac{ds'}{s'} = -R_0 \int_{r(0)}^{r(t)} dr' \implies \ln\left(\frac{s(t)}{s(0)}\right) = -R_0 (r(t) - r(0))
+\end{equation}
+Assumendo che all'inizio nessuno sia guarito ($r(0)=0$) e quasi tutti siano suscettibili ($s(0) \approx 1$), otteniamo:
+\begin{equation}
+    s(t) = e^{-R_0 r(t)}
+\end{equation}
+Nel limite asintotico $t \to \infty$, il numero di infetti si annulla ($i_\infty = 0$), quindi vale la conservazione $s_\infty + r_\infty = 1$. Sostituendo $s_\infty = 1 - r_\infty$:
+\begin{equation}
+    1 - r_\infty = e^{-R_0 r_\infty}
+\end{equation}
+Otteniamo così un'equazione trascendente per la dimensione totale dell'epidemia $r_\infty$:
+\begin{equation}
+    r_\infty = 1 - e^{-R_0 r_\infty}
+\end{equation}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+    \begin{axis}[
+        width=8cm, height=6cm,
+        xlabel={$r_\infty$},
+        xmin=0, xmax=1, ymin=0, ymax=1,
+        legend pos=south east,
+        axis lines=middle
+    ]
+    \addplot[domain=0:1, dashed, black] {x};
+    \addplot[domain=0:1, thick, colorE] {1 - exp(-2.5*x)}; % R0 > 1
+    \addplot[domain=0:1, thick, colorB] {1 - exp(-0.8*x)}; % R0 < 1
+    
+    \node[colorE] at (axis cs: 0.7, 0.9) {$R_0 > 1$};
+    \node[colorB] at (axis cs: 0.3, 0.1) {$R_0 < 1$};
+    \end{axis}
+\end{tikzpicture}
+\caption{Soluzione grafica per $r_\infty$. Per $R_0 > 1$  esiste una soluzione non banale $r_\infty \neq 0$. Per $R_0 < 1$ l'unica soluzione è l'assenza di epidemia ($r_\infty = 0$).}
+\end{figure}
+
+Il parametro $R_0$ determina la soglia critica:
+\begin{itemize}
+    \item Se $R_0 < 1$: L'epidemia non decolla (soluzione $r_\infty = 0$).
+    \item Se $R_0 > 1$: Esiste una soluzione positiva $r_\infty > 0$, si verifica un'epidemia macroscopica.
+\end{itemize}
+
+\newpage
+\subsection{Epidemie su Reti e Percolazione}
+
+Le assunzioni di "well-mixed population" sono spesso eccessivamente semplicistiche. Nella realtà, la struttura dei contatti (la rete sociale, i trasporti aerei, ecc.) gioca un ruolo cruciale.
+Passiamo quindi all'analisi delle epidemie su \textbf{Reti Complesse}.
+
+\subsection{Probabilità di Trasmissione e Percolazione di Legame}
+Consideriamo un modello in cui ogni individuo infetto rimane tale per un tempo fisso $\tau$. La probabilità di trasmettere l'infezione a un vicino connesso è data da $\beta$ per unità di tempo.
+La probabilità totale che l'infezione passi attraverso un arco (link) durante il periodo di infezione $\tau$ è definita come \textbf{trasmissibilità} $\phi$ (o $T$):
+\begin{equation}
+    \phi = 1 - e^{-\beta \tau}
+\end{equation}
+Questo ci permette di mappare il problema dinamico dell'epidemia su un problema statico di \textbf{Percolazione di Legame} (\textit{Bond Percolation}).
+Ogni arco della rete viene dichiarato "occupato" (ovvero capace di trasmettere l'infezione) con probabilità $\phi$.
+\begin{itemize}
+    \item Se esiste una \textbf{Componente Gigante} (Giant Component) formata dagli archi occupati, l'epidemia può diffondersi a una frazione macroscopica della popolazione.
+    \item La soglia epidemica corrisponde esattamente alla soglia di percolazione $\phi_c$.
+\end{itemize}
+
+
+\subsection{Derivazione della Soglia Critica $\phi_c$}
+Vogliamo calcolare la probabilità che un nodo \textbf{non} appartenga alla Componente Gigante (GC) dell'infezione.
+Definiamo $u$ come la probabilità che seguendo un arco scelto a caso in una direzione, \textbf{non}  si raggiunga la Componente Gigante. 
+
+Consideriamo un nodo $i$ raggiunto tramite un arco. Affinché questo percorso non conduca alla GC, deve verificarsi una delle seguenti condizioni esclusive:
+\begin{enumerate}
+    \item L'arco che stiamo percorrendo non è attivo (l'infezione non passa). Questo avviene con probabilità $1 - \phi$.
+    \item L'arco è attivo (probabilità $\phi$), ma il nodo $i$ a cui arriviamo non è connesso alla GC tramite nessuno dei suoi \textit{altri} archi uscenti.
+\end{enumerate}
+
+\noindent Se il nodo $i$ ha grado totale $k+1$, significa che ha altri $k$ archi oltre a quello di arrivo. La probabilità che nessuno di questi $k$ rami porti alla GC è $u^k$ (assumendo indipendenza locale, valida per reti senza troppi cicli corti).
+
+Dobbiamo mediare questa probabilità sulla distribuzione dei gradi dei nodi che incontriamo navigando la rete. Questa non è la distribuzione di grado standard $P(k)$, ma la \textbf{Excess Degree Distribution} (distribuzione del grado in eccesso), denotata con $q_k$.
+La probabilità di arrivare a un nodo con grado $k+1$ è proporzionale a $(k+1)P(k+1)$. Normalizzando:
+\begin{equation}
+    q_k = \frac{(k+1)P(k+1)}{\langle k \rangle}
+\end{equation}
+Dove $q_k$ rappresenta la probabilità che un nodo raggiunto abbia $k$ collegamenti ulteriori.
+
+Possiamo ora scrivere l'equazione ricorsiva per $u$:
+\begin{equation}
+    u = \underbrace{(1 - \phi)}_{\text{Arco inattivo}} + \underbrace{\phi \sum_{k=0}^{\infty} q_k u^k}_{\text{Arco attivo } \cdot \text{ rami morti}}
+\end{equation}
+Introduciamo la \textbf{Funzione Generatrice} $g_1(u)$ per la distribuzione di eccesso:
+\begin{equation}
+    g_1(u) = \sum_{k=0}^{\infty} q_k u^k
+\end{equation}
+L'equazione di auto-consistenza diventa quindi:
+\begin{equation} \label{eq:self_consistency}
+    u = 1 - \phi + \phi g_1(u)
+\end{equation}
+
+\subsubsection{Soluzione Grafica e Transizione di Fase}
+
+Cerchiamo le soluzioni dell'equazione (\ref{eq:self_consistency}) nell'intervallo $u \in [0, 1]$.
+
+
+
+
+\begin{itemize}
+    \item Una soluzione banale è sempre $u=1$. Infatti, poiché $\sum q_k = 1$, si ha $g_1(1)~=~1$, quindi $1 = 1 - \phi + \phi(1)$ è verificata. Questo corrisponde all'assenza di una Componente Gigante (l'epidemia si estingue).
+    \item Una soluzione fisica $u < 1$ (che implica l'esistenza della GC) emerge solo se la curva interseca la bisettrice $y=u$ con una pendenza sufficiente.
+\end{itemize}
+
+La transizione di fase (il punto critico) avviene quando la derivata del membro di destra rispetto a $u$, calcolata in $u=1$, è esattamente uguale a 1 (tangenza):
+\begin{equation}
+    \frac{d}{du} \Big( 1 - \phi + \phi g_1(u) \Big) \Big|_{u=1} = 1
+\end{equation}
+Calcolando la derivata:
+\begin{equation}
+    0 - 0 + \phi \cdot g_1'(u) \Big|_{u=1} = 1 \implies \phi_c g_1'(1) = 1
+\end{equation}
+La soglia critica è dunque:
+\begin{equation}
+    \phi_c = \frac{1}{g_1'(1)}
+\end{equation}
+
+\subsubsection{Calcolo Esplicito dei Momenti}
+
+Dobbiamo calcolare il valore di $g_1'(1)$. Dalla definizione di funzione generatrice:
+\begin{equation}
+    g_1'(u) = \frac{d}{du} \sum_{k=0}^{\infty} q_k u^k = \sum_{k=1}^{\infty} k q_k u^{k-1}
+\end{equation}
+Valutando in $u=1$:
+\begin{equation}
+    g_1'(1) = \sum_{k=0}^{\infty} k q_k
+\end{equation}
+Questo rappresenta il valor medio della distribuzione di eccesso. Sostituiamo ora la definizione di $q_k = \frac{(k+1)P(k+1)}{\langle k \rangle}$:
+\begin{equation}
+    g_1'(1) = \sum_{k=0}^{\infty} k \frac{(k+1)P(k+1)}{\langle k \rangle}
+\end{equation}
+Per risolvere questa sommatoria, effettuiamo un cambio di variabile. Poniamo $j = k+1$, da cui $k = j-1$. Quando $k=0$, $j=1$.
+\begin{equation}
+    g_1'(1) = \frac{1}{\langle k \rangle} \sum_{j=1}^{\infty} (j-1) j P(j)
+\end{equation}
+Espandiamo il prodotto $(j-1)j = j^2 - j$:
+\begin{equation}
+    g_1'(1) = \frac{1}{\langle k \rangle} \left( \sum_{j} j^2 P(j) - \sum_{j} j P(j) \right)
+\end{equation}
+Riconosciamo i momenti della distribuzione originale $P(k)$: $\sum j^2 P(j) = \langle k^2 \rangle$ e $\sum j P(j) = \langle k \rangle$.
+Quindi:
+\begin{equation}
+    g_1'(1) = \frac{\langle k^2 \rangle - \langle k \rangle}{\langle k \rangle}
+\end{equation}
+
+\subsubsection{Risultato Finale per la Soglia Epidemica}
+
+Sostituendo l'espressione di $g_1'(1)$ nella formula della soglia critica $\phi_c = 1/g_1'(1)$, otteniamo il risultato fondamentale:
+
+\begin{tcolorbox}[colback=colorC!15, colframe=colorC!70!colorB,  title=\textbf{Soglia Epidemica}]
+\begin{equation} \label{eq:threshold}
+    \phi_c = \frac{\langle k \rangle}{\langle k^2 \rangle - \langle k \rangle}
+\end{equation}
+\end{tcolorbox}
+
+
+Questa equazione lega la dinamica epidemica (rappresentata da $\phi_c$) esclusivamente alle proprietà topologiche della rete (i momenti $\langle k \rangle$ e $\langle k^2 \rangle$).
+
+\subsection{Implicazioni per la Robustezza delle Reti}
+
+Analizziamo il comportamento della soglia (\ref{eq:threshold}) per diverse topologie di rete.
+
+\subsubsection{Caso 1: Reti Omogenee (Erdős-Rényi)}
+In una rete random con distribuzione di Poisson, la varianza $\sigma^2$ è uguale alla media $\langle k \rangle$.
+Ricordando che $\sigma^2 = \langle k^2 \rangle - \langle k \rangle^2$, possiamo scrivere:
+\begin{equation}
+    \langle k^2 \rangle = \langle k \rangle^2 + \sigma^2 = \langle k \rangle^2 + \langle k \rangle
+\end{equation}
+Sostituendo nel denominatore della soglia critica:
+\begin{equation}
+    \phi_c = \frac{\langle k \rangle}{(\langle k \rangle^2 + \langle k \rangle) - \langle k \rangle} = \frac{\langle k \rangle}{\langle k \rangle^2} = \frac{1}{\langle k \rangle}
+\end{equation}
+Se la rete ha grado medio $\langle k \rangle = 4$, allora $\phi_c = 1/4 = 0.25$.
+Ciò implica una notevole \textbf{robustezza}: affinché l'epidemia si propaghi (o affinché la rete rimanga connessa sotto attacco casuale), la trasmissibilità deve essere superiore al 25\%. Inversamente, possiamo rimuovere fino al 75\% dei nodi prima che la componente gigante venga distrutta.
+
+\subsubsection{Caso 2: Reti Scale-Free (Barabási-Albert)}
+Le reti reali (Internet, WWW, reti sociali) seguono una legge di potenza $P(k) \sim k^{-\gamma}$ con $2 < \gamma \le 3$.
+Una proprietà peculiare di queste distribuzioni è che, nel limite di rete infinita ($N \to \infty$), il momento secondo diverge:
+\begin{equation}
+    \langle k^2 \rangle \to \infty
+\end{equation}
+Se il denominatore nella (\ref{eq:threshold}) tende a infinito, la soglia critica tende a zero:
+\begin{equation}
+    \phi_c = \frac{\langle k \rangle}{\infty} \longrightarrow 0
+\end{equation}
+
+Questo risultato dimostra l'estrema \textbf{fragilità} delle reti scale-free rispetto alla diffusione virale.
+\begin{itemize}
+    \item Poiché $\phi_c = 0$, qualsiasi virus anche con trasmissibilità infinitesimale è in grado di diffondersi e diventare pandemico.
+    \item Non esiste una soglia di sicurezza naturale.
+    \item Un numero infinitesimale di nodi iniziali è sufficiente a sostenere il contagio 
+\end{itemize}
+
