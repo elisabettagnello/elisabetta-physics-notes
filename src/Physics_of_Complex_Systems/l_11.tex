@@ -122,104 +122,111 @@ Per trovare la forma generale $\mathcal{H}(p_1, \dots, p_M)$, Shannon introdusse
     \setcounter{enumi}{3}
     \item \textbf{Raggruppamento (Consistenza):} \label{axiom:Grouping} L'entropia deve essere consistente se calcolata per fasi (raggruppamento di stati).
     
-    Esempio: Si consideri un sistema con probabilità $P_{FIN} = (1/2, 1/4, 1/4)$. Possiamo vederlo come un processo in due fasi:
-        \begin{enumerate}
-            \item Prima scelta $P = (1/2, 1/2)$ (es. "testa" o "croce").
-            \item Se l'esito è "croce" (che accade con probabilità 1/2), si effettua una seconda scelta $Q = (1/3, 2/3)$.
-        \end{enumerate}
-        Il requisito è che l'entropia totale (ovvero l'entropia della \textbf{sequenza} $P_{FIN}$) sia l'entropia della prima scelta (l'entropia della sequenza $P$), più la \textit{media pesata} delle entropie delle scelte successive (l'entropia di $Q$).
-
-        \begin{equation}
-            \mathcal{H}(P_{FIN}) = \mathcal{H}(P) + \textcolor{colorE}{\frac{1}{2}}\mathcal{H}(Q)
-        \end{equation}
-        Dove il fattore $\textcolor{colorE}{\frac{1}{2}}$ deriva dal fatto che solo con probabilità $1/2$ è necessario effettuare la seconda scelta $Q$.
-        Quindi in questo caso particolare abbiamo:
-        \begin{equation}
-            \mathcal{H}(\frac{1}{2}, \frac{1}{6}, \frac{2}{3}) = \mathcal{H}(\frac{1}{2}, \frac{1}{2}) + \frac{1}{2} \mathcal{H}(\frac{1}{6}, \frac{1}{3})
-        \end{equation}  
-        
+    Esempio: Si consideri un sistema con probabilità $P_{FIN} = (1/2, 1/6, 1/3)$. Possiamo vederlo come un processo in due fasi:
+\begin{enumerate}
+    \item Prima scelta $P = (1/2, 1/2)$ (es. "testa" o "croce").
+    \item Se l'esito è "croce" (che accade con probabilità $1/2$), si effettua una seconda scelta $Q = (1/3, 2/3)$.
 \end{enumerate}
 
+Il requisito di consistenza (Raggruppamento) impone che l'entropia totale (ovvero l'entropia della \textbf{sequenza} $P_{FIN}$) sia l'entropia della prima scelta (l'entropia di $P$), più la \textit{media pesata} delle entropie delle scelte successive (l'entropia di $Q$).
 
+\begin{equation}
+    \mathcal{H}(P_{FIN}) = \mathcal{H}(P) + \textcolor{colorE}{\frac{1}{2}}\mathcal{H}(Q)
+\end{equation}
+
+Dove il fattore $\textcolor{colorE}{\frac{1}{2}}$ deriva dal fatto che solo con probabilità $1/2$ è necessario effettuare la seconda scelta $Q$.
+Quindi in questo caso particolare abbiamo:
+
+\begin{equation}
+    \mathcal{H}\left(\frac{1}{2}, \frac{1}{6}, \frac{1}{3}\right) = \mathcal{H}\left(\frac{1}{2}, \frac{1}{2}\right) + \frac{1}{2} \mathcal{H}\left(\frac{1}{3}, \frac{2}{3}\right)
+\end{equation}
+
+\vspace{0.5cm}
+
+% --- DIAGRAMMA AD ALBERO ---
 \begin{figure}[h]
     \centering
     \begin{tikzpicture}[
-    scale=1.5,
-    font=\large,
-    % Stile per i nodi del percorso
-    node distance=2.5cm and 4cm,
-    % Stile per le etichette sulle linee
-    label distance=2pt
-]
-
-    % --- Coordinate dei Nodi ---
-    \node (P) at (0,0) {$P$};
-    \node (A) at (4,1.5) {$A$};
-    \node (Q) at (2.5,-1.2) {$Q$};
-    \node (B) at (4,-0.5) {$B$};
-    \node (C) at (4,-1.8) {$C$};
-
-    % --- Linee e Etichette Probabilità ---
-    % Percorso superiore P -> A
-    \draw (P) -- (A) node[midway, above left=2pt] {$\frac{1}{2}$};
+        scale=1.2,
+        font=\large,
+        grow=right, % L'albero cresce verso destra
+        level 1/.style={sibling distance=3cm, level distance=3cm},
+        level 2/.style={sibling distance=1.5cm, level distance=3cm},
+        edge from parent/.style={draw, thick},
+        sloped % Allinea le etichette ai rami
+    ]
     
-    % Percorso inferiore P -> Q
-    \draw (P) -- (Q) node[midway, below left=2pt] {$\frac{1}{2}$};
-    
-    % Rami da Q
-    \draw (Q) -- (B) node[midway, above left] {$\frac{1}{3}$};
-    \draw (Q) -- (C) node[midway, below left] {$\frac{2}{3}$};
+    \node (Root) at (0,0) {Start}
+        child {
+            node (Q) {Croce ($Q$)}
+            child {
+                node {$\frac{1}{3}$}
+                edge from parent node[below] {$\frac{2}{3}$}
+            }
+            child {
+                node {$\frac{1}{6}$}
+                edge from parent node[above] {$\frac{1}{3}$}
+            }
+            edge from parent node[below] {$\frac{1}{2}$}
+        }
+        child {
+            node {Testa ($\frac{1}{2}$)}
+            edge from parent node[above] {$\frac{1}{2}$}
+        };
 
-    % --- Valori P_FIN ---
-    \node[anchor=west] at (4.8, 1.5) {$\frac{1}{2}$};
-    \node[anchor=west] at (4.8, -0.5) {$\frac{1}{6}$};
-    \node[anchor=west] at (4.8, -1.8) {$\frac{1}{3}$};
+    % Etichette extra per chiarire
+    \node[right] at (5.5, 1.5) {Esito 1 ($p=1/2$)};
+    \node[right] at (5.5, -0.7) {Esito 2 ($p=1/6$)};
+    \node[right] at (5.5, -2.2) {Esito 3 ($p=1/3$)};
 
-\end{tikzpicture}
+    \end{tikzpicture}
+    \caption{Rappresentazione del processo di scelta a due stadi.}
 \end{figure}
 
-\begin{tcolorbox}[colback=colorD!25!white,colframe=colorD!75!colorE,title={\textbf{Formulazione Generale}}]
+\begin{tcolorbox}[colback=colorD!25!white,colframe=colorC,title={\textbf{Formulazione Generale}}]
 Assumiamo inizialmente che tutti i $p_i$ siano numeri razionali: $p_i = \frac{n_i}{N}$, dove $N = \sum_{j=1}^M n_j$.\\
 Possiamo immaginare una visione a "microstati": un sistema sottostante di $N$ microstati equiprobabili. Questi $N$ microstati sono raggruppati in $M$ "macrostati" (i nostri esiti $x_i$), dove il macrostato $i$ contiene $n_i$ microstati.
 \end{tcolorbox}
 
+% --- DIAGRAMMA MICROSTATI ---
 \begin{figure}[h!]
     \centering
-\begin{tikzpicture}[
-    scale=1.2,
-    macro/.style={thick, colorC},
-    micro/.style={colorE}
-]
+    \begin{tikzpicture}[scale=1, transform shape]
+    
+    % Nodo radice
+    \node[circle, fill=black, inner sep=1.5pt] (O) at (0,0) {};
+    \node[left] at (O) {Totale $N$};
 
-    % --- Nodo Radice ---
-    \node (Root) at (0,0) {};
-    \node[macro, anchor=east, xshift=-0.5cm] at (0,0) {$M$ macrostati};
+    % Macrostati (Rami principali)
+    \draw[thick, colorC] (O) -- (4, 2) node[midway, above, sloped] {$p_1$};
+    \draw[thick, colorC] (O) -- (4, 0.5) node[midway, above, sloped] {$p_2$};
+    \draw[thick, colorC] (O) -- (4, -1.5) node[midway, below, sloped] {$p_M$};
+    
+    % Puntini per indicare altri macrostati
+    \node at (2, -0.5) {$\vdots$};
 
-    % --- Macro-rami ---
-    % Macrostato 1
-    \draw[macro] (0,0) -- (3,1.5) node[midway, above] {\small $p_1$};
-    % Macrostato 2
-    \draw[macro] (0,0) -- (3,0.5) node[midway, above] {\small $p_2$} ;
-    % Macrostato i
-    \draw[macro] (0,0) -- (3,-1) node[midway, above] {\small $p_i$};
-    % Macrostato M
-    \draw[macro] (0,0) -- (3,-2.5) node[left, xshift=-0.2cm] {$p_M$};
-
-    % --- Micro-rami (ventagli) ---
-    \foreach \y in {1.5, 0.5, -1, -2.5} {
-        \foreach \angle in {-30, -15, 0, 15, 30} {
-            \draw[micro] (3,\y) -- ++(\angle:0.6);
-        }
+    % Microstati (Ventagli)
+    % Ventaglio 1
+    \foreach \a in {-10, 0, 10} {
+        \draw[colorE] (4, 2) -- ++(\a:1.5);
     }
+    \node[right, colorE] at (5.5, 2) {$n_1$ microstati};
 
-    % --- Etichette Microstati ---
-    \node[micro, anchor=west, align=left] at (3.8, 1.7) {$n_1$ microstati \\ per il Macrostsato 1};
-    \node[micro, anchor=west, align=left] at (3.8, -0.8) {$n_i$ microstati \\ per il Macrostsato $i$};
+    % Ventaglio 2
+    \foreach \a in {-10, 0, 10} {
+        \draw[colorE] (4, 0.5) -- ++(\a:1.5);
+    }
+    \node[right, colorE] at (5.5, 0.5) {$n_2$ microstati};
 
-    % --- Totale ---
-    \draw (3.7, -2.8) -- (7, -2.8);
-    \node[anchor=north] at (4.6, -2.8) {totale: $N$ stati};
+    % Ventaglio M
+    \foreach \a in {-10, 0, 10} {
+        \draw[colorE] (4, -1.5) -- ++(\a:1.5);
+    }
+    \node[right, colorE] at (5.5, -1.5) {$n_M$ microstati};
 
+    \end{tikzpicture}
+    \caption{Raggruppamento di microstati equiprobabili in macrostati.}
+\end{figure}
 
 \end{tikzpicture}
     \caption{Formulazione Generale dei "Microstati"}
