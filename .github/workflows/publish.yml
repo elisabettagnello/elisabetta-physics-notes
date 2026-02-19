@@ -82,7 +82,6 @@ jobs:
 
      # SCENARIO B: Recupera PDF esistenti se non ci sono modifiche LaTeX
       - name: Recupera PDF esistenti
-        if: needs.check_changes.outputs.latex_changed != 'true'
         run: |
           echo "LaTeX non modificato. Recupero i PDF dal branch gh-pages..."
           # Forza il fetch del branch del sito
