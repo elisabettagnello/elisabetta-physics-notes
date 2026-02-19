@@ -13,7 +13,7 @@ Iniziamo il nostro studio definendo una misura per l'informazione contenuta in u
 
 
 \noindent Il problema che motiva la definizione di questa misura è quello della \textbf{comunicazione}. Abbiamo un messaggio (una singola sequenza) che dobbiamo codificare, trasmettere e infine decodificare. Spesso, l'alfabeto del messaggio originale è diverso dall'alfabeto del mezzo di trasmissione (ad esempio un messaggio in inglese (26 lettere) potrebbe essere inviato tramite codice Morse, che utilizza un alfabeto di due simboli principali, linea e punto).
-L'obiettivo è trovare la codifica più efficiente (più breve) per il messaggio, il che è direttamente correlato al suo contenuto informativo. In questo quadro, il ontenuto semantico (significato) del messaggio è irrilevante; ci occupiamo esclusivamente delle proprietà statistiche della sequenza.
+L'obiettivo è trovare la codifica più efficiente (più breve) per il messaggio, il che è direttamente correlato al suo contenuto informativo. In questo quadro, il contenuto semantico (significato) del messaggio è irrilevante; ci occupiamo esclusivamente delle proprietà statistiche della sequenza.
 
 Inizieremo definendo l'entropia $\mathcal{H}(P)$ per una distribuzione di probabilità discreta $P$.
 \begin{tcolorbox}[colback=colorC!15, colframe=colorC!70!colorB,  title=\textbf{Definizione della Variabile Casuale Discreta $X$}]
@@ -225,11 +225,7 @@ Possiamo immaginare una visione a "microstati": un sistema sottostante di $N$ mi
     \node[right, colorE] at (5.5, -1.5) {$n_M$ microstati};
 
     \end{tikzpicture}
-    \caption{Raggruppamento di microstati equiprobabili in macrostati.}
-\end{figure}
-
-\end{tikzpicture}
-    \caption{Formulazione Generale dei "Microstati"}
+    \caption{Formulazione Generale dei "Microstati" e raggruppamento in macrostati.}
     \label{fig:GeneralForm}
 \end{figure}
 
@@ -256,7 +252,7 @@ Ora, risolviamo per $\mathcal{H}(P)$:
 \end{equation}
 Possiamo usare la proprietà $\sum p_i = 1$ per scrivere il primo termine come (moltiplicando per 1):
 \begin{equation}
-   K \log N = K \cdot \left(\sum_{i=1}^M p_i\right) \cdot \log N = K \sum_{i=1}^M p_i \log N   
+    K \log N = K \cdot \left(\sum_{i=1}^M p_i\right) \cdot \log N = K \sum_{i=1}^M p_i \log N   
 \end{equation}
 Sostituendo nuovamente nell'Eq.~(\ref{eq:H(P)}):
 \begin{equation}
