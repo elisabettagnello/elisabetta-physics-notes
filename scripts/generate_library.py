@@ -74,14 +74,6 @@ def generate_index():
     pdf_dir = "public/pdfs"
     if not os.path.exists(pdf_dir): os.makedirs(pdf_dir, exist_ok=True)
 
-    # Pulizia file nascosti (iniziano con _)
-    files = [f for f in os.listdir(pdf_dir) if f.endswith(".pdf")]
-    for f in files:
-        if f.startswith("_"):
-            public_v = f[1:]
-            if os.path.join(pdf_dir, public_v) in [os.path.join(pdf_dir, x) for x in files]:
-                os.remove(os.path.join(pdf_dir, public_v))
-
     files = [f for f in os.listdir(pdf_dir) if f.endswith(".pdf") and not f.startswith("_")]
     
     # 1. Carica Metadata
