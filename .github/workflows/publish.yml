@@ -80,16 +80,20 @@ jobs:
           name: compiled-pdfs
           path: public/pdfs
 
-      # SCENARIO B: Recupera vecchi PDF se non ci sono modifiche LaTeX
+      # SCENARIO B: Recupera PDF esistenti se non ci sono modifiche LaTeX
       - name: Recupera PDF esistenti
         if: needs.check_changes.outputs.latex_changed != 'true'
         run: |
-          echo "LaTeX non modificato. Recupero i PDF dalla versione online..."
-          git clone --branch gh-pages --single-branch https://github.com/${{ github.repository }}.git old_site || true
-          if [ -d "old_site/pdfs" ]; then
-            cp -n old_site/pdfs/* public/pdfs/ || true
+          echo "LaTeX non modificato. Scarico i PDF attuali dal sito..."
+          # Usiamo un checkout specifico per la cartella pdfs del branch gh-pages
+          git fetch origin gh-pages
+          git checkout origin/gh-pages -- pdfs/ || echo "Nessun PDF pregresso trovato."
+          
+          mkdir -p public/pdfs
+          if [ -d "pdfs" ]; then
+            cp -r pdfs/* public/pdfs/
+            echo "PDF recuperati con successo."
           fi
-          rm -rf old_site
 
       - name: Setup Python
         uses: actions/setup-python@v4
