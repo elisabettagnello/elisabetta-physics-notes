@@ -80,19 +80,20 @@ jobs:
           name: compiled-pdfs
           path: public/pdfs
 
-      # SCENARIO B: Recupera PDF esistenti se non ci sono modifiche LaTeX
+     # SCENARIO B: Recupera PDF esistenti se non ci sono modifiche LaTeX
       - name: Recupera PDF esistenti
         if: needs.check_changes.outputs.latex_changed != 'true'
         run: |
-          echo "LaTeX non modificato. Scarico i PDF attuali dal sito..."
-          # Usiamo un checkout specifico per la cartella pdfs del branch gh-pages
+          echo "LaTeX non modificato. Recupero i PDF dal branch gh-pages..."
+          # Forza il fetch del branch del sito
           git fetch origin gh-pages
-          git checkout origin/gh-pages -- pdfs/ || echo "Nessun PDF pregresso trovato."
+          # Estrae solo la cartella pdfs dal branch gh-pages nella cartella corrente
+          git checkout origin/gh-pages -- pdfs/ || echo "Cartella pdfs non trovata su gh-pages."
           
           mkdir -p public/pdfs
           if [ -d "pdfs" ]; then
             cp -r pdfs/* public/pdfs/
-            echo "PDF recuperati con successo."
+            echo "PDF ripristinati correttamente."
           fi
 
       - name: Setup Python
