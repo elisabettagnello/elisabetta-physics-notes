@@ -1,0 +1,464 @@
+\chapter{Introduzione alla Fisica dello Stato Solido}
+
+\begin{nota}[Informazioni Generali]
+\textbf{Data:} 29 settembre 2020\\
+\textbf{Docente:} Prof. Sergio Caprara — Stanza 110\\
+\textbf{Testo di riferimento:} N.W. Ashcroft, N.D. Mermin, \textit{Solid State Physics}\\
+\end{nota}
+
+\vspace{0.5cm}
+
+\section{Panoramica del corso}
+
+Il corso costituisce un'introduzione alla fisica dello stato solido a livello elementare. Gli argomenti trattati sono i seguenti:
+
+\begin{enumerate}
+    \item \textbf{Struttura cristallina} — Definizione di solido cristallino e strumenti matematici per descrivere i cristalli.
+    \item \textbf{Diffrazione di raggi X} — Teoria dello scattering di raggi X da parte di un cristallo, come metodo sperimentale per lo studio della struttura cristallina.
+    \item \textbf{Vibrazioni reticolari (fononi)} — Descrizione delle oscillazioni degli atomi attorno alle posizioni di equilibrio e loro contributo a grandezze fisiche quali, ad esempio, il calore specifico del solido.
+    \item \textbf{Proprietà elettroniche} — Trattazione della parte elettronica: come gli elettroni contribuiscono alle proprietà fisiche di un solido. In particolare, come distinguere un metallo da un isolante. Questa distinzione è una manifestazione della fisica quantistica anche a temperatura ambiente e al di sopra di essa: a causa del principio di esclusione di Pauli, gli elettroni devono disporsi nella struttura a bande del sistema. A seconda di quante bande sono occupate e del grado di riempimento di ciascuna, il sistema risulterà un metallo o un isolante.
+    \item \textbf{Semiconduttori} — Studio della fisica dei semiconduttori come parte finale del corso.
+\end{enumerate}
+
+\section{Potenziale interatomico e fasi della materia}
+
+\subsection{Interazione tra due atomi}
+
+A ciascun atomo possiamo attribuire un'energia cinetica $K$, che dipende dalla sua velocità, e un'energia di interazione $U$, che dipende dalla distanza tra gli atomi.
+
+L'energia di interazione tra due atomi in funzione della loro distanza $R$ ha tipicamente il seguente andamento:
+
+\begin{itemize}
+    \item \textbf{Grandi distanze} ($R \to \infty$): $U(R) \to 0$ (per convenzione). Gli atomi non esercitano forze l'uno sull'altro.
+    \item \textbf{Distanza intermedia}: esiste una \textbf{distanza di equilibrio} $R_0$ corrispondente al minimo del potenziale, di profondità $U_0 < 0$.
+    \item \textbf{Piccole distanze} ($R \to 0$): forte \textbf{repulsione} dovuta alla sovrapposizione delle shell elettroniche esterne. Non è possibile avvicinare eccessivamente due atomi.
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = center,
+    xlabel = {$R$},
+    ylabel = {$U(R)$},
+    xmin=0, xmax=3,
+    ymin=-1.5, ymax=1.5,
+    xtick={1.122}, xticklabels={$R_0$},
+    ytick={-1}, yticklabels={$-|U_0|$},
+    every axis x label/.style={at={(ticklabel* cs:1.05)}, anchor=west},
+    every axis y label/.style={at={(ticklabel* cs:1.05)}, anchor=south},
+    domain=0.85:3,
+    samples=100,
+    color=colorA,
+    thick,
+    width=10cm,
+    height=6cm
+]
+% Approssimazione potenziale di Lennard-Jones
+\addplot[colorA, thick] { (1/x)^12 - 2*(1/x)^6 };
+\draw[dashed, color=gray] (1.122,0) -- (1.122,-1) -- (0,-1);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Il valore $|U_0|$ (profondità della buca di potenziale) fornisce una stima dell'energia di interazione tipica tra due atomi.
+
+\subsection{Parametri termodinamici e fasi}
+
+Le variabili che controllano il comportamento macroscopico di un insieme di atomi sono la \textbf{temperatura} $T$ e la \textbf{pressione} $P$ (o equivalentemente la \textbf{densità} $\rho$).
+
+\subsubsection{Fase gassosa: $K \gg |U_0|$}
+
+A temperature molto elevate o densità molto basse, l'energia cinetica degli atomi è molto maggiore dell'energia di interazione tipica. In queste condizioni, nessun atomo può essere intrappolato nella buca di potenziale, poiché l'energia cinetica è sufficiente a farlo sfuggire. Il sistema si trova in \textbf{fase gassosa}.
+
+La fase gassosa è la fase più semplice della materia. Nel limite del \textbf{gas perfetto} (temperatura molto alta o densità molto bassa), è possibile calcolare esattamente l'equazione di stato. Questo è l'unico sistema per il quale si conosce la soluzione esatta in meccanica statistica.
+
+\subsubsection{Condensazione: $K \sim |U_0|$}
+
+Riducendo la temperatura o aumentando la densità (ad esempio riducendo il volume o aumentando la pressione), si raggiunge un punto in cui le due grandezze sono comparabili. Si verifica allora il fenomeno della \textbf{condensazione}, che dà luogo a una \textbf{fase condensata}. La fisica della materia condensata si occupa appunto delle fasi condensate (non gassose).
+
+\subsubsection{Fase liquida: $K \sim |U_0|$}
+
+Un \textbf{liquido} è un sistema con le seguenti proprietà:
+\begin{itemize}
+    \item \textbf{Comprimibilità molto bassa}: è difficile comprimere un liquido (a differenza di un gas).
+    \item \textbf{Volume ben definito}.
+    \item \textbf{Gli atomi possono muoversi} gli uni rispetto agli altri, poiché l'energia cinetica è comparabile con l'energia potenziale.
+    \item Esiste una \textbf{distanza media caratteristica} tra gli atomi (dell'ordine di $R_0$), ma su grande scala gli atomi occupano posizioni casuali.
+    \item Il liquido può \textbf{fluire} perché gli atomi sono relativamente liberi di muoversi.
+\end{itemize}
+
+\subsubsection{Fase solida: $K \ll |U_0|$}
+
+A temperature molto basse o pressioni molto elevate, l'energia cinetica è molto minore dell'energia potenziale. In un \textbf{solido}, ogni atomo è intrappolato nella buca di potenziale e la sua energia cinetica consente soltanto \textbf{piccole oscillazioni} attorno alla posizione di equilibrio, senza possibilità di sfuggire.
+
+Esistono essenzialmente due tipi di solido:
+\begin{itemize}
+    \item \textbf{Solido amorfo} (es. vetro, zolfo amorfo): gli atomi sono congelati in posizioni fisse, il sistema non può fluire, ma le posizioni degli atomi sono \textbf{casuali} su larga scala. Non c'è ordine a lungo raggio.
+    \item \textbf{Solido cristallino}: gli atomi sono non solo congelati in posizioni fisse, ma queste posizioni formano una \textbf{distribuzione ordinata} nello spazio, un pattern ben definito che costituisce un \textbf{cristallo}.
+\end{itemize}
+
+La fase cristallina è una fase a \textbf{entropia molto bassa}, poiché gli atomi sono ordinati nello spazio in una struttura ben definita.
+
+\subsection{Caso speciale: l'elio come liquido quantistico}
+
+Quasi tutti gli elementi sono solidi a temperatura sufficientemente bassa, \textbf{tranne l'elio}. L'elio resta liquido fino allo zero assoluto per due ragioni:
+\begin{enumerate}
+    \item È un elemento molto \textbf{leggero}, quindi la sua energia cinetica può essere significativa anche a basse temperature (effetti quantistici).
+    \item È un \textbf{gas nobile}, quindi l'attrazione tra atomi di elio è \textbf{estremamente debole} (il potenziale $|U_0|$ è molto piccolo).
+\end{enumerate}
+
+L'elio è pertanto un \textbf{liquido quantistico}: gli effetti quantistici (in particolare, l'incertezza nella posizione dei nuclei, che è molto maggiore della distanza media tra essi) diventano importanti prima che il sistema possa cristallizzare.
+
+\begin{nota}[Approssimazione del corso]
+Nel corso tratteremo tutti i sistemi come solidi cristallini a temperatura zero, ignorando questi effetti quantistici peculiari dell'elio.
+\end{nota}
+
+\section{Reticoli di Bravais: definizione generale}
+
+\subsection{Definizione formale}
+
+Si consideri uno spazio tridimensionale. Si assegnino tre vettori $\mathbf{a}_1$, $\mathbf{a}_2$, $\mathbf{a}_3$ \textbf{linearmente indipendenti} (non coplanari).
+
+\begin{definizione}{Reticolo di Bravais}
+Un reticolo di Bravais è l'insieme di tutti i vettori $\mathbf{R}$ della forma:
+\begin{equazione}{Vettore del reticolo}
+\begin{equation}
+\mathbf{R} = n_1 \mathbf{a}_1 + n_2 \mathbf{a}_2 + n_3 \mathbf{a}_3, \qquad n_1, n_2, n_3 \in \mathbb{Z}
+\end{equation}
+\end{equazione}
+\end{definizione}
+
+I vettori $\mathbf{a}_1$, $\mathbf{a}_2$, $\mathbf{a}_3$ sono detti \textbf{vettori primitivi}. Un reticolo di Bravais è una struttura \textbf{infinita} in tutte le direzioni e \textbf{periodica}.
+
+\begin{nota}[Cristalli reali vs Modelli]
+Un cristallo reale è finito e possiede bordi. Nessun cristallo reale è quindi, rigorosamente, un reticolo di Bravais. Tuttavia, lontano dai bordi, il modello del reticolo di Bravais costituisce un'ottima descrizione della struttura interna di un cristallo reale. Si tratta di un \textbf{modello matematico} che approssima il mondo fisico; occorre sempre tenere presente la differenza tra modello e realtà, e adattare la descrizione quando le assunzioni del modello vengono meno.
+\end{nota}
+
+\subsection{Proprietà fondamentali}
+
+\subsubsection{Periodicità}
+Il reticolo appare identico da qualunque punto reticolare si osservi. Spostandosi da un punto del reticolo a un altro, la vista dell'intorno è esattamente la stessa, poiché il reticolo è infinito in tutte le direzioni.
+
+\begin{nota}[Simmetria Traslazionale]
+\textbf{Tutti i punti di un reticolo di Bravais sono equivalenti.}
+\end{nota}
+
+\subsubsection{Simmetria di inversione}
+Se $\mathbf{R}$ appartiene al reticolo, allora anche $-\mathbf{R}$ appartiene allo stesso reticolo.
+
+\textbf{Dimostrazione:} se $n_1, n_2, n_3$ sono interi che definiscono il punto $\mathbf{R}$, allora $-n_1, -n_2, -n_3$ sono anch'essi interi e definiscono il punto $-\mathbf{R}$.
+
+Quindi, \textbf{per definizione}, tutti i reticoli di Bravais godono di:
+\begin{itemize}
+    \item \textbf{Simmetria traslazionale} (periodicità)
+    \item \textbf{Simmetria di inversione}
+\end{itemize}
+
+\section{Reticolo di Bravais in una dimensione}
+
+In una dimensione, esiste \textbf{un solo} reticolo di Bravais possibile: tutti gli atomi disposti sulla retta a distanza costante $a$ l'uno dall'altro.
+
+\vspace{0.5cm}
+\begin{center}
+\begin{tikzpicture}
+\foreach \x in {0, 2, 4, 6, 8} {
+    \filldraw[colorA] (\x,0) circle (4pt);
+}
+\draw[<->, thick, color=colorD] (0.2,0.3) -- (1.8,0.3) node[midway, above] {$a$};
+\draw[<->, thick, color=colorD] (2.2,0.3) -- (3.8,0.3) node[midway, above] {$a$};
+\draw[<->, thick, color=colorD] (4.2,0.3) -- (5.8,0.3) node[midway, above] {$a$};
+\draw[<->, thick, color=colorD] (6.2,0.3) -- (7.8,0.3) node[midway, above] {$a$};
+\node[scale=1.5] at (9,0) {$\cdots$};
+\node[scale=1.5] at (-1,0) {$\cdots$};
+\end{tikzpicture}
+\end{center}
+\vspace{0.5cm}
+
+Questo è un reticolo monodimensionale con passo $a$, ed è l'unica disposizione ordinata possibile (a meno di permutazioni di atomi indistinguibili).
+
+I reticoli cristallini furono classificati dal fisico \textbf{Auguste Bravais}, da cui il nome "reticolo di Bravais".
+
+\section{Strutture non-Bravais e concetto di base}
+
+\subsection{Il reticolo a nido d'ape (honeycomb)}
+Non tutte le strutture periodiche sono reticoli di Bravais. Consideriamo la struttura a \textbf{nido d'ape} (honeycomb): una rete di esagoni regolari senza punti centrali.
+
+Questa struttura \textbf{non è} un reticolo di Bravais, perché non tutti i punti sono equivalenti. Se ci si pone su un punto del reticolo e si osserva l'intorno, la vista dipende dalla posizione scelta:
+\begin{itemize}
+    \item Da un punto (es. di colore "rosa"), si vede un vicino a sinistra a 0°, uno a +120° e uno a −120°.
+    \item Da un punto adiacente (es. di colore "viola"), si vede un vicino a destra a 0°, uno a +120° a sinistra e uno a −120° a sinistra.
+\end{itemize}
+I due punti non sono equivalenti, violando la condizione fondamentale dei reticoli di Bravais.
+
+\subsection{Descrizione tramite reticolo con base}
+Osservando attentamente, i punti dell'honeycomb possono essere suddivisi in \textbf{due classi} (es. "rosa" e "viola"):
+\begin{itemize}
+    \item Tutti i punti \textbf{rosa} sono equivalenti tra loro e formano un reticolo di Bravais.
+    \item Tutti i punti \textbf{viola} sono equivalenti tra loro e formano un altro reticolo di Bravais (dello stesso tipo).
+\end{itemize}
+La struttura complessiva è quindi la \textbf{compenetrazione di due reticoli di Bravais}, traslati l'uno rispetto all'altro di un \textbf{vettore di base}. Questa compenetrazione è chiamata \textbf{reticolo con base} (o reticolo di Bravais con base).
+
+\subsection{Honeycomb con punti centrali}
+Se si aggiunge il \textbf{punto centrale} a ciascun esagono dell'honeycomb, la struttura risultante \textbf{è} un reticolo di Bravais (reticolo esagonale/triangolare). In questo caso, tutti i punti sono davvero equivalenti.
+
+\section{Reticoli di Bravais in due dimensioni (5 reticoli)}
+
+In due dimensioni esistono \textbf{5 reticoli di Bravais}.
+
+\subsection{Reticolo monoclino (obliquo)}
+\begin{itemize}
+    \item $|\mathbf{a}_1| \neq |\mathbf{a}_2|$
+    \item Angolo $\varphi \neq 90^\circ$
+    \item \textbf{Simmetrie}: solo traslazione e inversione (nessuna simmetria aggiuntiva).
+    \item La cella è un parallelogramma generico.
+\end{itemize}
+Questo è il reticolo meno simmetrico in 2D.
+
+\subsection{Reticolo ortorombico (rettangolare)}
+\begin{itemize}
+    \item $|\mathbf{a}_1| \neq |\mathbf{a}_2|$
+    \item Angolo $\varphi = 90^\circ$
+    \item \textbf{Simmetrie}: traslazione, inversione, \textbf{rotazione di 180°} attorno a un asse perpendicolare al piano, \textbf{simmetria speculare} (mirror) rispetto a due piani.
+    \item La cella è un rettangolo.
+\end{itemize}
+
+\begin{nota}[Distinzione tra monoclino e ortorombico]
+\textbf{Distinzione tra monoclino e ortorombico:} la rotazione di 180° è in realtà presente anche nel monoclino in 2D (equivale all'inversione in 2D). Ciò che distingue i due reticoli è la \textbf{simmetria speculare} (mirror symmetry): il rettangolare possiede piani speculari lungo le direzioni principali, mentre il monoclino (obliquo) no. In un reticolo obliquo, la riflessione rispetto alle direzioni principali non mappa il reticolo in sé stesso.
+\end{nota}
+
+\subsection{Reticolo esagonale}
+\begin{itemize}
+    \item $|\mathbf{a}_1| = |\mathbf{a}_2|$
+    \item Angolo $\varphi = 120^\circ$
+    \item Il punto centrale dell'esagono si ottiene come $\mathbf{a}_1 + \mathbf{a}_2$ (partendo dall'origine).
+\end{itemize}
+
+\subsection{Reticolo tetragonale (quadrato)}
+\begin{itemize}
+    \item $|\mathbf{a}_1| = |\mathbf{a}_2|$
+    \item Angolo $\varphi = 90^\circ$
+    \item \textbf{Simmetrie}: gode di \textbf{rotazione di 90°} (che il rettangolare non possiede). Ruotando il reticolo di 90°, esso si sovrappone a sé stesso.
+    \item Il reticolo più simmetrico in 2D.
+\end{itemize}
+
+\subsection{Reticolo ortorombico centrato}
+\begin{itemize}
+    \item $|\mathbf{a}_1| = |\mathbf{a}_2|$
+    \item $\varphi \neq 90^\circ$ e $\varphi \neq 120^\circ$ (per escludere tetragonale ed esagonale)
+    \item Si ottiene partendo dal reticolo ortorombico e aggiungendo un punto al centro di ciascun rettangolo.
+    \item Possiede le \textbf{stesse simmetrie} dell'ortorombico, ma è un reticolo diverso.
+\end{itemize}
+
+\subsection{Riepilogo}
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|l|c|l|l|}
+\hline
+\textbf{Reticolo} & \textbf{$\vert\mathbf{a}_1\vert$ vs $\vert\mathbf{a}_2\vert$} & \textbf{Angolo} & \textbf{Simmetria caratteristica} \\ \hline
+Monoclino (obliquo) & $\neq$ & $\varphi$ generico & Solo inversione \\ \hline
+Ortorombico (rettangolare) & $\neq$ & $90^\circ$ & Mirror symmetry \\ \hline
+Esagonale & $=$ & $120^\circ$ & Rotazione $60^\circ$ \\ \hline
+Tetragonale (quadrato) & $=$ & $90^\circ$ & Rotazione $90^\circ$ \\ \hline
+Ortorombico centrato & $=$ & $\varphi \neq 90^\circ, 120^\circ$ & Mirror symmetry \\ \hline
+\end{tabular}
+\end{table}
+
+In sintesi: \textbf{4 reticoli fondamentali + 1 decorazione} (l'ortorombico centrato) = \textbf{5 reticoli di Bravais in 2D}.
+
+\section{Reticoli di Bravais in tre dimensioni (14 reticoli)}
+
+In tre dimensioni esistono in totale \textbf{14 reticoli di Bravais}: \textbf{7 fondamentali} (con le simmetrie principali) e \textbf{7 ottenuti per decorazione} (aggiunta di punti supplementari).
+
+\subsection{I 7 sistemi cristallini fondamentali}
+
+\subsubsection{1. Triclino}
+\begin{itemize}
+    \item $a_1 \neq a_2 \neq a_3$ (tutti i lati diversi)
+    \item $\alpha \neq \beta \neq \gamma$ (tutti gli angoli diversi)
+    \item Il parallelepipedo ha tutte le facce diverse (parallelogrammi diversi).
+    \item \textbf{Simmetrie}: solo inversione. Nessuna simmetria speculare.
+    \item È il sistema \textbf{meno simmetrico} di tutti.
+    \item \textbf{Non ammette decorazioni}: 1 solo reticolo triclino.
+\end{itemize}
+
+\subsubsection{2. Monoclino}
+\begin{itemize}
+    \item $a_1 \neq a_2 \neq a_3$ (tutti i lati diversi)
+    \item \textbf{Due angoli sono 90°}, un solo angolo è diverso da 90°.
+    \item Conseguenza: due facce sono \textbf{rettangoli} e una faccia è un \textbf{parallelogramma}.
+    \item \textbf{Simmetrie}: inversione + \textbf{simmetria speculare} rispetto al piano rettangolare. Più simmetrico del triclino.
+    \item \textbf{Decorazione possibile}: base centrata (un punto aggiuntivo al centro della base e del top).
+    \item \textbf{Totale: 2 reticoli monoclini} (semplice + base centrata).
+\end{itemize}
+
+\subsubsection{3. Ortorombico}
+\begin{itemize}
+    \item $a_1 \neq a_2 \neq a_3$ (tutti i lati diversi)
+    \item \textbf{Tutti gli angoli sono 90°}: tutte le facce sono rettangoli (ma tutti diversi tra loro).
+    \item \textbf{Simmetrie}: molte rotazioni e simmetrie speculari.
+    \item \textbf{Decorazioni possibili} (3):
+    \begin{itemize}
+        \item \textbf{Base centrata}: un punto al centro della base (e del top).
+        \item \textbf{Facce centrate} (\textit{face centered}): un punto al centro di ciascuna delle 6 facce.
+        \item \textbf{Corpo centrato} (\textit{body centered}): un punto all'incrocio delle diagonali del parallelepipedo.
+    \end{itemize}
+    \item \textbf{Totale: 4 reticoli ortorombici} (semplice + base centrata + facce centrate + corpo centrato).
+\end{itemize}
+
+\subsubsection{4. Tetragonale}
+\begin{itemize}
+    \item Base quadrata: $a_1 = a_2 \neq a_3$.
+    \item \textbf{Tutti gli angoli sono 90°}.
+    \item È un parallelepipedo con una base quadrata e altezza diversa dal lato della base.
+    \item \textbf{Decorazione possibile}: solo \textbf{corpo centrato} (\textit{body centered}).
+    \item Il \textbf{tetragonale base centrata} non è un nuovo reticolo: aggiungendo un punto al centro della base quadrata, si ottiene un nuovo reticolo quadrato (ruotato di 45° e più piccolo), che è semplicemente un altro reticolo tetragonale semplice.
+    \item Analogamente, il \textbf{tetragonale facce centrate} si riduce a un reticolo già presente nella lista.
+    \item \textbf{Totale: 2 reticoli tetragonali} (semplice + corpo centrato).
+\end{itemize}
+
+\subsubsection{5. Romboedrico (trigonale)}
+\begin{itemize}
+    \item \textbf{Tutti i lati uguali}: $a_1 = a_2 = a_3$.
+    \item \textbf{Tutti gli angoli uguali} in ciascun vertice, ma diversi da 90°.
+    \item Si ottiene dal cubo "schiacciandolo" lungo una diagonale. Le facce sono \textbf{rombi}.
+    \item \textbf{Non ammette decorazioni}: 1 solo reticolo romboedrico.
+\end{itemize}
+
+\subsubsection{6. Esagonale}
+\begin{itemize}
+    \item La cella di base è un \textbf{rombo con angolo di 120°}, formato da due triangoli equilateri.
+    \item Si chiama "esagonale" perché \textbf{tre} di queste celle affiancate formano un \textbf{esagono regolare}.
+    \item $a_1 = a_2 \neq a_3$, angolo alla base = 120°.
+    \item \textbf{Non ammette decorazioni}: 1 solo reticolo esagonale.
+\end{itemize}
+
+\subsubsection{7. Cubico}
+\begin{itemize}
+    \item $a_1 = a_2 = a_3$, tutti gli angoli = 90°.
+    \item Il \textbf{cubo} è l'oggetto \textbf{più simmetrico} tra tutti i sistemi cristallini in 3D.
+    \item Possiede moltissime simmetrie. Ad esempio, una \textbf{rotazione di 120°} attorno alla diagonale del corpo mappa il cubo in sé stesso. Esiste un \textbf{esagono nascosto} nel cubo: la sezione del cubo lungo il piano perpendicolare alla diagonale del corpo è un esagono regolare.
+    \item \textbf{Decorazioni possibili} (2):
+    \begin{itemize}
+        \item \textbf{Facce centrate} (FCC, \textit{face-centered cubic}): un punto al centro di ciascuna delle 6 facce.
+        \item \textbf{Corpo centrato} (BCC, \textit{body-centered cubic}): un punto al centro del cubo.
+    \end{itemize}
+    \item Il \textbf{cubico base centrata} non è un nuovo reticolo: aggiungendo un punto al centro delle due basi di un cubo, i lati della nuova base quadrata risultano uguali, ma l'altezza diventa maggiore del lato. Si ottiene quindi un \textbf{reticolo tetragonale}, già presente nella lista.
+    \item \textbf{Totale: 3 reticoli cubici} (semplice + FCC + BCC).
+\end{itemize}
+
+\subsection{Riepilogo dei 14 reticoli di Bravais}
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Sistema cristallino} & \textbf{Fondamentale} & \textbf{Decorazioni} & \textbf{Totale} \\ \hline
+Triclino & 1 & 0 & \textbf{1} \\ \hline
+Monoclino & 1 & 1 (base centrata) & \textbf{2} \\ \hline
+Ortorombico & 1 & 3 (base c., facce c., corpo c.) & \textbf{4} \\ \hline
+Tetragonale & 1 & 1 (corpo centrato) & \textbf{2} \\ \hline
+Romboedrico & 1 & 0 & \textbf{1} \\ \hline
+Esagonale & 1 & 0 & \textbf{1} \\ \hline
+Cubico & 1 & 2 (FCC, BCC) & \textbf{3} \\ \hline
+\textbf{Totale} & \textbf{7} & \textbf{7} & \textbf{14} \\ \hline
+\end{tabular}
+\end{table}
+
+\section{Cella primitiva}
+
+\subsection{Definizione}
+I vettori $\mathbf{a}_1$, $\mathbf{a}_2$, $\mathbf{a}_3$ sono detti \textbf{vettori primitivi}. Il parallelepipedo costruito su questi tre vettori come spigoli è la \textbf{cella primitiva}.
+
+\begin{nota}[Proprietà Fondamentale]
+\textbf{Proprietà fondamentale:} ogni cella primitiva contiene esattamente \textbf{un punto reticolare}.
+\end{nota}
+
+\textbf{Dimostrazione (esempio del cubico semplice):} la cella cubica ha 8 vertici, ciascuno dei quali è un punto del reticolo. Ogni vertice è condiviso da 8 cubi adiacenti, quindi la frazione di ciascun punto appartenente a una singola cella è $\frac{1}{8}$. Il numero totale di punti per cella è:
+$$8 \times \frac{1}{8} = 1$$
+
+\subsection{Volume della cella primitiva}
+Il volume della cella primitiva è dato da:
+\begin{equazione}{Volume della cella primitiva}
+\begin{equation}
+V = \left| \mathbf{a}_1 \cdot (\mathbf{a}_2 \times \mathbf{a}_3) \right|
+\end{equation}
+\end{equazione}
+Questa formula vale per tutte le celle primitive, indipendentemente dal sistema cristallino.
+
+\textbf{Esempio:} per il cubico semplice con lato $a$, si ha $\mathbf{a}_2 \times \mathbf{a}_3$ parallelo ad $\mathbf{a}_1$ e di modulo $a^2$, quindi $V = a^3$.
+
+\subsection{Non unicità della scelta dei vettori primitivi}
+La scelta dei vettori primitivi \textbf{non è unica}. Ad esempio, per un reticolo quadrato 2D con vettori $\mathbf{a}_1$ e $\mathbf{a}_2$, una scelta alternativa valida è $\mathbf{a}_1$ e $\mathbf{a}_2' = \mathbf{a}_1 + \mathbf{a}_2$: i vettori $\mathbf{a}_1$ e $\mathbf{a}_2'$ con coefficienti interi generano esattamente lo stesso reticolo.
+
+Esistono \textbf{infinite} scelte possibili per i vettori primitivi. Tuttavia, \textbf{tutte le celle primitive hanno lo stesso volume}, poiché tutte devono contenere esattamente un punto reticolare (altrimenti la densità del cristallo non sarebbe univocamente definita).
+
+La scelta più ragionevole è quella che rende evidenti le \textbf{simmetrie} del reticolo.
+
+\section{Cella convenzionale}
+
+\subsection{Motivazione}
+La cella primitiva non sempre evidenzia le simmetrie del reticolo. Ad esempio:
+\begin{itemize}
+    \item La cella primitiva del reticolo \textbf{esagonale} è un rombo con angolo di 120°, che non ricorda la simmetria esagonale.
+    \item La cella primitiva del \textbf{cubico a facce centrate (FCC)} è un parallelepipedo molto obliquo, che non somiglia affatto a un cubo.
+\end{itemize}
+Per questo motivo, si introduce la \textbf{cella convenzionale}: una cella (non necessariamente primitiva) che mette in evidenza le simmetrie del sistema.
+
+\subsection{Esempio: cubico a facce centrate (FCC)}
+La cella convenzionale dell'FCC è il \textbf{cubo} con i punti aggiuntivi al centro di ciascuna faccia. Questa cella contiene \textbf{4 punti reticolari}:
+\begin{itemize}
+    \item 8 vertici $\times \frac{1}{8} = 1$
+    \item 6 facce $\times \frac{1}{2} = 3$
+    \item Totale: $1 + 3 = 4$
+\end{itemize}
+
+I \textbf{vettori primitivi} dell'FCC sono:
+\begin{equazione}{Vettori primitivi FCC}
+\begin{equation}
+\mathbf{a}_1 = \frac{a}{2}(1, 1, 0), \qquad \mathbf{a}_2 = \frac{a}{2}(1, 0, 1), \qquad \mathbf{a}_3 = \frac{a}{2}(0, 1, 1)
+\end{equation}
+\end{equazione}
+dove $a$ è il lato del cubo.
+
+Il volume della cella primitiva è:
+\begin{equazione}{Volume cella primitiva FCC}
+\begin{equation}
+V_{\text{primitiva}} = \frac{1}{4} \, V_{\text{cubo}} = \frac{a^3}{4}
+\end{equation}
+\end{equazione}
+poiché la cella convenzionale contiene 4 punti e la primitiva ne contiene 1.
+
+\section{Cella di Wigner-Seitz}
+
+\subsection{Definizione e proprietà}
+Esiste una scelta della cella che è contemporaneamente:
+\begin{itemize}
+    \item \textbf{Primitiva}: contiene esattamente 1 punto reticolare.
+    \item \textbf{Convenzionale}: mostra tutte le simmetrie del reticolo.
+\end{itemize}
+
+\begin{definizione}{Cella di Wigner-Seitz}
+Questa cella è la \textbf{cella di Wigner-Seitz}. Il punto reticolare si trova esattamente al centro della cella.
+\end{definizione}
+
+\begin{nota}[Costruzione geometrica]
+La costruzione della cella di Wigner-Seitz sarà descritta nella prossima lezione.
+\end{nota}
+
+\subsection{Esempi}
+
+\subsubsection{FCC (cubico a facce centrate)}
+La cella di Wigner-Seitz dell'FCC è un poliedro (non un cubo) che possiede tuttavia \textbf{tutte le simmetrie del cubo}:
+\begin{itemize}
+    \item \textbf{Rotazione di 90°} (simmetria \textit{fourfold}) attorno agli assi passanti per i vertici del poliedro corrispondenti alle facce del cubo.
+    \item \textbf{Rotazione di 120°} (simmetria \textit{threefold}) attorno agli assi passanti per i vertici del poliedro corrispondenti alle diagonali del cubo. L'esagono nascosto nel cubo è visibile nella cella di Wigner-Seitz dell'FCC.
+\end{itemize}
+
+\subsubsection{BCC (cubico a corpo centrato)}
+La cella di Wigner-Seitz del BCC è un poliedro formato da \textbf{esagoni e quadrati}, anch'esso con tutte le simmetrie del cubo.
+
+\subsection{Riempimento dello spazio}
+Le celle di Wigner-Seitz, sebbene di forma insolita, possono \textbf{riempire completamente lo spazio} senza lasciare vuoti né sovrapposizioni, esattamente come dei mattoncini (blocchi Lego). Sono quindi celle primitive a tutti gli effetti, con il vantaggio aggiuntivo di preservare tutte le simmetrie del sistema cristallino di appartenenza.
