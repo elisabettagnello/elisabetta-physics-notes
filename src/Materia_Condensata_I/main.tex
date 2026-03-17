@@ -1,7 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PREAMBOLO
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Aggiunto 'oneside' per evitare pagine bianche vuote nei PDF digitali
 \documentclass[12pt, a4paper, oneside]{book}
 
 % --- Lingua e Codifica ---
@@ -9,7 +8,6 @@
 \usepackage[T1]{fontenc}
 \usepackage[italian]{babel}
 
-% Rinomina "Capitolo" in "Lezione"
 \addto\captionsitalian{%
   \renewcommand{\chaptername}{Lezione}%
 }
@@ -28,38 +26,39 @@
 
 % --- Colori ---
 \usepackage{xcolor}
-% Definizione della palette sequenziale (Viridis-like)
-\definecolor{colorA}{HTML}{003f5c} % 1 - Blu Profondo
-\definecolor{colorB}{HTML}{2f4b7c} % 2 - Indaco
-\definecolor{colorC}{HTML}{665191} % 3 - Viola Bluastro
-\definecolor{colorD}{HTML}{a05195} % 4 - Magenta Scuro
-\definecolor{colorE}{HTML}{d45087} % 5 - Rosso Porpora
-\definecolor{colorF}{HTML}{f95d6a} % 6 - Arancio-Rosso
-\definecolor{colorG}{HTML}{ff7c43} % 7 - Arancio Brillante
+\definecolor{colorA}{HTML}{003f5c} 
+\definecolor{colorB}{HTML}{2f4b7c} 
+\definecolor{colorC}{HTML}{665191} 
+\definecolor{colorD}{HTML}{a05195} 
+\definecolor{colorE}{HTML}{d45087} 
+\definecolor{colorF}{HTML}{f95d6a} 
+\definecolor{colorG}{HTML}{ff7c43} 
 
 % --- Link e Riferimenti ---
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
-    linkcolor=colorA,   % Sostituito il blu standard con il tuo colorA
-    filecolor=colorD,   % Sostituito il magenta standard con il tuo colorD      
-    urlcolor=colorB,    % Sostituito il ciano standard con il tuo colorB
-    citecolor=colorE    % Colore per le citazioni bibliografiche
+    linkcolor=colorA,   
+    filecolor=colorD,      
+    urlcolor=colorB,    
+    citecolor=colorE    
 }
 
 % --- Watermark ---
 \usepackage{draftwatermark}
 \usepackage{lmodern} 
-\SetWatermarkText{\sffamily\bfseries\textcolor{gray!10}{github . com / elisabettagnello}}
-\SetWatermarkScale{0}
+% Corretto il rischio di division by zero e la sintassi del colore
+\SetWatermarkText{\sffamily\bfseries github.com/elisabettagnello}
+\SetWatermarkColor{gray!10}
+\SetWatermarkScale{0.3} 
 \SetWatermarkAngle{45}
 
 % --- Box Personalizzati (Tcolorbox) ---
 \usepackage[most]{tcolorbox}
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.18} % FONDAMENTALE per non far sballare il grafico
 \usepackage{tabularx}
 
-% 1. Note / Avvisi importanti
 \newtcolorbox{nota}[1][Nota]{
     colback=colorE!10,
     colframe=colorE!70!red,
@@ -67,7 +66,6 @@
     title=\textbf{#1}
 }
 
-% 2. Definizioni / Teoremi (es. Azione di Landau-Ginzburg)
 \newtcolorbox{definizione}[1]{
     colback=colorD!5,
     colframe=colorD!75!colorA,
@@ -75,7 +73,6 @@
     title=\textbf{#1}
 }
 
-% 3. Equazioni / Concetti importanti (es. Propagatore)
 \newtcolorbox{equazione}[1]{
     colback=yellow!25,
     colframe=yellow!75!orange,
@@ -83,29 +80,25 @@
     title=\textbf{#1}
 }
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CONFIGURAZIONE STILE TITOLI E PAGINA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{titlesec}
 
-% Restyling del titolo del capitolo (Lezione)
 \titleformat{\chapter}[display]
-  {\normalfont\Huge\bfseries\color{colorA}} % Stile e colore principale
-  {\titlerule[2pt]\vspace{1ex}\large\textsc{\chaptertitlename}~\thechapter} % Es: "LEZIONE 1" con linea sopra
-  {1ex} % Spazio
-  {\Huge} % Stile del titolo vero e proprio
-  [\vspace{1ex}\titlerule] % Linea sotto il titolo
+  {\normalfont\Huge\bfseries\color{colorA}} 
+  {\titlerule[2pt]\vspace{1ex}\large\textsc{\chaptertitlename}~\thechapter} 
+  {1ex} 
+  {\Huge} 
+  [\vspace{1ex}\titlerule] 
 
 \usepackage{fancyhdr}
-\setlength{\headheight}{14pt}
+\setlength{\headheight}{25pt} % Spazio corretto per far respirare l'header
 \pagestyle{fancy}
 \fancyhf{} 
-% Essendo oneside, usiamo solo R (Right) per l'header e C (Center) per il footer
 \fancyhead[R]{\nouppercase{\leftmark}} 
 \fancyfoot[C]{\thepage} 
 \renewcommand{\headrulewidth}{0.8pt}
-% Colora la linea dell'header per un tocco di classe
 \renewcommand{\headrule}{\hbox to\headwidth{\color{colorA}\leaders\hrule height \headrulewidth\hfill}}
 \renewcommand{\footrulewidth}{0pt}
 
@@ -116,21 +109,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-% --- Pagina del Titolo ---
 \title{\textbf{\Huge Materia Condensata I} }
 \author{Appunti delle lezioni di Caprara}
 \date{A.A. 2020/2021}
 \maketitle
 
-% --- Indice ---
 \frontmatter 
 \tableofcontents
 
 \mainmatter 
 
-
 \include{01}
-% \include{lezione_02}
-% \include{lezione_03}
+% \include{02}
 
 \end{document}
