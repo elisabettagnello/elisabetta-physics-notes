@@ -22,7 +22,7 @@ Il corso costituisce un'introduzione alla fisica dello stato solido a livello el
 
 \section{Potenziale interatomico e fasi della materia}
 
-\subsection{Interazione tra due atomi}
+\subsection*{Interazione tra due atomi}
 
 A ciascun atomo possiamo attribuire un'energia cinetica $K$, che dipende dalla sua velocità, e un'energia di interazione $U$, che dipende dalla distanza tra gli atomi.
 
@@ -34,35 +34,11 @@ L'energia di interazione tra due atomi in funzione della loro distanza $R$ ha ti
     \item \textbf{Piccole distanze} ($R \to 0$): forte \textbf{repulsione} dovuta alla sovrapposizione delle shell elettroniche esterne. Non è possibile avvicinare eccessivamente due atomi.
 \end{itemize}
 
-\begin{center}
-\begin{tikzpicture}
-\begin{axis}[
-    axis lines = center,
-    xlabel = {$R$},
-    ylabel = {$U(R)$},
-    xmin=0, xmax=3,
-    ymin=-1.5, ymax=1.5,
-    xtick={1.122}, xticklabels={$R_0$},
-    ytick={-1}, yticklabels={$-|U_0|$},
-    every axis x label/.style={at={(ticklabel* cs:1.05)}, anchor=west},
-    every axis y label/.style={at={(ticklabel* cs:1.05)}, anchor=south},
-    domain=0.85:3,
-    samples=100,
-    color=colorA,
-    thick,
-    width=10cm,
-    height=6cm
-]
-% Approssimazione potenziale di Lennard-Jones
-\addplot[colorA, thick] { (1/x)^12 - 2*(1/x)^6 };
-\draw[dashed, color=gray] (1.122,0) -- (1.122,-1) -- (0,-1);
-\end{axis}
-\end{tikzpicture}
-\end{center}
+
 
 Il valore $|U_0|$ (profondità della buca di potenziale) fornisce una stima dell'energia di interazione tipica tra due atomi.
 
-\subsection{Parametri termodinamici e fasi}
+\subsection*{Parametri termodinamici e fasi}
 
 Le variabili che controllano il comportamento macroscopico di un insieme di atomi sono la \textbf{temperatura} $T$ e la \textbf{pressione} $P$ (o equivalentemente la \textbf{densità} $\rho$).
 
@@ -99,7 +75,7 @@ Esistono essenzialmente due tipi di solido:
 
 La fase cristallina è una fase a \textbf{entropia molto bassa}, poiché gli atomi sono ordinati nello spazio in una struttura ben definita.
 
-\subsection{Caso speciale: l'elio come liquido quantistico}
+\subsection*{Caso speciale: l'elio come liquido quantistico}
 
 Quasi tutti gli elementi sono solidi a temperatura sufficientemente bassa, \textbf{tranne l'elio}. L'elio resta liquido fino allo zero assoluto per due ragioni:
 \begin{enumerate}
@@ -113,28 +89,26 @@ L'elio è pertanto un \textbf{liquido quantistico}: gli effetti quantistici (in 
 Nel corso tratteremo tutti i sistemi come solidi cristallini a temperatura zero, ignorando questi effetti quantistici peculiari dell'elio.
 \end{nota}
 
-\section{Reticoli di Bravais: definizione generale}
+\section{Reticoli di Bravais}
 
-\subsection{Definizione formale}
+\subsection*{Definizione formale}
 
 Si consideri uno spazio tridimensionale. Si assegnino tre vettori $\mathbf{a}_1$, $\mathbf{a}_2$, $\mathbf{a}_3$ \textbf{linearmente indipendenti} (non coplanari).
 
 \begin{definizione}{Reticolo di Bravais}
 Un reticolo di Bravais è l'insieme di tutti i vettori $\mathbf{R}$ della forma:
-\begin{equazione}{Vettore del reticolo}
 \begin{equation}
 \mathbf{R} = n_1 \mathbf{a}_1 + n_2 \mathbf{a}_2 + n_3 \mathbf{a}_3, \qquad n_1, n_2, n_3 \in \mathbb{Z}
 \end{equation}
-\end{equazione}
 \end{definizione}
 
 I vettori $\mathbf{a}_1$, $\mathbf{a}_2$, $\mathbf{a}_3$ sono detti \textbf{vettori primitivi}. Un reticolo di Bravais è una struttura \textbf{infinita} in tutte le direzioni e \textbf{periodica}.
 
-\begin{nota}[Cristalli reali vs Modelli]
-Un cristallo reale è finito e possiede bordi. Nessun cristallo reale è quindi, rigorosamente, un reticolo di Bravais. Tuttavia, lontano dai bordi, il modello del reticolo di Bravais costituisce un'ottima descrizione della struttura interna di un cristallo reale. Si tratta di un \textbf{modello matematico} che approssima il mondo fisico; occorre sempre tenere presente la differenza tra modello e realtà, e adattare la descrizione quando le assunzioni del modello vengono meno.
-\end{nota}
 
-\subsection{Proprietà fondamentali}
+Un cristallo reale è finito e possiede bordi. Nessun cristallo reale è quindi, rigorosamente, un reticolo di Bravais. Tuttavia, lontano dai bordi, il modello del reticolo di Bravais costituisce un'ottima descrizione della struttura interna di un cristallo reale. Si tratta di un \textbf{modello matematico} che approssima il mondo fisico; occorre sempre tenere presente la differenza tra modello e realtà, e adattare la descrizione quando le assunzioni del modello vengono meno.
+
+
+\subsection*{Proprietà fondamentali}
 
 \subsubsection{Periodicità}
 Il reticolo appare identico da qualunque punto reticolare si osservi. Spostandosi da un punto del reticolo a un altro, la vista dell'intorno è esattamente la stessa, poiché il reticolo è infinito in tutte le direzioni.
@@ -154,7 +128,7 @@ Quindi, \textbf{per definizione}, tutti i reticoli di Bravais godono di:
     \item \textbf{Simmetria di inversione}
 \end{itemize}
 
-\section{Reticolo di Bravais in una dimensione}
+\subsection*{Reticolo di Bravais in una dimensione}
 
 In una dimensione, esiste \textbf{un solo} reticolo di Bravais possibile: tutti gli atomi disposti sulla retta a distanza costante $a$ l'uno dall'altro.
 
@@ -178,9 +152,9 @@ Questo è un reticolo monodimensionale con passo $a$, ed è l'unica disposizione
 
 I reticoli cristallini furono classificati dal fisico \textbf{Auguste Bravais}, da cui il nome "reticolo di Bravais".
 
-\section{Strutture non-Bravais e concetto di base}
+\section{Strutture non-Bravais}
 
-\subsection{Il reticolo a nido d'ape (honeycomb)}
+\subsection*{Il reticolo a nido d'ape (honeycomb)}
 Non tutte le strutture periodiche sono reticoli di Bravais. Consideriamo la struttura a \textbf{nido d'ape} (honeycomb): una rete di esagoni regolari senza punti centrali.
 
 Questa struttura \textbf{non è} un reticolo di Bravais, perché non tutti i punti sono equivalenti. Se ci si pone su un punto del reticolo e si osserva l'intorno, la vista dipende dalla posizione scelta:
@@ -190,7 +164,7 @@ Questa struttura \textbf{non è} un reticolo di Bravais, perché non tutti i pun
 \end{itemize}
 I due punti non sono equivalenti, violando la condizione fondamentale dei reticoli di Bravais.
 
-\subsection{Descrizione tramite reticolo con base}
+\subsection*{Descrizione tramite reticolo con base}
 Osservando attentamente, i punti dell'honeycomb possono essere suddivisi in \textbf{due classi} (es. "rosa" e "viola"):
 \begin{itemize}
     \item Tutti i punti \textbf{rosa} sono equivalenti tra loro e formano un reticolo di Bravais.
@@ -198,14 +172,14 @@ Osservando attentamente, i punti dell'honeycomb possono essere suddivisi in \tex
 \end{itemize}
 La struttura complessiva è quindi la \textbf{compenetrazione di due reticoli di Bravais}, traslati l'uno rispetto all'altro di un \textbf{vettore di base}. Questa compenetrazione è chiamata \textbf{reticolo con base} (o reticolo di Bravais con base).
 
-\subsection{Honeycomb con punti centrali}
+\subsection*{Honeycomb con punti centrali}
 Se si aggiunge il \textbf{punto centrale} a ciascun esagono dell'honeycomb, la struttura risultante \textbf{è} un reticolo di Bravais (reticolo esagonale/triangolare). In questo caso, tutti i punti sono davvero equivalenti.
 
 \section{Reticoli di Bravais in due dimensioni (5 reticoli)}
 
 In due dimensioni esistono \textbf{5 reticoli di Bravais}.
 
-\subsection{Reticolo monoclino (obliquo)}
+\subsubsection{Reticolo monoclino (obliquo)}
 \begin{itemize}
     \item $|\mathbf{a}_1| \neq |\mathbf{a}_2|$
     \item Angolo $\varphi \neq 90^\circ$
@@ -214,7 +188,7 @@ In due dimensioni esistono \textbf{5 reticoli di Bravais}.
 \end{itemize}
 Questo è il reticolo meno simmetrico in 2D.
 
-\subsection{Reticolo ortorombico (rettangolare)}
+\subsubsection{Reticolo ortorombico (rettangolare)}
 \begin{itemize}
     \item $|\mathbf{a}_1| \neq |\mathbf{a}_2|$
     \item Angolo $\varphi = 90^\circ$
@@ -222,18 +196,18 @@ Questo è il reticolo meno simmetrico in 2D.
     \item La cella è un rettangolo.
 \end{itemize}
 
-\begin{nota}[Distinzione tra monoclino e ortorombico]
+\begin{definizione}[Distinzione tra monoclino e ortorombico]
 \textbf{Distinzione tra monoclino e ortorombico:} la rotazione di $180^\circ$ è in realtà presente anche nel monoclino in 2D (equivale all'inversione in 2D). Ciò che distingue i due reticoli è la \textbf{simmetria speculare} (mirror symmetry): il rettangolare possiede piani speculari lungo le direzioni principali, mentre il monoclino (obliquo) no. In un reticolo obliquo, la riflessione rispetto alle direzioni principali non mappa il reticolo in sé stesso.
-\end{nota}
+\end{definizione}
 
-\subsection{Reticolo esagonale}
+\subsubsection{Reticolo esagonale}
 \begin{itemize}
     \item $|\mathbf{a}_1| = |\mathbf{a}_2|$
     \item Angolo $\varphi = 120^\circ$
     \item Il punto centrale dell'esagono si ottiene come $\mathbf{a}_1 + \mathbf{a}_2$ (partendo dall'origine).
 \end{itemize}
 
-\subsection{Reticolo tetragonale (quadrato)}
+\subsubsection{Reticolo tetragonale (quadrato)}
 \begin{itemize}
     \item $|\mathbf{a}_1| = |\mathbf{a}_2|$
     \item Angolo $\varphi = 90^\circ$
@@ -241,7 +215,7 @@ Questo è il reticolo meno simmetrico in 2D.
     \item Il reticolo più simmetrico in 2D.
 \end{itemize}
 
-\subsection{Reticolo ortorombico centrato}
+\subsubsection{Reticolo ortorombico centrato}
 \begin{itemize}
     \item $|\mathbf{a}_1| = |\mathbf{a}_2|$
     \item $\varphi \neq 90^\circ$ e $\varphi \neq 120^\circ$ (per escludere tetragonale ed esagonale)
@@ -249,7 +223,7 @@ Questo è il reticolo meno simmetrico in 2D.
     \item Possiede le \textbf{stesse simmetrie} dell'ortorombico, ma è un reticolo diverso.
 \end{itemize}
 
-\subsection{Riepilogo}
+\subsubsection{Riepilogo}
 
 \begin{table}[h!]
 \centering
@@ -271,7 +245,7 @@ In sintesi: \textbf{4 reticoli fondamentali + 1 decorazione} (l'ortorombico cent
 
 In tre dimensioni esistono in totale \textbf{14 reticoli di Bravais}: \textbf{7 fondamentali} (con le simmetrie principali) e \textbf{7 ottenuti per decorazione} (aggiunta di punti supplementari).
 
-\subsection{I 7 sistemi cristallini fondamentali}
+\subsection*{I 7 sistemi cristallini fondamentali}
 
 \subsubsection{1. Triclino}
 \begin{itemize}
@@ -348,7 +322,7 @@ In tre dimensioni esistono in totale \textbf{14 reticoli di Bravais}: \textbf{7 
     \item \textbf{Totale: 3 reticoli cubici} (semplice + FCC + BCC).
 \end{itemize}
 
-\subsection{Riepilogo dei 14 reticoli di Bravais}
+\subsection*{Riepilogo dei 14 reticoli di Bravais}
 
 \begin{table}[h!]
 \centering
@@ -369,17 +343,16 @@ Cubico & 1 & 2 (FCC, BCC) & \textbf{3} \\ \hline
 
 \section{Cella primitiva}
 
-\subsection{Definizione}
 I vettori $\mathbf{a}_1$, $\mathbf{a}_2$, $\mathbf{a}_3$ sono detti \textbf{vettori primitivi}. Il parallelepipedo costruito su questi tre vettori come spigoli è la \textbf{cella primitiva}.
 
-\begin{nota}[Proprietà Fondamentale]
-\textbf{Proprietà fondamentale:} ogni cella primitiva contiene esattamente \textbf{un punto reticolare}.
-\end{nota}
+\begin{equazione}[Proprietà Fondamentale]
+Ogni cella primitiva contiene esattamente \textbf{un punto reticolare}.
+\end{equazione}
 
 \textbf{Dimostrazione (esempio del cubico semplice):} la cella cubica ha 8 vertici, ciascuno dei quali è un punto del reticolo. Ogni vertice è condiviso da 8 cubi adiacenti, quindi la frazione di ciascun punto appartenente a una singola cella è $\frac{1}{8}$. Il numero totale di punti per cella è:
 $$8 \times \frac{1}{8} = 1$$
 
-\subsection{Volume della cella primitiva}
+\subsection*{Volume della cella primitiva}
 Il volume della cella primitiva è dato da:
 \begin{equazione}{Volume della cella primitiva}
 \begin{equation}
@@ -390,7 +363,7 @@ Questa formula vale per tutte le celle primitive, indipendentemente dal sistema 
 
 \textbf{Esempio:} per il cubico semplice con lato $a$, si ha $\mathbf{a}_2 \times \mathbf{a}_3$ parallelo ad $\mathbf{a}_1$ e di modulo $a^2$, quindi $V = a^3$.
 
-\subsection{Non unicità della scelta dei vettori primitivi}
+\subsection*{Non unicità della scelta dei vettori primitivi}
 La scelta dei vettori primitivi \textbf{non è unica}. Ad esempio, per un reticolo quadrato 2D con vettori $\mathbf{a}_1$ e $\mathbf{a}_2$, una scelta alternativa valida è $\mathbf{a}_1$ e $\mathbf{a}_2' = \mathbf{a}_1 + \mathbf{a}_2$: i vettori $\mathbf{a}_1$ e $\mathbf{a}_2'$ con coefficienti interi generano esattamente lo stesso reticolo.
 
 Esistono \textbf{infinite} scelte possibili per i vettori primitivi. Tuttavia, \textbf{tutte le celle primitive hanno lo stesso volume}, poiché tutte devono contenere esattamente un punto reticolare (altrimenti la densità del cristallo non sarebbe univocamente definita).
@@ -399,7 +372,6 @@ La scelta più ragionevole è quella che rende evidenti le \textbf{simmetrie} de
 
 \section{Cella convenzionale}
 
-\subsection{Motivazione}
 La cella primitiva non sempre evidenzia le simmetrie del reticolo. Ad esempio:
 \begin{itemize}
     \item La cella primitiva del reticolo \textbf{esagonale} è un rombo con angolo di $120^\circ$, che non ricorda la simmetria esagonale.
@@ -407,7 +379,7 @@ La cella primitiva non sempre evidenzia le simmetrie del reticolo. Ad esempio:
 \end{itemize}
 Per questo motivo, si introduce la \textbf{cella convenzionale}: una cella (non necessariamente primitiva) che mette in evidenza le simmetrie del sistema.
 
-\subsection{Esempio: cubico a facce centrate (FCC)}
+\subsection*{Esempio: cubico a facce centrate (FCC)}
 La cella convenzionale dell'FCC è il \textbf{cubo} con i punti aggiuntivi al centro di ciascuna faccia. Questa cella contiene \textbf{4 punti reticolari}:
 \begin{itemize}
     \item 8 vertici $\times \frac{1}{8} = 1$
@@ -433,7 +405,6 @@ poiché la cella convenzionale contiene 4 punti e la primitiva ne contiene 1.
 
 \section{Cella di Wigner-Seitz}
 
-\subsection{Definizione e proprietà}
 Esiste una scelta della cella che è contemporaneamente:
 \begin{itemize}
     \item \textbf{Primitiva}: contiene esattamente 1 punto reticolare.
@@ -444,11 +415,8 @@ Esiste una scelta della cella che è contemporaneamente:
 Questa cella è la \textbf{cella di Wigner-Seitz}. Il punto reticolare si trova esattamente al centro della cella.
 \end{definizione}
 
-\begin{nota}[Costruzione geometrica]
-La costruzione della cella di Wigner-Seitz sarà descritta nella prossima lezione.
-\end{nota}
 
-\subsection{Esempi}
+\subsection*{Esempi}
 
 \subsubsection{FCC (cubico a facce centrate)}
 La cella di Wigner-Seitz dell'FCC è un poliedro (non un cubo) che possiede tuttavia \textbf{tutte le simmetrie del cubo}:
@@ -460,5 +428,5 @@ La cella di Wigner-Seitz dell'FCC è un poliedro (non un cubo) che possiede tutt
 \subsubsection{BCC (cubico a corpo centrato)}
 La cella di Wigner-Seitz del BCC è un poliedro formato da \textbf{esagoni e quadrati}, anch'esso con tutte le simmetrie del cubo.
 
-\subsection{Riempimento dello spazio}
+\subsection*{Riempimento dello spazio}
 Le celle di Wigner-Seitz, sebbene di forma insolita, possono \textbf{riempire completamente lo spazio} senza lasciare vuoti né sovrapposizioni, esattamente come dei mattoncini (blocchi Lego). Sono quindi celle primitive a tutti gli effetti, con il vantaggio aggiuntivo di preservare tutte le simmetrie del sistema cristallino di appartenenza.
