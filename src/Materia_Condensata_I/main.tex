@@ -59,26 +59,30 @@
 \usepackage{pgfplots}
 \usepackage{tabularx}
 
-% Stile per Definizioni/Teoremi
-\newtcolorbox{definizione}[1][]{
-    enhanced,
-    colback=colorA!5!white, % Sfondo chiarissimo
-    colframe=colorA,        % Bordo colorato
-    fonttitle=\bfseries,
-    title=#1,
-    attach boxed title to top left={yshift=-2mm, xshift=5mm},
-    boxed title style={colback=colorA, sharp corners}
+% 1. Note / Avvisi importanti
+\newtcolorbox{nota}[1][Nota]{
+    colback=colorE!10,
+    colframe=colorE!70!red,
+    boxrule=1pt,
+    title=\textbf{#1}
 }
 
-% Stile per Formule importanti o Note
-\newtcolorbox{notabox}{
-    colback=colorF!5!white,
-    colframe=colorF,
-    boxrule=1pt,
-    borderline west={3pt}{0pt}{colorF},
-    sharp corners,
-    fontupper=\itshape
+% 2. Definizioni / Teoremi (es. Azione di Landau-Ginzburg)
+\newtcolorbox{definizione}[1]{
+    colback=colorD!5,
+    colframe=colorD!75!colorA,
+    coltitle=white,
+    title=\textbf{#1}
 }
+
+% 3. Equazioni / Concetti importanti (es. Propagatore)
+\newtcolorbox{equazione}[1]{
+    colback=yellow!25,
+    colframe=yellow!75!orange,
+    coltitle=black,
+    title=\textbf{#1}
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CONFIGURAZIONE STILE TITOLI E PAGINA
@@ -124,17 +128,6 @@
 
 \mainmatter 
 
-% --- ESEMPIO DI UTILIZZO DEI BOX (da cancellare e sostituire con i tuoi \include) ---
-\chapter{Introduzione ai Fenomeni Critici}
-Questa è un'introduzione alla lezione. Usa i box per mettere in risalto i concetti:
-
-\begin{definizione}[Transizione di Fase]
-Una transizione di fase è la trasformazione di un sistema termodinamico da una fase all'altra. Il punto critico segna la fine di una curva di coesistenza di fase.
-\end{definizione}
-
-\begin{notabox}
-Ricorda che vicino al punto critico, la lunghezza di correlazione diverge: $\xi \to \infty$.
-\end{notabox}
 
 % \include{lezione_01}
 % \include{lezione_02}
