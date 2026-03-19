@@ -175,6 +175,72 @@ La struttura complessiva è quindi la \textbf{compenetrazione di due reticoli di
 \subsection*{Honeycomb con punti centrali}
 Se si aggiunge il \textbf{punto centrale} a ciascun esagono dell'honeycomb, la struttura risultante \textbf{è} un reticolo di Bravais (reticolo esagonale/triangolare). In questo caso, tutti i punti sono davvero equivalenti.
 
+\vspace{0.5cm}
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+  % Distanza tra i primi vicini (lunghezza del legame)
+  \def\r{0.8} 
+  
+  % Componenti dei vettori primitivi del reticolo di Bravais
+  \pgfmathsetmacro{\ax}{1.5*\r}
+  \pgfmathsetmacro{\ay}{\r*sqrt(3)/2}
+
+
+  % Clip per mantenere i bordi del disegno puliti
+  \clip (-2.5, -2.5) rectangle (4.5, 2.5);
+
+  % 1. Reticolo di Bravais (Griglia triangolare) - Linee tratteggiate
+  % Collega solo i siti equivalenti (sottoreticolo A)
+  \foreach \n in {-4,...,4} {
+    \foreach \m in {-4,...,4} {
+      \coordinate (A) at (\n*\ax + \m*\ax, \n*\ay - \m*\ay);
+      
+      \draw[dashed, gray!50, thick] (A) -- ++(\ax, \ay);
+      \draw[dashed, gray!50, thick] (A) -- ++(\ax, -\ay);
+      \draw[dashed, gray!50, thick] (A) -- ++(0, 2*\ay);
+    }
+  }
+
+  % 2. Legami fisici del reticolo Honeycomb
+  \foreach \n in {-4,...,4} {
+    \foreach \m in {-4,...,4} {
+      \coordinate (A) at (\n*\ax + \m*\ax, \n*\ay - \m*\ay);
+      
+      % Tre legami dal sito A verso i vicini B
+      \draw[thick, black!80] (A) -- ++(\r, 0);
+      \draw[thick, black!80] (A) -- ++(-0.5*\r, \ay);
+      \draw[thick, black!80] (A) -- ++(-0.5*\r, -\ay);
+    }
+  }
+
+  % 3. Cella Primitiva del reticolo di Bravais
+  \coordinate (O) at (0,0);
+  \coordinate (a1) at (\ax, \ay);
+  \coordinate (a2) at (\ax, -\ay);
+  \coordinate (a1a2) at (2*\ax, 0);
+  
+  \fill[yellow, opacity=0.3] (O) -- (a1) -- (a1a2) -- (a2) -- cycle;
+  \draw[dash dot, orange, very thick] (O) -- (a1) -- (a1a2) -- (a2) -- cycle;
+
+  % 4. Vettori primitivi a1 e a2
+  \draw[->, very thick, red] (O) -- (a1) node[midway, above left] {$\vec{a}_1$};
+  \draw[->, very thick, blue] (O) -- (a2) node[midway, below left] {$\vec{a}_2$};
+
+  % 5. Atomi (disegnati per ultimi per coprire le giunzioni delle linee)
+  \foreach \n in {-4,...,4} {
+    \foreach \m in {-4,...,4} {
+      \coordinate (A) at (\n*\ax + \m*\ax, \n*\ay - \m*\ay);
+      \coordinate (B) at (\n*\ax + \m*\ax + \r, \n*\ay - \m*\ay);
+      
+      \filldraw[fill=colorE, draw=black!80, thick] (A) circle (3.5pt);
+      \filldraw[fill=colorC, draw=black!80, thick] (B) circle (3.5pt);
+    }
+  }
+
+\end{tikzpicture}
+\end{center}
+\vspace{0.5cm}
+
 
 \section{Reticoli di Bravais in due dimensioni (5 reticoli)}
 
