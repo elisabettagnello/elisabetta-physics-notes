@@ -178,23 +178,65 @@ Se si aggiunge il \textbf{punto centrale} a ciascun esagono dell'honeycomb, la s
 \vspace{0.5cm}
 \begin{center}
 \begin{tikzpicture}[scale=1.5]
-  \def\r{0.7}
-  % Ripetiamo la cella di base per formare la rete
-  \foreach \dx/\dy in {0/0, 2.1/1.212, 2.1/-1.212, 4.2/0} {
-    \begin{scope}[shift={(\dx,\dy)}]
-      % Esagono
-      \draw[thick, gray!60] (0:\r) \foreach \a in {60,120,...,359} { -- (\a:\r) } -- cycle;
-      % Punti sui vertici (alternati rosa e viola usando i tuoi colori)
-      \filldraw[colorE] (0:\r) circle (2.5pt);
-      \filldraw[colorC] (60:\r) circle (2.5pt);
-      \filldraw[colorE] (120:\r) circle (2.5pt);
-      \filldraw[colorC] (180:\r) circle (2.5pt);
-      \filldraw[colorE] (240:\r) circle (2.5pt);
-      \filldraw[colorC] (300:\r) circle (2.5pt);
-      % Punto centrale (stesso colore di una sub-lattice per renderlo triangolare)
-      \filldraw[colorE] (0,0) circle (3.5pt); 
-    \end{scope}
+  % Distanza tra i primi vicini (lunghezza del legame)
+  \def\r{0.8} 
+  
+  % Componenti dei vettori primitivi del reticolo di Bravais
+  \pgfmathsetmacro{\ax}{1.5*\r}
+  \pgfmathsetmacro{\ay}{\r*sqrt(3)/2}
+
+
+  % Clip per mantenere i bordi del disegno puliti
+  \clip (-2.5, -2.5) rectangle (4.5, 2.5);
+
+  % 1. Reticolo di Bravais (Griglia triangolare) - Linee tratteggiate
+  % Collega solo i siti equivalenti (sottoreticolo A)
+  \foreach \n in {-4,...,4} {
+    \foreach \m in {-4,...,4} {
+      \coordinate (A) at (\n*\ax + \m*\ax, \n*\ay - \m*\ay);
+      
+      \draw[dashed, gray!50, thick] (A) -- ++(\ax, \ay);
+      \draw[dashed, gray!50, thick] (A) -- ++(\ax, -\ay);
+      \draw[dashed, gray!50, thick] (A) -- ++(0, 2*\ay);
+    }
   }
+
+  % 2. Legami fisici del reticolo Honeycomb
+  \foreach \n in {-4,...,4} {
+    \foreach \m in {-4,...,4} {
+      \coordinate (A) at (\n*\ax + \m*\ax, \n*\ay - \m*\ay);
+      
+      % Tre legami dal sito A verso i vicini B
+      \draw[thick, black!80] (A) -- ++(\r, 0);
+      \draw[thick, black!80] (A) -- ++(-0.5*\r, \ay);
+      \draw[thick, black!80] (A) -- ++(-0.5*\r, -\ay);
+    }
+  }
+
+  % 3. Cella Primitiva del reticolo di Bravais
+  \coordinate (O) at (0,0);
+  \coordinate (a1) at (\ax, \ay);
+  \coordinate (a2) at (\ax, -\ay);
+  \coordinate (a1a2) at (2*\ax, 0);
+  
+  \fill[yellow, opacity=0.3] (O) -- (a1) -- (a1a2) -- (a2) -- cycle;
+  \draw[dash dot, orange, very thick] (O) -- (a1) -- (a1a2) -- (a2) -- cycle;
+
+  % 4. Vettori primitivi a1 e a2
+  \draw[->, very thick, red] (O) -- (a1) node[midway, above left] {$\vec{a}_1$};
+  \draw[->, very thick, blue] (O) -- (a2) node[midway, below left] {$\vec{a}_2$};
+
+  % 5. Atomi (disegnati per ultimi per coprire le giunzioni delle linee)
+  \foreach \n in {-4,...,4} {
+    \foreach \m in {-4,...,4} {
+      \coordinate (A) at (\n*\ax + \m*\ax, \n*\ay - \m*\ay);
+      \coordinate (B) at (\n*\ax + \m*\ax + \r, \n*\ay - \m*\ay);
+      
+      \filldraw[fill=colorE, draw=black!80, thick] (A) circle (3.5pt);
+      \filldraw[fill=colorC, draw=black!80, thick] (B) circle (3.5pt);
+    }
+  }
+
 \end{tikzpicture}
 \end{center}
 \vspace{0.5cm}
@@ -220,8 +262,8 @@ Questo è il reticolo meno simmetrico in 2D.
     \item La cella è un rettangolo.
 \end{itemize}
 
-\begin{definizione}
-\textbf{Distinzione tra monoclino e ortorombico:} la rotazione di $180^\circ$ è in realtà presente anche nel monoclino in 2D (equivale all'inversione in 2D). Ciò che distingue i due reticoli è la \textbf{simmetria speculare} (mirror symmetry): il rettangolare possiede piani speculari lungo le direzioni principali, mentre il monoclino (obliquo) no. In un reticolo obliquo, la riflessione rispetto alle direzioni principali non mappa il reticolo in sé stesso.
+\begin{definizione}{Distinzione tra monoclino e ortorombico} 
+La rotazione di $180^\circ$ è in realtà presente anche nel monoclino in 2D (equivale all'inversione in 2D). Ciò che distingue i due reticoli è la \textbf{simmetria speculare} (mirror symmetry): il rettangolare possiede piani speculari lungo le direzioni principali, mentre il monoclino (obliquo) no. In un reticolo obliquo, la riflessione rispetto alle direzioni principali non mappa il reticolo in sé stesso.
 \end{definizione}
 
 \subsubsection{Reticolo esagonale}
@@ -267,23 +309,24 @@ In sintesi: \textbf{4 reticoli fondamentali + 1 decorazione} (l'ortorombico cent
 
 \vspace{0.5cm}
 \begin{center}
-\resizebox{0.9\textwidth}{!}{
-\begin{tikzpicture}[
-    dot/.style={circle, fill=colorA, inner sep=2.5pt},
-    cell/.style={thick, colorD}
+\resizebox{0.8\textwidth}{!}{
+\begin{tikzpicture}[ scale=0.6, 
+    dot/.style={circle, fill=colorA, inner sep=2pt},
+    cell/.style={thick, colorD},
+    textlabel/.style={align=center, font=\tiny}
 ]
     % Monoclino
     \begin{scope}[shift={(0,0)}]
         \draw[cell] (0,0) -- (2,0) -- (2.5,1.5) -- (0.5,1.5) -- cycle;
         \foreach \x/\y in {0/0, 2/0, 2.5/1.5, 0.5/1.5} \node[dot] at (\x,\y) {};
-        \node[align=center] at (1.25,-0.8) {\textbf{Monoclino}\\(Obliquo)};
+        \node[textlabel] at (1.25,-0.8) {\textbf{Monoclino}\\(Obliquo)};
     \end{scope}
     
     % Ortorombico
     \begin{scope}[shift={(4.5,0)}]
         \draw[cell] (0,0) -- (2,0) -- (2,1.5) -- (0,1.5) -- cycle;
         \foreach \x in {0, 2} \foreach \y in {0, 1.5} \node[dot] at (\x,\y) {};
-        \node[align=center] at (1,-0.8) {\textbf{Ortorombico}\\(Rettangolare)};
+        \node[textlabel] at (1,-0.8) {\textbf{Ortorombico}\\(Rettangolare)};
     \end{scope}
     
     % Ortorombico centrato
@@ -291,26 +334,27 @@ In sintesi: \textbf{4 reticoli fondamentali + 1 decorazione} (l'ortorombico cent
         \draw[cell] (0,0) -- (2,0) -- (2,1.5) -- (0,1.5) -- cycle;
         \foreach \x in {0, 2} \foreach \y in {0, 1.5} \node[dot] at (\x,\y) {};
         \node[dot, fill=colorF] at (1,0.75) {};
-        \node[align=center] at (1,-0.8) {\textbf{Ortorombico}\\centrato};
+        \node[textlabel] at (1,-0.8) {\textbf{Ortorombico}\\centrato};
     \end{scope}
     
     % Tetragonale
     \begin{scope}[shift={(2.5,-3.5)}]
         \draw[cell] (0,0) -- (1.5,0) -- (1.5,1.5) -- (0,1.5) -- cycle;
         \foreach \x in {0, 1.5} \foreach \y in {0, 1.5} \node[dot] at (\x,\y) {};
-        \node[align=center] at (0.75,-0.8) {\textbf{Tetragonale}\\(Quadrato)};
+        \node[textlabel] at (0.75,-0.8) {\textbf{Tetragonale}\\(Quadrato)};
     \end{scope}
     
     % Esagonale
     \begin{scope}[shift={(6.5,-3.5)}]
         \draw[cell] (0,0) -- (1.5,0) -- (2.25,1.3) -- (0.75,1.3) -- cycle;
         \foreach \x/\y in {0/0, 1.5/0, 2.25/1.3, 0.75/1.3} \node[dot] at (\x,\y) {};
-        \node[align=center] at (1.125,-0.8) {\textbf{Esagonale}\\($120^\circ$)};
+        \node[textlabel] at (1.125,-0.8) {\textbf{Esagonale}\\($120^\circ$)};
     \end{scope}
 \end{tikzpicture}
 }
 \end{center}
 \vspace{0.5cm}
+
 
 \section{Reticoli di Bravais in tre dimensioni (14 reticoli)}
 
@@ -412,100 +456,116 @@ Cubico & 1 & 2 (FCC, BCC) & \textbf{3} \\ \hline
 \end{tabular}
 \end{table}
 
-\vspace{0.5cm}
-\begin{center}
-\resizebox{\textwidth}{!}{
-\begin{tikzpicture}[
+\newpage
+% 1. Definizione globale degli stili e delle macro (da mettere nel preambolo o prima del \begin{center})
+\tikzset{
     cell3d/.style={thick, colorA},
     dot3d/.style={circle, fill=colorB, inner sep=2.5pt},
-    dotF/.style={circle, fill=colorF, inner sep=2.5pt}, % Punti aggiuntivi (decorazioni)
-    font=\small
-]
+    dotF/.style={circle, fill=colorF, inner sep=2.5pt}
+}
 
-% Macro per disegnare la scatola di base in 3D
-\def\drawbasecell{
+\newcommand{\drawbasecell}{
     \draw[cell3d] (0,0,0) -- (1,0,0) -- (1,1,0) -- (0,1,0) -- cycle;
     \draw[cell3d] (0,0,1) -- (1,0,1) -- (1,1,1) -- (0,1,1) -- cycle;
     \draw[cell3d] (0,0,0) -- (0,0,1) (1,0,0) -- (1,0,1) (1,1,0) -- (1,1,1) (0,1,0) -- (0,1,1);
     \foreach \x in {0,1} \foreach \y in {0,1} \foreach \z in {0,1} \node[dot3d] at (\x,\y,\z) {};
 }
-\def\addbody{ \node[dotF] at (0.5,0.5,0.5) {}; }
-\def\addface{
+\newcommand{\addbody}{ \node[dotF] at (0.5,0.5,0.5) {}; }
+\newcommand{\addface}{
     \foreach \x/\y/\z in {0.5/0.5/0, 0.5/0.5/1, 0.5/0/0.5, 0.5/1/0.5, 0/0.5/0.5, 1/0.5/0.5} \node[dotF] at (\x,\y,\z) {};
 }
-\def\addbase{
+\newcommand{\addbase}{
     \foreach \x/\y/\z in {0.5/0.5/0, 0.5/0.5/1} \node[dotF] at (\x,\y,\z) {};
 }
 
+% 2. Struttura del documento
+\vspace{0.5cm}
+\begin{center}
+
 % --- RIGA 1: CUBICO ---
-\begin{scope}[shift={(0,0)}]
-    \begin{scope}[x={(1.2cm,0cm)}, y={(0.4cm,0.3cm)}, z={(0cm,1.2cm)}] \drawbasecell \end{scope}
-    \node[align=center] at (0.8,-0.7) {\textbf{Cubico}\\Semplice (P)};
-\end{scope}
-\begin{scope}[shift={(4,0)}]
-    \begin{scope}[x={(1.2cm,0cm)}, y={(0.4cm,0.3cm)}, z={(0cm,1.2cm)}] \drawbasecell \addbody \end{scope}
-    \node[align=center] at (0.8,-0.7) {\textbf{Cubico}\\Corpo Centr. (I)};
-\end{scope}
-\begin{scope}[shift={(8,0)}]
-    \begin{scope}[x={(1.2cm,0cm)}, y={(0.4cm,0.3cm)}, z={(0cm,1.2cm)}] \drawbasecell \addface \end{scope}
-    \node[align=center] at (0.8,-0.7) {\textbf{Cubico}\\Facce Centr. (F)};
-\end{scope}
+\begin{tikzpicture}[font=\small]
+    \begin{scope}[shift={(0,0)}]
+        \begin{scope}[x={(1.2cm,0cm)}, y={(0.4cm,0.3cm)}, z={(0cm,1.2cm)}] \drawbasecell \end{scope}
+        \node[align=center] at (0.8,-0.7) {\textbf{Cubico}\\Semplice (P)};
+    \end{scope}
+    \begin{scope}[shift={(4,0)}]
+        \begin{scope}[x={(1.2cm,0cm)}, y={(0.4cm,0.3cm)}, z={(0cm,1.2cm)}] \drawbasecell \addbody \end{scope}
+        \node[align=center] at (0.8,-0.7) {\textbf{Cubico}\\Corpo Centr. (I)};
+    \end{scope}
+    \begin{scope}[shift={(8,0)}]
+        \begin{scope}[x={(1.2cm,0cm)}, y={(0.4cm,0.3cm)}, z={(0cm,1.2cm)}] \drawbasecell \addface \end{scope}
+        \node[align=center] at (0.8,-0.7) {\textbf{Cubico}\\Facce Centr. (F)};
+    \end{scope}
+\end{tikzpicture}
+
+\vspace{1cm} % Spazio per far respirare le righe e permettere il pagebreak
 
 % --- RIGA 2: TETRAGONALE ---
-\begin{scope}[shift={(1.5,-4.5)}]
-    \begin{scope}[x={(1.2cm,0cm)}, y={(0.4cm,0.3cm)}, z={(0cm,1.8cm)}] \drawbasecell \end{scope}
-    \node[align=center] at (0.8,-0.7) {\textbf{Tetragonale}\\Semplice (P)};
-\end{scope}
-\begin{scope}[shift={(6.5,-4.5)}]
-    \begin{scope}[x={(1.2cm,0cm)}, y={(0.4cm,0.3cm)}, z={(0cm,1.8cm)}] \drawbasecell \addbody \end{scope}
-    \node[align=center] at (0.8,-0.7) {\textbf{Tetragonale}\\Corpo Centr. (I)};
-\end{scope}
+\begin{tikzpicture}[font=\small]
+    \begin{scope}[shift={(0,0)}]
+        \begin{scope}[x={(1.2cm,0cm)}, y={(0.4cm,0.3cm)}, z={(0cm,1.8cm)}] \drawbasecell \end{scope}
+        \node[align=center] at (0.8,-0.7) {\textbf{Tetragonale}\\Semplice (P)};
+    \end{scope}
+    \begin{scope}[shift={(5,0)}]
+        \begin{scope}[x={(1.2cm,0cm)}, y={(0.4cm,0.3cm)}, z={(0cm,1.8cm)}] \drawbasecell \addbody \end{scope}
+        \node[align=center] at (0.8,-0.7) {\textbf{Tetragonale}\\Corpo Centr. (I)};
+    \end{scope}
+\end{tikzpicture}
+
+\vspace{1cm}
 
 % --- RIGA 3: ORTOROMBICO ---
-\begin{scope}[shift={(0,-10)}]
-    \begin{scope}[x={(1.6cm,0cm)}, y={(0.5cm,0.3cm)}, z={(0cm,2cm)}] \drawbasecell \end{scope}
-    \node[align=center] at (1.0,-0.7) {\textbf{Ortorombico}\\Semplice (P)};
-\end{scope}
-\begin{scope}[shift={(3.5,-10)}]
-    \begin{scope}[x={(1.6cm,0cm)}, y={(0.5cm,0.3cm)}, z={(0cm,2cm)}] \drawbasecell \addbase \end{scope}
-    \node[align=center] at (1.0,-0.7) {\textbf{Ortorombico}\\Base Centr. (C)};
-\end{scope}
-\begin{scope}[shift={(7,-10)}]
-    \begin{scope}[x={(1.6cm,0cm)}, y={(0.5cm,0.3cm)}, z={(0cm,2cm)}] \drawbasecell \addbody \end{scope}
-    \node[align=center] at (1.0,-0.7) {\textbf{Ortorombico}\\Corpo Centr. (I)};
-\end{scope}
-\begin{scope}[shift={(10.5,-10)}]
-    \begin{scope}[x={(1.6cm,0cm)}, y={(0.5cm,0.3cm)}, z={(0cm,2cm)}] \drawbasecell \addface \end{scope}
-    \node[align=center] at (1.0,-0.7) {\textbf{Ortorombico}\\Facce Centr. (F)};
-\end{scope}
+\begin{tikzpicture}[font=\small]
+    \begin{scope}[shift={(0,0)}]
+        \begin{scope}[x={(1.6cm,0cm)}, y={(0.5cm,0.3cm)}, z={(0cm,2cm)}] \drawbasecell \end{scope}
+        \node[align=center] at (1.0,-0.7) {\textbf{Ortorombico}\\Semplice (P)};
+    \end{scope}
+    \begin{scope}[shift={(3.5,0)}]
+        \begin{scope}[x={(1.6cm,0cm)}, y={(0.5cm,0.3cm)}, z={(0cm,2cm)}] \drawbasecell \addbase \end{scope}
+        \node[align=center] at (1.0,-0.7) {\textbf{Ortorombico}\\Base Centr. (C)};
+    \end{scope}
+    \begin{scope}[shift={(7,0)}]
+        \begin{scope}[x={(1.6cm,0cm)}, y={(0.5cm,0.3cm)}, z={(0cm,2cm)}] \drawbasecell \addbody \end{scope}
+        \node[align=center] at (1.0,-0.7) {\textbf{Ortorombico}\\Corpo Centr. (I)};
+    \end{scope}
+    \begin{scope}[shift={(10.5,0)}]
+        \begin{scope}[x={(1.6cm,0cm)}, y={(0.5cm,0.3cm)}, z={(0cm,2cm)}] \drawbasecell \addface \end{scope}
+        \node[align=center] at (1.0,-0.7) {\textbf{Ortorombico}\\Facce Centr. (F)};
+    \end{scope}
+\end{tikzpicture}
+
+\vspace{1cm}
 
 % --- RIGA 4: MONOCLINO ---
-\begin{scope}[shift={(1.5,-15.5)}]
-    \begin{scope}[x={(1.6cm,0cm)}, y={(0.5cm,0.4cm)}, z={(-0.5cm,1.8cm)}] \drawbasecell \end{scope}
-    \node[align=center] at (0.8,-0.7) {\textbf{Monoclino}\\Semplice (P)};
-\end{scope}
-\begin{scope}[shift={(6.5,-15.5)}]
-    \begin{scope}[x={(1.6cm,0cm)}, y={(0.5cm,0.4cm)}, z={(-0.5cm,1.8cm)}] \drawbasecell \addbase \end{scope}
-    \node[align=center] at (0.8,-0.7) {\textbf{Monoclino}\\Base Centr. (C)};
-\end{scope}
+\begin{tikzpicture}[font=\small]
+    \begin{scope}[shift={(0,0)}]
+        \begin{scope}[x={(1.6cm,0cm)}, y={(0.5cm,0.4cm)}, z={(-0.5cm,1.8cm)}] \drawbasecell \end{scope}
+        \node[align=center] at (0.8,-0.7) {\textbf{Monoclino}\\Semplice (P)};
+    \end{scope}
+    \begin{scope}[shift={(5,0)}]
+        \begin{scope}[x={(1.6cm,0cm)}, y={(0.5cm,0.4cm)}, z={(-0.5cm,1.8cm)}] \drawbasecell \addbase \end{scope}
+        \node[align=center] at (0.8,-0.7) {\textbf{Monoclino}\\Base Centr. (C)};
+    \end{scope}
+\end{tikzpicture}
+
+\vspace{1cm}
 
 % --- RIGA 5: TRICLINO, ROMBOEDRICO, ESAGONALE ---
-\begin{scope}[shift={(0,-21)}]
-    \begin{scope}[x={(1.4cm,0.2cm)}, y={(0.6cm,0.5cm)}, z={(-0.3cm,1.7cm)}] \drawbasecell \end{scope}
-    \node[align=center] at (1.0,-0.7) {\textbf{Triclino}};
-\end{scope}
-\begin{scope}[shift={(4,-21)}]
-    \begin{scope}[x={(1.2cm,0.4cm)}, y={(0.2cm,0.8cm)}, z={(-0.5cm,1.5cm)}] \drawbasecell \end{scope}
-    \node[align=center] at (0.8,-0.7) {\textbf{Romboedrico}\\(Trigonale)};
-\end{scope}
-\begin{scope}[shift={(8,-21)}]
-    % Esagonale prismatico (base rombo a 120 gradi)
-    \begin{scope}[x={(1.2cm,0cm)}, y={(-0.6cm,1.039cm)}, z={(0cm,1.8cm)}] \drawbasecell \end{scope}
-    \node[align=center] at (0.6,-0.7) {\textbf{Esagonale}};
-\end{scope}
-
+\begin{tikzpicture}[font=\small]
+    \begin{scope}[shift={(0,0)}]
+        \begin{scope}[x={(1.4cm,0.2cm)}, y={(0.6cm,0.5cm)}, z={(-0.3cm,1.7cm)}] \drawbasecell \end{scope}
+        \node[align=center] at (1.0,-0.7) {\textbf{Triclino}};
+    \end{scope}
+    \begin{scope}[shift={(4,0)}]
+        \begin{scope}[x={(1.2cm,0.4cm)}, y={(0.2cm,0.8cm)}, z={(-0.5cm,1.5cm)}] \drawbasecell \end{scope}
+        \node[align=center] at (0.8,-0.7) {\textbf{Romboedrico}\\(Trigonale)};
+    \end{scope}
+    \begin{scope}[shift={(8,0)}]
+        \begin{scope}[x={(1.2cm,0cm)}, y={(-0.6cm,1.039cm)}, z={(0cm,1.8cm)}] \drawbasecell \end{scope}
+        \node[align=center] at (0.6,-0.7) {\textbf{Esagonale}};
+    \end{scope}
 \end{tikzpicture}
-}
+
 \end{center}
 \vspace{0.5cm}
 
