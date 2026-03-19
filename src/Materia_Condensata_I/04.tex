@@ -1,0 +1,551 @@
+\chapter{Formulazione di Von Laue, costruzione di Ewald e diffrazione da cristalli con base}
+
+
+\section{Richiami: la formulazione di Bragg}
+
+Nella lezione precedente è stata introdotta la \textbf{formulazione di Bragg} del problema della diffrazione di raggi X da un cristallo. La formulazione di Bragg si basa su due ipotesi:
+
+\begin{enumerate}
+    \item \textbf{Esistono piani reticolari} nel cristallo.
+    \item Questi piani si comportano come \textbf{specchi perfetti} per i raggi X.
+\end{enumerate}
+
+In questo schema, una sorgente emette raggi X che colpiscono il cristallo e vengono riflessi verso un rivelatore. Se $d$ è la distanza tra due piani reticolari consecutivi e $\theta$ è l'angolo formato dal raggio X con il piano reticolare, la condizione per osservare \textbf{interferenza costruttiva} è la celebre \textbf{condizione di Bragg}:
+
+\begin{equazione}{Condizione di Bragg}
+\begin{equation}
+2d\sin\theta = n\lambda, \qquad n \in \mathbb{Z}
+\end{equation}
+\end{equazione}
+
+dove $\lambda$ è la lunghezza d'onda dei raggi X e $n$ è un intero (l'ordine di diffrazione).
+
+\section{Formulazione di Von Laue}
+
+\subsection*{Setup del problema}
+
+Nella formulazione di \textbf{Von Laue}, il problema dello scattering di raggi X viene riformulato partendo da ipotesi fisiche più trasparenti. Il setup è lo stesso: un cristallo, una sorgente e un rivelatore. Tuttavia, a differenza di Bragg:
+
+\begin{itemize}
+    \item I \textbf{diffusori} non sono piani reticolari, ma \textbf{singoli atomi} del reticolo.
+    \item La luce è diffusa elasticamente dai singoli atomi.
+\end{itemize}
+
+\subsection*{Ipotesi: scattering elastico}
+
+L'unica ipotesi fisica è che lo scattering sia \textbf{elastico}, il che è un'assunzione molto ragionevole nel caso dei raggi X duri (\textit{hard X-rays}). Quando raggi X duri colpiscono un atomo, il processo dominante è la diffusione elastica (a differenza, ad esempio, dello scattering Compton, che è anelastico). La condizione di elasticità si traduce in:
+
+$$|\mathbf{k}| = |\mathbf{k}'|$$
+
+dove $\mathbf{k}$ e $\mathbf{k}'$ sono i vettori d'onda del raggio X incidente e di quello diffuso, rispettivamente. Ciò significa che \textbf{la lunghezza d'onda non cambia} nello scattering.
+
+\subsection*{Derivazione della condizione di Von Laue}
+
+Si considerino due atomi nel reticolo, separati da un vettore $\mathbf{d}$. La posizione della sorgente e del rivelatore definisce due angoli: $\theta$ (angolo tra il raggio incidente e $\mathbf{d}$) e $\theta'$ (angolo tra il raggio diffuso e $\mathbf{d}$). L'onda diffusa è \textbf{sferica}: ciò che seleziona la direzione $\mathbf{k}'$ è la posizione del rivelatore.
+
+La condizione per interferenza costruttiva richiede che la \textbf{differenza di cammino ottico} tra i due raggi diffusi dai due atomi sia un multiplo intero della lunghezza d'onda:
+
+$$d\cos\theta + d\cos\theta' = n\lambda$$
+
+Siano $\hat{\mathbf{n}}$ e $\hat{\mathbf{n}}'$ i versori nelle direzioni di $\mathbf{k}$ e $\mathbf{k}'$ rispettivamente. I due termini possono essere riscritti come prodotti scalari:
+
+$$\mathbf{d} \cdot \hat{\mathbf{n}} - \mathbf{d} \cdot \hat{\mathbf{n}}' = n\lambda$$
+
+ovvero:
+
+$$\mathbf{d} \cdot (\hat{\mathbf{n}} - \hat{\mathbf{n}}') = n\lambda$$
+
+Moltiplicando entrambi i membri per $\frac{2\pi}{\lambda}$, si ottiene:
+
+$$\mathbf{d} \cdot (\mathbf{k} - \mathbf{k}') = 2\pi n$$
+
+poiché $\mathbf{k} = \frac{2\pi}{\lambda}\hat{\mathbf{n}}$ e $\mathbf{k}' = \frac{2\pi}{\lambda}\hat{\mathbf{n}}'$.
+
+\subsection*{Generalizzazione a tutto il reticolo}
+
+Il vettore $\mathbf{d}$ congiunge due atomi qualsiasi del reticolo. Affinché si osservi un punto brillante nel rivelatore, l'interferenza deve essere costruttiva \textbf{per tutti} gli atomi illuminati dal fascio, non solo per una coppia. Quindi la condizione deve valere per ogni vettore del reticolo di Bravais $\mathbf{R}$:
+
+\begin{equazione}{Condizione di Von Laue}
+\begin{equation}
+\mathbf{R} \cdot (\mathbf{k} - \mathbf{k}') = 2\pi n, \qquad \forall\, \mathbf{R} \in \text{BL}
+\end{equation}
+\end{equazione}
+
+
+
+
+\subsection{Connessione con il reticolo reciproco}
+
+La condizione di Von Laue $\mathbf{R} \cdot (\mathbf{k} - \mathbf{k}') = 2\pi n$ per ogni $\mathbf{R}$ del reticolo di Bravais è \textbf{esattamente} la condizione che definisce il reticolo reciproco. Infatti, per definizione, i vettori $\mathbf{K}$ del reticolo reciproco sono quei vettori per cui $e^{i\mathbf{K}\cdot\mathbf{R}} = 1$ per ogni $\mathbf{R}$ del reticolo diretto, ovvero $\mathbf{K} \cdot \mathbf{R} = 2\pi n$.
+
+La condizione di Von Laue si traduce dunque in:
+
+\begin{equazione}{Von Laue e Reticolo Reciproco}
+\begin{equation}
+\mathbf{k} - \mathbf{k}' = \mathbf{K}, \qquad \mathbf{K} \in \text{RL}
+\end{equation}
+\end{equazione}
+
+\subsubsection{Significato fisico}
+
+Questo risultato è notevole: quando si effettua un esperimento di diffrazione di raggi X su un cristallo e si varia la posizione del rivelatore, si osserva un \textbf{punto brillante} ogniqualvolta la differenza $\mathbf{k} - \mathbf{k}'$ coincide con un vettore del reticolo reciproco del cristallo. In tutte le altre direzioni, non si osserva nulla.
+
+Lo scattering di raggi X ci dà dunque accesso diretto al \textbf{reticolo reciproco} del cristallo, non al cristallo stesso. Tuttavia, poiché esiste una \textbf{corrispondenza biunivoca} tra un reticolo di Bravais e il suo reticolo reciproco, una volta ricostruito il reticolo reciproco si può immediatamente risalire alla struttura del reticolo diretto.
+
+\subsection{Equivalenza tra le formulazioni di Bragg e Von Laue}
+
+
+Si hanno dunque due formulazioni dello stesso problema:
+
+\begin{itemize}
+    \item \textbf{Bragg}: assume l'esistenza di piani reticolari che si comportano come specchi perfetti. Le ipotesi sono meno trasparenti fisicamente, ma la formulazione è elegante.
+    \item \textbf{Von Laue}: assume solo che lo scattering sia elastico e che i diffusori siano i nodi del reticolo. Le ipotesi sono fisicamente molto ragionevoli.
+\end{itemize}
+
+Entrambi (Bragg e Von Laue) ricevettero il \textbf{Premio Nobel}, dunque entrambe le formulazioni funzionano. In effetti, sono \textbf{completamente equivalenti}, come ora dimostriamo.
+
+
+L'equivalenza si basa su un teorema già dimostrato nella lezione precedente:
+
+\begin{definizione}{Teorema dei piani reticolari}
+Dato un vettore $\mathbf{K}$ del reticolo reciproco, esiste sempre una \textbf{famiglia di piani reticolari perpendicolari} a $\mathbf{K}$. Inoltre, il più corto di tutti i vettori del reticolo reciproco nella direzione di $\mathbf{K}$ ha modulo $\frac{2\pi}{d}$, dove $d$ è la distanza tra i piani. Tutti gli altri vettori nella stessa direzione sono multipli interi del più corto:
+$$|\mathbf{K}| = n \cdot \frac{2\pi}{d}, \qquad n \in \mathbb{Z}^+$$
+\end{definizione}
+
+Perché solo multipli interi? Perché il reticolo reciproco è un reticolo di Bravais e i suoi vettori in una data direzione possono essere solo multipli interi del vettore fondamentale in quella direzione.
+
+\subsubsection{Dimostrazione dell'equivalenza}
+
+Dalla condizione di Von Laue $\mathbf{k}' = \mathbf{k} - \mathbf{K}$, prendiamo il modulo quadro di entrambi i membri e usiamo la condizione di elasticità $|\mathbf{k}'| = |\mathbf{k}|$:
+
+$$|\mathbf{k}'|^2 = |\mathbf{k} - \mathbf{K}|^2 = |\mathbf{k}|^2 - 2\mathbf{k}\cdot\mathbf{K} + |\mathbf{K}|^2$$
+
+Poiché $|\mathbf{k}'|^2 = |\mathbf{k}|^2$ (elasticità), si ottiene:
+
+\begin{equazione}{Proiezione di k}
+\begin{equation}
+\mathbf{k} \cdot \mathbf{K} = \frac{1}{2}|\mathbf{K}|^2
+\end{equation}
+\end{equazione}
+
+Questa è una forma del \textbf{teorema di Carnot} per il triangolo formato da $\mathbf{k}$, $\mathbf{k}'$ e $\mathbf{K}$.
+
+\subsubsection{Interpretazione geometrica}
+
+Scriviamo $\mathbf{K} = |\mathbf{K}|\,\hat{\mathbf{K}}$, dove $\hat{\mathbf{K}}$ è il versore nella direzione di $\mathbf{K}$. Allora:
+
+$$\mathbf{k} \cdot \hat{\mathbf{K}} = \frac{1}{2}|\mathbf{K}|$$
+
+Questo significa che la \textbf{proiezione} di $\mathbf{k}$ lungo la direzione di $\mathbf{K}$ è esattamente la metà della lunghezza di $\mathbf{K}$. Geometricamente, il triangolo formato da $\mathbf{k}$, $-\mathbf{k}'$ e $\mathbf{K}$ è \textbf{isoscele}: i lati $|\mathbf{k}|$ e $|\mathbf{k}'|$ sono uguali.
+
+Se ora si traccia un \textbf{piano reticolare perpendicolare a $\mathbf{K}$}, questo piano si comporta esattamente come uno \textbf{specchio perfetto}: l'angolo di incidenza è uguale all'angolo di riflessione. Questo è precisamente l'assunzione di Bragg.
+
+\vspace{0.5cm}
+\begin{center}
+\begin{tikzpicture}[scale=2]
+    % Piano reticolare
+    \draw[thick, colorB] (-2,0) -- (2,0) node[right] {Piano reticolare ($\perp \mathbf{K}$)};
+    
+    % Vettore K
+    \draw[->, ultra thick, colorD] (0,0) -- (0,1.5) node[above] {$\mathbf{K}$};
+    
+    % Vettori k e k' che formano il triangolo isoscele
+    \draw[->, thick, colorE] (-1.5, 1.5) -- (0,0) node[midway, above left] {$\mathbf{k}$};
+    \draw[->, thick, colorF] (0,0) -- (1.5, 1.5) node[midway, below right] {$\mathbf{k}'$};
+    
+    % Angoli theta
+    \draw (-0.5,0) arc (180:135:0.5);
+    \node at (-0.7, 0.2) {$\theta$};
+    \draw (0.5,0) arc (0:45:0.5);
+    \node at (0.7, 0.2) {$\theta$};
+    
+    % Linea tratteggiata per far vedere la proiezione k * K_hat = 1/2 |K|
+    \draw[dashed] (-1.5, 1.5) -- (0, 1.5);
+    \node[left] at (-1.5, 1.5) {$\frac{1}{2}|\mathbf{K}|$};
+\end{tikzpicture}
+\end{center}
+\vspace{0.5cm}
+
+\subsubsection{Derivazione della condizione di Bragg}
+
+Sia $\theta$ l'angolo che il raggio X forma con il piano reticolare (l'angolo di Bragg). Allora:
+
+$$|\mathbf{k}|\sin\theta = \frac{1}{2}|\mathbf{K}|$$
+
+Sostituendo $|\mathbf{k}| = \frac{2\pi}{\lambda}$ e $|\mathbf{K}| = n \cdot \frac{2\pi}{d}$:
+
+$$\frac{2\pi}{\lambda}\sin\theta = \frac{1}{2} \cdot n \cdot \frac{2\pi}{d}$$
+
+Semplificando $2\pi$ e moltiplicando per $2$:
+
+$$\boxed{2d\sin\theta = n\lambda}$$
+
+che è esattamente la \textbf{condizione di Bragg}, ottenuta dalla condizione di Von Laue. Le due formulazioni sono dunque completamente equivalenti.
+
+\subsubsection{Significato dell'ordine di diffrazione $n$}
+
+L'intero $n$ nella formulazione di Bragg corrisponde, nella formulazione di Von Laue, alla \textbf{lunghezza del vettore del reticolo reciproco} $\mathbf{K}$:
+
+\begin{itemize}
+    \item $n = 1$: $\mathbf{K}$ è il vettore più corto nella sua direzione $\to$ prima riflessione dalla famiglia di piani.
+    \item $n = 2, 3, \ldots$: $\mathbf{K}$ è un multiplo del vettore fondamentale $\to$ riflessioni di ordine superiore.
+\end{itemize}
+
+All'aumentare di $n$, la differenza $\mathbf{k} - \mathbf{k}'$ diventa sempre più grande, corrispondendo a vettori $\mathbf{K}$ sempre più lunghi nello spazio reciproco.
+
+\section{La costruzione di Ewald}
+
+
+La costruzione di Ewald è una rappresentazione geometrica elegante della condizione di Von Laue nello spazio reciproco. Permette di prevedere, dato un setup sperimentale, quali punti brillanti saranno osservati nel pattern di diffrazione.
+
+\subsubsection{Procedura}
+
+\begin{enumerate}
+    \item Si disegna il \textbf{reticolo reciproco} del cristallo.
+    \item Si sceglie arbitrariamente un punto del reticolo reciproco come \textbf{origine} $O$ (tutti i punti sono equivalenti).
+    \item Dall'origine, si traccia il vettore d'onda incidente $\mathbf{k}$. La posizione della sorgente fissa la direzione di $\mathbf{k}$; la lunghezza d'onda fissa il suo modulo $|\mathbf{k}| = \frac{2\pi}{\lambda}$.
+    \item L'estremo di $\mathbf{k}$ definisce il centro $C$ di una \textbf{sfera} di raggio $|\mathbf{k}|$: questa è la \textbf{sfera di Ewald}.
+    \item Se la sfera di Ewald \textbf{tocca} un punto del reticolo reciproco diverso dall'origine, quel punto definisce un vettore $\mathbf{k}'$ tale che:
+    \begin{itemize}
+        \item $|\mathbf{k}'| = |\mathbf{k}|$ (per costruzione, essendo sulla sfera di raggio $|\mathbf{k}|$) $\to$ condizione di elasticità soddisfatta.
+        \item $\mathbf{k} - \mathbf{k}' = \mathbf{K}$ (vettore del reticolo reciproco dall'origine al punto toccato) $\to$ condizione di Von Laue soddisfatta.
+    \end{itemize}
+\end{enumerate}
+
+In corrispondenza della direzione $\mathbf{k}'$, se si posiziona il rivelatore, si osserverà un \textbf{punto brillante}. Se il rivelatore è in una direzione in cui la sfera non tocca alcun punto del reticolo reciproco, \textbf{non si osserverà nulla}.
+
+\vspace{0.5cm}
+\begin{center}
+    % --- PRIMA FIGURA ---
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.8]
+            % Reticolo reciproco
+            \foreach \x in {-2, -1, 0, 1, 2, 3} {
+                \foreach \y in {-2, -1, 0, 1, 2} {
+                    \filldraw[colorC] (\x,\y) circle (1.5pt);
+                }
+            }
+            % Origine O
+            \filldraw[colorA] (0,0) circle (2.5pt) node[below right] {$O$};
+            
+            % Centro C della sfera di Ewald
+            \coordinate (C) at (-1.5, 0.5);
+            \filldraw[colorF] (C) circle (2pt) node[left] {$C$};
+            
+            % Vettore k
+            \draw[->, thick, colorE] (0,0) -- (C) node[midway, below] {$-\mathbf{k}$};
+            
+            % Sfera di Ewald (circonferenza in 2D)
+            \draw[thick, colorF] (C) circle (1.581); % raggio = sqrt(1.5^2 + 0.5^2)
+            
+            % Punto toccato sulla sfera
+            \coordinate (P) at (-0.5, 1.725); % approssimazione di intersezione
+            \filldraw[colorA] (0,2) circle (2.5pt); % Forza il punto a (0,2) per l'esempio
+        \end{tikzpicture}
+        
+        \vspace{0.5cm}
+        \textit{Costruzione Generale}
+    \end{minipage}\hfill % L'hfill spinge le due minipage ai lati opposti
+    % --- SECONDA FIGURA ---
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.8]
+            % Sfera di Ewald
+            \coordinate (C) at (0,0);
+            \draw[thick, colorF] (C) circle (2);
+            \filldraw[colorF] (C) circle (1.5pt) node[below] {$C$};
+            
+            % Origine (sul bordo della sfera)
+            \coordinate (O) at (2,0);
+            \filldraw[colorA] (O) circle (2.5pt) node[right] {$O$};
+            
+            % Punto di diffrazione (sulla sfera e sul reticolo reciproco)
+            \coordinate (K_point) at (-1, 1.732);
+            \filldraw[colorA] (K_point) circle (2.5pt);
+            
+            % Altri punti del reticolo reciproco (solo indicativi)
+            \filldraw[colorC] (2, 1.5) circle (1.5pt);
+            \filldraw[colorC] (0.5, 1.5) circle (1.5pt);
+            \filldraw[colorC] (-2.5, 0) circle (1.5pt);
+            
+            % Vettori
+            \draw[->, thick, colorE] (C) -- (O) node[midway, below] {$\mathbf{k}$};
+            \draw[->, thick, colorE] (C) -- (K_point) node[midway, left] {$\mathbf{k}'$};
+            \draw[->, ultra thick, colorD] (O) -- (K_point) node[midway, above right] {$\mathbf{K}$};
+        \end{tikzpicture}
+        
+        \vspace{0.5cm}
+        \textit{Versione Semplificata}
+    \end{minipage}
+\end{center}
+\vspace{0.5cm}
+\subsubsection{Limitazioni}
+
+Per un dato $\mathbf{k}$ fisso, la sfera di Ewald potrebbe toccare solo pochissimi punti del reticolo reciproco, o addirittura nessuno. Per esplorare una porzione più ampia dello spazio reciproco e ottenere una "mappa" più completa del cristallo, occorre modificare il setup sperimentale. Questo conduce ai diversi metodi sperimentali di diffrazione.
+
+\section{Metodi sperimentali di diffrazione}
+
+\subsection*{Metodo di Laue}
+
+Il primo metodo, inventato da \textbf{Von Laue} stesso, consiste nel \textbf{variare la lunghezza d'onda} $\lambda$ dei raggi X.
+
+Variando $\lambda$ tra due valori $\lambda_1$ e $\lambda_2$ (con $\lambda_2 < \lambda_1$), il modulo del vettore d'onda $|\mathbf{k}| = \frac{2\pi}{\lambda}$ varia in modo continuo. Di conseguenza, il \textbf{raggio della sfera di Ewald cambia} continuamente: la sfera si espande o si contrae, spazzando una regione dello spazio reciproco. Ogni volta che, durante questa variazione, la sfera tocca un punto del reticolo reciproco, si osserva un punto brillante.
+
+Questo metodo permette dunque di esplorare una porzione dello spazio reciproco variando il raggio della sfera di Ewald.
+
+\subsection*{Metodo del cristallo rotante}
+
+Il secondo metodo consiste nel \textbf{fissare la lunghezza d'onda} (e quindi il raggio della sfera di Ewald) e \textbf{ruotare il cristallo}.
+
+Ruotare il cristallo nello \textbf{spazio reale} equivale a \textbf{contro-ruotare il reticolo reciproco} nello spazio reciproco (per mantenere invariante il prodotto scalare $\mathbf{R} \cdot \mathbf{K}$). Di conseguenza, i punti del reticolo reciproco descrivono delle \textbf{circonferenze} centrate nell'origine. Prima o poi, un punto che inizialmente non era sulla sfera di Ewald la raggiungerà durante la rotazione.
+
+Quando un punto del reticolo reciproco \textbf{interseca} la sfera di Ewald durante la rotazione, la condizione di Von Laue è soddisfatta e si osserva un punto brillante nel pattern di diffrazione. Tradizionalmente, attorno al campione si posizionava una \textbf{pellicola fotografica} (sensibile ai raggi X) che registrava le posizioni dei punti brillanti.
+
+Naturalmente, si possono anche \textbf{combinare} i due metodi: variare la lunghezza d'onda e ruotare il cristallo simultaneamente, esplorando così una porzione ancora più ampia dello spazio reciproco.
+
+\begin{nota}[Nota importante]
+Non è necessario esplorare \textit{tutto} lo spazio reciproco (che è infinito). Grazie alla \textbf{periodicità} del reticolo reciproco, bastano pochi punti brillanti per ricostruire l'intera struttura. Se si identificano i primi vettori del reticolo reciproco, si può estendere la struttura per periodicità.
+\end{nota}
+
+\subsection*{Metodo di Debye-Scherrer (metodo delle polveri)}
+
+\subsubsection*{Idea del metodo}
+
+Il terzo metodo, dovuto a \textbf{Debye e Scherrer}, sembra a prima vista controintuitivo: si prende un cristallo e lo si \textbf{riduce in polvere} (o si usa un materiale naturalmente \textbf{policristallino}).
+
+Un materiale policristallino è composto da molti piccoli \textbf{cristalliti} (domini cristallini), ciascuno orientato in modo casuale rispetto agli altri. Ogni singolo granello di polvere è comunque enorme rispetto alla scala atomica, quindi è a tutti gli effetti un cristallo. Tuttavia, poiché i cristalliti hanno \textbf{tutte le possibili orientazioni}, il fascio di raggi X interagisce simultaneamente con cristalli in tutte le orientazioni possibili.
+
+Questo equivale a implementare il \textbf{metodo del cristallo rotante senza ruotare il cristallo}: tutte le rotazioni sono già presenti nel campione, grazie all'orientazione casuale dei cristalliti.
+
+\subsubsection*{Costruzione geometrica}
+
+Si consideri la sfera di Ewald (centro $C$, raggio $|\mathbf{k}|$) e una seconda sfera di raggio $|\mathbf{K}|$ centrata nell'origine $O$. Poiché il cristallo è presente in tutte le orientazioni, \textbf{tutti} i vettori $\mathbf{K}$ con lo stesso modulo $|\mathbf{K}|$ intersecheranno prima o poi la sfera di Ewald. Dunque, la condizione di interferenza costruttiva dipende solo dal \textbf{modulo} di $\mathbf{K}$, non dalla sua direzione.
+
+Se $\varphi$ è l'\textbf{angolo di scattering} (angolo formato tra $\mathbf{k}$ e $\mathbf{k}'$), la condizione geometrica è che $|\mathbf{K}|$ sia una corda di una circonferenza di raggio $|\mathbf{k}|$:
+
+\begin{equazione}{Condizione di Debye-Scherrer}
+\begin{equation}
+|\mathbf{K}| = 2|\mathbf{k}|\sin\frac{\varphi}{2}
+\end{equation}
+\end{equazione}
+
+Questa è la \textbf{condizione di Debye-Scherrer}, una forma indebolita della condizione di Bragg/Von Laue: si perde l'informazione sulla \textbf{direzione} di $\mathbf{K}$, ma si conserva l'informazione sul suo \textbf{modulo}.
+
+\vspace{0.5cm}
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+    % Sfera di Ewald
+    \coordinate (C) at (0,0);
+    \draw[thick, colorF] (C) circle (2);
+    \filldraw[colorF] (C) circle (1.5pt) node[below] {$C$};
+    
+    % Origine
+    \coordinate (O) at (2,0);
+    \filldraw[colorA] (O) circle (2.5pt) node[right] {$O$};
+    
+    % Sfera di raggio |K| centrata in O (tratteggiata)
+    \draw[dashed, colorD, thick] (O) arc (0:180:1.5);
+    \draw[dashed, colorD, thick] (O) arc (360:180:1.5);
+    
+    % Intersezione
+    \coordinate (K_point) at (0.5, 1.936); % Intersezione calcolata
+    \filldraw[colorA] (K_point) circle (2.5pt);
+    
+    % Vettori
+    \draw[->, thick, colorE] (C) -- (O) node[midway, below] {$\mathbf{k}$};
+    \draw[->, thick, colorE] (C) -- (K_point) node[midway, left] {$\mathbf{k}'$};
+    \draw[->, ultra thick, colorD] (O) -- (K_point) node[ above right] {$|\mathbf{K}|$};
+    
+    % Angolo phi
+    \draw (0.5,0) arc (0:75.5:0.5);
+    \node at (0.7, 0.4) {$\varphi$};
+\end{tikzpicture}
+\end{center}
+\vspace{0.5cm}
+
+\subsubsection*{Procedura sperimentale}
+
+Sperimentalmente si procede così:
+
+\begin{enumerate}
+    \item Si fissa la lunghezza d'onda $\lambda$ (e quindi $|\mathbf{k}|$).
+    \item Si varia l'angolo di scattering $\varphi$ spostando il rivelatore.
+    \item Per la maggior parte degli angoli non si osserva nulla. Quando si osserva un \textbf{punto brillante} a un certo angolo $\varphi_i$, si calcola il corrispondente $|\mathbf{K}_i|$ tramite la formula.
+    \item Si ottiene una \textbf{tabella} di valori $(\varphi_i, |\mathbf{K}_i|)$ in ordine crescente.
+\end{enumerate}
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{$\varphi$} & \textbf{$|\mathbf{K}|$ (in unità di $2\pi/a$)} \\ \hline
+$\varphi_1$ & $1$ \\ \hline
+$\varphi_2$ & $\sqrt{2}$ \\ \hline
+$\varphi_3$ & $\sqrt{3}$ \\ \hline
+$\varphi_4$ & $2$ \\ \hline
+$\ldots$ & $\ldots$ \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection*{Ricostruzione della struttura}
+
+Dalla lista dei moduli $|\mathbf{K}_i|$ si deve stabilire quale struttura cristallina può generare esattamente quei valori come lunghezze dei vettori del reticolo reciproco. Ad esempio, per un \textbf{reticolo cubico} di lato $a$, le lunghezze possibili nel reticolo reciproco (in unità di $\frac{2\pi}{a}$) sono:
+
+$$1,\; \sqrt{2},\; \sqrt{3},\; 2,\; \sqrt{5},\; \sqrt{6},\; \ldots$$
+
+corrispondenti ai vettori $(1,0,0)$, $(1,1,0)$, $(1,1,1)$, $(2,0,0)$, ecc.
+
+\begin{nota}[Osservazione importante]
+Nel metodo di Debye-Scherrer, tutti i vettori $\mathbf{K}$ con lo stesso modulo ma direzione diversa (ad esempio $(1,0,0)$, $(0,1,0)$ e $(0,0,1)$) danno luogo allo \textbf{stesso} punto brillante allo stesso angolo $\varphi$. Si perde l'informazione direzionale, ma dalla sola lista dei moduli, bastano \textbf{5 o 6 valori} per ricostruire univocamente il reticolo reciproco e, di conseguenza, il reticolo di Bravais.
+\end{nota}
+
+Questo rende il metodo delle polveri estremamente potente nonostante la perdita di informazione direzionale.
+
+\section{Il fattore di struttura e i cristalli con base}
+
+
+
+Come già discusso nelle lezioni precedenti, la struttura cristallina più generale non è un semplice reticolo di Bravais, ma un \textbf{reticolo di Bravais con base}:
+
+$$\text{Cristallo} = \text{Reticolo di Bravais} + \text{Base}$$
+
+Gli atomi del cristallo si trovano nelle posizioni:
+
+$$\mathbf{R} + \mathbf{d}_j, \qquad j = 1, \ldots, p$$
+
+dove $\mathbf{R}$ percorre tutti i punti del reticolo di Bravais e $\mathbf{d}_j$ sono i \textbf{vettori di base} che localizzano i $p$ atomi all'interno della cella primitiva.
+
+Scegliendo l'origine su uno degli atomi, si può sempre porre $\mathbf{d}_1 = \mathbf{0}$. Ogni classe di atomi (corrispondente a un dato $\mathbf{d}_j$) forma un reticolo di Bravais identico al reticolo di partenza, ma traslato di $\mathbf{d}_j$.
+
+Esempi già discussi:
+\begin{itemize}
+    \item \textbf{Honeycomb}: reticolo esagonale + base di 2 atomi.
+    \item \textbf{NaCl}: FCC + base di 2 atomi (Na e Cl).
+    \item \textbf{Diamante}: FCC + base di 2 atomi di C.
+\end{itemize}
+
+\subsection*{Il reticolo reciproco è definito solo per il reticolo di Bravais}
+
+Un punto cruciale è che il \textbf{reticolo reciproco} è definito solo per il reticolo di Bravais $\mathbf{R}$, che è una struttura periodica e infinita. La \textbf{base} è un insieme finito di vettori ($\mathbf{d}_1, \ldots, \mathbf{d}_p$): non è periodica e quindi \textbf{non esiste} il concetto di "reticolo reciproco della base".
+
+\begin{nota}[Nota importante]
+Il concetto di reticolo reciproco si applica esclusivamente alla parte periodica (il reticolo di Bravais $\mathbf{R}$), non alla base. La base, essendo un insieme finito, non ammette un reticolo reciproco.
+\end{nota}
+
+
+
+\subsection*{Effetto della base sullo scattering: il fattore di struttura}
+
+Quando si calcola l'ampiezza di scattering da un cristallo con base, la condizione di Von Laue ($\mathbf{k} - \mathbf{k}' = \mathbf{K}$) resta necessaria, ma l'ampiezza di scattering acquisisce un fattore moltiplicativo aggiuntivo dovuto all'interferenza tra le onde diffuse dai diversi atomi della base.
+
+\subsubsection*{Caso di atomi equivalenti}
+
+Se tutti gli atomi della base sono \textbf{identici} (ad esempio, tutti atomi di carbonio nel diamante), il \textbf{fattore di struttura} è:
+
+\begin{equazione}{Fattore di struttura (atomi equivalenti)}
+\begin{equation}
+S(\mathbf{K}) = \sum_{j=1}^{p} e^{-i\mathbf{K}\cdot\mathbf{d}_j}
+\end{equation}
+\end{equazione}
+
+dove la somma è estesa ai $p$ atomi della base. Questo è un \textbf{numero complesso} e possono verificarsi due casi:
+
+\begin{enumerate}
+    \item \textbf{$S(\mathbf{K}) \neq 0$}: il picco corrispondente al vettore $\mathbf{K}$ è presente nel pattern di diffrazione.
+    \item \textbf{$S(\mathbf{K}) = 0$}: le onde diffuse dai diversi atomi della base \textbf{interferiscono distruttivamente} e il picco corrispondente \textbf{scompare} dal pattern.
+\end{enumerate}
+
+L'intensità osservata è proporzionale a $|S(\mathbf{K})|^2$ (modulo quadro dell'ampiezza di scattering).
+
+\subsubsection*{Esempio: il diamante}
+
+Il diamante ha struttura FCC con base di 2 atomi di carbonio. Se si effettua uno scattering di raggi X dal diamante, non si osserva il pattern completo di un reticolo FCC (che sarebbe un BCC nello spazio reciproco), ma un pattern con \textbf{alcuni picchi mancanti}. I picchi mancano là dove $S(\mathbf{K}) = 0$. Studiando la posizione dei picchi mancanti, si può risalire alla struttura della base.
+
+\section{Atomi non equivalenti e fattore di forma atomico}
+
+\subsection*{Fattore di struttura generalizzato}
+
+Se gli atomi della base \textbf{non sono tutti identici} (ad esempio, Na e Cl nel cloruro di sodio), le onde diffuse dai diversi atomi hanno non solo un \textbf{diverso cammino ottico} (che dà il fattore di fase $e^{-i\mathbf{K}\cdot\mathbf{d}_j}$), ma anche una \textbf{diversa ampiezza di scattering}. Quest'ultima è caratterizzata dal \textbf{fattore di forma atomico} $f_j(\mathbf{K})$.
+
+Il fattore di struttura generalizzato diventa:
+
+\begin{equazione}{Fattore di struttura generalizzato}
+\begin{equation}
+S(\mathbf{K}) = \sum_{j=1}^{p} f_j(\mathbf{K})\, e^{-i\mathbf{K}\cdot\mathbf{d}_j}
+\end{equation}
+\end{equazione}
+
+\subsection*{Il fattore di forma atomico}
+
+Il fattore di forma atomico $f_j(\mathbf{K})$ è, in una teoria semplificata, proporzionale alla \textbf{trasformata di Fourier della densità elettronica} dell'atomo $j$:
+
+$$f_j(\mathbf{K}) \propto \int \rho_j(\mathbf{r})\, e^{-i\mathbf{K}\cdot\mathbf{r}}\, d^3r$$
+
+dove $\rho_j(\mathbf{r})$ è la distribuzione di densità elettronica attorno all'atomo $j$.
+
+Poiché la densità elettronica decresce (tipicamente in modo esponenziale) allontanandosi dal nucleo, la sua trasformata di Fourier è una \textbf{funzione decrescente} di $|\mathbf{K}|$. Questo ha una conseguenza importante: i picchi di diffrazione diventano sempre \textbf{più deboli} all'aumentare di $|\mathbf{K}|$, ovvero all'aumentare dell'ordine di diffrazione $n$. Anche in un esperimento ideale, non è possibile osservare un numero infinito di picchi.
+
+\subsection*{Conseguenze per il pattern di diffrazione}
+
+Con atomi non equivalenti, è \textbf{molto improbabile} che $S(\mathbf{K})$ si annulli esattamente: si sommano seni e coseni con \textbf{prefatori diversi} ($f_j$ diversi), e la probabilità che si cancellino esattamente è nulla (in pratica, questo può accadere solo in esercizi costruiti ad hoc).
+
+Pertanto, nel caso di atomi non equivalenti:
+\begin{itemize}
+    \item Si osservano \textbf{tutti i picchi} del reticolo di Bravais sottostante.
+    \item I picchi hanno \textbf{intensità modulate}: alcuni sono più brillanti (dove $|S(\mathbf{K})|^2$ è grande) e altri più deboli (dove $|S(\mathbf{K})|^2$ è piccolo).
+    \item Da questa \textbf{modulazione} dell'intensità, combinata con informazioni sulla composizione chimica del campione, si può risalire alla struttura della base.
+\end{itemize}
+
+\subsection*{Riepilogo: tre casi possibili}
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Caso} & \textbf{Descrizione} & \textbf{Pattern di diffrazione} \\ \hline
+\textbf{Reticolo di Bravais puro} & Nessuna base & Pattern dato dalla sola condizione di Von Laue \\ \hline
+\textbf{BL + base, atomi equivalenti} & Es.: diamante, honeycomb; oppure BCC descritto come cubico + base & Alcuni picchi \textbf{scompaiono} ($S(\mathbf{K}) = 0$) \\ \hline
+\textbf{BL + base, atomi non equivalenti} & Es.: NaCl, CsCl & Tutti i picchi presenti, ma con \textbf{intensità modulate} \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{nota}[Osservazione sulle descrizioni equivalenti]
+Un reticolo BCC è un reticolo di Bravais, ma può anche essere descritto come un cubico semplice con base di 2 atomi equivalenti. Nella seconda descrizione, il pattern di diffrazione atteso per il cubico semplice viene "ridotto" dalla cancellazione di alcuni picchi dovuta al fattore di struttura, riproducendo esattamente il pattern del BCC. Le due descrizioni sono \textbf{perfettamente equivalenti}.
+
+Analogamente, il FCC può essere descritto come cubico semplice con base di 4 atomi equivalenti. In tal caso, il pattern cubico viene ridotto al pattern FCC per cancellazione.
+
+Il \textbf{diamante}, invece, anche con tutti gli atomi uguali, \textbf{non può mai} essere ridotto a un semplice reticolo di Bravais: resta necessariamente un FCC con base.
+\end{nota}
+
+\section{Cristalli reali e violazioni della periodicità}
+
+\subsection*{Orientazione molecolare ed entropia}
+
+Uno studente chiede se, in un cristallo di molecole, queste possano essere orientate in modi diversi sui diversi siti. Il professore risponde discutendo il ruolo dell'\textbf{energia libera}:
+
+$$F = U - TS$$
+
+dove $U$ è l'energia interna, $T$ la temperatura e $S$ l'entropia.
+
+\begin{itemize}
+    \item A \textbf{bassa temperatura}, il termine energetico domina: il sistema minimizza $U$, il che favorisce un ordinamento regolare in cui tutte le molecole hanno la stessa orientazione (o un'orientazione periodica compatibile con la simmetria del reticolo).
+    \item A \textbf{temperatura elevata}, il contributo entropico $-TS$ diventa importante: orientazioni diverse delle molecole aumentano l'entropia. Tuttavia, questa situazione si verifica tipicamente in condizioni prossime alla \textbf{fusione}, quando le molecole iniziano a muoversi quasi liberamente.
+\end{itemize}
+
+\subsection*{Solidi amorfi}
+
+Se un cristallo viene \textbf{raffreddato molto rapidamente} (\textit{quenching}), le molecole potrebbero non avere il tempo di riarrangersi in modo ordinato. Il risultato è un \textbf{solido amorfo}: un materiale solido privo di invarianza traslazionale, più simile a un liquido congelato che a un cristallo. Un solido amorfo non può essere descritto dalla teoria dei cristalli.
+
+\subsection*{Violazioni deboli della periodicità}
+
+In un cristallo \textbf{reale} (a temperatura finita), esistono sempre piccole perturbazioni della periodicità perfetta: difetti, vibrazioni termiche, disallineamenti. Se queste violazioni sono \textbf{deboli} (non distruggono completamente la periodicità), il loro effetto sul pattern di diffrazione è un \textbf{allargamento dei picchi}:
+
+\begin{itemize}
+    \item In un cristallo \textbf{ideale} (perfettamente periodico), i picchi nello spazio reciproco sono \textbf{funzioni delta di Dirac}: $S(\mathbf{K}) \neq 0$ solo per $\mathbf{K}$ esattamente uguale a un vettore del reticolo reciproco.
+    \item In un cristallo \textbf{reale}, i picchi hanno una \textbf{larghezza finita}: $S(\mathbf{K})$ è non nullo anche per vettori $\mathbf{K}$ leggermente diversi dai vettori del reticolo reciproco. Tanto maggiore è il disordine, tanto più larghi sono i picchi.
+\end{itemize}
+
+Questo è coerente con la teoria del fattore di struttura: in un cristallo reale con perturbazioni, occorre tornare alla teoria generale dello scattering e calcolare il fattore di struttura $S(\mathbf{K})$ senza la semplificazione della periodicità perfetta.
