@@ -1,0 +1,461 @@
+\chapter{Esercizi: reticoli di Bravais, basi e regole di selezione per la diffrazione}
+
+
+\begin{nota}
+Questa lezione è interamente dedicata a \textbf{esercizi}. Il professore propone problemi tratti dall'Ashcroft-Mermin (p. 82) ed esercizi propri, tipici delle prove d'esame scritte.
+\end{nota}
+
+\section{Problema 1: Strutture cubiche decorate}
+
+\textbf{Fonte:} Ashcroft-Mermin, p. 82, problema 1.
+
+\textbf{Enunciato generale:} per ciascuna delle seguenti strutture, stabilire se si tratta di un reticolo di Bravais. Se sì, trovare i vettori primitivi. Se no, descrivere la struttura come un reticolo di Bravais con la base più piccola possibile.
+
+\subsection*{Metodo risolutivo}
+
+Il criterio fondamentale è: in un reticolo di Bravais, \textbf{tutti i punti sono equivalenti}. Se esistono punti che non sono equivalenti tra loro (ad esempio, hanno un intorno geometrico diverso), allora la struttura non è un reticolo di Bravais e va descritta come reticolo di Bravais + base.
+
+\subsection*{Caso (a): cubico a basi centrate (\textit{base-centered cubic})}
+
+Si parte da un cubo di lato $a$ e si aggiungono punti al \textbf{centro delle due facce orizzontali} (sopra e sotto).
+
+\textbf{Risposta: SÌ}, è un reticolo di Bravais. Ma \textbf{non} è cubico.
+
+\textbf{Identificazione:} la struttura è un reticolo \textbf{tetragonale}. Infatti, si possono scegliere come vettori primitivi:
+
+\begin{equazione}{Vettori primitivi (Tetragonale)}
+\begin{equation}
+\mathbf{a}_1 = a\,\hat{\mathbf{k}}, \qquad \mathbf{a}_2 = \frac{a}{2}(\hat{\mathbf{i}} + \hat{\mathbf{j}}), \qquad \mathbf{a}_3 = \frac{a}{2}(-\hat{\mathbf{i}} + \hat{\mathbf{j}})
+\end{equation}
+\end{equazione}
+
+dove $\hat{\mathbf{i}}, \hat{\mathbf{j}}, \hat{\mathbf{k}}$ sono i versori lungo gli assi $x$, $y$, $z$ del cubo.
+
+La cella primitiva è un \textbf{prisma a base quadrata}:
+\begin{itemize}
+    \item Il lato della base quadrata è $|\mathbf{a}_2| = |\mathbf{a}_3| = \frac{a\sqrt{2}}{2}$.
+    \item L'altezza è $|\mathbf{a}_1| = a$.
+\end{itemize}
+
+Poiché lato e altezza sono diversi, la struttura è \textbf{tetragonale} (non cubica). Se il lato coincidesse con l'altezza, sarebbe cubica, ma con i rapporti dati non lo è.
+
+\begin{nota}
+La scelta dei vettori primitivi non è unica, ma tutte le scelte equivalenti danno la stessa cella primitiva (stesso volume) e lo stesso sistema cristallino.
+\end{nota}
+
+\vspace{0.5cm}
+\begin{center}
+\begin{tikzpicture}[
+    scale=2,
+    x={(1cm,0cm)}, y={(0.4cm,0.3cm)}, z={(0cm,1cm)},
+    cube/.style={thick, colorB},
+    dot/.style={circle, fill=colorA, inner sep=2.5pt},
+    centerdot/.style={circle, fill=colorF, inner sep=3pt}
+]
+    % Disegno il cubo
+    \draw[cube] (0,0,0) -- (1,0,0) -- (1,1,0) -- (0,1,0) -- cycle;
+    \draw[cube] (0,0,1) -- (1,0,1) -- (1,1,1) -- (0,1,1) -- cycle;
+    \draw[cube] (0,0,0) -- (0,0,1) (1,0,0) -- (1,0,1) (1,1,0) -- (1,1,1) (0,1,0) -- (0,1,1);
+    
+    % Vertici
+    \foreach \x in {0,1} \foreach \y in {0,1} \foreach \z in {0,1} \node[dot] at (\x,\y,\z) {};
+    
+    % Centri delle basi
+    \node[centerdot] at (0.5,0.5,0) {};
+    \node[centerdot] at (0.5,0.5,1) {};
+    
+    % Vettori primitivi del tetragonale (a1, a2, a3)
+    \draw[->, ultra thick, colorD] (0.5,0.5,0) -- (0.5,0.5,1) node[midway, right] {$\mathbf{a}_1$};
+    \draw[->, ultra thick, colorD] (0.5,0.5,0) -- (1,1,0) node[midway, below right] {$\mathbf{a}_2$};
+    \draw[->, ultra thick, colorD] (0.5,0.5,0) -- (0,1,0) node[midway, below left] {$\mathbf{a}_3$};
+\end{tikzpicture}
+\end{center}
+\vspace{0.5cm}
+
+\subsection*{Caso (b): cubico con facce laterali centrate (\textit{side-centered cubic})}
+
+Si parte da un cubo di lato $a$ e si aggiungono punti al \textbf{centro delle quattro facce laterali} (ma non delle facce superiore e inferiore).
+
+\textbf{Risposta: NO}, non è un reticolo di Bravais.
+
+\textbf{Descrizione con base:} la struttura è un \textbf{cubico semplice con base di 3 vettori}. Il reticolo di Bravais sottostante è il cubico semplice formato dai vertici del cubo ($\mathbf{R}$ cubico semplice di lato $a$).
+
+I vettori di base sono:
+
+\begin{equazione}{Base per side-centered cubic}
+\begin{equation}
+\mathbf{d}_1 = \mathbf{0}, \qquad \mathbf{d}_2 = \frac{a}{2}(\hat{\mathbf{i}} + \hat{\mathbf{k}}), \qquad \mathbf{d}_3 = \frac{a}{2}(\hat{\mathbf{j}} + \hat{\mathbf{k}})
+\end{equation}
+\end{equazione}
+
+\textbf{Perché bastano 3 vettori e non di più?} Per localizzare il punto al centro della faccia opposta (ad esempio, quella contenente $\hat{\mathbf{i}}$ e $-\hat{\mathbf{k}}$), non serve un nuovo vettore di base: basta spostarsi a un vertice adiacente (vettore del reticolo) e poi aggiungere uno dei vettori di base esistenti. Ad esempio, per raggiungere il punto al centro della faccia posteriore, si va al vertice successivo lungo $\hat{\mathbf{j}}$ e poi si aggiunge $\mathbf{d}_2$. Ogni punto della struttura è raggiunto da un vettore $\mathbf{R} + \mathbf{d}_j$ per un unico $j \in \{1, 2, 3\}$.
+
+\vspace{0.5cm}
+\begin{center}
+\begin{tikzpicture}[
+    scale=2,
+    x={(1cm,0cm)}, y={(0.4cm,0.3cm)}, z={(0cm,1cm)},
+    cube/.style={thick, colorB},
+    dot/.style={circle, fill=colorA, inner sep=2.5pt},
+    centerdot/.style={circle, fill=colorF, inner sep=3pt}
+]
+    % Disegno il cubo
+    \draw[cube] (0,0,0) -- (1,0,0) -- (1,1,0) -- (0,1,0) -- cycle;
+    \draw[cube] (0,0,1) -- (1,0,1) -- (1,1,1) -- (0,1,1) -- cycle;
+    \draw[cube] (0,0,0) -- (0,0,1) (1,0,0) -- (1,0,1) (1,1,0) -- (1,1,1) (0,1,0) -- (0,1,1);
+    
+    % Vertici
+    \foreach \x in {0,1} \foreach \y in {0,1} \foreach \z in {0,1} \node[dot] at (\x,\y,\z) {};
+    
+    % Centri delle facce laterali
+    \node[centerdot] at (0.5,0,0.5) {}; % Fronte
+    \node[centerdot] at (1,0.5,0.5) {}; % Destra
+    \node[centerdot] at (0.5,1,0.5) {}; % Retro
+    \node[centerdot] at (0,0.5,0.5) {}; % Sinistra
+    
+    % Evidenzio i vettori d2 e d3
+    \draw[->, ultra thick, colorD] (0,0,0) -- (0.5,0,0.5) node[midway, below right] {$\mathbf{d}_2$};
+    \draw[->, ultra thick, colorD] (0,0,0) -- (0,0.5,0.5) node[midway, above left] {$\mathbf{d}_3$};
+\end{tikzpicture}
+\end{center}
+\vspace{0.5cm}
+
+\subsection*{Caso (c): cubico con spigoli centrati (\textit{edge-centered cubic})}
+
+Si parte da un cubo di lato $a$ e si aggiungono punti al \textbf{centro di tutti gli spigoli}.
+
+\textbf{Risposta: NO}, non è un reticolo di Bravais.
+
+\textbf{Descrizione con base:} la struttura è un \textbf{cubico semplice con base di 4 vettori}:
+
+$$\mathbf{d}_1 = \mathbf{0}, \qquad \mathbf{d}_2 = \frac{a}{2}\hat{\mathbf{i}}, \qquad \mathbf{d}_3 = \frac{a}{2}\hat{\mathbf{j}}, \qquad \mathbf{d}_4 = \frac{a}{2}\hat{\mathbf{k}}$$
+
+Con $\mathbf{d}_1$ si localizzano i vertici del cubo; con $\mathbf{d}_2$ i punti al centro degli spigoli paralleli a $x$; con $\mathbf{d}_3$ quelli paralleli a $y$; con $\mathbf{d}_4$ quelli paralleli a $z$.
+
+\subsubsection*{Discussione importante: la natura dei vettori di base}
+
+Uno studente chiede se i vettori di base non siano linearmente dipendenti. Il professore chiarisce un punto fondamentale:
+
+\begin{definizione}{Reticolo vs Base}
+I vettori di base \textbf{non vengono mai combinati linearmente} tra loro. La regola per localizzare un punto del cristallo è $\mathbf{r} = \mathbf{R} + \mathbf{d}_j$ per \textbf{un solo} $j$. Non si sommano mai due vettori di base. Questa è la differenza essenziale tra i vettori primitivi del reticolo (che si combinano linearmente a coefficienti interi) e i vettori di base (che compaiono \textbf{individualmente}).
+
+Il reticolo è un insieme \textbf{infinito} di vettori (combinazioni lineari intere dei vettori primitivi). La base è un insieme \textbf{finito} di vettori costanti. Le due strutture hanno ruoli completamente diversi e non si mescolano.
+\end{definizione}
+
+\subsubsection*{Scelta dell'origine}
+
+Un altro studente chiede se si possa scegliere l'origine in un punto che non è un vertice del cubo. Il professore risponde: sì, ma in tal caso anche per raggiungere i vertici servirebbero vettori di base non nulli. La scelta $\mathbf{d}_1 = \mathbf{0}$ (origine su un punto del reticolo) è sempre possibile ed è la più naturale. Scelte diverse dell'origine cambiano i vettori di base ma non le proprietà fisiche o geometriche della struttura.
+
+\section{Problema 2: Identificazione di reticoli da coordinate intere}
+
+\textbf{Fonte:} Ashcroft-Mermin, p. 82, problema 2.
+
+\textbf{Enunciato:} si consideri l'insieme di tutti i punti con coordinate cartesiane $(n_1, n_2, n_3)$ con $n_1, n_2, n_3 \in \mathbb{Z}$. In ciascuno dei seguenti casi, identificare il reticolo di Bravais.
+
+Senza alcuna prescrizione, tutti i punti a coordinate intere formano un \textbf{cubico semplice di lato 1}.
+
+\subsection*{Caso (a): $n_1, n_2, n_3$ tutti pari o tutti dispari}
+
+Si parte dalla griglia cubica e si \textbf{eliminano} i punti che non soddisfano la prescrizione. Per analizzare la struttura, conviene procedere piano per piano:
+
+\begin{itemize}
+    \item \textbf{Piano $n_3 = 0$:} i punti ammessi hanno $n_1, n_2$ entrambi pari: $(0,0,0)$, $(2,0,0)$, $(0,2,0)$, $(2,2,0)$, ecc. Si forma una griglia quadrata di lato 2.
+    \item \textbf{Piano $n_3 = 1$:} i punti ammessi hanno $n_1, n_2$ entrambi dispari: $(1,1,1)$, $(3,1,1)$, $(1,3,1)$, ecc. Si forma una griglia quadrata di lato 2, \textbf{traslata} rispetto a quella del piano $n_3 = 0$.
+    \item \textbf{Piano $n_3 = 2$:} stessa struttura del piano $n_3 = 0$.
+\end{itemize}
+
+Il pattern si ripete con periodo 2 in $z$ e i piani alternati sono sfasati. Questa è esattamente la struttura di un reticolo \textbf{BCC con cella convenzionale di lato 2}.
+
+\begin{equazione}{Caso A: BCC}
+\begin{equation}
+n_1, n_2, n_3 \text{ tutti pari o tutti dispari} \;\Longleftrightarrow\; \text{BCC (lato conv. 2)}
+\end{equation}
+\end{equazione}
+
+\subsection*{Caso (b): $n_1 + n_2 + n_3$ è un numero pari}
+
+\begin{itemize}
+    \item \textbf{Piano $n_3 = 0$:} i punti ammessi hanno $n_1 + n_2$ pari, cioè $n_1, n_2$ entrambi pari o entrambi dispari. Si ottiene una griglia "a scacchiera" di lato $\sqrt{2}$ ruotata di $45^\circ$.
+    \item \textbf{Piano $n_3 = 1$:} i punti ammessi hanno $n_1 + n_2$ dispari, cioè uno pari e uno dispari. Sono i punti al centro delle facce della griglia del piano $n_3 = 0$.
+\end{itemize}
+
+Questa struttura corrisponde a un reticolo \textbf{FCC con cella convenzionale di lato 2}.
+
+\begin{equazione}{Caso B: FCC}
+\begin{equation}
+n_1 + n_2 + n_3 \text{ pari} \;\Longleftrightarrow\; \text{FCC (lato conv. 2)}
+\end{equation}
+\end{equazione}
+
+
+
+\vspace{0.5cm}
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+    % Titolo
+    \node[above] at (1.5, 4) {\textbf{Caso A: BCC (Piani $n_3=0$ e $n_3=1$)}};
+    
+    % Piano n_3=0 (punti n_1,n_2 pari)
+    \begin{scope}
+        \draw[step=1cm, gray!30, very thin] (-0.5,-0.5) grid (3.5,3.5);
+        \foreach \x in {0,2} {
+            \foreach \y in {0,2} {
+                \filldraw[colorA] (\x,\y) circle (4pt);
+            }
+        }
+        \node[below] at (1.5, -0.5) {Piano $n_3=0$};
+    \end{scope}
+    
+    % Piano n_3=1 (punti n_1,n_2 dispari)
+    \begin{scope}[shift={(6,0)}]
+        \draw[step=1cm, gray!30, very thin] (-0.5,-0.5) grid (3.5,3.5);
+        \foreach \x in {1,3} {
+            \foreach \y in {1,3} {
+                \filldraw[colorF] (\x,\y) circle (4pt);
+            }
+        }
+        \node[below] at (1.5, -0.5) {Piano $n_3=1$};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+\vspace{0.5cm}
+
+\newpage
+\section{Regole di selezione per la diffrazione di raggi X: il diamante}
+
+Il \textbf{diamante} ha una struttura cristallina che si descrive come:
+
+$$\text{Diamante} = \text{FCC} + \text{base di 2 atomi di C}$$
+
+Questa base è \textbf{reale} (genuina): il diamante non è un reticolo di Bravais, neppure con atomi tutti uguali. Questo lo distingue, ad esempio, dal BCC, che è un vero reticolo di Bravais anche se può essere descritto come cubico semplice + base.
+
+Per calcolare le regole di selezione, conviene adottare un trucco: descrivere l'FCC come un \textbf{cubico semplice + "base fittizia"}. Si ha dunque:
+
+$$\text{Diamante} = \underbrace{\text{Cubico semplice}}_{\text{reticolo}} + \underbrace{\text{"base fittizia"}}_{\text{descrive l'FCC}} + \underbrace{\text{base reale}}_{\text{descrive il diamante}}$$
+
+\textbf{Perché questo trucco?} Perché il reticolo reciproco di un cubico semplice ha una forma molto semplice ($\mathbf{K} = \frac{2\pi}{a}(h\hat{\mathbf{i}} + k\hat{\mathbf{j}} + l\hat{\mathbf{k}})$ con $h, k, l \in \mathbb{Z}$), il che rende i calcoli molto più agevoli rispetto all'uso diretto dei vettori del reticolo reciproco dell'FCC (che formano un BCC).
+
+\begin{nota}[Osservazione]
+La base fittizia è sempre composta da \textbf{atomi equivalenti} (tutti dello stesso tipo), perché l'FCC è un reticolo di Bravais in cui tutti i punti sono equivalenti. La base reale può essere composta da atomi equivalenti (diamante: tutti C) o non equivalenti (blenda di zinco, ZnS: Zn e S). Questa distinzione avrà conseguenze sulle regole di selezione.
+\end{nota}
+
+\subsection*{3.2 Definizione dei vettori di base}
+
+\subsubsection*{Base fittizia (FCC come cubico semplice)}
+
+L'FCC con cella convenzionale di lato $a$ è descritto come cubico semplice di lato $a$ con \textbf{4 vettori di base fittizia}:
+
+$$\tilde{\mathbf{d}}_1 = \mathbf{0}, \qquad \tilde{\mathbf{d}}_2 = \frac{a}{2}(\hat{\mathbf{j}} + \hat{\mathbf{k}}), \qquad \tilde{\mathbf{d}}_3 = \frac{a}{2}(\hat{\mathbf{i}} + \hat{\mathbf{k}}), \qquad \tilde{\mathbf{d}}_4 = \frac{a}{2}(\hat{\mathbf{i}} + \hat{\mathbf{j}})$$
+
+dove $\tilde{\mathbf{d}}_1$ corrisponde ai vertici del cubo, e $\tilde{\mathbf{d}}_2, \tilde{\mathbf{d}}_3, \tilde{\mathbf{d}}_4$ ai centri delle tre facce adiacenti all'origine.
+
+\subsubsection*{Base reale (diamante)}
+
+La base reale del diamante è composta da \textbf{2 vettori}:
+
+$$\mathbf{d}_1 = \mathbf{0}, \qquad \mathbf{d}_2 = \frac{a}{4}(\hat{\mathbf{i}} + \hat{\mathbf{j}} + \hat{\mathbf{k}})$$
+
+Il secondo atomo si trova a \textbf{un quarto} della diagonale principale del cubo rispetto al primo.
+
+\subsubsection*{Numero totale di vettori di base}
+
+Per ogni scelta di $\tilde{\mathbf{d}}_j$ (4 possibilità) si può scegliere $\mathbf{d}_l$ (2 possibilità). Il numero totale di vettori di base è:
+
+$$4 \times 2 = 8 \text{ vettori di base}$$
+
+I vettori di base effettivi sono tutte le combinazioni $\tilde{\mathbf{d}}_j + \mathbf{d}_l$, con $j = 1, \ldots, 4$ e $l = 1, 2$.
+
+\vspace{0.5cm}
+\begin{center}
+\begin{tikzpicture}[
+    scale=3,
+    x={(1cm,0cm)}, y={(0.4cm,0.3cm)}, z={(0cm,1cm)},
+    cube/.style={very thin, gray!50},
+    fcc/.style={circle, fill=colorA, inner sep=2.5pt},
+    diam/.style={circle, fill=colorF, inner sep=2.5pt}
+]
+    % Disegno il cubo di base
+    \draw[cube] (0,0,0) -- (1,0,0) -- (1,1,0) -- (0,1,0) -- cycle;
+    \draw[cube] (0,0,1) -- (1,0,1) -- (1,1,1) -- (0,1,1) -- cycle;
+    \draw[cube] (0,0,0) -- (0,0,1) (1,0,0) -- (1,0,1) (1,1,0) -- (1,1,1) (0,1,0) -- (0,1,1);
+    
+    % Punti dell'FCC (Reticolo di Bravais)
+    \node[fcc] at (0,0,0) {};
+    \node[fcc] at (1,1,0) {};
+    \node[fcc] at (1,0,1) {};
+    \node[fcc] at (0,1,1) {};
+    
+    \node[fcc] at (0.5,0.5,0) {}; % Base fittizia d4
+    \node[fcc] at (0.5,0,0.5) {}; % Base fittizia d3
+    \node[fcc] at (0,0.5,0.5) {}; % Base fittizia d2
+    
+    % Punti della base reale del diamante (spostati di 1/4)
+    \node[diam] at (0.25,0.25,0.25) {};
+    \draw[->, ultra thick, colorD] (0,0,0) -- (0.25,0.25,0.25) node[midway, above left] {$\mathbf{d}_2$};
+    
+    % Legenda
+    \node[right, align=left] at (1.2, 0.5, 0.5) {\textbf{Blu:} Atomi su reticolo FCC \\ \textbf{Arancio:} Atomi della base reale \\ (Spostati di $\frac{a}{4}$ lungo la diagonale)};
+\end{tikzpicture}
+\end{center}
+\vspace{0.5cm}
+
+\subsection*{3.3 Calcolo del fattore di struttura}
+
+I vettori del reticolo reciproco del cubico semplice di lato $a$ sono:
+
+$$\mathbf{K} = \frac{2\pi}{a}(h\hat{\mathbf{i}} + k\hat{\mathbf{j}} + l\hat{\mathbf{k}}), \qquad h, k, l \in \mathbb{Z}$$
+
+dove $(h, k, l)$ sono gli \textbf{indici di Miller}.
+
+Il fattore di struttura è:
+
+$$S_{\mathbf{K}} = \sum_{\substack{j=1,\ldots,4 \\ l=1,2}} e^{i\mathbf{K}\cdot(\tilde{\mathbf{d}}_j + \mathbf{d}_l)}$$
+
+Poiché l'esponenziale di una somma è il prodotto degli esponenziali, le due somme si \textbf{fattorizzano}:
+
+\begin{equazione}{Fattore di struttura fattorizzato}
+\begin{equation}
+S_{\mathbf{K}} = \underbrace{\left[\sum_{j=1}^{4} e^{i\mathbf{K}\cdot\tilde{\mathbf{d}}_j}\right]}_{\text{fattore base fittizia}} \times \underbrace{\left[\sum_{l=1}^{2} e^{i\mathbf{K}\cdot\mathbf{d}_l}\right]}_{\text{fattore base reale}}
+\end{equation}
+\end{equazione}
+
+$S_{\mathbf{K}} = 0$ se \textbf{almeno uno} dei due fattori è nullo.
+
+\subsubsection*{Calcolo del fattore della base fittizia}
+
+Calcoliamo $\mathbf{K} \cdot \tilde{\mathbf{d}}_j$ per ciascun $j$:
+
+\begin{itemize}
+    \item $\mathbf{K} \cdot \tilde{\mathbf{d}}_1 = 0 \quad\Rightarrow\quad e^{0} = 1$
+    \item $\mathbf{K} \cdot \tilde{\mathbf{d}}_2 = \frac{2\pi}{a} \cdot \frac{a}{2}(k + l) = \pi(k + l) \quad\Rightarrow\quad e^{i\pi(k+l)} = (-1)^{k+l}$
+    \item $\mathbf{K} \cdot \tilde{\mathbf{d}}_3 = \pi(h + l) \quad\Rightarrow\quad e^{i\pi(h+l)} = (-1)^{h+l}$
+    \item $\mathbf{K} \cdot \tilde{\mathbf{d}}_4 = \pi(h + k) \quad\Rightarrow\quad e^{i\pi(h+k)} = (-1)^{h+k}$
+\end{itemize}
+
+Dunque il fattore della base fittizia è:
+
+$$\tilde{S}_{\mathbf{K}} = 1 + (-1)^{k+l} + (-1)^{h+l} + (-1)^{h+k}$$
+
+\subsubsection*{Calcolo del fattore della base reale}
+
+\begin{itemize}
+    \item $\mathbf{K} \cdot \mathbf{d}_1 = 0 \quad\Rightarrow\quad e^{0} = 1$
+    \item $\mathbf{K} \cdot \mathbf{d}_2 = \frac{2\pi}{a} \cdot \frac{a}{4}(h + k + l) = \frac{\pi}{2}(h + k + l) \quad\Rightarrow\quad e^{i\frac{\pi}{2}(h+k+l)} = i^{h+k+l}$
+\end{itemize}
+
+Dunque il fattore della base reale è:
+
+$$S^{\text{reale}}_{\mathbf{K}} = 1 + i^{h+k+l}$$
+
+\subsubsection*{Fattore di struttura totale}
+
+\begin{equazione}{Fattore totale per il Diamante}
+\begin{equation}
+S_{\mathbf{K}} = \Big[1 + (-1)^{k+l} + (-1)^{h+l} + (-1)^{h+k}\Big] \times \Big[1 + i^{h+k+l}\Big]
+\end{equation}
+\end{equazione}
+
+\subsection*{3.4 Regola di selezione dalla base fittizia}
+
+Analizziamo quando il primo fattore si annulla. Ciascuno dei termini $(-1)^{k+l}$, $(-1)^{h+l}$, $(-1)^{h+k}$ vale $+1$ o $-1$ a seconda della parità della somma degli indici.
+
+\textbf{Caso $h, k, l$ tutti pari o tutti dispari:}
+\begin{itemize}
+    \item Se tutti pari: $k+l$, $h+l$, $h+k$ sono tutti pari $\to (-1)^{\text{pari}} = 1 \to \tilde{S}_{\mathbf{K}} = 1 + 1 + 1 + 1 = 4$
+    \item Se tutti dispari: $k+l$, $h+l$, $h+k$ sono tutti pari (somma di due dispari) $\to$ stessa conclusione $\to \tilde{S}_{\mathbf{K}} = 4$
+\end{itemize}
+
+\textbf{Caso $h, k, l$ non tutti della stessa parità:}
+
+In questo caso, almeno una delle somme $k+l$, $h+l$, $h+k$ è pari e almeno una è dispari. Si può verificare che \textbf{si ha sempre} $\tilde{S}_{\mathbf{K}} = 0$.
+
+La regola di selezione dalla base fittizia è dunque:
+
+$$\tilde{S}_{\mathbf{K}} = \begin{cases} 4 & \text{se } h, k, l \text{ tutti pari o tutti dispari} \\ 0 & \text{altrimenti} \end{cases}$$
+
+\begin{nota}[Significato fisico]
+Partendo dal reticolo reciproco cubico (tutti gli $h, k, l$ interi), la base fittizia seleziona solo i punti per cui $h, k, l$ sono tutti pari o tutti dispari. Questa è esattamente la prescrizione dell'\textbf{Esercizio 2a} che identifica un reticolo \textbf{BCC}! Dunque il reticolo reciproco effettivo dell'FCC è un BCC, come sapevamo già.
+\end{nota}
+
+\subsection*{3.5 Regola di selezione dalla base reale (diamante)}
+
+Anche se il primo fattore è non nullo (cioè $h, k, l$ tutti pari o tutti dispari), il \textbf{secondo fattore} può annullarsi ulteriormente. Analizziamo $1 + i^{h+k+l}$:
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{$h + k + l \pmod{4}$} & \textbf{$i^{h+k+l}$} & \textbf{$1 + i^{h+k+l}$} & \textbf{Picco?} \\ \hline
+$0$ & $1$ & $2$ & Visibile \\ \hline
+$1$ & $i$ & $1 + i$ & Visibile \\ \hline
+$2$ & $-1$ & $0$ & \textbf{Scompare} \\ \hline
+$3$ & $-i$ & $1 - i$ & Visibile \\ \hline
+\end{tabular}
+\end{table}
+
+Il picco \textbf{scompare} quando $h + k + l \equiv 2 \pmod{4}$, cioè quando:
+
+$$h + k + l = 2(2q + 1) \qquad \text{(il doppio di un numero dispari)}$$
+
+Questa è la \textbf{regola di selezione aggiuntiva} introdotta dalla base reale del diamante. Essa elimina picchi che sarebbero presenti per un puro FCC.
+
+\subsection*{3.6 Tabella riassuntiva delle riflessioni}
+
+Combinando le due regole di selezione, si ottiene la seguente tabella per le prime riflessioni:
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{$(hkl)$} & \textbf{Primo fattore} & \textbf{$h+k+l$} & \textbf{Secondo fattore} & \textbf{Visibile?} \\ \hline
+$(100)$ & $0$ (misti) & --- & --- & \textbf{No} \\ \hline
+$(110)$ & $0$ (misti) & --- & --- & \textbf{No} \\ \hline
+$(111)$ & $4$ (tutti dispari) & $3 \equiv 3$ & $1-i \neq 0$ & \textbf{Sì} \\ \hline
+$(200)$ & $4$ (tutti pari) & $2 \equiv 2$ & $0$ & \textbf{No} \\ \hline
+$(210)$ & $0$ (misti) & --- & --- & \textbf{No} \\ \hline
+$(211)$ & $0$ (misti) & --- & --- & \textbf{No} \\ \hline
+$(220)$ & $4$ (tutti pari) & $4 \equiv 0$ & $2 \neq 0$ & \textbf{Sì} \\ \hline
+$(221)$ & $0$ (misti) & --- & --- & \textbf{No} \\ \hline
+$(222)$ & $4$ (tutti pari) & $6 \equiv 2$ & $0$ & \textbf{No} \\ \hline
+$(310)$ & $0$ (misti) & --- & --- & \textbf{No} \\ \hline
+$(311)$ & $4$ (tutti dispari) & $5 \equiv 1$ & $1+i \neq 0$ & \textbf{Sì} \\ \hline
+$(330)$ & $0$ (misti) & --- & --- & \textbf{No} \\ \hline
+\end{tabular}
+\end{table}
+
+Le prime riflessioni \textbf{visibili} nel diamante sono dunque: $(111)$, $(220)$, $(311)$, ...
+
+\begin{nota}[Confronto con FCC puro e Blenda]
+\textbf{Confronto con l'FCC puro:} per un FCC senza base reale, tutte le riflessioni con $h, k, l$ tutti pari o tutti dispari sarebbero visibili (ad esempio $(200)$, $(222)$ sarebbero presenti). La base reale del diamante elimina ulteriori picchi. Osservando sperimentalmente quali picchi mancano, si può dedurre che la struttura non è un semplice FCC ma un FCC con base.
+
+\textbf{Confronto con la blenda (ZnS):} nella blenda, la base reale è occupata da atomi \textbf{non equivalenti} (Zn e S), quindi i fattori di forma atomico $f_{\text{Zn}}$ e $f_{\text{S}}$ sono diversi. In questo caso, il secondo fattore diventa $f_{\text{Zn}} + f_{\text{S}}\, i^{h+k+l}$, che non si annulla mai esattamente (poiché $f_{\text{Zn}} \neq f_{\text{S}}$). Dunque nella blenda si osservano \textbf{tutti} i picchi dell'FCC, ma con \textbf{intensità modulata}.
+\end{nota}
+
+\section*{Riepilogo dei risultati principali}
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|X|c|X|}
+\hline
+\textbf{Struttura} & \textbf{Reticolo di Bravais?} & \textbf{Descrizione} \\ \hline
+Cubico a basi centrate & \textbf{Sì} & Tetragonale \\ \hline
+Cubico a facce laterali centrate & \textbf{No} & Cubico semplice + base ($n = 3$) \\ \hline
+Cubico a spigoli centrati & \textbf{No} & Cubico semplice + base ($n = 4$) \\ \hline
+Coord. intere, tutti pari o dispari & \textbf{Sì} & BCC (lato conv. 2) \\ \hline
+Coord. intere, somma pari & \textbf{Sì} & FCC (lato conv. 2) \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|X|c|c|c|c|c|c|}
+\hline
+\textbf{Riflessione diamante} & \textbf{$(111)$} & \textbf{$(200)$} & \textbf{$(220)$} & \textbf{$(222)$} & \textbf{$(311)$} & \textbf{$(400)$} \\ \hline
+\textbf{Visibile?} & \textbf{Sì} & No & \textbf{Sì} & No & \textbf{Sì} & \textbf{Sì} \\ \hline
+\textbf{Motivo assenza} & --- & $S^{\text{reale}} \!=\! 0$ & --- & $S^{\text{reale}} \!=\! 0$ & --- & --- \\ \hline
+\end{tabularx}
+\end{table}
