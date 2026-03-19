@@ -1,0 +1,446 @@
+\chapter{Cella di Wigner-Seitz, cristalli con base e reticolo reciproco}
+
+\begin{nota}[Informazioni Generali]
+\textbf{Data:} 2 ottobre 2020\\
+\textbf{Docente:} Prof. Sergio Caprara\\
+\textbf{Testo di riferimento:} N.W. Ashcroft, N.D. Mermin, \textit{Solid State Physics}
+\end{nota}
+
+\vspace{0.5cm}
+
+
+\section{Cella convenzionale e conteggio dei punti reticolari}
+
+\subsection*{Relazione tra cella primitiva e cella convenzionale}
+
+Ogni cella primitiva contiene \textbf{un punto reticolare} (per definizione). Una \textbf{cella convenzionale} può contenere un numero intero $N > 1$ di punti reticolari. In tal caso:
+
+\begin{equazione}{Volume della cella convenzionale}
+\begin{equation}
+V_{\text{convenzionale}} = N \cdot V_{\text{primitiva}}
+\end{equation}
+\end{equazione}
+
+Questo è necessariamente vero poiché ogni cella primitiva deve ospitare esattamente un punto reticolare: se la cella convenzionale contiene $N$ punti, il suo volume deve essere $N$ volte quello della cella primitiva.
+
+\subsection*{Esempio: cella convenzionale esagonale}
+
+La cella primitiva del reticolo esagonale è un parallelogramma formato da due triangoli equilateri (con altezza arbitraria in 3D). Questa cella non evidenzia la simmetria esagonale.
+
+La \textbf{cella convenzionale} esagonale si ottiene affiancando tre celle primitive a formare un esagono. Il conteggio dei punti reticolari:
+
+\begin{itemize}
+    \item \textbf{Vertici}: 12 vertici, ciascuno condiviso da \textbf{6 celle} convenzionali $\to 12 \times \frac{1}{6} = 2$
+    \item \textbf{Centri delle facce}: 2 punti (uno in alto, uno in basso), ciascuno condiviso da \textbf{2 celle} $\to 2 \times \frac{1}{2} = 1$
+    \item \textbf{Totale}: $2 + 1 = 3$ punti reticolari
+\end{itemize}
+
+Questo risultato è coerente: nella cella convenzionale ci stanno esattamente 3 celle primitive, e $3 \times 1 = 3$ punti.
+
+\subsection*{Esempio: cella convenzionale del cubico a facce centrate (FCC)}
+
+La cella convenzionale dell'FCC è il cubo:
+
+\begin{itemize}
+    \item \textbf{Vertici}: 8 vertici $\times \frac{1}{8} = 1$
+    \item \textbf{Centri delle facce}: 6 facce $\times \frac{1}{2} = 3$
+    \item \textbf{Totale}: $1 + 3 = 4$ punti reticolari
+\end{itemize}
+
+Il volume della cella primitiva dell'FCC è quindi $\frac{1}{4}$ del volume del cubo.
+
+\section{Cella di Wigner-Seitz}
+
+Si cerca una cella che sia contemporaneamente:
+\begin{itemize}
+    \item \textbf{Primitiva}: contiene esattamente 1 punto reticolare.
+    \item \textbf{Convenzionale}: evidenzia tutte le simmetrie del reticolo.
+\end{itemize}
+
+\subsection*{Costruzione:}
+
+La costruzione di \textbf{Wigner e Seitz} procede come segue:
+
+\begin{enumerate}
+    \item Si sceglie un \textbf{punto reticolare} come centro della cella.
+    \item Si \textbf{congiunge} questo punto con tutti i punti primi vicini del reticolo.
+    \item Si traccia il \textbf{piano bisettore perpendicolare} (in 2D: la retta bisettrice perpendicolare) a ciascun segmento di congiunzione.
+    \item La regione dello spazio \textbf{più vicina al punto centrale} rispetto a qualunque altro punto del reticolo, delimitata da questi piani bisettori, è la \textbf{cella di Wigner-Seitz}.
+\end{enumerate}
+
+\vspace{0.5cm}
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+    
+    % Clip per mantenere i bordi puliti ed evitare che il reticolo sbordi troppo
+    \clip (-1.8, -1.5) rectangle (1.8, 1.5);
+
+    % 1. Tassellazione di tutte le celle di Wigner-Seitz (pattern a nido d'ape di sfondo)
+    \foreach \n in {-2,...,2} {
+        \foreach \m in {-2,...,2} {
+            \coordinate (Center) at (\n + 0.5*\m, {\m*sqrt(3)/2});
+            \draw[gray!40, thin] 
+                ([shift={(30:0.577)}]Center) -- 
+                ([shift={(90:0.577)}]Center) -- 
+                ([shift={(150:0.577)}]Center) -- 
+                ([shift={(210:0.577)}]Center) -- 
+                ([shift={(270:0.577)}]Center) -- 
+                ([shift={(330:0.577)}]Center) -- cycle;
+        }
+    }
+
+    % 2. Connessioni del reticolo di Bravais esagonale (linee che formano i triangoli)
+    \foreach \n in {-2,...,2} {
+        \foreach \m in {-2,...,2} {
+            \coordinate (P) at (\n + 0.5*\m, {\m*sqrt(3)/2});
+            \draw[blue!20, thick] (P) -- ++(1,0);
+            \draw[blue!20, thick] (P) -- ++(60:1);
+            \draw[blue!20, thick] (P) -- ++(120:1);
+        }
+    }
+
+    % 3. Cella di Wigner-Seitz centrale (evidenziata)
+    \draw[thick, colorE, fill=colorE!20] 
+        (30:0.577) -- (90:0.577) -- (150:0.577) -- 
+        (210:0.577) -- (270:0.577) -- (330:0.577) -- cycle;
+
+    % 4. Vettori ai primi vicini usati per costruire la cella centrale
+    \foreach \a in {0, 60, 120, 180, 240, 300} {
+        \draw[dashed, colorB, thick] (0,0) -- (\a:1);
+    }
+
+    % 5. Nodi del reticolo di Bravais
+    \foreach \n in {-2,...,2} {
+        \foreach \m in {-2,...,2} {
+            \coordinate (P) at (\n + 0.5*\m, {\m*sqrt(3)/2});
+            \filldraw[fill=colorA, draw=black!80, thick] (P) circle (1.5pt);
+        }
+    }
+    
+    % 6. Origine in evidenza
+    \filldraw[fill=colorA, draw=black!80, thick] (0,0) circle (2.5pt);
+
+    % 7. Etichetta (con sfumatura bianca dietro per renderla leggibile sopra le linee)
+    \node[colorE, fill=white, inner sep=2pt, rounded corners, font=\small] at (0, 1.2) {\textbf{Cella di Wigner-Seitz}};
+
+\end{tikzpicture}
+\end{center}
+\vspace{0.5cm}
+
+\textbf{Esempio esagonale 2D}: partendo dal punto centrale, si congiungono i 6 primi vicini, si tracciano le 6 bisettrici perpendicolari. La regione risultante è un \textbf{esagono regolare} che:
+
+\begin{itemize}
+    \item Contiene esattamente \textbf{1 punto reticolare} (al centro) $\to$ è primitiva.
+    \item Ha simmetria esagonale $\to$ evidenzia le simmetrie del reticolo $\to$ è convenzionale.
+    \item Ha la \textbf{stessa area} della cella primitiva a parallelogramma (tutte le celle primitive hanno lo stesso volume).
+\end{itemize}
+
+
+\section{Cristalli con base}
+
+\subsection*{Reticoli non-Bravais e concetto di base}
+
+Non tutte le strutture cristalline regolari sono reticoli di Bravais. Un \textbf{cristallo con base} è descritto come:
+
+\begin{equazione}{Composizione di un cristallo}
+\begin{equation}
+\text{Cristallo} = \text{Reticolo di Bravais} + \text{Base}
+\end{equation}
+\end{equazione}
+
+Se i punti del reticolo di Bravais sono indicati da $\mathbf{R}$, allora gli atomi della base si trovano nelle posizioni:
+
+\begin{equazione}{Posizione degli atomi della base}
+\begin{equation}
+\mathbf{R} + \mathbf{d}_j, \qquad j = 1, \ldots, p
+\end{equation}
+\end{equazione}
+
+dove $\mathbf{d}_j$ sono i \textbf{vettori di base} (costanti, uguali per ogni cella) e $p$ è il numero di atomi nella base. Ciascuna classe di atomi (corrispondente a un dato $\mathbf{d}_j$) forma un reticolo di Bravais; il cristallo complessivo è la \textbf{compenetrazione} di $p$ reticoli di Bravais, tutti identici ma traslati.
+
+\vspace{0.5cm}
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+    % Asse del reticolo
+    \draw[thick, colorB!50] (-0.5,0) -- (8.5,0);
+    
+    % Punti del reticolo
+    \foreach \x in {0, 3, 6} {
+        % Atomo 1 (Reticolo principale)
+        \filldraw[colorA] (\x,0) circle (4pt);
+        % Atomo 2 (Base traslata)
+        \filldraw[colorF] (\x+1.2,0) circle (3pt);
+        % Vettore d
+        \draw[->, thick, colorD] (\x, -0.3) -- (\x+1.2, -0.3) node[midway, below] {$\mathbf{d}$};
+    }
+    
+    % Vettore primitivo a
+    \draw[<->, thick, colorA] (0, 0.4) -- (3, 0.4) node[midway, above] {$\mathbf{a}$};
+    \draw[<->, thick, colorA] (3, 0.4) -- (6, 0.4) node[midway, above] {$\mathbf{a}$};
+\end{tikzpicture}
+\end{center}
+\vspace{0.2cm}
+
+\subsection*{Esempio: honeycomb}
+
+Il reticolo a \textbf{nido d'ape} (honeycomb) non è un reticolo di Bravais. Si descrive come un reticolo esagonale con base di \textbf{2 atomi}:
+
+\begin{itemize}
+    \item I punti "rosa" formano un reticolo esagonale con vettori $\mathbf{R}$.
+    \item I punti "gialli" sono spostati di un vettore costante $\mathbf{d}$: le loro posizioni sono $\mathbf{R} + \mathbf{d}$.
+\end{itemize}
+
+Ogni punto rosa è circondato da punti gialli e viceversa. I due sottoreticoli sono identici ma traslati di $\mathbf{d}$.
+
+\subsection*{Esempio: cloruro di sodio (NaCl)}
+
+Il cloruro di sodio cristallizza con simmetria \textbf{cubica a facce centrate con base}:
+
+$$\text{NaCl} = \text{FCC} + \text{base di 2 atomi (Na e Cl)}$$
+
+\begin{itemize}
+    \item Gli atomi di \textbf{sodio} (rossi) da soli formano un reticolo \textbf{FCC}: ai vertici del cubo e al centro di ciascuna faccia.
+    \item Gli atomi di \textbf{cloro} (grigi) formano un altro reticolo \textbf{FCC}, traslato rispetto al primo di un vettore di base $\mathbf{d}$.
+    \item La struttura complessiva è la compenetrazione di due reticoli FCC.
+\end{itemize}
+
+\subsection*{Esempio: cloruro di cesio (CsCl)}
+
+Il cloruro di cesio ha una struttura più semplice:
+
+$$\text{CsCl} = \text{Cubico semplice} + \text{base di 2 atomi (Cs e Cl)}$$
+
+\begin{itemize}
+    \item Gli atomi di \textbf{cesio} (rossi) formano un reticolo \textbf{cubico semplice}.
+    \item Ciascun atomo di \textbf{cloro} (grigio) si trova esattamente al \textbf{centro} del cubo formato da 8 atomi di cesio, traslato lungo la semidiagonale del cubo.
+\end{itemize}
+
+\begin{definizione}{Osservazione importante}
+Se tutti gli atomi fossero dello stesso tipo (tutti cesio o tutti cloro), la struttura diventerebbe un reticolo \textbf{BCC} (cubico a corpo centrato), poiché tutti i punti sarebbero equivalenti. Ma poiché cesio e cloro sono diversi, i punti non sono equivalenti e il CsCl \textbf{non è} un BCC: è un cubico semplice con base.
+\end{definizione}
+
+\subsection*{Esempio: solfuro di zinco (ZnS) — blenda}
+
+La struttura della \textbf{blenda} (zinc blende) è:
+
+$$\text{ZnS} = \text{FCC} + \text{base di 2 atomi (Zn e S)}$$
+
+\begin{itemize}
+    \item Gli atomi di \textbf{zolfo} (gialli) formano un reticolo \textbf{FCC}.
+    \item Gli atomi di \textbf{zinco} (grigi) formano un altro reticolo \textbf{FCC}.
+    \item I due reticoli FCC sono traslati l'uno rispetto all'altro di un vettore che punta lungo la \textbf{diagonale del cubo} (diverso dal vettore di base dell'NaCl).
+\end{itemize}
+
+Dunque, NaCl e ZnS hanno entrambi struttura FCC + base, ma con \textbf{vettori di base diversi}, il che dà luogo a cristalli fisicamente molto diversi.
+
+\subsection*{Esempio: diamante}
+
+Se nella struttura della blenda si rendono tutti gli atomi uguali (tutti atomi di \textbf{carbonio}), si ottiene la struttura del \textbf{diamante}. Il diamante è una forma allotropica del carbonio che cristallizza ad alta pressione (a pressione ambiente, il carbonio forma la grafite).
+
+$$\text{Diamante} = \text{FCC} + \text{base di 2 atomi C}$$
+
+\begin{definizione}{Osservazione cruciale}
+Anche rendendo tutti i punti dello stesso tipo, la struttura del diamante \textbf{non si riduce a un semplice reticolo di Bravais}. Resta necessariamente un FCC con base. Questo è analogo al caso dell'honeycomb, che anche con atomi tutti uguali non diventa un reticolo di Bravais.
+\end{definizione}
+
+In contrasto:
+\begin{itemize}
+    \item CsCl con atomi tutti uguali $\to$ \textbf{BCC} (reticolo di Bravais semplice).
+    \item NaCl con atomi tutti uguali $\to$ \textbf{FCC} (reticolo di Bravais semplice).
+    \item Diamante con atomi tutti uguali $\to$ \textbf{FCC + base} (non riducibile a un Bravais semplice).
+\end{itemize}
+
+\section{Il reticolo reciproco}
+
+La struttura cristallina reale viene investigata sperimentalmente tramite \textbf{diffrazione di raggi X}. Se la lunghezza d'onda dei raggi X è scelta comparabile con la distanza interatomica ($\sim 10^{-10}$ m = 1 Å), si ottiene un pattern di diffrazione che è una "fotografia" del cristallo nello \textbf{spazio reciproco}. Per interpretare questi dati, occorre stabilire una corrispondenza tra la struttura del cristallo nello spazio reale e quella nello spazio reciproco.
+
+\subsection{Onde piane}
+
+Si consideri un'\textbf{onda piana}:
+
+$$e^{i\mathbf{K} \cdot \mathbf{r}}$$
+
+In generale, per un vettore $\mathbf{K}$ arbitrario, questa onda piana non ha la stessa periodicità del reticolo di Bravais. La domanda è: \textbf{per quali vettori $\mathbf{K}$ l'onda piana ha la stessa periodicità del reticolo?}
+
+La condizione di periodicità è:
+
+$$e^{i\mathbf{K} \cdot (\mathbf{r} + \mathbf{R})} = e^{i\mathbf{K} \cdot \mathbf{r}} \qquad \forall\, \mathbf{R} \in \text{BL}$$
+
+Poiché $e^{i\mathbf{K} \cdot (\mathbf{r} + \mathbf{R})} = e^{i\mathbf{K} \cdot \mathbf{r}} \cdot e^{i\mathbf{K} \cdot \mathbf{R}}$ e l'esponenziale non è mai identicamente zero, dividendo entrambi i membri per $e^{i\mathbf{K} \cdot \mathbf{r}}$ si ottiene la \textbf{condizione fondamentale}:
+
+\begin{equazione}{Condizione di periodicità}
+\begin{equation}
+e^{i\mathbf{K} \cdot \mathbf{R}} = 1 \qquad \forall\, \mathbf{R} \in \text{BL}
+\end{equation}
+\end{equazione}
+
+
+\begin{definizione}{Reticolo Reciproco}
+L'insieme di tutti i vettori $\mathbf{K}$ che soddisfano la condizione $e^{i\mathbf{K}\cdot\mathbf{R}} = 1$ per ogni $\mathbf{R}$ nel reticolo di Bravais forma esso stesso un \textbf{reticolo di Bravais} nello spazio reciproco, detto \textbf{reticolo reciproco}.
+\end{definizione}
+
+\textbf{Dimostrazione costruttiva}: si definiscono tre vettori $\mathbf{b}_1$, $\mathbf{b}_2$, $\mathbf{b}_3$ nello spazio reciproco:
+
+\begin{equazione}{Vettori base del reticolo reciproco}
+\begin{equation}
+\mathbf{b}_1 = 2\pi \frac{\mathbf{a}_2 \times \mathbf{a}_3}{\mathbf{a}_1 \cdot (\mathbf{a}_2 \times \mathbf{a}_3)}, \qquad \mathbf{b}_2 = 2\pi \frac{\mathbf{a}_3 \times \mathbf{a}_1}{\mathbf{a}_1 \cdot (\mathbf{a}_2 \times \mathbf{a}_3)}, \qquad \mathbf{b}_3 = 2\pi \frac{\mathbf{a}_1 \times \mathbf{a}_2}{\mathbf{a}_1 \cdot (\mathbf{a}_2 \times \mathbf{a}_3)}
+\end{equation}
+\end{equazione}
+
+Si noti che:
+\begin{itemize}
+    \item Al denominatore compare il \textbf{volume della cella primitiva} $V = \mathbf{a}_1 \cdot (\mathbf{a}_2 \times \mathbf{a}_3)$.
+    \item Gli indici seguono una \textbf{permutazione ciclica}: $(1,2,3) \to (2,3,1) \to (3,1,2)$.
+    \item Le dimensioni fisiche di $\mathbf{b}_i$ sono $[\text{lunghezza}]^{-1}$, come quelle di $\mathbf{K}$.
+\end{itemize}
+
+\subsection{Ortonormalità dei vettori base del reticolo reciproco}
+
+\begin{equazione}{Ortonormalità}
+\begin{equation}
+\mathbf{b}_i \cdot \mathbf{a}_j = 2\pi \, \delta_{ij}
+\end{equation}
+\end{equazione}
+
+dove $\delta_{ij}$ è il \textbf{delta di Kronecker} ($\delta_{ij} = 1$ se $i = j$, $\delta_{ij} = 0$ se $i \neq j$).
+
+
+\subsubsection{Dimostrazione:} 
+
+ad esempio, $\mathbf{a}_1 \cdot \mathbf{b}_1 = 2\pi \frac{\mathbf{a}_1 \cdot (\mathbf{a}_2 \times \mathbf{a}_3)}{\mathbf{a}_1 \cdot (\mathbf{a}_2 \times \mathbf{a}_3)} = 2\pi$. Inoltre, $\mathbf{a}_1 \cdot \mathbf{b}_2 = 2\pi \frac{\mathbf{a}_1 \cdot (\mathbf{a}_3 \times \mathbf{a}_1)}{\mathbf{a}_1 \cdot (\mathbf{a}_2 \times \mathbf{a}_3)} = 0$, poiché $\mathbf{a}_3 \times \mathbf{a}_1$ è perpendicolare ad $\mathbf{a}_1$. Analogamente per tutti gli altri casi, usando la proprietà della permutazione ciclica del prodotto misto.
+
+\begin{nota}[Nota importante]
+$\mathbf{b}_1$ \textbf{non è parallelo} ad $\mathbf{a}_1$ in generale. La proprietà $\mathbf{b}_1 \cdot \mathbf{a}_1 = 2\pi$ significa solo che la componente di $\mathbf{b}_1$ lungo $\mathbf{a}_1$ vale $2\pi/|\mathbf{a}_1|$, ma $\mathbf{b}_1$ può avere componenti anche nelle altre direzioni.
+\end{nota}
+
+\textbf{Verifica che tutti i $\mathbf{K}$ di questa forma soddisfano la condizione}: sia $\mathbf{K} = m_1 \mathbf{b}_1 + m_2 \mathbf{b}_2 + m_3 \mathbf{b}_3$ con $m_1, m_2, m_3 \in \mathbb{Z}$, e sia $\mathbf{R} = n_1 \mathbf{a}_1 + n_2 \mathbf{a}_2 + n_3 \mathbf{a}_3$. Allora:
+
+$$\mathbf{K} \cdot \mathbf{R} = \sum_{i,j} m_i n_j (\mathbf{b}_i \cdot \mathbf{a}_j) = \sum_{i,j} m_i n_j \cdot 2\pi \delta_{ij} = 2\pi(m_1 n_1 + m_2 n_2 + m_3 n_3)$$
+
+Poiché $m_1 n_1 + m_2 n_2 + m_3 n_3$ è un \textbf{intero} (somma di prodotti di interi):
+
+$$e^{i\mathbf{K} \cdot \mathbf{R}} = e^{i \cdot 2\pi \cdot (\text{intero})} = 1 \qquad \checkmark$$
+
+\textbf{Verifica che queste sono TUTTE le soluzioni}: supponiamo che esista un $\mathbf{K}$ con un coefficiente non intero, ad esempio $x_1 \notin \mathbb{Z}$. Allora per $\mathbf{R}$ con $n_1 = 1$, $n_2 = n_3 = 0$, si avrebbe $\mathbf{K} \cdot \mathbf{R} = 2\pi x_1$, che non è un multiplo intero di $2\pi$, e quindi $e^{i\mathbf{K} \cdot \mathbf{R}} \neq 1$. Ciò viola la condizione, dunque \textbf{i coefficienti devono essere necessariamente tutti interi}. $\blacksquare$
+
+\subsection{Il vettore del reticolo reciproco}
+
+Il \textbf{reticolo reciproco} è dunque il reticolo di Bravais con vettori primitivi $\mathbf{b}_1$, $\mathbf{b}_2$, $\mathbf{b}_3$:
+
+$$\mathbf{K} = m_1 \mathbf{b}_1 + m_2 \mathbf{b}_2 + m_3 \mathbf{b}_3, \qquad m_1, m_2, m_3 \in \mathbb{Z}$$
+
+I vettori $\mathbf{b}_1$, $\mathbf{b}_2$, $\mathbf{b}_3$ sono linearmente indipendenti poiché ciascuno ha una componente perpendicolare al piano formato dagli altri due vettori $\mathbf{a}$:
+
+\begin{itemize}
+    \item $\mathbf{b}_1 \propto \mathbf{a}_2 \times \mathbf{a}_3 \to$ ha una componente perpendicolare al piano $(\mathbf{a}_2, \mathbf{a}_3)$.
+    \item $\mathbf{b}_2 \propto \mathbf{a}_3 \times \mathbf{a}_1 \to$ ha una componente perpendicolare al piano $(\mathbf{a}_3, \mathbf{a}_1)$.
+    \item $\mathbf{b}_3 \propto \mathbf{a}_1 \times \mathbf{a}_2 \to$ ha una componente perpendicolare al piano $(\mathbf{a}_1, \mathbf{a}_2)$.
+\end{itemize}
+
+Non possono quindi essere tutti sullo stesso piano; formano una base dello spazio reciproco.
+
+\begin{nota}
+La scelta di $\mathbf{b}_1$, $\mathbf{b}_2$, $\mathbf{b}_3$ non è unica, come per qualunque reticolo di Bravais. La forma scritta sopra è una scelta particolarmente comoda che rende la dimostrazione immediata, ma qualunque altro insieme di vettori primitivi del reticolo reciproco è egualmente valido.
+\end{nota}
+
+\subsection{Proprietà del reticolo reciproco}
+
+\begin{definizione}{Teorema del doppio reciproco}
+Il reticolo reciproco del reticolo reciproco coincide con il reticolo di Bravais originale.
+\end{definizione}
+
+\textbf{Dimostrazione}: si cercano tutti i vettori $\tilde{\mathbf{R}}$ tali che $e^{i\mathbf{K} \cdot \tilde{\mathbf{R}}} = 1$ per ogni $\mathbf{K}$ nel reticolo reciproco. Per la proprietà $\mathbf{b}_i \cdot \mathbf{a}_j = 2\pi \delta_{ij}$, tutti i vettori $\mathbf{R}$ del reticolo originale soddisfano questa condizione. Viceversa, con lo stesso argomento usato nella sezione 5.3, nessun vettore con coefficienti non interi nella base $\{\mathbf{a}_1, \mathbf{a}_2, \mathbf{a}_3\}$ può soddisfare la condizione per tutti i $\mathbf{K}$ del reticolo reciproco. $\blacksquare$
+
+Esiste quindi una \textbf{corrispondenza biunivoca} tra un reticolo di Bravais e il suo reticolo reciproco.
+
+
+\begin{definizione}{Teorema dei volumi}
+Se $V$ è il volume della cella primitiva nel reticolo diretto, il volume della cella primitiva nel reticolo reciproco è:
+\end{definizione}
+
+\begin{equazione}{Volume della cella reciproca}
+\begin{equation}
+V^* = \frac{(2\pi)^3}{V}
+\end{equation}
+\end{equazione}
+
+\section{Esempi di reticoli reciproci}
+
+\subsection*{Cubico semplice $\to$ Cubico semplice}
+
+Sia il reticolo diretto un \textbf{cubico semplice} di lato $a$. Si scelga il sistema di riferimento con gli assi lungo gli spigoli del cubo:
+
+$$\mathbf{a}_1 = a\,\hat{\mathbf{i}}, \qquad \mathbf{a}_2 = a\,\hat{\mathbf{j}}, \qquad \mathbf{a}_3 = a\,\hat{\mathbf{k}}$$
+
+\textbf{Volume della cella primitiva}:
+
+$$\mathbf{a}_2 \times \mathbf{a}_3 = a^2 (\hat{\mathbf{j}} \times \hat{\mathbf{k}}) = a^2 \hat{\mathbf{i}}$$
+
+$$V = \mathbf{a}_1 \cdot (\mathbf{a}_2 \times \mathbf{a}_3) = a \hat{\mathbf{i}} \cdot a^2 \hat{\mathbf{i}} = a^3$$
+
+\textbf{Vettori del reticolo reciproco}:
+
+$$\mathbf{b}_1 = 2\pi \frac{a^2 \hat{\mathbf{i}}}{a^3} = \frac{2\pi}{a}\hat{\mathbf{i}}, \qquad \mathbf{b}_2 = \frac{2\pi}{a}\hat{\mathbf{j}}, \qquad \mathbf{b}_3 = \frac{2\pi}{a}\hat{\mathbf{k}}$$
+
+Questi sono tre vettori ortogonali di uguale lunghezza $\frac{2\pi}{a}$: il reticolo reciproco è un \textbf{cubico semplice di lato $\frac{2\pi}{a}$}.
+
+\textbf{Volume della cella reciproca}:
+
+$$V^* = \left(\frac{2\pi}{a}\right)^3 = \frac{(2\pi)^3}{a^3} = \frac{(2\pi)^3}{V} \qquad \checkmark$$
+
+\subsection*{FCC $\to$ BCC}
+
+Sia il reticolo diretto un \textbf{FCC} con lato convenzionale $a$. I vettori primitivi sono:
+
+$$\mathbf{a}_1 = \frac{a}{2}(\hat{\mathbf{j}} + \hat{\mathbf{k}}), \qquad \mathbf{a}_2 = \frac{a}{2}(\hat{\mathbf{k}} + \hat{\mathbf{i}}), \qquad \mathbf{a}_3 = \frac{a}{2}(\hat{\mathbf{i}} + \hat{\mathbf{j}})$$
+
+\textbf{Volume della cella primitiva}: calcoliamo $\mathbf{a}_2 \times \mathbf{a}_3$:
+
+$$\mathbf{a}_2 \times \mathbf{a}_3 = \frac{a^2}{4}\left[(\hat{\mathbf{k}} + \hat{\mathbf{i}}) \times (\hat{\mathbf{i}} + \hat{\mathbf{j}})\right] = \frac{a^2}{4}\left[\hat{\mathbf{k}} \times \hat{\mathbf{i}} + \hat{\mathbf{k}} \times \hat{\mathbf{j}} + \hat{\mathbf{i}} \times \hat{\mathbf{i}} + \hat{\mathbf{i}} \times \hat{\mathbf{j}}\right]$$
+
+$$= \frac{a^2}{4}\left[\hat{\mathbf{j}} - \hat{\mathbf{i}} + 0 + \hat{\mathbf{k}}\right] = \frac{a^2}{4}(-\hat{\mathbf{i}} + \hat{\mathbf{j}} + \hat{\mathbf{k}})$$
+
+Poi:
+
+$$V = \mathbf{a}_1 \cdot (\mathbf{a}_2 \times \mathbf{a}_3) = \frac{a}{2}(\hat{\mathbf{j}} + \hat{\mathbf{k}}) \cdot \frac{a^2}{4}(-\hat{\mathbf{i}} + \hat{\mathbf{j}} + \hat{\mathbf{k}}) = \frac{a^3}{8}(0 + 1 + 1) = \frac{a^3}{4}$$
+
+Questo è corretto: la cella primitiva dell'FCC ha volume \textbf{$\frac{1}{4}$} del volume del cubo convenzionale (poiché la cella convenzionale contiene 4 punti).
+
+\textbf{Calcolo dei vettori reciproci}: usando $\mathbf{b}_1 = 2\pi \frac{\mathbf{a}_2 \times \mathbf{a}_3}{V}$:
+
+$$\mathbf{b}_1 = 2\pi \cdot \frac{4}{a^3} \cdot \frac{a^2}{4}(-\hat{\mathbf{i}} + \hat{\mathbf{j}} + \hat{\mathbf{k}}) = \frac{2\pi}{a}(-\hat{\mathbf{i}} + \hat{\mathbf{j}} + \hat{\mathbf{k}})$$
+
+Per permutazione ciclica:
+
+$$\mathbf{b}_2 = \frac{2\pi}{a}(\hat{\mathbf{i}} - \hat{\mathbf{j}} + \hat{\mathbf{k}}), \qquad \mathbf{b}_3 = \frac{2\pi}{a}(\hat{\mathbf{i}} + \hat{\mathbf{j}} - \hat{\mathbf{k}})$$
+
+\textbf{Identificazione del reticolo}: i tre vettori $\mathbf{b}_1$, $\mathbf{b}_2$, $\mathbf{b}_3$ sono i vettori primitivi di un reticolo \textbf{BCC} (cubico a corpo centrato). Infatti, ciascuno di essi connette un vertice del cubo reciproco al centro del cubo, con proiezione $\frac{b}{2}$ lungo ciascun asse. Il lato del cubo convenzionale BCC reciproco è:
+
+$$b = \frac{4\pi}{a}$$
+
+\textbf{Risultato}: il reticolo reciproco di un \textbf{FCC di lato $a$} è un \textbf{BCC di lato $\frac{4\pi}{a}$}.
+
+\subsection*{BCC $\to$ FCC}
+
+Per il teorema "il reciproco del reciproco è l'originale", il reticolo reciproco di un \textbf{BCC di lato $a$} è un \textbf{FCC di lato $\frac{4\pi}{a}$}.
+
+
+\section{Prima zona di Brillouin}
+
+Nello spazio reciproco si presenta lo stesso problema che nello spazio reale: talvolta la cella primitiva non evidenzia le simmetrie del reticolo. Le due soluzioni sono le stesse:
+
+\begin{enumerate}
+    \item Adottare una \textbf{cella convenzionale} (che mostra le simmetrie ma contiene più di un punto).
+    \item Costruire la \textbf{cella di Wigner-Seitz} (che è contemporaneamente primitiva e convenzionale).
+\end{enumerate}
+
+\begin{definizione}{Prima zona di Brillouin}
+La \textbf{cella di Wigner-Seitz nello spazio reciproco} prende il nome di \textbf{prima zona di Brillouin}.
+\end{definizione}
+
+La prima zona di Brillouin:
+\begin{itemize}
+    \item È una cella \textbf{primitiva} del reticolo reciproco (contiene un solo punto del reticolo reciproco).
+    \item Evidenzia \textbf{tutte le simmetrie} del reticolo reciproco.
+    \item Ha un ruolo cruciale nella teoria della materia condensata (come verrà mostrato nelle lezioni successive).
+\end{itemize}
