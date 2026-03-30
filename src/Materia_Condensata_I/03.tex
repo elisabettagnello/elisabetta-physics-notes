@@ -431,38 +431,57 @@ dove $n$ è l'\textbf{ordine di diffrazione}.
 \vspace{0.5cm}
 \begin{center}
 \begin{tikzpicture}[scale=1.5]
+    \usetikzlibrary{calc}
+    
+    % Parametri modificabili a piacimento
+    \def\th{30}         % Angolo theta
+    \def\d{1.5}         % Distanza interplanare d
+    \def\raylen{3.5}    % Lunghezza dei raggi incidenti/riflessi
+    
     % Piani
-    \draw[thick, colorB] (0,0) -- (6,0);
-    \draw[thick, colorB] (0,-1.5) -- (6,-1.5);
-    \draw[<->] (5.5,0) -- (5.5,-1.5) node[midway, right] {$d$};
+    \draw[thick, gray] (0,0) -- (6,0);
+    \draw[thick, gray] (0,-\d) -- (6,-\d);
+    \draw[<->] (5.5,0) -- (5.5,-\d) node[midway, right] {$d$};
+    
+    % Coordinate dei siti reticolari (centri di scattering)
+    \coordinate (A) at (2.5, 0);
+    \coordinate (B) at (2.5, -\d);
     
     % Atomi
     \foreach \x in {1, 2.5, 4, 5.5} {
-        \filldraw[colorA] (\x,0) circle (2pt);
-        \filldraw[colorA] (\x,-1.5) circle (2pt);
+        \filldraw[black] (\x,0) circle (2pt);
+        \filldraw[black] (\x,-\d) circle (2pt);
     }
     
-    % Raggio 1
-    \draw[->, thick, colorE] (0.5, 1) -- (2.5,0);
-    \draw[->, thick, colorE] (2.5, 0) -- (4.5,1) node[right] {Raggio 1};
+    % Raggio 1 (Piano superiore)
+    % Usa le coordinate polari: da (180-theta) verso A, e da A verso (theta)
+    \draw[->, thick, blue] ($(A) + (180-\th:\raylen)$) -- (A);
+    \draw[->, thick, blue] (A) -- ($(A) + (\th:\raylen)$) node[right] {Raggio 1};
     
-    % Raggio 2
-    \draw[->, thick, colorF] (0.5, 0) -- (2.5,-1.5);
-    \draw[->, thick, colorF] (2.5, -1.5) -- (4.5,0) node[above] {Raggio 2};
+    % Raggio 2 (Piano inferiore)
+    \draw[->, thick, red] ($(B) + (180-\th:\raylen)$) -- (B);
+    \draw[->, thick, red] (B) -- ($(B) + (\th:\raylen)$) node[right] {Raggio 2};
     
-    % Angoli (theta)
-    \draw (1.8,0) arc (180:153:0.7);
-    \node at (1.5, 0.15) {$\theta$};
-    \draw (3.2,0) arc (0:27:0.7);
-    \node at (3.5, 0.15) {$\theta$};
+    % Calcolo esatto dei punti C e D per le perpendicolari
+    % Si muovono dal punto B lungo la direzione dei raggi per una lunghezza d*sin(theta)
+    \coordinate (C) at ($(B) + (180-\th:{\d*sin(\th)})$);
+    \coordinate (D) at ($(B) + (\th:{\d*sin(\th)})$);
     
-    % Differenza di cammino (perpendicolari)
-    \draw[dashed, thick] (2.5,0) -- (1.75,-0.75);
-    \draw[dashed, thick] (2.5,0) -- (3.25,-0.75);
+    % Differenza di cammino (perpendicolari tratteggiate)
+    \draw[dashed, thick] (A) -- (C);
+    \draw[dashed, thick] (A) -- (D);
     
-    % Evidenzia la differenza di cammino
-    \draw[ultra thick, colorD] (1.75,-0.75) -- (2.5,-1.5) node[midway, below left] {$d\sin\theta$};
-    \draw[ultra thick, colorD] (2.5,-1.5) -- (3.25,-0.75) node[midway, below right] {$d\sin\theta$};
+    % Evidenzia la differenza di cammino ottico (ispessimento)
+    \draw[ultra thick, orange] (C) -- (B) node[midway, below left] {$d\sin\theta$};
+    \draw[ultra thick, orange] (B) -- (D) node[midway, below right] {$d\sin\theta$};
+    
+    % Archi per gli angoli theta (centrati in A)
+    \draw (A) ++(180:0.7) arc (180:180-\th:0.7);
+    \node at ($(A) + (180-\th/2:0.9)$) {$\theta$};
+    
+    \draw (A) ++(0:0.7) arc (0:\th:0.7);
+    \node at ($(A) + (\th/2:0.9)$) {$\theta$};
+    
 \end{tikzpicture}
 \end{center}
 \vspace{0.5cm}
