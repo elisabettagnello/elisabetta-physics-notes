@@ -1,0 +1,171 @@
+\chapter{Esercizi: metodo di Debye-Scherrer e fattore di struttura}
+
+
+\section{Esercizio Debye-Scherrer: identificazione di strutture cubiche}
+
+\subsubsection{Formulazione del problema (Ashcroft-Mermin, pag. 108, Es. 1)}
+
+Si considerino tre campioni in polvere di cristalli cubici, analizzati con la tecnica di \textbf{Debye-Scherrer}. I tre campioni, denominati A, B e C, corrispondono (in ordine da determinare) a tre strutture:
+\begin{itemize}
+    \item una \textbf{FCC} (reticolo di Bravais);
+    \item una \textbf{BCC} (reticolo di Bravais);
+    \item una struttura \textbf{diamante} (FCC + base a 2 atomi).
+\end{itemize}
+
+\begin{nota}
+    Il reticolo reciproco è determinato \textbf{solo} dal reticolo di Bravais, non dalla base. La base può eliminare alcuni picchi (tramite il fattore di struttura), ma non altera la struttura geometrica del reticolo reciproco.
+\end{nota}
+
+\subsubsection{Dati sperimentali e formula di Debye-Scherrer}
+
+Gli angoli di scattering $\varphi$ misurati per i tre campioni sono riportati nella seguente tabella:
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        & $\varphi_1$ & $\varphi_2$ & $\varphi_3$ & $\varphi_4$ \\ \hline
+        \textbf{A} & $42.2^\circ$ & $49.2^\circ$ & $72.0^\circ$ & $87.3^\circ$ \\ \hline
+        \textbf{B} & $28.8^\circ$ & $41.0^\circ$ & $50.8^\circ$ & $59.6^\circ$ \\ \hline
+        \textbf{C} & $42.8^\circ$ & $73.2^\circ$ & $89.0^\circ$ & $115.0^\circ$ \\ \hline
+    \end{tabular}
+    \caption{Angoli di scattering misurati.}
+\end{table}
+
+\begin{equazione}{Formula di Debye-Scherrer}
+    La relazione tra il modulo del vettore del reticolo reciproco $|\mathbf{K}|$ e l'angolo di scattering $\varphi$ è:
+    \begin{equation}
+        |\mathbf{K}| = 2|\mathbf{k}|\sin\frac{\varphi}{2}
+    \end{equation}
+    dove $|\mathbf{k}| = \frac{2\pi}{\lambda}$ è il modulo del vettore d'onda incidente.
+\end{equazione}
+
+Calcoliamo i valori di $\sin(\varphi/2)$ per ciascun campione:
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        & $\sin(\varphi_1/2)$ & $\sin(\varphi_2/2)$ & $\sin(\varphi_3/2)$ & $\sin(\varphi_4/2)$ \\ \hline
+        \textbf{A} & $0.360$ & $0.416$ & $0.588$ & $0.690$ \\ \hline
+        \textbf{B} & $0.249$ & $0.350$ & $0.429$ & $0.497$ \\ \hline
+        \textbf{C} & $0.365$ & $0.596$ & $0.701$ & $0.843$ \\ \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{Metodo dei rapporti (indipendenza dalla lunghezza d'onda)}
+
+Per determinare la struttura cristallina \textbf{non è necessario conoscere la lunghezza d'onda} $\lambda$. Poiché il fattore $2|\mathbf{k}| = \frac{4\pi}{\lambda}$ è costante, il rapporto tra due moduli $|\mathbf{K}|$ è uguale al rapporto dei corrispondenti seni:
+
+\begin{equation}
+    \frac{|\mathbf{K}_i|}{|\mathbf{K}_j|} = \frac{\sin(\varphi_i/2)}{\sin(\varphi_j/2)}
+\end{equation}
+
+Normalizzando al primo valore ($K_1/K_1 = 1$):
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        & $K_1/K_1$ & $K_2/K_1$ & $K_3/K_1$ & $K_4/K_1$ \\ \hline
+        \textbf{A} & $1.00$ & $1.16$ & $1.63$ & $1.92$ \\ \hline
+        \textbf{B} & $1.00$ & $1.41$ & $1.72$ & $2.00$ \\ \hline
+        \textbf{C} & $1.00$ & $1.63$ & $1.92$ & $2.30$ \\ \hline
+    \end{tabular}
+\end{table}
+
+\textit{Valori di riferimento utili:}
+$\frac{2}{\sqrt{3}} \approx 1.155$, $\frac{2\sqrt{2}}{\sqrt{3}} \approx 1.633$, $\sqrt{2} \approx 1.414$, $\sqrt{3} \approx 1.732$.
+
+\subsubsection{Identificazione del campione FCC (campione A)}
+
+Se il campione è \textbf{FCC}, il suo reticolo reciproco è \textbf{BCC}. In un reticolo BCC con lato $a_{\text{rec}}$, le distanze dall'origine ai primi vicini (normalizzate a $K_1 = \frac{\sqrt{3}}{2} a_{\text{rec}}$) sono:
+
+\begin{itemize}
+    \item $\mathbf{K}_1$ (centro cubo): $\frac{\sqrt{3}}{2} a_{\text{rec}} \rightarrow 1$
+    \item $\mathbf{K}_2$ (vertice): $a_{\text{rec}} \rightarrow \frac{2}{\sqrt{3}} \approx 1.16$
+    \item $\mathbf{K}_3$ (faccia): $\sqrt{2} a_{\text{rec}} \rightarrow \frac{2\sqrt{2}}{\sqrt{3}} \approx 1.63$
+    \item $\mathbf{K}_4$ (centro secondo cubo): $\frac{\sqrt{11}}{2} a_{\text{rec}} \rightarrow \frac{\sqrt{11}}{\sqrt{3}} \approx 1.92$
+\end{itemize}
+
+I rapporti coincidono con quelli del \textbf{campione A}. Pertanto:
+\textbf{Campione A $\rightarrow$ FCC} (Reticolo reciproco: BCC).
+
+\subsubsection{Identificazione del campione diamante (campione C)}
+
+Il campione C presenta gli stessi picchi dell'FCC, ma manca il secondo picco ($1.16$). Questa è la firma della struttura \textbf{diamante}: un FCC con base in cui il fattore di struttura sopprime i picchi dove $h,k,l$ sono pari ma $h+k+l$ non è multiplo di 4.
+\textbf{Campione C $\rightarrow$ Diamante} (FCC + base).
+
+\subsubsection{Identificazione del campione BCC (campione B)}
+
+Se il campione è \textbf{BCC}, il suo reticolo reciproco è \textbf{FCC}. Le distanze (normalizzate a $K_1 = \frac{a_{\text{rec}}}{\sqrt{2}}$) sono:
+\begin{itemize}
+    \item $\mathbf{K}_1$ (centro faccia): $1$
+    \item $\mathbf{K}_2$ (vertice): $\sqrt{2} \approx 1.41$
+    \item $\mathbf{K}_3$: $\sqrt{3} \approx 1.73$
+    \item $\mathbf{K}_4$: $2.00$
+\end{itemize}
+Questi corrispondono al \textbf{campione B}. Pertanto:
+\textbf{Campione B $\rightarrow$ BCC} (Reticolo reciproco: FCC).
+
+\subsubsection{Caso della Zinc Blende}
+
+\begin{nota}
+    Nella \textbf{zinc blende} (atomi non equivalenti), i fattori di forma $f_1$ e $f_2$ sono diversi. Il fattore di struttura non si annulla mai completamente: i picchi soppressi nel diamante compaiono con intensità ridotta. La zinc blende mostrerebbe quindi gli stessi angoli del campione A (FCC puro).
+\end{nota}
+
+\section{Diamante come FCC + base: approccio con i vettori primitivi}
+
+\subsubsection{Vettori fondamentali e fattore di struttura}
+
+I vettori primitivi del reticolo reciproco BCC (dell'FCC) sono:
+\begin{equation}
+    \mathbf{B}_1 = \frac{2\pi}{a}(\hat{y} + \hat{z} - \hat{x}), \quad \mathbf{B}_2 = \frac{2\pi}{a}(\hat{z} + \hat{x} - \hat{y}), \quad \mathbf{B}_3 = \frac{2\pi}{a}(\hat{x} + \hat{y} - \hat{z})
+\end{equation}
+
+Il fattore di struttura per il diamante con base $\mathbf{d}_1 = 0, \mathbf{d}_2 = \frac{a}{4}(\hat{x}+\hat{y}+\hat{z})$ è:
+\begin{equation}
+    S(\mathbf{K}) = 1 + e^{-i\mathbf{K}\cdot\mathbf{d}_2}
+\end{equation}
+Calcolando il prodotto scalare $\mathbf{K} \cdot \mathbf{d}_2$ dove $\mathbf{K} = \sum N_i \mathbf{B}_i$:
+\begin{equation}
+    \mathbf{K} \cdot \mathbf{d}_2 = \frac{\pi}{2}(N_1 + N_2 + N_3)
+\end{equation}
+
+\begin{equazione}{Regola di selezione Diamante}
+    \begin{equation}
+        S(\mathbf{K}) = 1 + e^{-i\frac{\pi}{2}(N_1 + N_2 + N_3)}
+    \end{equation}
+    $S(\mathbf{K}) = 0$ se $\frac{N_1+N_2+N_3}{2}$ è \textbf{dispari}.
+\end{equazione}
+
+\section{FCC come cubico semplice + base a 4 atomi}
+
+L'esercizio 2 di Ashcroft-Mermin suggerisce di trattare l'FCC come un cubico semplice di lato $a$ con base:
+$\mathbf{d}_1 = 0$, $\mathbf{d}_2 = \frac{a}{2}(\hat{y}+\hat{z})$, $\mathbf{d}_3 = \frac{a}{2}(\hat{z}+\hat{x})$, $\mathbf{d}_4 = \frac{a}{2}(\hat{x}+\hat{y})$.
+
+\subsubsection{Calcolo del fattore di struttura}
+
+\begin{equation}
+    S(\mathbf{K}) = 1 + e^{-i\pi(k+l)} + e^{-i\pi(h+l)} + e^{-i\pi(h+k)}
+\end{equation}
+\begin{equation}
+    S(\mathbf{K}) = 1 + (-1)^{k+l} + (-1)^{h+l} + (-1)^{h+k}
+\end{equation}
+
+\begin{definizione}{Risultato parità FCC}
+    Il fattore di struttura è non nullo ($S=4$) se e solo se $h, k, l$ sono \textbf{tutti pari} o \textbf{tutti dispari}. Altrimenti $S=0$. 
+\end{definizione}
+
+\subsubsection{Considerazioni pratiche}
+
+Il professore consiglia l'uso della \textbf{"base falsa"} (cubico + base) per gli esercizi perché:
+\begin{itemize}
+    \item Permette di usare coordinate ortogonali.
+    \item Il modulo è banalmente $|\mathbf{K}| = \frac{2\pi}{a}\sqrt{h^2+k^2+l^2}$.
+    \item È facile ordinare i picchi in ordine crescente per confrontarli con i dati di Debye-Scherrer.
+\end{itemize}
+
+\begin{nota}
+    Il reticolo reciproco risultante applicando queste regole di selezione a un cubico semplice di lato $2\pi/a$ è un \textbf{BCC} con lato convenzionale $4\pi/a$.
+\end{nota}
