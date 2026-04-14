@@ -1,0 +1,949 @@
+\chapter{Lezione 3}
+
+\textbf{Argomenti:} Membrana bilipidica, canali ionici, specie ioniche, equazione di Nernst-Planck, equazione di Nernst, potenziale di equilibrio/reversione, pompe ioniche, modello Goldman-Hodgkin-Katz, potenziale di riposo
+
+\vspace{0.5cm}
+\noindent\rule{\textwidth}{0.4pt}
+
+\section{Il Neurone come Dispositivo Elettrochimico}
+
+
+Il punto di partenza di questa lezione è apparentemente paradossale: il mezzo cerebrale è, a livello macroscopico, privo di cariche nette. Eppure nei neuroni si misura con grande precisione una differenza di potenziale tra il compartimento intracellulare e quello extracellulare. Come è possibile conciliare queste due osservazioni? La risposta risiede nella struttura microscopica della \textbf{membrana neuronale} e nella distribuzione spazialmente non casuale degli ioni ai suoi bordi. Questa lezione si propone di costruire, passo per passo, il quadro teorico che spiega l'origine di tale differenza di potenziale.
+
+\subsubsection{Anatomia Funzionale del Neurone}
+
+Prima di concentrarsi sulla membrana, è utile richiamare l'architettura del neurone nei suoi compartimenti principali, così come introdotta nella lezione precedente.
+
+Il neurone è organizzato attorno a tre grandi strutture funzionali:
+
+\begin{itemize}
+    \item \textbf{Albero dendritico:} costituisce il compartimento di ingresso (\textit{input}) del neurone. Riceve i segnali provenienti da altri neuroni attraverso i contatti sinaptici localizzati sulle spine dendritiche. Le correnti ioniche generate a livello sinaptico si propagano lungo i dendriti verso il soma.
+    \item \textbf{Soma:} è il corpo cellulare, sede dell'integrazione delle correnti provenienti dall'albero dendritico. Le proprietà elettriche passive e attive della membrana del soma determinano se e quando il neurone genera un segnale di uscita. Come vedremo nella prossima lezione, il soma è dotato di \textbf{componenti attive della membrana} capaci di amplificare le correnti e produrre il \textbf{potenziale d'azione}.
+    \item \textbf{Assone:} è il compartimento di uscita (\textit{output}) del neurone. Conduce i potenziali d'azione dal soma verso i \textbf{bottoni sinaptici presinaptici} (\textit{synaptic boutons}), dove viene trasmesso il segnale al neurone successivo. L'assone è tipicamente avvolto dalla \textbf{mielina}, una guaina isolante prodotta dalle cellule di Schwann (nel sistema nervoso periferico) o dagli oligodendrociti (nel sistema nervoso centrale). La mielina consente una propagazione più efficiente del segnale elettrico, riducendo la dispersione e il consumo energetico.
+\end{itemize}
+
+Il flusso d'informazione è quindi: dendriti $\rightarrow$ soma $\rightarrow$ assone $\rightarrow$ bottoni sinaptici.
+
+\subsubsection{La Domanda Centrale della Lezione}
+
+Il focus di questa lezione è sul soma e, in particolare, su una piccola sezione della sua membrana. La domanda che ci poniamo è: \textbf{come si genera una differenza di potenziale tra l'interno e l'esterno della cellula, senza che il mezzo sia macroscopicamente carico?}
+
+Per rispondere, isoliamo concettualmente un piccolo \textit{patch} della membrana del soma e analizziamo cosa accade alla distribuzione degli ioni nelle immediate vicinanze.
+
+\section{La Membrana Bilipidica come Capacitore}
+
+\subsubsection{Struttura del Doppio Strato Lipidico}
+
+La membrana cellulare è un \textbf{doppio strato lipidico} (\textit{bilipidic layer}): due fogli di molecole fosfolipidiche disposti con le code idrofobiche rivolte verso l'interno e le teste idrofiliche verso i mezzi acquosi intracellulare ed extracellulare. Questa struttura la rende un ottimo \textbf{isolante elettrico}: in linea di principio, nessun ion può attraversarla spontaneamente.
+
+Le dimensioni caratteristiche sono fondamentali per comprendere le approssimazioni che useremo nel seguito:
+
+\begin{itemize}
+    \item \textbf{Spessore della membrana:} $A \approx 5\,\text{nm}$
+    \item \textbf{Raggio tipico di un assone:} $r \approx 5\,\mu\text{m}$
+\end{itemize}
+
+Il rapporto $A/r \approx 10^{-3}$, cioè lo spessore della membrana è circa \textbf{1000 volte più piccolo} del raggio dell'assone. Questa disparità di scale ha una conseguenza geometrica fondamentale: su qualsiasi \textit{patch} di membrana di dimensioni non trascurabili, la superficie può essere considerata \textbf{piana}, esattamente come le placche di un condensatore piano.
+
+\subsubsection{La Membrana come Condensatore}
+
+Il fatto che la membrana sia un isolante con due conduttori (il liquido intracellulare e quello extracellulare) ai suoi lati la rende funzionalmente equivalente a un \textbf{condensatore}. La capacità per unità di superficie della membrana è un parametro ben misurato sperimentalmente:
+
+\begin{equation}
+C_m \approx 1\,\mu\text{F/cm}^2
+\end{equation}
+
+Questa grandezza entra direttamente nel calcolo del numero di cariche che devono spostarsi per modificare il potenziale di membrana.
+
+\subsubsection{Neutralità Macroscopica e Distribuzione Microscopica}
+
+Un punto concettualmente sottile, ma cruciale, è la seguente osservazione: la neutralità macroscopica del mezzo è compatibile con la presenza di un campo elettrico locale nelle immediate vicinanze della membrana.
+
+Consideriamo tre volumi distinti:
+
+\begin{enumerate}
+    \item \textbf{Volume intracellulare (lontano dalla membrana):} il conteggio degli ioni positivi e negativi dà zero carica netta.
+    \item \textbf{Volume extracellulare (lontano dalla membrana):} ugualmente, la carica netta è zero.
+    \item \textbf{Volume "mesoscopico" attorno alla membrana:} anche questo volume contiene lo stesso numero di cariche positive e negative. Tuttavia, la loro distribuzione \textbf{non è casuale}: la maggior parte delle cariche positive si accumula sulla superficie esterna della membrana, e un numero non trascurabile di cariche negative si addensa sulla superficie interna.
+\end{enumerate}
+
+Questo è il punto chiave: la neutralità locale è preservata a scala macroscopica, ma la distribuzione spazialmente non uniforme delle cariche nelle immediate vicinanze della membrana genera un \textbf{campo elettrico locale} orientato dall'esterno verso l'interno. 
+
+\section{I Canali Ionici}
+
+\subsubsection{L'Eccezione all'Impermeabilità della Membrana}
+
+Se la membrana fosse un isolante perfetto, non ci sarebbe alcun flusso ionico e il potenziale di membrana sarebbe determinato esclusivamente dalla distribuzione iniziale degli ioni. In realtà, la membrana è percorsa da un'alta densità di \textbf{canali ionici}: macromolecole proteiche transmembrana che attraversano l'intero spessore del doppio strato lipidico e formano un poro acquoso attraverso il quale specifici ioni possono diffondere.
+
+\subsubsection{Specificità dei Canali Ionici}
+
+I canali ionici sono \textbf{selettivi}: ogni tipo di canale è permeabile a una sola specie ionica (o a un gruppo ristretto di specie chimicamente simili). Esistono pertanto:
+
+\begin{itemize}
+    \item Canali per il \textbf{potassio} (K$^+$)
+    \item Canali per il \textbf{sodio} (Na$^+$)
+    \item Canali per il \textbf{cloruro} (Cl$^-$)
+    \item Canali per il \textbf{calcio} (Ca$^{2+}$)
+\end{itemize}
+
+La \textbf{densità di canali} per unità di superficie della membrana determina la \textbf{mobilità} degli ioni di quella specie attraverso la membrana, e quindi la \textbf{resistenza} che la membrana oppone al loro flusso.
+
+\subsubsection{Scoperta Recente: i Canali Ionici si Muovono}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "Circa sette anni fa ho scoperto — con mia stessa sorpresa, dato che si trattava di una verità consolidata della biologia strutturale — che i canali ionici non sono fissi nella membrana. Questi macromolecole si trovano in continuo movimento laterale all'interno del doppio strato lipidico. Questo complica notevolmente il quadro teorico classico, ma per gli scopi di questa lezione non vogliamo rendere la storia troppo difficile."
+\end{tcolorbox}
+
+Per oggi, facciamo quindi l'assunzione semplificativa che la \textbf{mobilità degli ioni attraverso la membrana sia costante}, ovvero che non dipenda né dalla concentrazione degli ioni né dal potenziale di membrana. Questo significa che trattiamo esclusivamente le \textbf{proprietà elettriche passive} della membrana. La dipendenza della mobilità dal potenziale di membrana — fondamentale per la generazione del potenziale d'azione — sarà discussa nella prossima lezione.
+
+
+\section{Le Specie Ioniche Principali}
+
+Nel contesto delle proprietà elettriche del soma neuronale, le specie ioniche rilevanti sono essenzialmente quattro. Descriviamo ciascuna con le sue caratteristiche principali.
+
+\textbf{Potassio (K$^+$):}\\
+La valenza è $Z_K = +1$. Il potassio è la specie ionica \textbf{più abbondante all'interno} della cellula. Nella corteccia cerebrale dei mammiferi, la concentrazione intracellulare è circa $C_K^{in} = 140\,\text{mM}$, mentre quella extracellulare è circa $C_K^{out} = 5\,\text{mM}$. Il gradiente di concentrazione spinge gli ioni K$^+$ verso l'esterno.
+
+\textbf{Sodio (Na$^+$):}\\
+La valenza è $Z_{Na} = +1$. Il sodio ha una situazione opposta al potassio: è molto più abbondante \textbf{fuori} dalla cellula ($C_{Na}^{out} \approx 142\,\text{mM}$) rispetto all'interno ($C_{Na}^{in} \approx 10\,\text{mM}$). Il gradiente di concentrazione spinge gli ioni Na$^+$ verso l'interno.
+
+\textbf{Cloruro (Cl$^-$):}\\
+La valenza è $Z_{Cl} = -1$. Il cloruro è uno ione negativo con una distribuzione analoga al sodio: più abbondante all'esterno che all'interno. Il suo ruolo nelle proprietà passive del soma è considerato minore rispetto a K$^+$ e Na$^+$, ma contribuisce in modo non trascurabile al potenziale di riposo.
+
+\textbf{Calcio (Ca$^{2+}$):}\\
+La valenza è $Z_{Ca} = +2$. Il calcio ha una concentrazione intracellulare estremamente bassa, dell'ordine del nanomolare ($C_{Ca}^{in} \approx 10^{-4}\,\text{mM}$), mentre la concentrazione extracellulare è di circa $C_{Ca}^{out} \approx 2.5\,\text{mM}$. Il calcio non verrà trattato in questa lezione, ma riveste un ruolo fondamentale in due contesti che affronteremo in seguito:
+
+\begin{enumerate}
+    \item La \textbf{trasmissione sinaptica}: il Ca$^{2+}$ è il segnale che innesca il rilascio dei neurotrasmettitori nei bottoni sinaptici.
+    \item La \textbf{regolazione della frequenza di scarica} (\textit{firing rate}) del neurone: un afflusso di Ca$^{2+}$ nel soma può modificare la permeabilità della membrana ad altri ioni.
+\end{enumerate}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Senza complicare eccessivamente il quadro, ci limitiamo oggi a K$^+$, Na$^+$ e Cl$^-$ come protagonisti principali. Il Ca$^{2+}$ sarà discusso nelle prossime lezioni.
+\end{tcolorbox}
+
+
+
+\section{Flusso Molare e Origine del Campo Elettrico}
+
+\subsubsection{Il Flusso Molare}
+
+Per quantificare il movimento degli ioni attraverso la membrana, introduciamo il \textbf{flusso molare} $\mathbf{J}^{(s)}$ della specie $s$: un vettore che rappresenta il numero di moli di ioni che attraversano l'unità di superficie nell'unità di tempo, espresso in $[\text{mol}/\text{m}^2\text{s}]$.
+
+I flussi molari dipendono in generale dalla posizione nello spazio (sono \textbf{campi vettoriali}) e dal tempo, poiché il sistema biologico è tipicamente fuori dall'equilibrio.
+
+\subsubsection{Flusso Diffusivo e Squilibrio di Cariche}
+
+Consideriamo il caso del potassio: la sua concentrazione è molto maggiore all'interno ($140\,\text{mM}$) che all'esterno ($5\,\text{mM}$). Questa differenza di concentrazione costituisce un \textbf{gradiente di concentrazione} che, termodinamicamente, tende a equalizzarsi per aumentare l'entropia del sistema. Il risultato è un \textbf{flusso diffusivo} $J_D$ di ioni K$^+$ dall'interno verso l'esterno.
+
+Questo flusso di ioni K$^+$ verso l'esterno crea uno \textbf{squilibrio di cariche}: si accumulano cariche positive sulla superficie esterna della membrana, mentre si crea un deficit di cariche positive (equivalente a un eccesso di cariche negative) sulla superficie interna. La membrana si comporta così come un \textbf{condensatore carico}, con:
+
+\begin{itemize}
+    \item Superficie esterna: $\rho_+ > 0$ (eccesso di cariche positive)
+    \item Superficie interna: $\rho_- < 0$ (eccesso di cariche negative)
+\end{itemize}
+
+Questa distribuzione genera un \textbf{campo elettrico} $\mathbf{E}$ orientato dall'esterno verso l'interno, che tende a rallentare il flusso di K$^+$ verso l'esterno e ad attrarre le cariche positive verso l'interno. Nasce così un \textbf{flusso di deriva} $J_E$ in direzione opposta al flusso diffusivo $J_D$.
+
+\subsubsection{Verso la Competizione tra i Due Flussi}
+
+Il quadro fisico che emerge è quindi quello di una competizione tra due contributi al flusso molare totale:
+
+\begin{equation}
+J_{tot}^{(s)} = J_D^{(s)} + J_E^{(s)}
+\end{equation}
+
+Il sistema evolve verso uno stato di equilibrio in cui questi due contributi si compensano esattamente, ovvero in cui il flusso netto di ioni è zero. Questo stato di equilibrio è descritto dall'\textbf{equazione di Nernst}.
+
+
+\section{Il Potenziale di Membrana}
+
+\subsubsection{Asse di Riferimento}
+
+Prima di procedere con la derivazione formale, fissiamo un sistema di riferimento che useremo nel seguito. Consideriamo un \textit{patch} di membrana e orientiamo l'asse $x$ \textbf{perpendicolare} alla membrana:
+
+\begin{itemize}
+    \item $x = 0$: parete interna della membrana (a contatto con il citoplasma)
+    \item $x = A$: parete esterna della membrana (a contatto con il mezzo extracellulare)
+    \item $A \approx 5\,\text{nm}$: spessore della membrana
+\end{itemize}
+
+All'interno della membrana ($0 < x < A$) il campo elettrico è non nullo. Al di fuori (nel mezzo intracellulare o extracellulare), poiché la neutralità macroscopica è preservata, il campo elettrico è asintoticamente nullo.
+
+\subsubsection{Definizione del Potenziale di Membrana}
+
+Nell'esempio del potassio che fluisce verso l'esterno, le cariche positive si accumulano all'esterno e le negative all'interno. Il campo elettrico $\mathbf{E}$ è orientato dall'esterno verso l'interno (nella direzione $-x$). Poiché il campo è il gradiente negativo del potenziale, questo significa che il potenziale \textbf{decresce} andando dall'esterno verso l'interno:
+
+\begin{equation}
+\phi_{out} > \phi_{in}
+\end{equation}
+
+La \textbf{convenzione standard} per il potenziale di membrana è:
+
+\begin{equation}
+\boxed{V_m = V_{in} - V_{out} = \phi(0) - \phi(A)}
+\end{equation}
+
+In questa convenzione, per la situazione descritta sopra, $V_m < 0$. Questa è esattamente la situazione fisiologica: il potenziale di riposo dei neuroni è tipicamente compreso tra $-60\,\text{mV}$ e $-90\,\text{mV}$.
+
+\subsubsection{Interpretazione in Termini di Correnti}
+
+Con la convenzione stabilita:
+
+\begin{itemize}
+    \item Un \textbf{flusso di ioni positivi} nella direzione $+x$ (dall'interno verso l'esterno) corrisponde a una \textbf{corrente positiva}.
+    \item Un \textbf{flusso di ioni positivi} nella direzione $-x$ (dall'esterno verso l'interno) corrisponde a una \textbf{corrente negativa}.
+\end{itemize}
+
+Per il potassio nel regime di equilibrio:
+\begin{itemize}
+    \item Il flusso diffusivo $J_D > 0$ (da dentro verso fuori): corrente positiva, guidata dal gradiente di concentrazione.
+    \item Il flusso di deriva $J_E < 0$ (da fuori verso dentro): corrente negativa, guidata dal campo elettrico che tende a riportare i K$^+$ all'interno.
+\end{itemize}
+
+All'equilibrio, questi due contributi si annullano.
+
+\section{Il Flusso di Deriva: La Legge di Ohm Riformulata}
+
+\subsubsection{Velocità degli Ioni in un Campo Elettrico}
+
+Consideriamo una specie ionica $s$ con valenza $Z_s$ e mobilità $\mu_s$. In presenza di un campo elettrico $\mathbf{E}$, gli ioni acquistano una velocità di deriva proporzionale al campo e alla loro mobilità:
+
+\begin{equation}
+\mathbf{v}_s = Z_s \mu_s \mathbf{E}
+\end{equation}
+
+Il fattore $Z_s$ tiene conto del segno della carica: uno ione positivo si muove nella direzione del campo, uno negativo nella direzione opposta. La mobilità $\mu_s$ è inversamente proporzionale alla resistenza del mezzo al moto degli ioni.
+
+Poiché, come discusso nella lezione precedente, le variazioni del campo magnetico nel tempo sono trascurabili nelle condizioni neurofisiologiche, la legge di Maxwell-Faraday garantisce che il rotore del campo elettrico sia zero:
+
+\begin{equation}
+\nabla \times \mathbf{E} = 0
+\end{equation}
+
+Questo significa che $\mathbf{E}$ è un \textbf{campo conservativo} e può essere scritto come il gradiente negativo di un potenziale scalare $\phi$:
+
+\begin{equation}
+\mathbf{E} = -\nabla\phi
+\end{equation}
+
+Sostituendo:
+
+\begin{equation}
+\mathbf{v}_s = -Z_s \mu_s \nabla\phi
+\end{equation}
+
+\subsubsection{Espressione del Flusso di Deriva}
+
+Il \textbf{flusso molare di deriva} $\mathbf{J}_E^{(s)}$ si ottiene moltiplicando la velocità per la concentrazione locale degli ioni:
+
+\begin{equation}
+\mathbf{J}_E^{(s)} = C_s \mathbf{v}_s = -Z_s \mu_s C_s \nabla\phi
+\end{equation}
+
+In forma monodimensionale (asse $x$ ortogonale alla membrana):
+
+\begin{equation}
+J_E^{(s)} = -Z_s \mu_s C(x) \frac{d\phi}{dx}
+\end{equation}
+
+\subsubsection{Collegamento con la Legge di Ohm}
+
+Moltiplicando il flusso molare per $Z_s F$ (dove $F$ è la \textbf{costante di Faraday}, $F \approx 96485\,\text{C/mol}$), si ottiene la \textbf{densità di corrente} $i_s = Z_s F J_E^{(s)}$:
+
+\begin{equation}
+i_s = Z_s F \cdot \left(-Z_s \mu_s C_s \frac{d\phi}{dx}\right) = -Z_s^2 F \mu_s C_s \frac{d\phi}{dx}
+\end{equation}
+
+Questa è esattamente la \textbf{legge di Ohm} in forma differenziale: la corrente è proporzionale alla differenza di potenziale (o al suo gradiente), e la costante di proporzionalità è $1/R$, dove la resistenza è inversamente proporzionale alla mobilità $\mu_s$.
+
+
+
+\section{Il Flusso Diffusivo: Prima Legge di Fick e Relazione di Einstein}
+
+\subsubsection{Prima Legge di Fick}
+
+Il flusso di ioni dovuto al gradiente di concentrazione è descritto dalla \textbf{prima legge di Fick} (enunciata da Adolf Fick nel 1855):
+
+\begin{equation}
+\mathbf{J}_D^{(s)} = -D_s \nabla C_s
+\end{equation}
+
+In forma monodimensionale:
+
+\begin{equation}
+J_D^{(s)} = -D_s \frac{dC_s}{dx}
+\end{equation}
+
+dove $D_s\,[\text{m}^2/\text{s}]$ è il \textbf{coefficiente di diffusione} della specie $s$. Il segno negativo indica che il flusso è diretto dalla regione a maggiore concentrazione verso quella a minore concentrazione (in direzione opposta al gradiente).
+
+\subsubsection{Relazione di Einstein (Nernst-Einstein)}
+
+Il coefficiente di diffusione non è indipendente dalla mobilità degli ioni. La \textbf{relazione di Einstein} (o relazione di Nernst-Einstein) mette in relazione $D_s$ con $\mu_s$:
+
+\begin{equation}
+\boxed{D_s = \frac{RT}{F} \mu_s}
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $R = 8.314\,\text{J/(mol K)}$: costante dei gas
+    \item $T$: temperatura assoluta in Kelvin
+    \item $F = 96485\,\text{C/mol}$: costante di Faraday
+    \item $\mu_s$: mobilità della specie $s$
+\end{itemize}
+
+Questa relazione ha un contenuto fisico profondo: essa afferma che \textbf{diffusione e mobilità sono due aspetti dello stesso fenomeno microscopico}, ovvero l'agitazione termica delle molecole nel solvente. In particolare:
+
+\begin{itemize}
+    \item Maggiore è la temperatura $T$, maggiore è $D_s$ e quindi più intenso è il flusso diffusivo.
+    \item Maggiore è la mobilità $\mu_s$ (ovvero, minore è la resistenza del mezzo), maggiore è la facilità con cui gli ioni si muovono sia sotto l'influenza del campo elettrico sia per diffusione.
+\end{itemize}
+
+Il flusso diffusivo diventa quindi:
+
+\begin{equation}
+J_D^{(s)} = -\frac{RT\mu_s}{F} \frac{dC_s}{dx}
+\end{equation}
+
+
+\section{L'Equazione di Nernst-Planck}
+
+\subsubsection{Derivazione dell'Equazione Completa}
+
+Combinando il flusso di deriva e il flusso diffusivo, si ottiene il \textbf{flusso molare totale} per la specie $s$:
+
+\begin{equation}
+\mathbf{J}^{(s)} = \mathbf{J}_E^{(s)} + \mathbf{J}_D^{(s)} = -Z_s \mu_s C_s \nabla\phi - \frac{RT\mu_s}{F} \nabla C_s
+\end{equation}
+
+Raccogliendo la mobilità $\mu_s$:
+
+\begin{equation}
+\boxed{\mathbf{J}^{(s)} = -\mu_s \left( Z_s C_s \nabla\phi + \frac{RT}{F} \nabla C_s \right)}
+\end{equation}
+
+Questa è l'\textbf{equazione di Nernst-Planck}, che descrive il trasporto ionico in presenza sia di un campo elettrico sia di un gradiente di concentrazione. Si tratta di uno strumento fondamentale non solo per la neurofisiologia, ma per tutta la biofisica delle membrane.
+
+\subsubsection{L'Approssimazione Planare della Membrana}
+
+La condizione $A \ll r$ (spessore della membrana molto minore del raggio dell'assone) ci permette di trattare ogni \textit{patch} di membrana come un \textbf{condensatore piano} con facce parallele infinite. Le conseguenze di questa approssimazione sono:
+
+\begin{enumerate}
+    \item Il campo elettrico all'interno della membrana è \textbf{sempre perpendicolare} alle facce.
+    \item L'unica direzione spaziale rilevante è $x$, l'asse ortogonale alla membrana.
+    \item I gradienti nelle direzioni tangenziali alla membrana sono trascurabili.
+\end{enumerate}
+
+L'equazione di Nernst-Planck si riduce quindi a una \textbf{forma monodimensionale}:
+
+\begin{equation}
+\boxed{J^{(s)} = -\mu_s \left( Z_s C_s(x) \frac{d\phi}{dx} + \frac{RT}{F} \frac{dC_s}{dx} \right)}
+\end{equation}
+
+dove $J^{(s)}$ è ora uno scalare (positivo verso l'esterno, negativo verso l'interno) e la derivata è rispetto alla coordinata $x$.
+
+
+
+\section{Potenziale di Equilibrio per Singola Specie: Derivazione dell'Equazione di Nernst}
+
+\subsubsection{Ipotesi Semplificative}
+
+Prima di affrontare il caso generale con più specie ioniche, studiamo il caso più semplice: \textbf{una sola specie ionica} (ad esempio K$^+$) in condizioni di \textbf{equilibrio termodinamico}. Le ipotesi sono:
+
+\begin{enumerate}
+    \item \textbf{Una sola specie ionica:} ignoriamo per ora la presenza di Na$^+$, Cl$^-$, etc.
+    \item \textbf{Equilibrio:} il flusso molare netto è zero, $J^{(K)} = 0$.
+    \item \textbf{Concentrazioni ai bordi costanti:} $C(0) = C_{in}$ e $C(A) = C_{out}$ sono fissate (le pompe ioniche mantengono costanti le concentrazioni intracellulare ed extracellulare).
+\end{enumerate}
+
+
+
+Dalla condizione di equilibrio $J^{(K)} = 0$, l'equazione di Nernst-Planck diventa:
+
+\begin{equation}
+0 = -\mu \left( Z C \frac{d\phi}{dx} + \frac{RT}{F} \frac{dC}{dx} \right)
+\end{equation}
+
+Poiché $\mu \neq 0$, la parentesi deve essere zero:
+
+\begin{equation}
+Z C \frac{d\phi}{dx} + \frac{RT}{F} \frac{dC}{dx} = 0
+\end{equation}
+
+Separando le variabili e dividendo per $C$:
+
+\begin{equation}
+\frac{ZF}{RT} d\phi = -\frac{dC}{C} = -d(\ln C)
+\end{equation}
+
+
+
+Integrando entrambi i membri da $x = 0$ a $x = A$:
+
+\begin{equation}
+\frac{ZF}{RT} \int_0^A d\phi = -\int_0^A d(\ln C)
+\end{equation}
+
+\begin{equation}
+\frac{ZF}{RT} \left[\phi(A) - \phi(0)\right] = \ln C(0) - \ln C(A) = \ln \frac{C_{in}}{C_{out}}
+\end{equation}
+
+Ricordando che $\phi(0) = V_{in}$, $\phi(A) = V_{out}$, e la convenzione $V_m = V_{in} - V_{out}$:
+
+\begin{equation}
+\frac{ZF}{RT}(V_{out} - V_{in}) = \ln \frac{C_{in}}{C_{out}}
+\end{equation}
+
+\begin{equation}
+-\frac{ZF}{RT} V_m = \ln \frac{C_{in}}{C_{out}}
+\end{equation}
+
+Invertendo:
+
+\begin{equation}
+\boxed{E_s \equiv V_m^{eq} = \frac{RT}{ZF} \ln \frac{C_{out}}{C_{in}}}
+\end{equation}
+
+Questa è la celebre \textbf{equazione di Nernst}, che fornisce il \textbf{potenziale di equilibrio} (o \textbf{potenziale di Nernst}) per la specie ionica $s$. È il valore di $V_m$ al quale il flusso netto di quella specie attraverso la membrana è zero.
+
+\subsection{Il Ruolo delle Pompe Ioniche nel Mantenimento dell'Equilibrio}
+
+Un aspetto importante che emerge da questa analisi è il ruolo delle \textbf{pompe ioniche}. Nel caso di una singola specie ionica in equilibrio, la condizione $J = 0$ è effettivamente soddisfatta e le concentrazioni $C_{in}$ e $C_{out}$ non cambiano nel tempo. In questo caso le pompe ioniche non sarebbero necessarie.
+
+Tuttavia, in presenza di più specie ioniche (come nella situazione fisiologica reale), il sistema non può essere simultaneamente all'equilibrio per tutte le specie, e quindi c'è sempre un flusso netto residuo. Le pompe ioniche intervengono per \textbf{mantenere costanti} le concentrazioni intracellulari ed extracellulari contro questi flussi.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+ Le pompe ioniche sono dispositivi attivi: consumano energia metabolica (ATP) per trasportare ioni contro il loro gradiente elettrochimico. Tuttavia  il lavoro che devono svolgere è sorprendentemente piccolo: è per questo motivo che il cervello umano consuma solo circa 20 W (o 50 W se si considera l'intero metabolismo cerebrale). Le pompe lavorano molto vicino all'equilibrio e il numero di cariche che devono essere compensate ad ogni spike è una frazione minuscola del totale.
+\end{tcolorbox}
+
+\section{Il Potenziale di Reversione: Numeri Reali}
+
+\subsubsection{Significato Fisico del Potenziale di Nernst}
+
+Il potenziale di Nernst $E_s$ è anche detto \textbf{potenziale di reversione} (\textit{reversal potential}) perché rappresenta il valore di $V_m$ al quale la corrente portata dalla specie $s$ si inverte di segno: per $V_m > E_s$ la corrente fluisce in una direzione, per $V_m < E_s$ nella direzione opposta.
+
+Questo concetto è di grande utilità sperimentale: iniettando una corrente esterna nel neurone e variando il potenziale di membrana, si può determinare il potenziale di reversione di una specifica conduttanza ionica come il valore di $V_m$ al quale quella corrente cambia segno.
+
+\subsubsection{Calcolo dei Potenziali di Nernst per le Principali Specie Ioniche}
+
+La costante $RT/F$ assume un valore determinato dalla temperatura. A $T = 37^\circ\text{C} = 310\,\text{K}$ (temperatura corporea dei mammiferi):
+
+\begin{equation}
+\frac{RT}{F} = \frac{8.314 \times 310}{96485} \approx 26.7\,\text{mV}
+\end{equation}
+
+Il fattore numerico è quindi $RT/F \approx 26.7\,\text{mV}$, che viene talvolta approssimato a $25\,\text{mV}$ (a $20^\circ\text{C}$) o $27\,\text{mV}$ (a $37^\circ\text{C}$). Il professore utilizza nella sua derivazione la notazione $RT/F \approx 62\,\text{mV}$ per $Z=1$, che deriva dalla formula con il logaritmo in base 10: $2.303 \times RT/F \approx 61.5\,\text{mV}$, arrotondato a $62\,\text{mV}$.
+
+\textbf{Potenziale di Nernst del Potassio (mammifero):}
+
+\begin{equation}
+E_K = \frac{RT}{F} \ln \frac{C_K^{out}}{C_K^{in}} = 62\,\text{mV} \cdot \log_{10}\frac{5}{140} \approx -89\,\text{mV}
+\end{equation}
+
+\textbf{Potenziale di Nernst del Sodio (mammifero):}
+
+\begin{equation}
+E_{Na} = \frac{RT}{F} \ln \frac{C_{Na}^{out}}{C_{Na}^{in}} = 62\,\text{mV} \cdot \log_{10}\frac{142}{10} \approx +71\,\text{mV}
+\end{equation}
+
+Il professore cita $\approx +100\,\text{mV}$ come ordine di grandezza per il potenziale di Nernst del sodio.
+
+\textbf{Potenziale di Nernst del Cloruro (mammifero):}
+
+\begin{equation}
+E_{Cl} = \frac{RT}{(-1)F} \ln \frac{C_{Cl}^{out}}{C_{Cl}^{in}} = -62\,\text{mV} \cdot \log_{10}\frac{110}{10} \approx -62\,\text{mV}
+\end{equation}
+
+Il cloruro, avendo valenza $-1$, ha il potenziale di Nernst con segno opposto rispetto a quanto ci si aspetterebbe dalla sola distribuzione di concentrazione: il risultato è circa $-70\,\text{mV}$, molto vicino al potenziale di Nernst del potassio.
+
+\textbf{Potenziale di Nernst del Calcio (mammifero):}
+
+\begin{equation}
+E_{Ca} = \frac{RT}{2F} \ln \frac{C_{Ca}^{out}}{C_{Ca}^{in}} = \frac{62}{2}\,\text{mV} \cdot \log_{10}\frac{2.5}{10^{-4}} \approx +136\,\text{mV}
+\end{equation}
+
+Il potenziale di Nernst del calcio è elevatissimo e positivo, a causa della concentrazione intracellulare quasi nulla.
+
+
+\subsubsection{Il Problema del Compromesso}
+
+L'osservazione cruciale è che \textbf{non esiste un singolo valore di $V_m$ che soddisfi simultaneamente le condizioni di equilibrio per K$^+$, Na$^+$ e Cl$^-$}. In particolare:
+
+\begin{itemize}
+    \item $E_K \approx -89\,\text{mV}$: il potenziale di equilibrio del potassio è molto negativo.
+    \item $E_{Na} \approx +70\text{ a }+100\,\text{mV}$: il potenziale di equilibrio del sodio è molto positivo.
+    \item $E_{Cl} \approx -70\,\text{mV}$: il potenziale di equilibrio del cloruro è vicino a quello del potassio.
+\end{itemize}
+
+Il neurone deve trovare un \textbf{compromesso} tra questi potenziali in competizione. Questo compromesso determina il \textbf{potenziale di riposo} del neurone, che è sempre compreso tra i valori estremi dei potenziali di Nernst. Ma questo compromesso implica necessariamente che ci sia sempre un \textbf{flusso netto} di almeno alcune specie ioniche attraverso la membrana, che deve essere compensato dalle pompe ioniche.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+ Il fatto che non si possa trovare un potenziale simultaneamente all'equilibrio per il sodio e il potassio è la radice profonda del fatto che il neurone è un sistema \textit{fuori dall'equilibrio}. Questo non è un difetto: è il motivo per cui i neuroni \textit{funzionano}.
+\end{tcolorbox}
+
+\section{Struttura delle Pompe Ioniche}
+
+Le \textbf{pompe ioniche} sono proteine transmembrana che trasportano attivamente ioni contro il loro gradiente elettrochimico, consumando energia metabolica sotto forma di ATP. A differenza dei canali ionici (che consentono un flusso passivo secondo il gradiente), le pompe eseguono un lavoro meccanico-chimico per spostare gli ioni "in salita".
+
+L'esempio più importante è la \textbf{Na$^+$/K$^+$-ATPasi} (pompa sodio-potassio):
+
+\begin{itemize}
+    \item Espelle \textbf{3 ioni Na$^+$} verso l'esterno per ogni ciclo
+    \item Importa \textbf{2 ioni K$^+$} verso l'interno per ogni ciclo
+    \item Idrolizza \textbf{1 molecola di ATP} per ogni ciclo
+    \item Il trasporto è elettrogenico (carica netta $-1$ per ciclo), contribuendo leggermente alla negatività del potenziale di membrana
+\end{itemize}
+
+
+Un risultato sorprendente che emerge dall'analisi quantitativa è che le pompe ioniche svolgono un lavoro \textbf{molto piccolo} rispetto a quanto si potrebbe intuitivamente pensare. Il motivo è che il numero di ioni che attraversano la membrana durante un evento elettrico (come un potenziale d'azione) è una frazione minuscola del pool ionico totale disponibile.
+
+Questa efficienza è alla base del basso consumo energetico del cervello: nonostante la complessità dei calcoli eseguiti, il cervello umano consuma solo circa \textbf{20 W} di potenza metabolica.
+
+\section{Stima dell'Energia delle Pompe Ioniche: Quante Cariche si Scambiano?}
+
+Per valutare quantitativamente il lavoro delle pompe ioniche, consideriamo un segmento cilindrico di assone con raggio $r$ e lunghezza $l$. Vogliamo calcolare il rapporto tra le cariche scambiate attraverso la membrana durante un potenziale d'azione e le cariche totali contenute nel volume intracellulare.
+
+
+
+La \textbf{superficie laterale} del cilindro (la parte di membrana che ci interessa) è:
+
+\begin{equation}
+S = 2\pi r l
+\end{equation}
+
+Quando il potenziale di membrana cambia di $\Delta V$ (durante uno spike, $\Delta V \approx 100\,\text{mV}$), la variazione di carica sul condensatore-membrana è:
+
+\begin{equation}
+\Delta Q = C_m \cdot S \cdot \Delta V = C_m \cdot 2\pi r l \cdot \Delta V
+\end{equation}
+
+con $C_m \approx 1\,\mu\text{F/cm}^2 = 10^{-2}\,\text{F/m}^2$ la capacità specifica della membrana.
+
+
+
+Il \textbf{volume} del cilindro è:
+
+\begin{equation}
+V_{cil} = \pi r^2 l
+\end{equation}
+
+Le cariche totali associate agli ioni K$^+$ all'interno (consideriamo solo il potassio come specie dominante, con $Z_K = 1$) sono:
+
+\begin{equation}
+Q_{tot} = F \cdot C_K^{in} \cdot \pi r^2 l
+\end{equation}
+
+dove $F = 96485\,\text{C/mol}$ è la costante di Faraday.
+
+
+
+\begin{equation}
+\frac{\Delta Q}{Q_{tot}} = \frac{C_m \cdot 2\pi r l \cdot \Delta V}{F \cdot C_K^{in} \cdot \pi r^2 l} = \frac{2 C_m \Delta V}{F \cdot C_K^{in} \cdot r}
+\end{equation}
+
+Sostituendo i valori numerici per l'\textbf{assone di mammifero} ($r \approx 5\,\mu\text{m}$, $C_K^{in} = 140\,\text{mM} = 140\,\text{mol/m}^3$):
+
+\begin{equation}
+\frac{\Delta Q}{Q_{tot}} \approx \frac{2 \times 10^{-2} \times 0.1}{96485 \times 140 \times 5 \times 10^{-6}} \approx 10^{-3}
+\end{equation}
+
+Per l'\textbf{assone gigante del calamaro} (raggio $r \approx 500\,\mu\text{m}$, molto più grande):
+
+\begin{equation}
+\frac{\Delta Q}{Q_{tot}} \approx 10^{-7}
+\end{equation}
+
+\subsubsection{Interpretazione Biologica}
+
+Il risultato è notevole: anche durante l'evento più energetico nella vita di un neurone (un potenziale d'azione con $\Delta V \approx 100\,\text{mV}$), \textbf{solo 1/1000 degli ioni} (in un assone di mammifero) devono essere "rimpiazzati" dalle pompe ioniche. Per l'assone gigante del calamaro, la frazione è addirittura di $10^{-7}$.
+
+Questo significa che, a una frequenza di scarica di 1 Hz (un potenziale d'azione al secondo), le pompe ioniche devono compensare solo una variazione relativa dello 0.1\% delle concentrazioni ioniche. L'energia richiesta è quindi minima. Questo è il motivo per cui il cervello umano — nonostante elabori informazioni in modo straordinariamente complesso — consuma solo circa \textbf{20 W} di potenza metabolica netta.
+
+
+\section{Il Modello di Goldman-Hodgkin-Katz (GHK)}
+
+\subsubsection{Necessità di un Modello Multi-Ionico}
+
+Come abbiamo visto, la realtà fisiologica prevede la presenza contemporanea di più specie ioniche (K$^+$, Na$^+$, Cl$^-$). In questo caso, non si può più parlare di un singolo potenziale di equilibrio: il sistema è in uno \textbf{stato stazionario} (non di equilibrio) in cui i flussi individuali di ciascuna specie sono non nulli, ma la corrente totale si azzera (condizione stazionaria).
+
+Nel 1943, Goldman, e successivamente Hodgkin e Katz nel 1949, derivarono un'equazione per il potenziale di membrana stazionario a partire dall'equazione di Nernst-Planck, sotto tre ipotesi fondamentali.
+
+
+
+\textbf{Ipotesi 1 — Campo elettrico costante nella membrana:}\\
+In condizioni stazionarie, il campo elettrico all'interno della membrana è uniforme:
+
+\begin{equation}
+\frac{d\phi}{dx} = -\frac{V_m}{A} = \text{costante}
+\end{equation}
+
+Questo equivale ad assumere un profilo di potenziale \textbf{lineare} all'interno della membrana:
+
+\begin{equation}
+\phi(x) = V_{in} - \frac{V_m}{A} x
+\end{equation}
+
+Questa ipotesi è giustificata dal fatto che la membrana si comporta come un condensatore piano in condizioni stazionarie.
+
+\textbf{Ipotesi 2 — Indipendenza dei flussi:}\\
+I flussi delle diverse specie ioniche sono \textbf{indipendenti}: gli ioni K$^+$, Na$^+$ e Cl$^-$ si muovono senza influenzarsi reciprocamente. Questa è un'approssimazione, non rigorosamente vera, ma eccellente nella maggior parte delle condizioni fisiologiche.
+
+\textbf{Ipotesi 3 — Concentrazioni stazionarie:}\\
+Le concentrazioni ioniche ai bordi della membrana sono mantenute costanti dalle pompe ioniche:
+
+\begin{equation}
+C_s(0) = C_s^{in} = \text{costante}, \quad C_s(A) = C_s^{out} = \text{costante}
+\end{equation}
+
+\subsubsection{Condizione Stazionaria Multi-Ionica}
+
+In condizioni stazionarie, il flusso molare di ogni specie $J_s$ è costante nel tempo e nello spazio (non dipende da $x$), ma è in generale \textbf{non nullo}:
+
+\begin{equation}
+\frac{\partial J_s}{\partial x} = 0, \quad J_s = \text{costante} \neq 0
+\end{equation}
+
+La condizione di neutralità della corrente totale è:
+
+\begin{equation}
+\sum_s Z_s F J_s = 0
+\end{equation}
+
+Questa condizione è fondamentalmente diversa da quella di equilibrio per singola specie, in cui si imponeva $J_s = 0$ per ogni specie. Qui ogni specie ha un flusso netto non nullo, ma i contributi alla corrente totale si compensano.
+
+
+\subsection{Derivazione dell'Equazione GHK per la Corrente}
+
+
+Partiamo dall'equazione di Nernst-Planck monodimensionale per la specie $s$, con $J_s$ costante:
+
+\begin{equation}
+J_s = -\mu_s \left( Z_s C_s \phi' + \frac{RT}{F} C_s' \right)
+\end{equation}
+
+dove gli apici denotano derivate rispetto a $x$.
+
+Riorganizzando:
+
+\begin{equation}
+C_s' + \frac{Z_s F}{RT} \phi' C_s = -\frac{J_s F}{RT \mu_s}
+\end{equation}
+
+Definiamo i parametri:
+
+\begin{equation}
+\alpha \equiv \frac{Z_s F}{RT} \phi', \quad \beta \equiv -\frac{J_s F}{RT \mu_s}
+\end{equation}
+
+L'equazione diventa una \textbf{EDO lineare del primo ordine} in $C_s(x)$:
+
+\begin{equation}
+C_s' + \alpha C_s = \beta
+\end{equation}
+
+
+
+Introduciamo il \textbf{fattore integrante}:
+
+\begin{equation}
+\lambda(x) = \exp\left(\int_0^x \alpha(x')\,dx'\right) = \exp\left(\frac{Z_s F}{RT}\int_0^x \phi'(x')\,dx'\right) = \exp\left(\frac{Z_s F}{RT}(\phi(x) - V_{in})\right)
+\end{equation}
+
+La soluzione dell'EDO si scrive come:
+
+\begin{equation}
+C_s(x) = \frac{1}{\lambda(x)}\left[C_s(0)\lambda(0) + \beta\int_0^x \lambda(x')\,dx'\right]
+\end{equation}
+
+Poiché $\lambda(0) = \exp(0) = 1$, e $C_s(0) = C_{in}$:
+
+\begin{equation}
+C_s(x) = \frac{1}{\lambda(x)}\left[C_{in} + \beta\int_0^x \lambda(x')\,dx'\right]
+\end{equation}
+
+Con l'ipotesi di campo elettrico costante, il potenziale varia linearmente:
+
+\begin{equation}
+\phi(x) = V_{in} - \frac{V_m}{A}x
+\end{equation}
+
+Il fattore integrante diventa:
+
+\begin{equation}
+\lambda(x) = \exp\left(\frac{Z_s F}{RT}\left(-\frac{V_m}{A}x\right)\right) = \exp\left(-\frac{Z_s F V_m}{RT \cdot A}x\right)
+\end{equation}
+
+L'integrale di $\lambda$ da 0 ad $A$:
+
+\begin{equation}
+\int_0^A \lambda(x)\,dx = \int_0^A \exp\left(-\frac{Z_s F V_m}{RT A}x\right)dx
+\end{equation}
+
+Questo è un integrale di un'esponenziale con esponente lineare in $x$. Il risultato è:
+
+\begin{equation}
+\int_0^A \lambda(x)\,dx = \frac{RT A}{Z_s F V_m}\left(1 - e^{-Z_s F V_m/(RT)}\right)
+\end{equation}
+
+Definiamo $\gamma \equiv F/(RT)$ (in $\text{mV}^{-1}$), cosicché $1/\gamma = RT/F \approx 26\,\text{mV}$ a $300\,\text{K}$. Allora:
+
+\begin{equation}
+\int_0^A \lambda(x)\,dx = \frac{A}{Z_s \gamma V_m}\left(1 - e^{-Z_s \gamma V_m}\right)
+\end{equation}
+
+\subsubsection{Espressione per il Flusso Molare}
+
+Applicando la condizione al contorno $C_s(A) = C_{out}$:
+
+\begin{equation}
+C_{out} = \frac{1}{\lambda(A)}\left[C_{in} + \beta \int_0^A \lambda(x')\,dx'\right]
+\end{equation}
+
+Ricordando che $\lambda(A) = e^{-Z_s \gamma V_m}$ e risolvendo per $\beta = -J_s F/(RT\mu_s)$, si ottiene:
+
+\begin{equation}
+J_s = \frac{\mu_s Z_s  V_m}{A} \cdot \frac{C_{in} - C_{out}\,e^{-Z_s \gamma V_m}}{1 - e^{-Z_s \gamma V_m}}
+\end{equation}
+
+\subsubsection{Verifica: Recupero dell'Equazione di Nernst}
+
+Per il caso di singola specie all'equilibrio ($J_s = 0$), la condizione $C_{in} - C_{out}\,e^{-Z_s \gamma V_m} = 0$ dà:
+
+\begin{equation}
+e^{-Z_s \gamma V_m} = \frac{C_{in}}{C_{out}}
+\end{equation}
+
+\begin{equation}
+-Z_s \gamma V_m = \ln\frac{C_{in}}{C_{out}}
+\end{equation}
+
+\begin{equation}
+V_m^{eq} = \frac{1}{Z_s \gamma} \ln\frac{C_{out}}{C_{in}} = \frac{RT}{Z_s F} \ln\frac{C_{out}}{C_{in}}
+\end{equation}
+
+Questo è esattamente l'equazione di Nernst. Il modello GHK generalizza l'equazione di Nernst al caso multi-ionico.
+
+\subsubsection{Calcolo Esplicito dell'Integrale di Lambda}
+
+Mostriamo in dettaglio come si calcola l'integrale del fattore integrante all'interno della membrana, un passaggio cruciale della derivazione.
+
+\begin{equation}
+\int_0^A \lambda(x)\,dx = \int_0^A \exp\left(\frac{Z_s F}{RT}(\phi(x) - V_{in})\right)dx
+\end{equation}
+
+Poiché $\phi(x) - V_{in} = -\frac{V_m}{A}x$, l'integrale diventa:
+
+\begin{equation}
+\int_0^A \exp\left(-\frac{Z_s F V_m}{RT A}x\right)dx = \left[\frac{-RT A}{Z_s F V_m}\exp\left(-\frac{Z_s F V_m}{RT A}x\right)\right]_0^A
+\end{equation}
+
+\begin{equation}
+= \frac{-RT A}{Z_s F V_m}\left(e^{-Z_s \gamma V_m} - 1\right) = \frac{RT A}{Z_s F V_m}\left(1 - e^{-Z_s \gamma V_m}\right) = \frac{A}{Z_s \gamma V_m}\left(1 - e^{-Z_s \gamma V_m}\right)
+\end{equation}
+
+\subsubsection{L'Equazione di Corrente GHK}
+
+La \textbf{densità di corrente} per la specie $s$ si ottiene moltiplicando il flusso molare per $Z_s F$:
+
+\begin{equation}
+I_s = Z_s F J_s = Z_s^2 \frac{F \mu_s}{A} \cdot \frac{ V_m \left(C_{in} - C_{out}\,e^{-Z_s \gamma V_m}\right)}{1 - e^{-Z_s \gamma V_m}}
+\end{equation}
+
+Poiché $Z^2 = 1$ per tutte le specie con valenza $\pm 1$, possiamo scrivere in forma compatta:
+
+\begin{equation}
+\boxed{I_s = \frac{F \mu_s}{A} \cdot \frac{ V_m \left(C_s^{in} - C_s^{out}\,e^{-Z_s \gamma V_m}\right)}{1 - e^{-Z_s \gamma V_m}}}
+\end{equation}
+
+Questa è l'\textbf{equazione di corrente di Goldman-Hodgkin-Katz} per la specie $s$. Essa descrive come la corrente ionica dipende dal potenziale di membrana $V_m$ e dalle concentrazioni intracellulari ed extracellulari della specie $s$.
+
+Il parametro $\gamma = F/(RT)$ ha le dimensioni di $[\text{mV}^{-1}]$. A temperatura ambiente ($T \approx 300\,\text{K}$):
+
+\begin{equation}
+\frac{1}{\gamma} = \frac{RT}{F} \approx 26\,\text{mV}
+\end{equation}
+
+a $37^\circ\text{C}$ ($T = 310\,\text{K}$):
+
+\begin{equation}
+\frac{1}{\gamma} = \frac{RT}{F} \approx 26.7\,\text{mV}
+\end{equation}
+
+
+\subsection{Il Potenziale di Equilibrio GHK: Il Potenziale di Riposo del Neurone}
+
+\subsubsection{Condizione di Stazionarietà della Corrente Totale}
+
+In condizioni stazionarie, la corrente totale attraverso la membrana deve essere zero:
+
+\begin{equation}
+I_{tot} = I_K + I_{Na} + I_{Cl} = 0
+\end{equation}
+
+Sostituendo le espressioni GHK per ogni specie, con $Z_K = Z_{Na} = +1$ e $Z_{Cl} = -1$:
+
+Per K$^+$ e Na$^+$ ($Z = +1$):
+\begin{equation}
+I_s \propto \frac{ V_m (C_s^{in} - C_s^{out}\,e^{-\gamma V_m})}{1 - e^{-\gamma V_m}}
+\end{equation}
+
+Per Cl$^-$ ($Z = -1$):
+\begin{equation}
+I_{Cl} \propto \frac{ V_m (C_{Cl}^{in} - C_{Cl}^{out}\,e^{+\gamma V_m})}{1 - e^{+\gamma V_m}}
+\end{equation}
+
+\subsubsection{Algebrizzazione e Soluzione}
+
+Per uniformare le espressioni, moltiplichiamo il numeratore e il denominatore dell'espressione per Cl$^-$ per $e^{+\gamma V_m}$:
+
+\begin{equation}
+I_{Cl} \propto \frac{ V_m (C_{Cl}^{in}\,e^{+\gamma V_m} - C_{Cl}^{out})}{e^{+\gamma V_m} - 1}
+\end{equation}
+
+Notiamo che $e^{+\gamma V_m} - 1 = -(1 - e^{+\gamma V_m})$ e moltiplichiamo per $e^{-\gamma V_m}$:
+
+\begin{equation}
+I_{Cl} \propto \frac{ V_m (C_{Cl}^{out} - C_{Cl}^{in}\,e^{-\gamma V_m})}{1 - e^{-\gamma V_m}}
+\end{equation}
+
+Questo ci consente di scrivere tutte e tre le correnti con lo stesso denominatore $1 - e^{-\gamma V_m}$, che è diverso da zero (poiché $V_m \neq 0$ sperimentalmente). Raccogliendo i termini che moltiplicano $e^{-\gamma V_m}$ e quelli indipendenti dall'esponenziale, e imponendo $I_{tot} = 0$:
+
+\begin{equation}
+\left(\mu_K C_K^{in} + \mu_{Na} C_{Na}^{in} + \mu_{Cl} C_{Cl}^{out}\right) e^{-\gamma V_m} = \mu_K C_K^{out} + \mu_{Na} C_{Na}^{out} + \mu_{Cl} C_{Cl}^{in}
+\end{equation}
+
+Prendendo il logaritmo e invertendo il segno:
+
+\begin{equation}
+\boxed{V_m^{rest} = \frac{RT}{F} \ln \frac{\mu_K C_K^{out} + \mu_{Na} C_{Na}^{out} + \mu_{Cl} C_{Cl}^{in}}{\mu_K C_K^{in} + \mu_{Na} C_{Na}^{in} + \mu_{Cl} C_{Cl}^{out}}}
+\end{equation}
+
+Questa è la \textbf{equazione di Goldman-Hodgkin-Katz} per il potenziale di riposo della membrana neuronale.
+
+Confrontando con l'equazione di Nernst per singola specie, si notano due differenze fondamentali:
+
+\begin{enumerate}
+    \item Al numeratore e al denominatore compaiono le concentrazioni \textbf{pesate dalle mobilità} $\mu_s$ di ciascuna specie.
+    \item Per il cloruro ($Z_{Cl} = -1$), le concentrazioni intracellulare ed extracellulare sono \textbf{scambiate} rispetto a K$^+$ e Na$^+$: al numeratore compare $\mu_{Cl} C_{Cl}^{in}$ (anziché $C_{Cl}^{out}$), e al denominatore $\mu_{Cl} C_{Cl}^{out}$ (anziché $C_{Cl}^{in}$). Questo riflette il segno negativo della valenza del cloruro.
+\end{enumerate}
+
+Il potenziale di riposo è quindi una \textbf{media logaritmica pesata} dei potenziali di Nernst delle singole specie, con i pesi determinati dalle mobilità.
+
+\subsubsection{Valori Numerici e Interpretazione}
+
+Per i neuroni corticali di mammifero, utilizzando le mobilità relative $\mu_K : \mu_{Na} : \mu_{Cl} = 1.0 : 0.03 : 0.1$ (in unità arbitrarie) e le concentrazioni della tabella in Sezione 4.2, l'equazione GHK dà:
+
+\begin{equation}
+V_m^{rest} \approx -72\,\text{mV}
+\end{equation}
+
+Questo valore è in accordo con le misure sperimentali del potenziale di riposo nei neuroni corticali di mammifero.
+
+L'interpretazione geometrica è illuminante: $-72\,\text{mV}$ si trova tra i potenziali di Nernst di K$^+$ ($-89\,\text{mV}$) e Cl$^-$ ($\approx -70\,\text{mV}$), ed è molto distante dal potenziale di Nernst di Na$^+$ ($\approx +70\,\text{mV}$). Questo riflette direttamente le mobilità: la mobilità del sodio è circa \textbf{33 volte più piccola} di quella del potassio ($\mu_{Na}/\mu_K = 0.03$), il che significa che i canali del sodio contribuiscono pochissimo al potenziale di riposo.
+La bassa mobilità del sodio nel neurone a riposo riflette il fatto che i canali del sodio sono quasi tutti chiusi (nello stato cosiddetto di "inattivazione") al potenziale di riposo. Quando questi canali si aprono — come accade durante il potenziale d'azione — la mobilità del sodio aumenta bruscamente e il potenziale di membrana si sposta rapidamente verso $E_{Na}$.
+
+
+
+\newpage 
+\section{Sintesi: Dall'Equazione di Nernst alla GHK}
+
+
+Il percorso seguito in questa lezione ha costruito due risultati principali, che differiscono per il numero di specie ioniche considerate e per la condizione imposta:
+
+\textbf{Caso 1 — Singola specie ionica all'equilibrio:}
+\begin{itemize}
+    \item Condizione: $J_s = 0$ (flusso netto nullo)
+    \item Risultato: \textbf{Equazione di Nernst}
+\end{itemize}
+
+\begin{equation}
+E_s = \frac{RT}{Z_s F} \ln \frac{C_s^{out}}{C_s^{in}}
+\end{equation}
+
+\begin{itemize}
+    \item Significato: il potenziale di membrana al quale il flusso di deriva e il flusso diffusivo si compensano esattamente.
+    \item Tipo di stato: \textbf{equilibrio termodinamico} (nessun flusso, nessun consumo di energia).
+\end{itemize}
+
+\textbf{Caso 2 — Più specie ioniche in condizioni stazionarie:}
+\begin{itemize}
+    \item Condizione: $\sum_s Z_s F J_s = 0$ (corrente totale nulla, ma flussi individuali non nulli)
+    \item Risultato: \textbf{Equazione di Goldman-Hodgkin-Katz}
+\end{itemize}
+
+\begin{equation}
+V_m^{rest} = \frac{RT}{F} \ln \frac{\mu_K C_K^{out} + \mu_{Na} C_{Na}^{out} + \mu_{Cl} C_{Cl}^{in}}{\mu_K C_K^{in} + \mu_{Na} C_{Na}^{in} + \mu_{Cl} C_{Cl}^{out}}
+\end{equation}
+
+\begin{itemize}
+    \item Significato: il potenziale di membrana al quale le correnti ioniche delle diverse specie si compensano, ma ogni singola specie ha ancora un flusso netto non nullo.
+    \item Tipo di stato: \textbf{stato stazionario} (non equilibrio) — mantenuto attivamente dalle pompe ioniche.
+\end{itemize}
+
+
+La differenza tra i due casi è \textbf{concettualmente profonda}, non solo matematica:
+
+\begin{itemize}
+    \item Nel \textbf{caso di una sola specie}, il sistema può effettivamente raggiungere l'equilibrio termodinamico, in cui la corrente è zero e il sistema non ha bisogno di energia esterna per mantenere questo stato.
+    \item Nel \textbf{caso multi-ionico}, il sistema è strutturalmente incapace di raggiungere l'equilibrio termodinamico (perché non esiste un $V_m$ che soddisfi simultaneamente le condizioni di Nernst per tutte le specie), e quindi è sempre in uno \textbf{stato stazionario lontano dall'equilibrio}. Questo stato richiede un apporto continuo di energia — fornito dalle pompe ioniche — per essere mantenuto.
+\end{itemize}
+
+Il potenziale di riposo di un neurone non è un equilibrio: è uno \textbf{stato attivo} che il neurone mantiene a costo di consumo energetico. Questo ha implicazioni profonde: un neurone privo di ATP (e quindi senza pompe ioniche funzionanti) perde rapidamente i suoi gradienti ionici e il suo potenziale di membrana.
+
+
+
+I risultati di questa lezione pongono le basi per i temi delle prossime lezioni:
+
+\begin{itemize}
+    \item \textbf{Canali voltaggio-dipendenti:} se la mobilità $\mu_s$ non è costante ma dipende da $V_m$, si ottengono fenomeni non lineari come il potenziale d'azione.
+    \item \textbf{Modello di Hodgkin-Huxley:} formalizzazione matematica dei canali voltaggio-dipendenti per Na$^+$ e K$^+$, che spiega la generazione e propagazione del potenziale d'azione.
+    \item \textbf{Trasmissione sinaptica:} il ruolo del Ca$^{2+}$ nel rilascio dei neurotrasmettitori e la modulazione della sinapsi.
+\end{itemize}
+
+
+\section*{Tabella Riepilogativa}
+\addcontentsline{toc}{section}{Tabella Riepilogativa}
+
+\begin{table}[htbp]
+    \centering
+    \footnotesize
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|X|X|}
+    \hline
+    \textbf{Quantità}  &  \textbf{Equazione} & \textbf{Valore tipico (mammifero, 37$^\circ$C)} \\
+    \hline
+    Potenziale di membrana  $V_m$  & $V_m = V_{in} - V_{out}$ & Da $-$90 a $-$50 mV \\
+    \hline
+    Potenziale di Nernst K$^+$  $E_K$ & $\frac{RT}{F}\ln\frac{C_K^{out}}{C_K^{in}}$ & $-$89 mV \\
+    \hline
+    Potenziale di Nernst Na$^+$  $E_{Na}$  & $\frac{RT}{F}\ln\frac{C_{Na}^{out}}{C_{Na}^{in}}$ & +62 a +100 mV \\
+    \hline
+    Potenziale di Nernst Cl$^-$  $E_{Cl}$ & $\frac{RT}{(-1)F}\ln\frac{C_{Cl}^{out}}{C_{Cl}^{in}}$ & $-$62 a $-$70 mV \\
+    \hline
+    Potenziale di Nernst Ca$^{2+}$  $E_{Ca}$ & $\frac{RT}{2F}\ln\frac{C_{Ca}^{out}}{C_{Ca}^{in}}$ & $\approx$ +136 mV \\
+    \hline
+    Potenziale di riposo (GHK)  $V_m^{rest}$  & $\frac{RT}{F}\ln\frac{\mu_K C_K^{out}+\mu_{Na} C_{Na}^{out}+\mu_{Cl} C_{Cl}^{in}}{\mu_K C_K^{in}+\mu_{Na} C_{Na}^{in}+\mu_{Cl} C_{Cl}^{out}}$ & $-$72 mV \\
+    \hline
+    Capacità specifica membrana  $C_m$  & — & 1 $\mu$F/cm$^2$ \\
+    \hline
+    Spessore membrana  $A$  & — & $\approx$ 5 nm \\
+    \hline
+    Costante termica  $RT/F$  & $R \cdot T / F$ & $\approx$ 26.7 mV (37$^\circ$C) \\
+    \hline
+    Fattore gamma  $\gamma$ & $\gamma = F/(RT)$ & $\approx$ 37.5 mV$^{-1}$ (37$^\circ$C) \\
+    \hline
+    Coefficiente di diffusione  $D_s$ &  $D_s = \frac{RT}{F}\mu_s$ & Variabile per specie \\
+    \hline
+    Flusso molare totale  $J^{(s)}$ & $-\mu_s\left(Z_s C_s \frac{d\phi}{dx}+\frac{RT}{F}\frac{dC_s}{dx}\right)$ & - \\
+    \hline
+    Corrente GHK  $I_s$ & $\frac{F\mu_s}{A}\frac{\gamma V_m(C_s^{in}-C_s^{out}e^{-Z_s\gamma V_m})}{1-e^{-Z_s\gamma V_m}}$ & - \\
+    \hline
+    
+    Consumo cerebrale  $P$ & — & $\approx$ 20 W \\
+    \hline
+    Mobilità relative  $\mu_K:\mu_{Na}:\mu_{Cl}$ & — & 1.0 : 0.03 : 0.1 \\
+    \hline
+    \end{tabularx}
+\end{table}
+
