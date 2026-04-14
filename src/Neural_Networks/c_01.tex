@@ -1,0 +1,667 @@
+\chapter{Lezione 1}
+
+\textbf{Docente:} Maurizio Matti (Istituto Nazionale Italiano di Salute, ricercatore senior; fisico con PhD in neurofisiologia)\\
+\textbf{Argomenti:} Presentazione del corso, modello di Hodgkin-Huxley, equazione di Fokker-Planck, population firing rates, dinamica non lineare, neuroanatomia, struttura del neurone, organizzazione corticale, aree di Brodmann, storia (Broca, Wernicke, Cajal), elaborazione visiva, scaling cerebrale\\
+\textbf{Testo di Riferimento:} Wolfram Gerstner, \textit{Neuronal Dynamics}
+
+
+\vspace{0.5cm}
+\noindent\rule{\textwidth}{0.4pt}
+
+
+\subsubsection{Argomenti Principali del Corso}
+
+Il corso si concentra sulle \textbf{reti neurali biologiche}, non sulle reti neurali artificiali del machine learning. I temi principali includono:
+
+\begin{enumerate}
+    \item \textbf{Composizione e organizzazione del cervello}
+    \item \textbf{Elaborazione dell'informazione} e i vincoli fisici che la governano
+    \item \textbf{Il singolo neurone}: struttura, dinamica elettrochimica
+    \item \textbf{Modello di Hodgkin-Huxley}: descrizione quantitativa del potenziale d'azione
+    \item \textbf{Neuroni spiking semplificati}: modelli a riduzione di dimensionalità
+    \item \textbf{Equazione di Fokker-Planck} e approcci della fisica statistica
+    \item \textbf{Population firing rates} (tassi di scarica delle popolazioni neuronali)
+    \item \textbf{Dinamica non lineare} alla base delle funzioni cognitive: decision-making, planning, elaborazione sensoriale, memoria
+\end{enumerate}
+
+
+\subsubsection{Perché Studiare le Reti Neurali Biologiche}
+
+Le reti neurali artificiali hanno prodotto risultati straordinari: \textbf{ChatGPT}, \textbf{LaMDA} e modelli analoghi dimostrano capacità emergenti di elaborazione del linguaggio, ragionamento e generalizzazione. Questi sistemi utilizzano \textbf{reti profonde} (\textit{deep networks}) e \textbf{reinforcement learning}.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+I neuroni nelle reti biologiche si auto-organizzano in sequenze simboliche a livelli progressivi: sillabe, parole, frasi. Le reti biologiche dimostrano che sistemi fisici composti da molti elementi semplici possono apprendere, gestire linguaggio, matematica e musica, e generalizzare a situazioni nuove.
+\end{tcolorbox}
+
+
+
+Dal punto di vista fisico, il cervello è particolarmente sfidante per la sua:
+
+\begin{itemize}
+    \item \textbf{Eterogeneità}: diversi tipi di neuroni, connessioni, trasmettitori
+    \item \textbf{Gerarchia spaziale e temporale}: organizzazione su scale molto diverse
+\end{itemize}
+
+Il cervello opera su \textbf{molteplici scale temporali}:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|X|}
+    \hline
+    \textbf{Scala temporale} & \textbf{Processo} \\
+    \hline
+    Millisecondi & Dinamica dei singoli neuroni (spike) \\
+    Minuti & Elaborazione del parlato, comprensione del testo \\
+    Ore–giorni & Consolidamento della memoria a breve termine \\
+    Anni–decenni & Memorie a lungo termine, apprendimento motorio \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+
+La \textbf{neuroscienza computazionale} è un campo relativamente giovane (iniziato negli anni '80), caratterizzato da una crescente interazione tra sperimentatori e teorici. I fisici contribuiscono sempre di più alla progettazione degli esperimenti, degli strumenti di analisi e delle simulazioni computazionali.
+
+
+\newpage
+
+\section{Struttura del Cervello}
+
+\subsubsection{Elementi del Cervello}
+
+Il cervello è un organo complesso composto da diversi elementi funzionali. Il corso si concentra principalmente sulla \textbf{corteccia} (la parte esterna), ma è fondamentale comprendere anche i principali \textbf{elementi subcorticali}:
+
+\begin{itemize}
+    \item \textbf{Gangli della base}: regioni ricche di neuroni \textbf{dopaminergici}, rilevanti per l'apprendimento, la ricompensa e la motivazione. Hanno un ruolo cruciale nei meccanismi di reinforcement learning biologico.
+    \item \textbf{Tronco cerebrale} (\textit{brainstem}): regola i \textbf{ritmi circadiani} e il controllo di base del corpo (respirazione, battito cardiaco, vigilanza).
+    \item \textbf{Cervelletto}: spesso chiamato "secondo cervello", è specializzato per la \textbf{coordinazione motoria} e la \textbf{predizione} dei movimenti. Riveste un ruolo importante nell'apprendimento motorio.
+\end{itemize}
+
+\subsubsection{I Quattro Lobi della Corteccia}
+
+La corteccia cerebrale è anatomicamente suddivisa in \textbf{quattro lobi principali}:
+
+\begin{enumerate}
+    \item \textbf{Lobo frontale}: funzioni esecutive, pianificazione, produzione del linguaggio (area di Broca), controllo motorio
+    \item \textbf{Lobo parietale}: elaborazione sensoriale somatica, integrazione spaziale, via visiva dorsale
+    \item \textbf{Lobo occipitale}: elaborazione visiva primaria (V1) e secondaria
+    \item \textbf{Lobo temporale}: elaborazione uditiva, comprensione del linguaggio (area di Wernicke), via visiva ventrale, memoria
+\end{enumerate}
+
+\noindent Il \textbf{solco centrale} (\textit{central sulcus}) è il solco che separa le cortecce sensoriali (parte posteriore) dalle cortecce motorie (parte anteriore).
+
+
+
+
+\noindent Il cervello è descritto secondo tre assi principali:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|X|}
+    \hline
+    \textbf{Asse} & \textbf{Terminologia} \\
+    \hline
+    Anteriore–Posteriore & \textbf{Rostrale} (anteriore) — \textbf{Caudale} (posteriore) \\
+    Interno–Esterno & \textbf{Mediale} (interno) — \textbf{Laterale} (esterno) \\
+    Alto–Basso & \textbf{Dorsale} (superiore) — \textbf{Ventrale} (inferiore) \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+
+
+
+
+
+
+\subsection{Il Cervelletto}
+
+Il \textbf{cervelletto} (\textit{cerebellum}, letteralmente "piccolo cervello") merita una trattazione separata per la sua importanza funzionale e strutturale.
+
+
+
+\begin{itemize}
+    \item \textbf{Coordinazione motoria}: integra informazioni propriocettive, vestibolari e visive per produrre movimenti fluidi e coordinati
+    \item \textbf{Predizione}: genera modelli interni predittivi del comportamento motorio — anticipa le conseguenze sensoriali dei movimenti
+    \item \textbf{Apprendimento motorio}: è il substrato principale per l'apprendimento di sequenze motorie complesse (strumento musicale, sport, scrittura)
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Il cervelletto è come un "secondo cervello" : un sistema computazionale autonomo con propri circuiti e propria logica elaborativa, distinto dalla corteccia cerebrale ma in costante comunicazione con essa.
+\end{tcolorbox}
+
+
+\section{Scoperte Storiche}
+
+\subsection{Paul Broca e la Produzione del Linguaggio}
+
+Nel XIX secolo, il neurologo francese \textbf{Paul Broca} studiò un paziente affetto da sifilide celebrale. Questo paziente presentava un deficit molto specifico: era in grado di \textbf{comprendere perfettamente il linguaggio} degli altri, ma era in grado di pronunciare \textbf{una sola parola}: "Tan". Per questa ragione nella letteratura medica il paziente è passato alla storia come "\textbf{Tan}".
+
+Alla morte del paziente, l'\textbf{autopsia} rivelò un danno circoscritto a una specifica area del \textbf{lobo frontale sinistro}: il \textbf{giro inferofrontale}. Questa regione, ora nota come \textbf{area di Broca}, è responsabile della \textbf{produzione del linguaggio}, la capacità di formare ed articolare parole.
+
+\subsection{Carl Wernicke e la Comprensione del Linguaggio}
+
+Il neurologo tedesco \textbf{Carl Wernicke} studiò un paziente che aveva subito un ictus e presentava un deficit complementare: era in grado di parlare fluentemente, ma le sue frasi erano prive di senso, non era in grado di \textbf{comprendere} il linguaggio altrui.
+
+L'analisi anatomica rivelò un'area danneggiata \textbf{diversa} da quella di Broca, localizzata nel \textbf{lobo temporale sinistro}, in prossimità della \textbf{scissura silviana} (\textit{lateral sulcus}). Questa regione, ora nota come \textbf{area di Wernicke}, è responsabile della \textbf{comprensione del linguaggio}.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+ Il caso di Broca e Wernicke costituisce una delle prime e più solide evidenze che la corteccia cerebrale non è un substrato omogeneo, bensì è \textbf{modulare}: aree diverse sono specializzate per funzioni diverse. La doppia dissociazione (produzione vs. comprensione) è particolarmente convincente perché dimostra che le due funzioni sono \textbf{indipendenti} dal punto di vista anatomico.
+\end{tcolorbox}
+
+
+
+\subsection{Korbinian Brodmann e la Mappa Corticale}
+
+Il neuroanatomista tedesco \textbf{Korbinian Brodmann} (inizio del XX secolo) applicò sistematicamente la \textbf{colorazione di Golgi}, tecnica scoperta dall'italiano \textbf{Camillo Golgi}, per colorare selettivamente i neuroni corticali e rivelarne l'organizzazione microscopica.
+
+Dall'analisi sistematica di sezioni corticali colorate, Brodmann scoprì che la corteccia non è istologicamente omogenea: identificò \textbf{52 aree distinte} (numerate da 1 a 52) sulla base delle differenze nell'\textbf{architettura neuronale}: diversa densità cellulare, diverso spessore degli strati, diversa morfologia dei neuroni.
+
+Le principali aree di Brodmann includono:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|X|}
+    \hline
+    \textbf{Numero} & \textbf{Nome/Funzione} \\
+    \hline
+    1, 2, 3 & Corteccia somatosensoriale primaria \\
+    4 & Corteccia motoria primaria \\
+    6 & Corteccia premotoria e supplementare motoria \\
+    17 & Corteccia visiva primaria (V1) \\
+    18, 19 & Cortecce visive secondarie (V2, V3) \\
+    22 & Corteccia uditiva secondaria (area di Wernicke) \\
+    41, 42 & Corteccia uditiva primaria \\
+    44, 45 & Corteccia del linguaggio (area di Broca) \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+La scoperta di Brodmann è fondamentale perché stabilisce che la \textbf{modularità funzionale} (emersa dai casi clinici di Broca e Wernicke) ha un \textbf{substrato anatomico-istologico} preciso: aree diverse non solo svolgono funzioni diverse, ma hanno una struttura microscopica diversa.
+\end{tcolorbox}
+
+
+
+\subsection{Santiago Ramon y Cajal e la Dottrina Neuronale}
+
+\textbf{Santiago Ramon y Cajal} e \textbf{Camillo Golgi} condivisero il \textbf{Premio Nobel per la Fisiologia o la Medicina nel 1906} per aver scoperto che la corteccia cerebrale è composta da semplici \textbf{elementi microscopici}, i neuroni, che comunicano tra loro.
+
+I celebri disegni di Ramon y Cajal, realizzati con straordinaria precisione, mostrarono per la prima volta la struttura dettagliata dei neuroni: corpi cellulari colorati in nero, \textbf{dendriti} (fibre ramificate con \textbf{bottoni sinaptici}) e \textbf{assoni} che si diffondono nello spazio tridimensionale del tessuto.
+
+Questo lavoro fondò la cosiddetta "\textbf{dottrina neuronale}": il principio secondo cui il cervello è composto di elementi fondamentali distinti (i neuroni) e che la cognizione risulta dalle loro interazioni. Si tratta del fondamento concettuale dell'intera neuroscienzas moderna.
+
+\newpage
+\section{Neurone e Comunicazione Sinaptica}
+
+\subsubsection{Anatomia del Neurone}
+
+Il neurone è l'elemento fondamentale del circuito cerebrale. È organizzato in \textbf{tre parti principali}:
+
+\begin{enumerate}
+    \item \textbf{Soma} (corpo cellulare): contiene il nucleo e il macchinario metabolico della cellula. È il "centro computazionale" che integra gli input in entrata.
+    \item \textbf{Albero dendritico}: un sistema di ramificazioni che si estende dal soma. I dendriti \textbf{ricevono informazioni} da altri neuroni tramite i \textbf{bottoni sinaptici}, ovvero le strutture specializzate al termine degli assoni dei neuroni presinapici.
+    \item \textbf{Assone}: una singola fibra lunga e sottile che si estende dal soma. Attraverso l'assone, il neurone \textbf{trasmette informazioni} ai neuroni postsinaptici. L'assone può ramificarsi terminalmente, contattando molti neuroni diversi.
+\end{enumerate}
+
+
+\subsubsection{Il Neurone come Macchina Elettrochimica}
+
+I neuroni sono essenzialmente \textbf{macchine elettrochimiche}. Il \textbf{doppio strato lipidico} della membrana cellulare è impermeabile agli ioni e separa l'interno del neurone (con alta concentrazione di $K^+$ e bassa di $Na^+$) dall'esterno (con alta concentrazione di $Na^+$ e bassa di $K^+$).
+
+Questa differenza di concentrazione ionica genera una differenza di \textbf{potenziale elettrico} attraverso la membrana: il cosiddetto \textbf{potenziale di membrana a riposo}, tipicamente intorno a $V_{\text{rest}} \approx -70$ mV (interno negativo rispetto all'esterno).
+
+Il neurone funziona quindi come un \textbf{circuito elettrico} biologico: la membrana è il condensatore, i canali ionici sono le resistenze variabili, e le correnti ioniche sono le sorgenti di corrente.
+
+\subsubsection{Il Potenziale d'Azione (Spike)}
+
+Il meccanismo fondamentale della comunicazione neuronale è il \textbf{potenziale d'azione} (o \textit{spike}):
+
+\begin{enumerate}
+    \item Il neurone \textbf{integra} le correnti dendritiche attraverso il soma
+    \item Quando il potenziale di membrana supera una soglia critica $V_{\text{thresh}}$, avviene una brusca \textbf{depolarizzazione stereotipata}: lo spike
+    \item Questa depolarizzazione è dovuta all'apertura rapida di \textbf{canali ionici voltaggio-dipendenti} (principalmente canali al sodio)
+    \item Il potenziale d'azione è un segnale \textbf{binario} e \textbf{stereotipato}: la sua ampiezza e forma sono sempre le stesse, l'informazione è codificata nella \textbf{frequenza di scarica}, non nell'ampiezza
+\end{enumerate}
+
+I potenziali d'azione viaggiano lungo gli assoni e vengono consegnati ai neuroni postsinaptici attraverso le sinapsi.
+
+\subsubsection{La Sinapsi e l'EPSP}
+
+La comunicazione tra neuroni avviene nelle \textbf{sinapsi}. Il meccanismo dettagliato è il seguente:
+
+\begin{enumerate}
+    \item Il potenziale d'azione del neurone \textbf{presinaptico} raggiunge il terminale assonale
+    \item L'arrivo dello spike apre \textbf{canali ionici} nel terminale assonale
+    \item Vescicole contenenti \textbf{neurotrasmettitori} si fondono con la membrana presinaptica e rilasciano i neurotrasmettitori nella \textbf{fessura sinaptica} (\textit{synaptic cleft})
+    \item I neurotrasmettitori diffondono attraverso la fessura e si legano a recettori sulla membrana \textbf{postsinaptica}
+    \item Questo legame apre canali ionici nel neurone postsinaptico, generando un afflusso di corrente
+    \item La corrente produce una variazione del potenziale di membrana postsinaptico: il \textbf{potenziale postsinaptico eccitatorio} (\textbf{EPSP}, \textit{Excitatory Post-Synaptic Potential})
+\end{enumerate}
+
+La registrazione sperimentale mostra: potenziale d'azione presinaptico $\rightarrow$ propagazione lungo l'assone $\rightarrow$ rilascio di neurotrasmettitori $\rightarrow$ corrente nel neurone postsinaptico $\rightarrow$ EPSP.
+
+
+
+\section{Cellule Gliali e Mielinizzazione}
+
+\subsubsection{Le Cellule Gliali}
+
+Le \textbf{cellule gliali} (\textit{glial cells}, dal greco "glia" = colla) costituiscono circa l'\textbf{80\% delle cellule cerebrali}. Per lungo tempo sono state considerate semplice infrastruttura di supporto ai neuroni, da cui il nome "colla". Tuttavia, la ricerca recente ha rivelato che svolgono funzioni importanti e specifiche.
+
+I principali sottotipi di cellule gliali includono:
+
+\begin{itemize}
+    \item \textbf{Astrociti}: regolano la concentrazione ionica nell'ambiente extracellulare (fondamentale per il corretto funzionamento dei neuroni); stabiliscono e mantengono la \textbf{barriera emato-encefalica} (\textit{blood-brain barrier}), che protegge il cervello da sostanze tossiche presenti nel sangue
+    \item \textbf{Cellule di Schwann} (nel sistema nervoso periferico) / \textbf{Oligodendrociti} (nel sistema nervoso centrale): producono la \textbf{guaina mielinica} che avvolge e isola gli assoni
+\end{itemize}
+
+
+\subsubsection{La Mielina}
+
+La \textbf{mielina} è una sostanza lipidica bianca che avvolge gli assoni a intervalli regolari, lasciando liberi piccoli segmenti detti \textbf{nodi di Ranvier}. La mielina svolge due funzioni essenziali:
+
+\begin{enumerate}
+    \item \textbf{Isolamento elettrico}: impedisce la dissipazione della corrente lungo l'assone, evitando che il segnale si disperda
+    \item \textbf{Conduzione saltatoria}: il potenziale d'azione "salta" da un nodo di Ranvier al successivo (\textit{conduzione saltatoria}), rendendo la propagazione molto più rapida rispetto a un assone non mielinizzato
+\end{enumerate}
+
+Grazie alla mielinizzazione, i potenziali d'azione si propagano lungo l'assone a velocità di decine di m/s, percorrendo anche distanze di centimetri in pochi millisecondi.
+
+
+\section{Organizzazione Corticale}
+
+\subsubsection{La Struttura a Strati della Corteccia}
+
+La corteccia cerebrale è organizzata in uno strato sottile di \textbf{materia grigia superficiale}, sotto cui si trova la \textbf{materia bianca profonda} contenente gli assoni mielinizzati. 
+La corteccia cerebrale è sottile (pochi millimetri di spessore) ma copre un'area molto estesa grazie alle pieghe (\textit{giri} e \textit{solchi}).
+
+La colorazione di Golgi (che colora solo una piccola percentuale di neuroni in modo casuale, ma li rende completamente visibili) mostra che i neuroni sono organizzati in modo non uniforme nello spessore della corteccia: si osservano \textbf{diversi tipi e dimensioni cellulari a diverse profondità}.
+
+La colorazione di \textbf{Nissl} (che colora i corpi cellulari di tutti i neuroni) ha confermato e precisato questa osservazione, permettendo il conteggio sistematico delle cellule per strato.
+
+\subsubsection{I Sei Strati Corticali}
+
+La corteccia cerebrale (neocorteccia) è universalmente organizzata in \textbf{sei strati}, numerati dall'esterno verso l'interno:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|l|X|}
+    \hline
+    \textbf{Strato} & \textbf{Profondità} & \textbf{Caratteristiche principali} \\
+    \hline
+    \textbf{I} & Superficiale (molecolare) & Pochi corpi cellulari, principalmente assoni e dendriti \\
+    \textbf{II} & Granulare esterno & Piccole cellule granulari e piramidali \\
+    \textbf{III} & Piramidale esterno & Cellule piramidali di medie dimensioni \\
+    \textbf{IV} & Granulare interno & Piccole cellule stellate; principale destinazione degli \textbf{input talamici} \\
+    \textbf{V} & Piramidale interno & Grandi \textbf{cellule piramidali di Betz} (corteccia motoria); principale output subcorticale \\
+    \textbf{VI} & Fusiforme & Cellule fusiformi; connessioni con il talamo \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+
+
+\subsection{L'Organizzazione a Minicolonne}
+
+L'organizzazione della mielina nella corteccia rivela una struttura verticale caratteristica: \textbf{fasci verticali di fibre di output} che si proiettano dalla corteccia nella materia bianca sottostante. Questi fasci verticali corrispondono alle \textbf{minicolonne}: l'unità funzionale di base della corteccia. Una minicolonna è un gruppo di neuroni distribuiti attraverso tutti e sei gli strati corticali, orientati verticalmente, che:
+
+\begin{itemize}
+    \item Condividono lo stesso ruolo funzionale (rispondono agli stessi stimoli)
+    \item Ricevono input dallo stesso territorio
+    \item Proiettano verso le stesse aree target
+\end{itemize}
+
+Le minicolonne hanno un diametro di circa 50 $\mu$m e contengono tipicamente $\sim$80–100 neuroni in tutte le specie di mammiferi esaminate.
+
+\subsection{La Cellula Piramidale come Prototipo}
+
+La \textbf{ricostruzione tridimensionale della cellula piramidale} mostra un'organizzazione che riflette perfettamente l'architettura a minicolonne:
+
+\begin{itemize}
+    \item \textbf{Dendriti apicali}: si estendono verticalmente verso gli strati superficiali (I–III), ricevendo input dalle cortecce associative
+    \item \textbf{Dendriti basali}: si estendono orizzontalmente negli strati profondi (IV–V), ricevendo input locali
+    \item \textbf{Corpo cellulare} (soma): localizzato nello strato V (cellule piramidali grandi) o III (cellule piramidali medie)
+    \item \textbf{Assone}: si proietta verticalmente verso il basso, attraversa la materia bianca e raggiunge i target remoti
+\end{itemize}
+
+Il flusso di informazioni nella minicolonna è quindi prevalentemente \textbf{verticale}: input dagli strati superficiali $\rightarrow$ integrazione nel soma $\rightarrow$ output attraverso la materia bianca verso gli strati profondi.
+
+\subsection{Tipi Cellulari Principali della Corteccia}
+
+La corteccia è composta da due grandi classi di neuroni:
+
+\begin{enumerate}
+    \item \textbf{Neuroni eccitatori} (circa 80\% della popolazione): principalmente \textbf{cellule piramidali}, usano il \textbf{glutammato} come neurotrasmettitore. Hanno corpi cellulari a forma piramidale con un lungo dendrite apicale. Proiettano a lunga distanza (anche in aree lontane e nell'emisfero controlaterale attraverso il corpo calloso).
+    \item \textbf{Neuroni inibitori} (circa 20\% della popolazione): cellule \textbf{GABAergiche} (\textit{gamma-aminobutyric acid}), che usano il GABA come neurotrasmettitore. Esistono molti sottotipi, tra i più importanti:
+    \begin{itemize}
+        \item \textbf{Cellule a candelabro}: innervano specificamente il segmento iniziale dell'assone delle piramidali, il punto dove si generano gli spike, esercitando un controllo inibitorio molto efficace
+        \item \textbf{Cellule a cesto}: innervano i corpi cellulari delle cellule piramidali
+    \end{itemize}
+\end{enumerate}
+
+I due tipi di neuroni corticali producono effetti opposti sul neurone postsinaptico:
+
+\begin{itemize}
+    \item \textbf{Neuroni eccitatori} (glutammatergici): il legame del glutammato con i recettori AMPA/NMDA genera un afflusso di ioni positivi ($Na^+$, $Ca^{2+}$), producendo una \textbf{deflessione depolarizzante} (positiva) del potenziale di membrana. Questo segnale è detto \textbf{EPSP} (\textit{Excitatory Post-Synaptic Potential}).
+    \item \textbf{Neuroni inibitori} (GABAergici): il legame del GABA con i recettori GABA-A apre canali per $Cl^-$ o $K^+$, producendo una \textbf{deflessione iperpolarizzante} (negativa) del potenziale di membrana. Questo segnale è detto \textbf{IPSP} (\textit{Inhibitory Post-Synaptic Potential}).
+\end{itemize}
+
+La combinazione di EPSP e IPSP integrata nel soma determina se il neurone raggiungerà o meno la soglia di scarica.
+
+\subsection{La Legge di Dale}
+
+Un principio fondamentale della trasmissione sinaptica è la \textbf{Legge di Dale}:
+
+\begin{tcolorbox}[colback=colorE!40, colframe=colorE, arc=2mm, boxrule=0.5pt]
+\textit{Se un neurone presinaptico è eccitatorio, tutti i suoi target postsinaptici ricevono depolarizzazione. Se è inibitorio, tutti i suoi target ricevono iperpolarizzazione.}
+\end{tcolorbox}
+
+In altre parole, ogni neurone libera \textbf{un solo tipo} di neurotrasmettitore principale in tutte le sue terminazioni sinaptiche. Un neurone non può essere eccitatorio per alcuni target e inibitorio per altri.
+
+ La Legge di Dale è una semplificazione utile a livello di modellistica. In realtà, molti neuroni co-rilasciano più di un neurotrasmettitore, ma il principio di base rimane valido per la grande maggioranza dei casi.
+
+
+\newpage
+
+\section{Organizzazione Sensoriale e Motoria della Corteccia}
+
+L'organizzazione corticale rispetta un preciso \textbf{vincolo fisico}: le aree di input sensoriale e di output motorio si trovano in prossimità del \textbf{solco centrale}, mentre l'elaborazione associativa complessa avviene nelle regioni più distanti.
+
+Le principali aree sensoriali primarie:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|X|}
+    \hline
+    \textbf{Modalità sensoriale} & \textbf{Localizzazione corticale} \\
+    \hline
+    \textbf{Somatosensazione} (tatto, propriocezione) & Corteccia somatosensoriale primaria (postcentrale, strati 1-2-3 di Brodmann) \\
+    \textbf{Visione} & Corteccia visiva primaria V1, lobo occipitale (caudale) \\
+    \textbf{Udito} & Corteccia uditiva primaria, lobo temporale superiore (vicino all'area di Wernicke) \\
+    \textbf{Olfatto} & Bulbo olfattivo (regione filogeneticamente \textbf{antica}, solo tre strati — non neocorteccia) \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+ Il bulbo olfattivo è particolare perché è una delle strutture cerebrali più antiche dal punto di vista evolutivo (\textit{allocorteccia}), con soli tre strati invece dei sei della neocorteccia. L'olfatto ha una connessione diretta con le strutture limbiche (amigdala, ippocampo) che processano memoria ed emozioni, da qui il potere evocativo degli odori.
+
+
+\subsubsection{Cortecce Associative}
+
+Le \textbf{cortecce associative} si trovano tra le aree sensoriali primarie e le aree motorie. Integrano informazioni provenienti da più modalità sensoriali:
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Esempio:} Quando percepiamo una mela, la corteccia visiva elabora forma e colore, la corteccia somatosensoriale elabora la consistenza (tattile), la corteccia olfattiva elabora il profumo, la corteccia gustativa il sapore. Le cortecce associative integrano tutte queste informazioni in un'unica rappresentazione coerente dell'oggetto "mela".
+\end{tcolorbox}
+
+\subsubsection{Cortecce Motorie}
+
+Sul lato opposto del solco centrale rispetto alle cortecce sensoriali si trovano le \textbf{cortecce motorie}:
+
+\begin{itemize}
+    \item \textbf{Corteccia motoria primaria (M1)}: traduce i comandi motori in attivazione muscolare; movimento, tatto, parlato
+    \item \textbf{Corteccia premotoria}: pianificazione dei movimenti
+    \item \textbf{Area motoria supplementare (SMA)}: coordinazione di sequenze motorie complesse
+\end{itemize}
+
+
+
+
+\subsection{La Via Visiva}
+
+L'elaborazione visiva segue un percorso ben definito dal recettore alla corteccia:
+
+$$ \text{Retina} \rightarrow \text{Nervo ottico} \rightarrow \text{Nucleo Genicolato Laterale} \rightarrow \text{Corteccia Visiva Primaria} $$
+
+\begin{itemize}
+    \item \textbf{Retina}: i fotorecettori (coni e bastoncelli) traducono la luce in segnali elettrici. Le cellule gangliari della retina proiettano attraverso il nervo ottico.
+    \item \textbf{Nucleo Genicolato Laterale}: struttura talamìca che funge da stazione di trasmissione intermedia. Riceve l'input dalla retina e proietta alla corteccia visiva.
+    \item \textbf{Corteccia Visiva Primaria V1} (area 17 di Brodmann, \textit{corteccia striata}): il primo stadio di elaborazione corticale della visione. Il nome "striata" deriva dall'organizzazione a \textbf{strisce} visibile a occhio nudo nelle sezioni colorate.
+\end{itemize}
+
+
+\subsubsection{L'Organizzazione Retinotopica di V1}
+
+Attraverso tecniche di \textbf{imaging ottico} (che misurano le variazioni di riflettanza della corteccia legate all'attività neuronale), è possibile mappare l'organizzazione di V1 in risposta a stimoli visivi.
+I risultati mostrano che V1 è organizzata in modo \textbf{retinotopico}: esiste una corrispondenza biunivoca tra la posizione nello spazio visivo (retina) e la posizione sulla corteccia. Stimoli in posizioni diverse del campo visivo attivano strisce diverse di corteccia.
+
+Il sistema di riferimento retinotopico usa \textbf{coordinate polari}:
+\begin{itemize}
+    \item \textbf{Distanza radiale dalla fovea}: codificata lungo un asse della corteccia
+    \item \textbf{Posizione angolare} (0°–360°): codificata lungo l'altro asse
+\end{itemize}
+
+La \textbf{fovea} (centro del campo visivo, massima acuità) è rappresentata da un'area corticale sproporzionatamente grande rispetto alla periferia retinica (\textit{magnification factor}).
+
+\subsubsection{Dominanza Oculare}
+
+V1 mostra anche una organizzazione legata alla \textbf{dominanza oculare}: strisce adiacenti sono dominate alternativamente dall'occhio destro e dall'occhio sinistro. Questo arrangement è fondamentale per la \textbf{visione stereoscopica} (percezione della profondità), poiché permette il confronto delle informazioni provenienti dai due occhi.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Gli occhiali da cinema 3D sfruttano proprio questo meccanismo: proiettando immagini leggermente diverse ai due occhi, si genera artificialmente la disparità binoculare che il sistema visivo interpreta come profondità.
+\end{tcolorbox}
+
+\subsubsection{Selettività di Orientamento}
+
+Oltre alla retinotopia e alla dominanza oculare, i neuroni di V1 mostrano \textbf{selettività di orientamento}: ogni neurone risponde preferenzialmente a barre o bordi orientati in una direzione specifica (es. verticale, orizzontale, 45°, 135°).
+
+Ruotando la barra stimolo, si osserva che diverse regioni corticali rispondono a diversi orientamenti. Attraverso l'imaging ottico, è possibile mappare la distribuzione degli orientamenti preferiti sulla superficie di V1.
+
+La mappa degli orientamenti in V1 rivela una struttura affascinante: i neuroni selettivi per diversi orientamenti sono disposti in \textbf{spirali} (\textit{pinwheels}) attorno a \textbf{punti di singolarità} al centro di ciascun pinwheel.
+
+In corrispondenza del punto centrale di ogni pinwheel, tutti gli orientamenti (da 0° a 180°) sono rappresentati da neuroni collocati nelle sue immediate vicinanze. Procedendo radialmente verso l'esterno, l'orientamento preferito ruota progressivamente.
+
+Un risultato notevole: la \textbf{densità dei centri di pinwheel} sulla superficie corticale è proporzionale a \textbf{$\pi$ (pi greco)}, una corrispondenza matematica sorprendente che ha attirato l'attenzione della comunità neuroscientifica e che suggerisce un principio organizzativo profondo nell'architettura corticale.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+La relazione con $\pi$ non è un'astrazione matematica ma una proprietà misurabile sperimentalmente. Questo tipo di regolarità matematica in un sistema biologico è raro e suggerisce che l'organizzazione della corteccia visiva segua principi fisici precisi.
+\end{tcolorbox}
+
+
+
+\subsubsection{Gerarchia dell'Elaborazione Visiva}
+
+L'informazione visiva è elaborata in modo \textbf{gerarchico}. V1 codifica le caratteristiche visive di \textbf{basso livello}:
+\begin{itemize}
+    \item Posizione nello spazio visivo
+    \item Orientamento locale
+    \item Occhio di provenienza
+    \item Colore
+\end{itemize}
+
+Le aree visive successive (V2, V3, V4, V5/MT) e le aree associative elaborano caratteristiche progressivamente più complesse:
+
+$$ V1 \xrightarrow{\text{bordi, orientamenti}} V2 \xrightarrow{\text{angoli, forme semplici}} V4 \xrightarrow{\text{colore, forme}} IT \xrightarrow{\text{oggetti, volti}} $$
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Questa organizzazione gerarchica è notevolmente simile all'architettura delle \textbf{reti neurali convoluzionali} (\textit{Convolutional Neural Networks, CNN}) nel machine learning, un esempio di come i principi computazionali biologici abbiano ispirato l'ingegneria dell'intelligenza artificiale.
+\end{tcolorbox}
+
+
+Dopo V1, l'informazione visiva si biforca in due principali \textbf{vie di elaborazione} che proiettano verso regioni diverse della corteccia:
+
+\begin{enumerate}
+    \item \textbf{Via Ventrale} (\textit{"What" pathway}, "cosa"): proietta verso il \textbf{lobo temporale} inferiore. È responsabile del \textbf{riconoscimento degli oggetti} — identificare cosa si sta guardando (forma, colore, identità).
+    \item \textbf{Via Dorsale} (\textit{"Where/How" pathway}, "dove/come"): proietta verso il \textbf{lobo parietale}. È responsabile della \textbf{localizzazione spaziale degli oggetti} e del controllo visuomotorio — dove si trova l'oggetto e come interagirci.
+\end{enumerate}
+
+\subsubsection{La Corteccia Infratemporale (IT) e il Riconoscimento degli Oggetti}
+
+La \textbf{corteccia infratemporale} (\textit{inferotemporal cortex, IT}) si trova alla fine della via ventrale e rappresenta il livello più alto dell'elaborazione visiva per il riconoscimento degli oggetti.
+
+Un esperimento condotto da un gruppo di ricerca giapponese ha dimostrato una proprietà notevole della corteccia IT: quando gli animali osservano un oggetto specifico (ad esempio un \textbf{estintore}), si attivano \textbf{regioni segregate} e specifiche della corteccia IT — visibili come cerchi rossi nelle mappe di attivazione.
+
+Aspetto cruciale: queste stesse regioni si attivano in risposta a variazioni dell'oggetto:
+\begin{itemize}
+    \item Cambio di colore (rosso vs. nero)
+    \item Presenza di ombre
+    \item Variazioni di illuminazione
+\end{itemize}
+
+La risposta è quindi \textbf{invariante} rispetto a queste trasformazioni superficiali. Questo rivela che la corteccia IT codifica una \textbf{rappresentazione astratta} dell'oggetto, non le sue proprietà fisiche specifiche.
+
+\subsubsection{Codifica Distribuita}
+
+La rappresentazione nella corteccia IT è \textbf{distribuita}: non è un singolo neurone a codificare "estintore", ma una \textbf{popolazione di neuroni} il cui pattern di attività collettivo rappresenta l'oggetto.
+
+La \textbf{modularità} della risposta (cerchi diversi per oggetti diversi) riflette il meccanismo di \textbf{astrazione}: diverse categorie di oggetti attivano popolazioni neuronali diverse, ma ogni singola popolazione risponde a variazioni dello stesso oggetto. Questo è il meccanismo biologico che permette di riconoscere una mela sia rossa che verde, sia in piena luce che in ombra.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Un esperimento aggiuntivo ha mostrato che oggetti simili ma privi di manico attivano popolazioni neuronali diverse (contorni verdi nelle mappe) rispetto agli oggetti completi. Questo dimostra che anche dettagli funzionalmente rilevanti (il manico permette di "afferrare") sono codificati nella rappresentazione neuronale.
+\end{tcolorbox}
+
+
+\subsection{Principi di Astrazione nelle Cortecce Associative}
+
+Le cortecce associative costruiscono \textbf{rappresentazioni astratte} delle informazioni sensoriali. Il processo è:
+
+\begin{enumerate}
+    \item Le cortecce sensoriali primarie codificano caratteristiche fisiche concrete (bordi, frequenze sonore, pressioni tattili)
+    \item Ogni livello gerarchico combina e astrae le caratteristiche del livello inferiore
+    \item Nelle cortecce associative di ordine superiore, i neuroni rispondono a concetti astratti (oggetti, categorie, relazioni) indipendentemente dalle proprietà fisiche superficiali dello stimolo
+\end{enumerate}
+
+Questa capacità di \textbf{generalizzazione} è essenziale per la sopravvivenza: permette di riconoscere un predatore indipendentemente dalla sua posizione, illuminazione, distanza; di identificare il cibo anche in condizioni parziali.
+
+
+
+I calcoli cognitivi rilevanti per la sopravvivenza sono notevolmente \textbf{simili tra le specie}:
+
+\begin{itemize}
+    \item Trovare cibo (riconoscimento, localizzazione, perseguimento)
+    \item Evitare pericoli (riconoscimento dei predatori, risposta di fuga)
+    \item Riproduzione (riconoscimento del partner, comportamenti sociali)
+\end{itemize}
+
+Queste funzioni sono condivise da mammiferi, uccelli e probabilmente dai dinosauri. Le differenze cognitive tra le specie riguardano principalmente le \textbf{capacità aggiuntive}: matematica, musica, linguaggio, pensiero astratto — capacità che gli esseri umani hanno sviluppato in misura molto maggiore rispetto ad altri animali.
+
+
+
+\section{Scaling del Cervello tra Specie e Proprietà Small-World}
+
+
+
+Le dimensioni del cervello variano enormemente tra le specie di mammiferi, da pochi grammi nel topo a diversi chilogrammi nella balena, eppure l'\textbf{organizzazione di base} è notevolmente conservata: stessi lobi, stessa struttura corticale a sei strati, stesso tipo di neuroni, stessa divisione in materia grigia e bianca.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Questa conservazione evolutiva suggerisce che l'architettura corticale a sei strati organizzata in minicolonne rappresenta una soluzione computazionale ottimale per l'elaborazione dell'informazione nei vertebrati. L'evoluzione ha "scoperto" questa architettura una volta sola e l'ha mantenuta per centinaia di milioni di anni.
+\end{tcolorbox}
+
+Osservando la variazione del volume cerebrale tra le specie di mammiferi, dal topo all'elefante, si osservano variazioni di \textbf{diversi ordini di grandezza}:
+
+\begin{itemize}
+    \item Il \textbf{volume della materia grigia} (corpi neuronali) aumenta enormemente
+    \item Il \textbf{volume della materia bianca} (fibre mielinizzate) aumenta in modo analogo
+\end{itemize}
+
+Questo pone un importante \textbf{problema ingegneristico}: se tutti i neuroni fossero connessi con tutti gli altri (\textit{connettività all-to-all}), la quantità di materia bianca necessaria crescerebbe in modo \textbf{quadratico} con il numero di neuroni $N$:
+
+$$ V_{\text{bianca}} \propto N^2 $$
+
+Tuttavia, sperimentalmente si osserva che la materia bianca scala in modo sublineare o lineare con la materia grigia, non quadratico. Questo implica che la \textbf{connettività deve essere selettiva}: non tutti i neuroni sono connessi con tutti gli altri.
+
+\subsubsection{Il Numero di Sinapsi per Neurone è Conservato}
+
+Neuroanatomisti spagnoli (studenti, ratti, topi) hanno eseguito conteggi sistematici dei \textbf{bottoni sinaptici} sui neuroni in diversi strati corticali e in diverse specie.
+
+Il risultato è sorprendente: il numero di sinapsi per neurone è \textbf{approssimativamente costante} tra le specie:
+
+$$ N_{\text{sinapsi/neurone}} \approx 10.000 - 20.000 $$
+
+Questo numero rimane costante nonostante l'enorme variazione nel \textbf{numero totale di neuroni}:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|X|}
+    \hline
+    \textbf{Specie} & \textbf{Neuroni corticali approssimativi} \\
+    \hline
+    Topo & $\sim$30 milioni \\
+    Ratto & $\sim$70 milioni \\
+    Gatto & $\sim$300 milioni \\
+    Uomo & $\sim$10–15 miliardi \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Il vincolo evolutivo è chiaro: minimizzare la distanza di connettività (per ridurre i costi metabolici e la quantità di materia bianca), preservare gli hub di comunicazione importanti, e sacrificare le connessioni periferiche meno critiche.
+\end{tcolorbox}
+
+\subsubsection{Proprietà Small-World della Connettività}
+
+La connettività sinaptica nel cervello non è né completamente casuale né completamente regolare. Presenta invece le caratteristiche di una \textbf{rete small-world}:
+
+\begin{itemize}
+    \item Alcuni neuroni (gli \textbf{hub}) sono connessi con un numero molto elevato di altri neuroni
+    \item La maggior parte dei neuroni (periferici) ha poche connessioni
+    \item Nonostante la bassa connettività media, l'informazione si diffonde in modo efficiente attraverso gli hub
+\end{itemize}
+
+Questa architettura permette la \textbf{diffusione efficiente delle informazioni} senza richiedere connettività completa (e quindi senza richiedere una quantità quadratica di materia bianca).
+
+Il numero chiave di $\sim$10.000 sinapsi per neurone è conservato tra le specie: è il compromesso evolutivo ottimale tra connettività (per la ricchezza dell'elaborazione) e costo metabolico/anatomico.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+I roditori dimostrano che cognizione complessa è possibile anche con circa 100 volte meno neuroni degli esseri umani. Questo suggerisce che la \textbf{qualità} dell'architettura connettiva (la struttura della rete) conta più della pura quantità di neuroni. In qualche modo, anche reti molto più piccole riescono a implementare le funzioni cognitive essenziali.
+\end{tcolorbox}
+
+\newpage
+\section{Informazioni sull'Esame}
+
+Il docente ha fornito informazioni dettagliate sul formato dell'esame al termine della lezione.
+
+L'esame è \textbf{orale} e strutturato nel modo seguente:
+
+\begin{enumerate}
+    \item \textbf{Un argomento a scelta dello studente}: lo studente sceglie liberamente un tema del corso su cui essere esaminato
+    \item \textbf{Due argomenti a scelta del docente}: il docente seleziona due temi aggiuntivi
+\end{enumerate}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Non tutto il materiale del corso sarà oggetto d'esame. In particolare, i contenuti di questa prima lezione, l'\textbf{introduzione e l'anatomia cerebrale di base}, non appariranno nelle domande a scelta del docente, in quanto considerati conoscenze di prerequisito o di contesto generale.
+\end{tcolorbox}
+
+Il focus principale dell'esame sarà sul \textbf{corpo principale del corso}, con particolare attenzione al:
+
+\begin{itemize}
+    \item \textbf{Modello di Hodgkin-Huxley} (descrizione quantitativa del potenziale d'azione)
+    \item Neuroni spiking semplificati
+    \item Population firing rates e dinamica di popolazione
+    \item Dinamica non lineare e funzioni cognitive
+\end{itemize}
+
+\newpage
+
+
+\section*{Riepilogo dei Concetti Fondamentali}
+\addcontentsline{toc}{section}{Riepilogo dei Concetti Fondamentali}
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|X|}
+    \hline
+    \textbf{Concetto} & \textbf{Descrizione sintetica} \\
+    \hline
+    \textbf{Dottrina neuronale} & Il cervello è composto di elementi fondamentali (neuroni); la cognizione emerge dalle loro interazioni \\
+    \textbf{Potenziale d'azione} & Segnale binario stereotipato generato quando il potenziale di membrana supera la soglia; informazione codificata nella frequenza \\
+    \textbf{EPSP / IPSP} & Potenziali postsinaptici eccitatori (glutammato) e inibitori (GABA); la loro somma determina la scarica del neurone \\
+    \textbf{Legge di Dale} & Ogni neurone rilascia un solo tipo di neurotrasmettitore principale in tutte le sue terminazioni \\
+    \textbf{Aree di Brodmann} & 52 aree corticali distinte per architettura istologica, corrispondenti a funzioni diverse \\
+    \textbf{Minicolonna} & Unità funzionale verticale della corteccia: $\sim$80–100 neuroni attraverso tutti e sei gli strati con la stessa funzione \\
+    \textbf{Retinotopia} & Corrispondenza punto-a-punto tra posizione nello spazio visivo e posizione sulla corteccia visiva \\
+    \textbf{Pinwheel} & Organizzazione a spirale dei neuroni selettivi per l'orientamento in V1; densità proporzionale a $\pi$ \\
+    \textbf{Via ventrale / dorsale} & Due vie visive: "cosa" (lobo temporale) e "dove/come" (lobo parietale) \\
+    \textbf{Codifica distribuita} & Gli oggetti sono rappresentati da popolazioni di neuroni, non da singoli neuroni \\
+    \textbf{Rete small-world} & Architettura connettiva con hub ad alta connettività: diffusione efficiente senza connettività completa \\
+    \textbf{$\sim$10.000 sinapsi/neurone} & Numero conservato tra tutte le specie di mammiferi; compromesso tra connettività e costo metabolico \\
+    \hline
+    \end{tabularx}
+\end{table}
