@@ -1,0 +1,575 @@
+\chapter{Lezione 2}
+
+\textbf{Argomenti:} Metodi sperimentali in neuroscienze, EEG, ERP, MEG, TMS, PET, fMRI, segnale BOLD, imaging ottico VSD, calcium imaging, ECoG, patch clamp, optogenetica, campo elettrico extracellulare, local field potential, SUA, MUA
+
+\vspace{0.5cm}
+\noindent\rule{\textwidth}{0.4pt}
+
+\section{Metodi Sperimentali in Neuroscienze}
+
+
+La seconda parte dell'introduzione al corso è dedicata ai \textbf{metodi sperimentali} attualmente disponibili nei laboratori di neuroscienze per investigare il comportamento delle reti cerebrali. Il punto di partenza è un grafico che mostra la \textbf{risoluzione temporale e spaziale} dei diversi approcci strumentali.
+
+Sull'asse temporale, la gamma di copertura si estende dai \textbf{millisecondi} fino a giorni e mesi: è quindi possibile seguire l'attività neuronale a una risoluzione paragonabile alla durata di un potenziale d'azione, ma anche monitorare l'evoluzione di processi plastici su lunghe scale temporali. Sull'asse spaziale, invece, la finestra è altrettanto vasta: si va dalla \textbf{sinapsi singola}, con una risoluzione dell'ordine di frazioni di micron, fino all'intero cervello esplorato nella sua globalità.
+
+Va notato che il grafico originale non include il \textbf{calcium imaging} con microscopi avanzati, poiché si tratta di una tecnologia più recente. Con questa tecnica, utilizzando microscopi a due fotoni, è oggi possibile seguire in vivo l'attività di singole sinapsi, raggiungendo risoluzioni spaziali nell'ordine di frazioni di micron.
+
+
+Ogni tecnica occupa una posizione specifica nel piano risoluzione spaziale–risoluzione temporale. Poiché nessun metodo copre simultaneamente tutta la gamma di scale, l'indagine neuroscientifica richiede la combinazione di approcci complementari, selezionati in funzione della domanda scientifica. Le tecniche non invasive — che non richiedono l'apertura del cranio — tendono a collocarsi nella parte superiore del grafico (bassa risoluzione spaziale, buona risoluzione temporale o viceversa). Le tecniche invasive permettono, al prezzo di una procedura chirurgica, di guadagnare in risoluzione spaziale e di accedere al segnale neuronale direttamente alla sua sorgente.
+
+
+\section{Elettroencefalografia (EEG) e Potenziali Evento-Correlati (ERP)}
+
+\subsubsection{L'Esperienza di Berger e il Principio Fisico}
+
+Per investigare il cervello nella sua interezza, a bassa risoluzione spaziale, l'approccio più noto è la registrazione dell'attività elettrica spontaneamente prodotta dal \textbf{sistema nervoso centrale}. I neuroni generano messaggi sotto forma di \textbf{potenziali d'azione} (spike), che perturbano il campo elettrico — e in misura minore quello magnetico — dello spazio circostante. Quando l'attività è coordinata tra una grande popolazione di neuroni appartenenti alla stessa popolazione funzionale (ad esempio, neuroni che codificano la stessa informazione), queste perturbazioni del campo elettrico si sovrappongono in modo coerente e possono essere rilevate da \textbf{elettrodi posizionati sul cranio}.
+
+Questo principio fu sfruttato per la prima volta negli anni '30 del XX secolo da \textbf{Hans Berger}, il cui lavoro portò alla registrazione della prima \textbf{elettroencefalografia (EEG)}: la registrazione della attività elettrica del cervello attraverso il cuoio capelluto.
+
+\subsubsection{I Potenziali Evento-Correlati (ERP)}
+
+Il termine \textbf{ERP} (Event-Related Potentials, potenziali evento-correlati) descrive una variante dell'EEG in cui si studia la risposta elettrica cerebrale evocata da una stimolazione esogena — tipicamente sensoriale. La stimolazione può essere visiva, uditiva o somatosensoriale.
+
+
+
+\section{Magnetoencefalografia (MEG)}
+
+\subsubsection{Il Principio SQUID e la Rilevazione del Campo Magnetico}
+
+Un approccio più sofisticato è la \textbf{magnetoencefalografia (MEG)}, che sfrutta la misurazione delle variazioni del \textbf{campo magnetico} prodotto dall'attività elettrica cerebrale. Quando fluiscono correnti elettriche nei neuroni, si genera anche un campo magnetico associato. Se questa generazione di campo magnetico è coerente tra molti neuroni attivi simultaneamente, il segnale risultante può essere rilevato da sensori estremamente sensibili.
+
+Il dispositivo di rilevazione alla base della MEG è lo \textbf{SQUID} (Superconducting QUantum Interference Device, interferometro quantistico superconduttore), che sfrutta il fenomeno dell'interferenza quantistica nei circuiti superconduttori per misurare variazioni di flusso magnetico straordinariamente piccole. 
+
+\subsubsection{Necessità di Isolamento Ambientale}
+
+A differenza del campo elettrico, il campo magnetico prodotto dall'attività neuronale è estremamente tenue. Per poterlo rilevare è necessario operare in un ambiente di misura fortemente isolato, dove qualsiasi perturbazione magnetica esterna (traffico, elettrodomestici, attrezzature elettriche) sia eliminata. La misura viene quindi eseguita in \textbf{camere schermature magneticamente} (camere di Faraday per il campo magnetico), che isolano il soggetto dal rumore di fondo.
+
+\subsubsection{Caratteristiche della MEG}
+
+Come l'EEG, anche la MEG è una tecnica \textbf{non invasiva}: non richiede alcuna apertura del cranio né l'impianto di elettrodi. La \textbf{risoluzione temporale} è eccellente, raggiungendo la scala dei millisecondi. La \textbf{risoluzione spaziale}, invece, è bassa, poiché il segnale registrato è la sovrapposizione dei contributi di molte sorgenti distribuite nel cervello — una sorta di grande media del generatore distribuito. Per questa ragione la MEG si colloca nella parte superiore dell'asse verticale del grafico di risoluzione.
+
+\section{Stimolazione Magnetica Transcranica (TMS)}
+
+Le tecniche discusse finora sono tutte di tipo \textbf{registrativo}: misurano passivamente l'attività cerebrale. Una prospettiva tipica del fisico è invece quella di \textbf{perturbare}: si dà un "kick" al sistema e si osserva la risposta, per comprendere le proprietà della rete. In neuroscienze, questo approccio è incarnato dalla \textbf{stimolazione magnetica transcranica (TMS)}, che consente di perturbare le reti corticali in modo non invasivo.
+
+
+
+Il dispositivo TMS consiste in un \textbf{solenoide} posizionato esternamente al cranio. Quando si fa scorrere un impulso di corrente nel solenoide, questo genera un campo magnetico variabile nel tempo. Per la \textbf{legge di induzione di Faraday}, un campo magnetico variabile induce una forza elettromotrice e una corrente nel tessuto conduttivo sottostante — in questo caso, la corteccia cerebrale. Il flusso di corrente indotta aumenta l'\textbf{eccitabilità corticale} e porta all'attivazione dei neuroni corticali (firing spontaneo).
+
+Se invece di un singolo impulso si eroga un \textbf{burst di impulsi} (sequenza rapida), il meccanismo è opposto: il network corticale viene \textbf{inibito} (down-regulation dell'eccitabilità), e l'attività spontanea viene soppressa.
+
+\
+La TMS può essere utilizzata in combinazione con l'EEG: si perturba la rete con la TMS e si osserva con l'EEG l'effetto di questa perturbazione sull'attività elettrica corticale in corso. Questo schema \textbf{perturbazione + registrazione} è uno strumento potente per caratterizzare le proprietà dinamiche delle reti corticali.
+
+\section{Tomografia a Emissione di Positroni (PET)}
+
+Un'ulteriore modalità non invasiva per investigare l'attività cerebrale si basa sulla misurazione dei \textbf{prodotti del metabolismo neuronale}. Le reti neurali più attive consumano più energia: questa correlazione costituisce la base della \textbf{tomografia a emissione di positroni (PET)}.
+
+Nella PET si somministra al soggetto un \textbf{tracciante radioattivo} (solitamente glucosio marcato con un isotopo emettitore di positroni, come il $^{18}$F-fluorodeossiglucosio). I neuroni più attivi metabolicamente lo captano in misura maggiore. Il decadimento positronico del tracciante produce fotoni gamma rilevabili dall'esterno, permettendo di ricostruire una mappa tridimensionale dell'attività metabolica cerebrale.
+
+
+La PET presenta una \textbf{risoluzione spaziale e temporale molto bassa}: nel grafico risoluzione spazio-temporale, essa occupa l'angolo in alto a destra, indicando scarsa capacità di localizzare sorgenti con precisione e di seguire variazioni rapide. Nonostante queste limitazioni, la PET è ampiamente utilizzata sia in ambito clinico (neurologia, oncologia) sia nella ricerca di base per lo studio del metabolismo cerebrale.
+
+
+
+\section{Risonanza Magnetica Funzionale (fMRI)}
+
+\subsubsection{I Protoni dell'Acqua come Sonde}
+
+La tecnica non invasiva di maggiore impatto nella neuroscienze cognitive è la \textbf{risonanza magnetica funzionale (fMRI)}. Il suo funzionamento sfrutta le proprietà quantistiche dei \textbf{protoni dell'acqua} ($^{1}\mathrm{H}$), che costituiscono i candidati ideali per due ragioni: l'acqua rappresenta circa i tre quarti della massa corporea ed è pervasiva nel tessuto cerebrale.
+
+I protoni dell'acqua possiedono un momento angolare intrinseco, lo \textbf{spin nucleare}, che in assenza di campo magnetico esterno è orientato casualmente. Questa casualità degli orientamenti produce un momento magnetico netto nullo e nessun segnale rilevabile.
+
+\subsubsection{Allineamento degli Spin nel Campo Forte}
+
+La fMRI sfrutta un \textbf{magnete principale} estremamente potente che genera un campo magnetico statico e uniforme $\mathbf{B}_0$. Quando il campo viene attivato, gli spin dei protoni tendono ad allinearsi lungo la direzione di $\mathbf{B}_0$ (allineamento parallelo o antiparallelo, con una lieve prevalenza del parallelo per ragioni termodinamiche). Più forte e più omogeneo è il campo $\mathbf{B}_0$, più coerente è l'orientamento degli spin e migliore è la qualità dell'immagine ricostruibile.
+
+In ambito clinico si utilizzano tipicamente magneti da \textbf{1.5 Tesla}. I laboratori di ricerca in neuroscienze dispongono di magneti da \textbf{7 Tesla}, che consentono una risoluzione spaziale superiore al millimetro cubico (il \textbf{voxel} — pixel tridimensionale). Per la sperimentazione animale esistono magneti ancora più potenti.
+
+
+\subsubsection{Il Polso a Radiofrequenza e la Precessione}
+
+Dopo aver allineato gli spin lungo $\mathbf{B}_0$, la sequenza fMRI prevede l'applicazione di un secondo solenoide che eroga per un breve intervallo di tempo una corrente alternata a \textbf{radiofrequenza (RF)}. Questo genera un secondo campo magnetico $\mathbf{B}_1$, orientato \textbf{ortogonalmente} a $\mathbf{B}_0$ e variabile nel tempo alla frequenza di Larmor:
+
+$$ \omega_L = \gamma B_0 $$
+
+dove $\gamma$ è il rapporto giromagnetico del protone. La durata del polso RF è calibrata affinché gli spin inizino una \textbf{precessione coerente} attorno alla direzione di $\mathbf{B}_1$: tutti gli spin ruotano in sincronia alla frequenza del polso RF, spostandosi dal piano parallelo a $\mathbf{B}_0$ verso un piano ortogonale (piano trasversale).
+
+\subsubsection{Rilassamento Trasversale}
+
+Quando il polso RF viene rimosso, gli spin continuano a ruotare nel piano trasversale. Questo moto coerente dei protoni genera un campo magnetico oscillante rilevabile dall'esterno: per la legge di Faraday, la variazione del flusso magnetico induce una corrente misurabile nei circuiti ricevitori. Si osserva quindi un segnale oscillante — la cosiddetta \textbf{Free Induction Decay (FID)} — che decade in ampiezza nel tempo.
+
+Il decadimento è causato dalla progressiva \textbf{perdita di coerenza di fase} (defasamento) tra gli spin individuali. Rumore termico, disomogeneità locali del campo magnetico, e — come si vedrà tra breve — la presenza di molecole paramagnetiche, accelerano questo dephasing. Il segnale rilevato è:
+
+$$ S(t) = S_0 \, e^{-t / T_2^*} $$
+
+La costante di tempo \textbf{$T_2^*$} è la misura della velocità di defasamento degli spin in un dato volume cerebrale (voxel). Il valore tipico di $T_2^*$ nella corteccia cerebrale è dell'ordine di \textbf{decine di millisecondi}: un tempo sufficientemente breve da permettere l'acquisizione di molti polsi RF in rapida successione, coprendo in tal modo tutto il volume cerebrale.
+
+\subsubsection{Rilassamento Longitudinale}
+
+Dopo il defasamento trasversale, gli spin rientrano progressivamente nell'allineamento lungo $\mathbf{B}_0$ — il cosiddetto \textbf{rilassamento longitudinale}. Questo processo avviene su scale temporali molto più lunghe, caratterizzate dalla costante \textbf{$T_1$}, dell'ordine di \textbf{frazioni di secondo} (tipicamente $\sim 0.5$--$1$ s per il tessuto cerebrale a 3 T).
+
+Il ciclo sperimentale dell'fMRI è quindi:
+
+\begin{enumerate}
+    \item Polso RF $\rightarrow$ precessione coerente degli spin
+    \item Misura del decadimento $T_2^*$ in tutti i voxel
+    \item Attesa del rilassamento longitudinale $T_1$ ($\sim 0.5$ s)
+    \item Nuovo polso RF $\rightarrow$ inizio del ciclo successivo
+\end{enumerate}
+
+Questo schema impone una \textbf{risoluzione temporale} dell'fMRI intrinsecamente limitata: non è possibile acquisire immagini a frequenza superiore a circa \textbf{2 Hz} (una immagine ogni 0.5 s). Tuttavia, questo permette comunque di campionare l'attività cerebrale in tutto il volume con un tempo di ripetizione (TR) dell'ordine di mezzo secondo.
+
+
+
+\subsection{Il Segnale BOLD — Emoglobina e Attività Neuronale}
+
+\subsubsection{L'Emoglobina come Marcatore dell'Attività}
+
+Il legame tra il segnale $T_2^*$ e l'attività neuronale passa attraverso l'\textbf{emoglobina} — la proteina trasportatrice dell'ossigeno presente nei globuli rossi. L'ossigeno è la fonte di energia sfruttata dal metabolismo neuronale per mantenere l'equilibrio ionico trans-membrana (pompe ioniche) e per supportare la sinaptica. La regola generale è: \textbf{più una rete neurale è attiva, più ossigeno consuma}.
+
+\subsubsection{Deossiemoglobina e Paramagnetismo}
+
+Nelle condizioni di bassa attività neuronale (firing rate basale $\approx 1$ Hz), la rete non richiede grandi quantità di ossigeno. Di conseguenza, nei vasi sanguigni del cervello è presente una frazione significativa di \textbf{deossiemoglobina} (emoglobina che ha rilasciato l'ossigeno al tessuto).
+
+La deossiemoglobina contiene un nucleo di ferro che, in assenza di ossigeno legato, si trova in uno stato ad alto spin (\textbf{paramagnetico}). Il ferro paramagnetico è una sorgente di campo magnetico locale disordinato che \textbf{perturba fortemente} l'omogeneità del campo magnetico locale. Questa perturbazione accelerara il defasamento degli spin dell'acqua:
+
+$$ T_2^* \text{ piccolo} \Longleftrightarrow \text{alta [deossiHb]} \Longleftrightarrow \text{bassa attività neuronale} $$
+
+\subsubsection{Ossiemoglobina e Riduzione del Disturbo Paramagnetico}
+
+Quando invece la rete neuronale è attiva e richiede ossigeno, i vasi sanguigni si dilatano e il flusso ematico aumenta, portando una maggiore quantità di \textbf{ossiemoglobina} (emoglobina con l'ossigeno legato al ferro). In questo stato, il nucleo di ferro è \textbf{diamagnetico}: l'ossigeno ne maschera le proprietà paramagnetiche, riducendo drasticamente la perturbazione del campo magnetico locale.
+
+Il campo locale è quindi più omogeneo, gli spin dell'acqua defasano più lentamente, e $T_2^*$ risulta più grande:
+
+$$ T_2^* \text{ grande} \Longleftrightarrow \text{alta [ossiHb]} \Longleftrightarrow \text{alta attività neuronale} $$
+
+\subsubsection{Il Segnale BOLD}
+
+Il segnale \textbf{BOLD} (Blood Oxygen Level Dependent) è esattamente la mappa di $T_2^*$ acquisita in ogni voxel ad ogni intervallo di acquisizione ($\sim 0.5$ s). La codifica a colori convenzionale è:
+
+\begin{itemize}
+    \item \textbf{Blu} $\rightarrow$ $T_2^*$ piccolo $\rightarrow$ alta [deossiHb] $\rightarrow$ bassa attività
+    \item \textbf{Rosso} $\rightarrow$ $T_2^*$ grande $\rightarrow$ alta [ossiHb] $\rightarrow$ alta attività
+\end{itemize}
+
+Il BOLD costituisce pertanto una \textbf{misura indiretta} dell'attività neuronale, mediata dal metabolismo ossidativo e dalla vascolarizzazione locale. Questa misura è accoppiata all'attività attraverso la risposta emodinamica.
+
+
+
+\subsection{Limiti del BOLD}
+
+Il segnale BOLD non è una misura diretta dell'attività elettrica neuronale, ma è mediato dal metabolismo: la risposta emodinamica (vasodilatazione, aumento del flusso ematico, variazione del rapporto ossi/deossiemoglobina) risponde con un \textbf{ritardo} di diversi secondi alla variazione di attività. Inoltre, la relazione tra attività elettrica e risposta metabolica potrebbe essere non lineare, soprattutto per stimolazioni prolungate.
+
+\subsubsection{L'Esperimento di Logothetis: Registrazione Simultanea}
+
+Per valutare quantitativamente la relazione tra BOLD e attività elettrica, il gruppo di \textbf{Nikos Logothetis} (Max Planck Institute for Biological Cybernetics, Tübingen, Germania) ha condotto all'inizio degli anni 2000 un esperimento fondamentale: la registrazione simultanea del segnale BOLD con fMRI a 1.5 T e dell'attività elettrica con un \textbf{elettrodo di tungsteno} impiantato nella \textbf{corteccia visiva} di un macaco.
+
+L'esperimento non era banale dal punto di vista tecnico: un elettrodo metallico inserito in un magnete da 1.5 T è soggetto a forze meccaniche considerevoli e a una serie di artefatti elettromagnetici. Il gruppo di Logothetis riuscì tuttavia a dominare questi problemi e a ottenere registrazioni simultanee attendibili.
+
+Lo stimolo visivo era una \textbf{scacchiera in movimento}, che elicita una forte risposta nella corteccia visiva primaria (V1).
+
+\subsubsection{Multi-Unit Activity (MUA) e Risposta BOLD}
+
+L'attività elettrica registrata dall'elettrodo di tungsteno era la \textbf{Multi-Unit Activity (MUA)}: l'attività di scarica (firing) di numerosi neuroni vicini alla punta dell'elettrodo. La MUA era rappresentata da una curva temporale a colore ciano. Il segnale BOLD del voxel corrispondente alla posizione dell'elettrodo era tracciato in rosso.
+
+I risultati mostrarono:
+
+\begin{enumerate}
+    \item \textbf{Ritardo del BOLD rispetto alla MUA}: la risposta BOLD arriva con un ritardo di \textbf{secondi} rispetto all'inizio dell'attività neuronale.
+    \item \textbf{Adattamento della MUA}: le unità neurali mostrano un adattamento del firing rate durante la stimolazione sostenuta — il tasso di scarica si riduce progressivamente (le reti cercano di risparmiare energia evitando un eccessivo consumo di spike).
+    \item \textbf{Rebound post-stimolazione}: alla cessazione della scacchiera, si osserva un transitorio rimbalzo dell'attività.
+\end{enumerate}
+
+\subsubsection{Il Filtro di Kalman e la Trasformazione Lineare}
+
+Per stimolazioni brevi e acute, Logothetis et al. dimostrarono che esiste una \textbf{trasformazione lineare} dalla MUA al segnale BOLD. Costruendo un \textbf{filtro di Kalman} (o filtro lineare ottimale), a partire dalla MUA è possibile predire con alta fedeltà il corso temporale del BOLD. Questa convoluzione lineare è rappresentata dalla curva nera sovrapposta al BOLD nel lavoro originale.
+
+La conclusione importante è:
+
+$$ \text{BOLD}(t) \approx (h * \text{MUA})(t) $$
+
+dove $h(t)$ è la \textbf{funzione di risposta emodinamica} (HRF, Hemodynamic Response Function), un kernel lineare con picco intorno a 5–6 s. Questo significa che il BOLD è un segnale filtrato passa-basso della MUA — il che è una buona notizia, perché conoscendo il kernel si può in linea di principio invertire la trasformazione e stimare la MUA dal BOLD.
+
+\subsubsection{Limite Fondamentale: Divergenza per Stimolazioni Prolungate}
+
+Il problema emerge chiaramente quando la stimolazione è mantenuta per lungo tempo (condizione tipica dell'attività cerebrale in stato naturale, in cui il cervello non è mai silente). In questi casi, si osserva una \textbf{divergenza netta} tra la predizione del filtro di Kalman e il segnale BOLD effettivo:
+
+\begin{itemize}
+    \item La MUA può essere nulla o quasi nulla (la rete si è adattata e non produce spike)
+    \item Eppure il segnale BOLD rimane \textbf{positivo} — suggerendo falsamente che la rete sia attiva
+\end{itemize}
+
+In questo scenario, il BOLD non riflette più l'attività di scarica della rete. Il segnale BOLD è un ottimo indicatore dell'attività neuronale in risposta a stimoli brevi e acuti. Per stati prolungati — che sono la norma nel cervello umano in condizioni naturali — il BOLD può fornire indicazioni fuorvianti, mostrando segnale positivo in assenza di attività di scarica. 
+
+
+
+\section{Imaging Ottico con Coloranti Voltaggio-Sensibili}
+
+\subsubsection{Principio Fisico dei Coloranti VSD}
+
+L'attività neuronale può essere registrata con alta risoluzione spaziale anche attraverso l'\textbf{imaging ottico} con \textbf{coloranti voltaggio-sensibili} (Voltage-Sensitive Dyes, VSD). Questi coloranti sono molecole che si legano alla membrana plasmatica dei neuroni — inserendosi specificamente nel \textbf{doppio strato fosfolipidico} (bilipid layer) che separa il compartimento intracellulare da quello extracellulare.
+
+La proprietà fondamentale dei VSD è che le loro caratteristiche di \textbf{fluorescenza} dipendono dal \textbf{potenziale di membrana} trans-bilayer. In particolare, illuminando il tessuto con una lunghezza d'onda appropriata (solitamente nel range dell'arancione o del rosso), i VSD assorbono fotoni e li riemettono per fluorescenza con un'intensità e/o uno spettro che variano in funzione della differenza di potenziale tra i due lati della membrana.
+
+Quando la membrana è a riposo (potenziale di membrana di equilibrio, tipicamente intorno a $-70$~mV), la fluorescenza ha una certa intensità basale. Quando la membrana si depolarizza — a causa di correnti sinaptiche o di uno spike — la variazione del campo elettrico trans-membrana modifica la configurazione elettronica dei VSD, producendo una variazione misurabile della fluorescenza.
+
+\subsubsection{Applicazione Sperimentale}
+
+La procedura sperimentale prevede di applicare i VSD direttamente alla superficie corticale esposta chirurgicamente (ad esempio, posando in polvere o in soluzione il colorante sulla corteccia). Il tessuto viene quindi illuminato e la fluorescenza riemessa viene raccolta da un \textbf{microscopio} dotato di una \textbf{camera ad alta velocità}, che acquisisce una sequenza rapida di immagini della corteccia.
+
+Il risultato è un \textbf{film dell'attività corticale}: ogni pixel dell'immagine corrisponde a una piccola area del tessuto corticale, e il suo valore di intensità (codificato in colori) rappresenta il potenziale di membrana medio dei neuroni in quella posizione. Per convenzione:
+
+\begin{itemize}
+    \item \textbf{Blu} $\rightarrow$ potenziale di membrana a riposo $\rightarrow$ bassa attività
+    \item \textbf{Rosso} $\rightarrow$ marcata depolarizzazione $\rightarrow$ alta attività
+\end{itemize}
+
+Va sottolineato che i VSD registrano principalmente l'attività delle \textbf{strutture dendritiche superficiali}: il segnale riflette il potenziale medio dei \textbf{dendriti apicali} che si proiettano verso la superficie del tessuto, non direttamente il potenziale somatico.
+
+
+\subsection{Esperimenti di Percezione Visiva con VSD}
+
+\subsubsection{Esperimento 1: Risposta a un Punto Rosso}
+
+In una serie di esperimenti paradigmatici condotti su macaco, i VSD sono stati utilizzati per registrare l'attività della \textbf{corteccia visiva primaria (V1)} in risposta a diversi tipi di stimoli visivi. La corteccia visiva è una struttura ideale per questi esperimenti perché presenta una rappresentazione \textbf{topografica} del campo visivo: ogni posizione retinica corrisponde a un'area specifica della corteccia (mappa retinotopica).
+
+Nel primo esperimento, si presenta all'animale un \textbf{piccolo punto rosso} per 40 millisecondi, poi lo si spegne. Ciò che si osserva nel film VSD è:
+
+\begin{enumerate}
+    \item Dopo un breve ritardo, nella posizione corticale corrispondente alla mappa retinotopica del punto appare un'area di attivazione (colori caldi).
+    \item Questo spot di attività è il risultato dell'attivazione selettiva dei neuroni selettivi a quella posizione nel campo visivo.
+    \item L'attività si diffonde lateralmente nelle aree corticali vicine — perché i neuroni comunicano con i neuroni circostanti attraverso connessioni ricorrenti.
+    \item L'intera sequenza si svolge nell'arco di circa 100 ms.
+\end{enumerate}
+
+\subsubsection{Esperimento 2: Risposta a una Barra Verticale}
+
+Nel secondo esperimento si presenta all'animale una \textbf{barra verticale}, ovvero un oggetto esteso nel campo visivo. Si osserva che la risposta corticale ha un \textbf{ritardo maggiore} rispetto al caso del punto. Perché?
+
+La risposta sta nella struttura funzionale della corteccia visiva: i neuroni in V1 sono \textbf{selettivi per l'orientamento} (ciascun neurone risponde preferenzialmente a stimoli con una certa orientazione e posizione). Quando si presenta una barra verticale estesa, si attivano selettivamente i neuroni selettivi all'orientazione verticale nella zona corrispondente. Contemporaneamente, però, si attivano anche i circuiti \textbf{inibitori}: i neuroni non selettivi per quella orientazione vengono soppressi dall'inibizione laterale.
+Nasce così una competizione tra inibizione ed eccitazione che ritarda la risposta corticale.
+La risposta è più lenta perché la \textbf{competizione} tra eccitazione e inibizione deve risolversi prima che emerga un pattern di attività stabile e selettivo. Con uno stimolo piccolo e coerente (come il punto), si coinvolgono solo i neuroni che rispondono a quello stimolo, senza attivare circuiti inibitori estesi — e per questo la risposta è più rapida.
+
+\subsubsection{Esperimento 3: Il Punto in Movimento}
+
+Nel terzo esperimento si presenta all'animale un \textbf{punto in movimento}: un piccolo disco che si sposta verticalmente verso il basso per tutta la durata della finestra di osservazione (circa 125 ms). I VSD mostrano ora una \textbf{onda di attivazione} che scorre lungo la corteccia visiva, seguendo la traiettoria topografica del punto nel campo visivo — prima si attiva la regione corrispondente alla posizione iniziale del punto, poi progressivamente le regioni più in basso.
+L'attivazione finale, dopo che il punto ha percorso tutto il suo tragitto, è simile a quella prodotta dalla barra verticale.
+
+\subsubsection{L'Illusione di Movimento e il Cinema}
+
+La sequenza degli esperimenti porta a un risultato notevole per la percezione visiva: se si presenta all'animale prima il punto fermo per 50 ms (esperimento 1), e poi la barra verticale per i successivi 100 ms (esperimento 2), l'attivazione della corteccia visiva è \textbf{indistinguibile} da quella prodotta dal punto in movimento continuo (esperimento 3).
+
+I film VSD delle due condizioni sono, letteralmente, indistinguibili. Questo significa che il cervello — sulla base dell'attività corticale — non distingue tra:
+\begin{itemize}
+    \item un punto che si muove continuamente verso il basso, e
+    \item una sequenza di due snapshot: un punto in alto, poi una barra verticale.
+\end{itemize}
+
+Questo è proprio il principio del cinema e dello stop-motion. Il cervello interpola tra snapshot discreti e percepisce un continuum. La ragione evolutiva è che i sistemi visivi biologici sono principalmente ottimizzati per rilevare pattern in movimento. Questo è il motivo per cui percepiamo la sequenza di fotogrammi di un film come un'immagine fluida, anche se viene presentata come una serie di snapshot distinti.
+
+
+
+\section{Calcium Imaging}
+
+\subsubsection{Principio e Coloranti Calcio-Sensibili}
+
+Un'alternativa ai VSD per il monitoraggio ottico dell'attività neuronale è il \textbf{calcium imaging} (imaging del calcio intracellulare). I \textbf{coloranti calcio-sensibili} — o, nelle versioni geneticamente codificate, le proteine indicatori del calcio come GCaMP — sono molecole la cui fluorescenza varia in funzione della \textbf{concentrazione di ioni Ca$^{2+}$} nel citoplasma neuronale.
+
+Il razionale biologico è il seguente: ogni volta che un neurone produce uno \textbf{spike} (potenziale d'azione), si verifica un significativo \textbf{influsso di Ca$^{2+}$} attraverso i canali del calcio voltaggio-dipendenti presenti nella membrana somatica. Questo picco transitorio di calcio intracellulare determina un aumento della fluorescenza rilevabile con il microscopio a fluorescenza.
+
+\subsubsection{Risoluzione Spaziale a Livello di Singola Cellula}
+
+La risoluzione spaziale del calcium imaging è superiore a quella dei VSD: mentre i VSD registrano principalmente il potenziale medio dei dendriti apicali superficiali, il calcium imaging permette di identificare il \textbf{corpo cellulare (soma) di singole cellule}, visibili come "nuvole bianche" nel campo microscopico. Con questo approccio è possibile costruire \textbf{tracce di fluorescenza per singole cellule}  utilizzando la maschera spaziale fornita dal microscopio.
+
+Grazie ai microscopi a due fotoni e agli indicatori del calcio di ultima generazione (come GCaMP8), è oggi possibile spingersi ulteriormente nella risoluzione spaziale, raggiungendo le \textbf{sinapsi individuali}. Poiché le sinapsi sono i siti fisici dove avviene la \textbf{plasticità sinaptica} (e quindi l'apprendimento), il calcium imaging offre uno strumento straordinario per osservare in tempo reale come l'informazione viene codificata e consolidata nelle reti corticali.
+
+\subsubsection{Limitazione: Lenta Cinetica di Decadimento}
+
+Il principale limite del calcium imaging è la \textbf{lenta cinetica di decadimento} della fluorescenza. Dopo uno spike, la concentrazione di calcio intracellulare aumenta rapidamente e poi decade con una costante di tempo relativamente lunga (circa \textbf{5 secondi})
+
+\begin{itemize}
+    \item Se il neurone produce pochi spike ben separati nel tempo, la tecnica li risolve singolarmente.
+    \item Se il neurone produce un burst di spike ad alta frequenza, i segnali si sovrappongono e non si possono distinguere.
+\end{itemize}
+
+La capacità di riconoscere singoli eventi di firing è quindi limitata alle basse frequenze di scarica.
+
+
+
+\section{Elettrofisiologia Multi-scala}
+
+\subsubsection{Registrazione Simultanea a Più Scale}
+
+La tecnica di riferimento per eccellenza nell'indagine della dinamica neuronale rimane l'\textbf{elettrofisiologia}, che misura direttamente il campo elettrico prodotto dall'attività delle reti neurali. Un esempio emblematico di registrazione multi-scala è fornito dal laboratorio di \textbf{György Buzsáki} (New York University), che ha sviluppato sistemi per la registrazione simultanea di segnali a diversi livelli di profondità nel cervello di pazienti epilettici con elettrodi intracranici:
+
+\begin{enumerate}
+    \item \textbf{EEG sullo scalpo} (fronto-parietale e occipitale)
+    \item \textbf{ECoG} (elettrodi epidurali sulla superficie corticale)
+    \item \textbf{Elettrodi intraparenchimali} (all'interno del tessuto cerebrale, a vari livelli)
+\end{enumerate}
+
+L'osservazione più immediata di questa registrazione è che l'\textbf{ampiezza delle fluttuazioni del potenziale elettrico} aumenta drasticamente all'avvicinarsi della sorgente: il segnale EEG sullo scalpo è dell'ordine di decine di microvolt, mentre il segnale registrato dagli elettrodi intra-parenchimali vicini ai neuroni è dell'ordine di millivolt — tre ordini di grandezza maggiore.
+
+\subsubsection{La Slow-Wave Sleep come Esempio Paradigmatico}
+
+Un esempio paradigmatico mostrato nel corso è la registrazione durante il \textbf{sonno a onde lente (Slow Wave Sleep, SWS)} — la prima fase del sonno profondo. Durante il SWS, l'EEG registra grandi onde di ampiezza (le onde lente o \textbf{delta waves}), caratterizzate da una sequenza ritmica di depolarizzazione e iperpolarizzazione.
+
+L'origine di queste onde è stato oggetto di decenni di ricerca. La lettura multi-scala rivela che:
+
+\begin{itemize}
+    \item \textbf{All'EEG}: si registra una grande onda (polarizzazione $\rightarrow$ onda positiva, poi negativa)
+    \item \textbf{Ai singoli neuroni}: si osserva alternanza di periodi di \textbf{firing intenso} (onda UP) e di \textbf{silenzio completo} (onda DOWN)
+\end{itemize}
+
+Berger negli anni '30 registrava questi grandi segnali sul cranio senza conoscere l'attività sottostante a livello cellulare. Le moderne registrazioni multi-scala mostrano che la silenziosa "onda DOWN" corrisponde, paradossalmente, a una depolarizzazione osservata sullo scalpo.
+
+Le onde lente del sonno sono conservate attraverso l'evoluzione — sono presenti nei rettili, negli uccelli e nei mammiferi. Questo suggerisce che il sonno lento serva a funzioni biologiche fondamentali: il \textbf{consolidamento della memoria} (attraverso la replay di sequenze di attività) e la \textbf{pulizia dai prodotti tossici del metabolismo} cerebrale, poiché le onde ioniche prodotte dall'alternanza UP/DOWN creano gradienti che favoriscono il movimento del fluido interstiziale e la rimozione delle scorie metaboliche.
+
+\section{ECoG — Corticografia Epidurale}
+
+\subsubsection{Indicazione Clinica: Epilessia Farmacoresistente}
+
+La \textbf{corticografia epidurale (ECoG)} — acronimo di Electrocorticography — è una tecnica di registrazione invasiva dell'attività corticale che trova la sua principale applicazione clinica nei \textbf{pazienti con epilessia farmacoresistente}. Si tratta di pazienti affetti da epilessia che non risponde ai farmaci antiepilettici disponibili, con crisi molto frequenti che compromettono severamente la qualità della vita.
+
+In questi casi, una delle opzioni terapeutiche è la \textbf{resezione chirurgica} della zona epilettogena: il tessuto corticale da cui originano le crisi viene asportato.  Il tessuto che genera le crisi epilettiche ripetute è già un tessuto patologico. Le crisi ripetute inducono una plasticità aberrante: le connessioni tra neuroni si rafforzano enormemente, rendendo la rete sempre più ipereccitabile. Questo tessuto è già, in senso funzionale, inutilizzabile. Rimuoverlo non riduce la capacità cognitiva del resto del cervello; al contrario, la frequenza delle crisi si riduce drasticamente — in molti casi, esse scompaiono del tutto. Nei pazienti pediatrici, intervenire precocemente è ancora più importante: ogni crisi aggiuntiva aggrava il danno alla rete.
+
+
+\subsubsection{Procedura Chirurgica e Mappa Pre-operatoria}
+
+Prima della resezione, i neurochirurghi devono costruire una \textbf{mappa dettagliata} di due informazioni fondamentali:
+
+\begin{enumerate}
+    \item \textbf{Dove originano le crisi} (zona epilettogena)
+    \item \textbf{Dove si trovano le aree funzionali essenziali} (linguaggio, motricità, etc.) che non devono essere toccate
+\end{enumerate}
+
+A questo scopo si impiantano temporaneamente al paziente:
+\begin{itemize}
+    \item Una \textbf{griglia di elettrodi epidurali} (sulla superficie corticale)
+    \item \textbf{Elettrodi profondi} (sEEG, stereo-EEG) nel parenchima cerebrale
+\end{itemize}
+
+L'impianto è eseguito in modo estremamente preciso, con mappatura preoperatoria dei vasi cerebrali, per evitare qualsiasi danno da compressione o emorragia.
+
+\subsubsection{Registrazione e Microstimolazione}
+
+La griglia ECoG permette di:
+
+\begin{itemize}
+    \item \textbf{Registrare} l'attività corticale durante le crisi spontanee per identificare il punto di insorgenza
+    \item \textbf{Micro-stimolare} selettivamente diverse aree per mappare le funzioni: stimolando l'area del linguaggio si provoca una transitoria incapacità di parlare, confermando la localizzazione; stimolando l'area motoria si osserva un movimento involontario dell'arto controlaterale.
+\end{itemize}
+
+Questo schema di registrazione + stimolazione consente al neurochirurgo di definire un'\textbf{area minima di resezione} che massimizza l'eliminazione delle crisi e minimizza il deficit funzionale post-operatorio: il \textbf{rapporto rischio/beneficio} risulta così ottimizzato.
+
+
+\section{Patch Clamp}
+
+Il \textbf{patch clamp} è la tecnica che offre la \textbf{massima risoluzione} possibile per lo studio dell'attività elettrica di un singolo neurone: registra direttamente il \textbf{potenziale di membrana del soma} in condizioni in vivo o in vitro.
+
+La procedura utilizza una \textbf{pipetta di vetro} con un'apertura submicrometrica (solitamente dell'ordine di 1–2 $\mu$m), riempita con una soluzione elettrolitica. Le fasi dell'approccio sono:
+
+\begin{enumerate}
+    \item La pipetta viene avvicinata alla membrana del corpo cellulare (soma) del neurone bersaglio con un micromanipola micrometrica.
+    \item Applicando una leggera aspirazione, si crea un sigillo ad alta resistenza (gigaohm seal, o "giga-seal") tra la punta della pipetta e la membrana plasmatica.
+    \item Continuando l'aspirazione, si \textbf{rompe} il patch di membrana sottostante la pipetta.
+    \item Si stabilisce così un contatto diretto tra il lume della pipetta e il \textbf{fluido citoplasmatico} intracellulare.
+\end{enumerate}
+
+In questo modo, la pipetta e il soma del neurone sono in contatto diretto e hanno lo \textbf{stesso potenziale elettrico} (configurazione di whole-cell patch clamp). Un amplificatore ad alta impedenza collegato alla pipetta registra in tempo reale le variazioni di questo potenziale: si ha così la \textbf{registrazione diretta del potenziale di membrana} con una risoluzione temporale di frazioni di millisecondo.
+
+ì
+
+Tramite la stessa pipetta, è possibile anche \textbf{iniettare ioni o corrente} nel citoplasma del neurone, modificando così la sua eccitabilità. Questa capacità permette di:
+
+\begin{itemize}
+    \item Iniettare una corrente depolarizzante per forzare il neurone a produrre spike (studio del pattern di scarica)
+    \item Iniettare corrente iperpolarizzante per sopprimere l'attività
+    \item Introdurre composti chimici specifici per studiare il ruolo di recettori o canali
+\end{itemize}
+
+
+La procedura di patch clamp, pur essendo di massima risoluzione, ha un costo biologico: la rottura della membrana \textbf{danneggia la cellula} in modo progressivo e irreversibile. La registrazione stabile è tipicamente mantenuta per \textbf{poche ore}, talvolta meno in condizioni in vivo. Non è quindi possibile seguire lo stesso neurone per lunghi periodi temporali.
+
+
+\section{Optogenetica}
+
+\subsubsection{Channelrhodopsine}
+
+L'\textbf{optogenetica} è una tecnica che permette di \textbf{perturbare e registrare} l'attività neuronale utilizzando la luce, con una selettività cellulare impossibile da ottenere con gli elettrodi. Il principio fisico sfrutta una classe di proteine di membrana — le \textbf{channelrhodopsine} (ChR) — che sono canali ionici la cui apertura è controllata dall'assorbimento di fotoni.
+
+Le channelrhodopsine sono naturalmente presenti nella retina delle alghe verdi e, in forma omologa, nella retina di tutti i mammiferi: nella retina dei vertebrati, la rodopsina nei fotorecettori (bastoncelli e coni) è il corrispondente evolutivo che trasduce la luce in segnale elettrico. L'idea portante dell'optogenetica è di trapiantare questi canali fotosensibili in neuroni corticali, in modo da poterli controllare con la luce.
+
+\subsubsection{Consegna Virale e Ingegneria Genetica}
+
+Poiché le channelrhodopsine non sono presenti nei neuroni corticali, è necessario introdurre il loro gene mediante \textbf{vettori virali} (di solito adeno-associated virus, AAV) \textbf{geneticamente modificati}. Una volta iniettato il virus nella zona corticale di interesse, il virus infetta i neuroni bersaglio e inserisce nel loro DNA (o ne esprime transitoriamente) il gene della channelrhodopsina. I neuroni così trattati iniziano a produrre la proteina e a inserirla nella membrana plasmatica.
+
+Questa procedura è applicabile esclusivamente in \textbf{modelli animali} (topi, macachi, etc.): l'inserimento di materiale genetico estraneo in un organismo umano sano per finalità di ricerca non è eticamente consentito.
+
+\subsubsection{Perturbazione e Registrazione Ottica}
+
+Una volta espressa la channelrhodopsina, i neuroni transgenici possono essere attivati o inibiti mediante impulsi luminosi di lunghezze d'onda appropriate:
+
+\begin{itemize}
+    \item \textbf{Luce blu} ($\sim 470$ nm) $\rightarrow$ apertura di ChR2 (channelrhodopsina-2) $\rightarrow$ afflusso di cationi (Na$^+$, Ca$^{2+}$) $\rightarrow$ depolarizzazione $\rightarrow$ potenziale d'azione
+    \item \textbf{Luce gialla/arancione} ($\sim 590$ nm) $\rightarrow$ apertura di NpHR (halorhodopsina) $\rightarrow$ afflusso di Cl$^-$ $\rightarrow$ iperpolarizzazione $\rightarrow$ soppressione dell'attività
+\end{itemize}
+
+Combinando optogenetica con l'imaging ottico (VSD o calcium imaging), è possibile sia \textbf{stimolare} (con la luce) sia \textbf{registrare} (con la fluorescenza) l'attività neuronale nello stesso preparato — un approccio totalmente all-optical che offre selettività cellulare e risoluzione spaziale straordinarie.
+
+\newpage
+
+\section{Teoria del Campo Elettrico Extracellulare}
+
+\subsubsection{Modello dell'Acqua Salata}
+
+Per comprendere il meccanismo alla base della generazione del \textbf{campo elettrico extracellulare} — il segnale rilevato dagli elettrodi — si parte da un esperimento modello. Si considera un contenitore di \textbf{acqua salata} (soluzione di NaCl) in cui sono immersi un anodo e un catodo collegati a un generatore di corrente. L'acqua salata è un modello eccellente del mezzo extracellulare cerebrale, che è anch'esso una soluzione acquosa di ioni (Na$^+$, K$^+$, Cl$^-$, Ca$^{2+}$).
+
+In questa configurazione si osservano:
+\begin{itemize}
+    \item \textbf{Linee isoequipotenziali}: curve chiuse attorno all'anodo (potenziale positivo) e al catodo (potenziale negativo)
+    \item \textbf{Linee di flusso di corrente}: ortogonali alle isoequipotenziali, seguono il gradiente del potenziale
+\end{itemize}
+
+Un elettrodo di misura immerso in diverse posizioni nel contenitore registrerà potenziali diversi, in funzione della sua distanza relativa dall'anodo e dal catodo. Questo è esattamente il principio che governa la misurazione del campo elettrico cerebrale.
+
+\subsubsection{L'Approssimazione Quasi-Statica di Maxwell}
+
+Il punto di partenza fisico è la \textbf{legge di Faraday-Maxwell}:
+
+$$ \nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t} $$
+
+In biologia, è lecito adottare l'\textbf{approssimazione quasi-statica}: i neuroni sparano tipicamente a frequenze dell'ordine di 1 Hz (a riposo), con potenziali d'azione a $\sim 1$ kHz al massimo. Queste frequenze sono immensamente inferiori a quelle associate alla propagazione elettromagnetica (frequenze dell'ordine di $c/L$, dove $c$ è la velocità della luce e $L$ la dimensione tipica del sistema). Le variazioni temporali del campo magnetico indotto da queste correnti lente sono quindi trascurabili:
+
+$$ \frac{\partial \mathbf{B}}{\partial t} \approx 0 $$
+
+Ne consegue che il campo elettrico extracellulare è \textbf{conservativo} (irrotazionale):
+
+$$ \nabla \times \mathbf{E} = 0 \implies \mathbf{E} = -\nabla \varphi $$
+
+dove $\varphi$ è il \textbf{potenziale elettrico extracellulare} — la grandezza misurata dagli elettrodi.
+
+\subsubsection{Conservazione delle Cariche e Legge di Ohm con Sorgenti Neurali}
+
+La seconda equazione fondamentale è la \textbf{conservazione delle cariche}. A scala mesoscopica (dell'ordine del millimetro), il mezzo extracellulare è elettricamente neutro: la densità di carica netta $\rho$ è nulla. Poiché $\rho$ non varia nel tempo a questa scala:
+
+$$ \frac{\partial \rho}{\partial t} = 0 \implies \nabla \cdot \mathbf{J} = 0 $$
+
+dove \textbf{J} è la densità di corrente totale. Tuttavia, la densità di corrente non è solo quella di deriva nel mezzo (corrente ohmica), ma include anche le \textbf{sorgenti di corrente neurali} $\mathbf{J}_s$, associate all'apertura dei canali ionici durante l'attività sinaptica o la generazione di spike:
+
+$$ \mathbf{J} = \sigma \mathbf{E} + \mathbf{J}_s = -\sigma \nabla \varphi + \mathbf{J}_s $$
+
+dove $\sigma$ è la \textbf{conducibilità elettrica} del mezzo extracellulare, assunta omogenea nello spazio con buona approssimazione. Sostituendo nella condizione di continuità:
+
+$$ \nabla \cdot \left( -\sigma \nabla \varphi + \mathbf{J}_s \right) = 0 $$
+
+che porta all'\textbf{equazione di Poisson generalizzata}:
+
+$$ \sigma \nabla^2 \varphi = \nabla \cdot \mathbf{J}_s $$
+
+Questa è l'equazione fondamentale del campo potenziale extracellulare: il \textbf{Laplaciano del potenziale} è determinato dalla \textbf{divergenza delle sorgenti di corrente neurali}.
+
+\subsubsection{Contributo di una Sorgente Puntiforme}
+
+Si considera ora una singola sorgente di corrente puntiforme di intensità $I_n$, localizzata in posizione $\mathbf{r}_n$. Per \textbf{simmetria sferica}, le correnti fluiscono radialmente verso l'esterno (o verso l'interno, se è un sink). La \textbf{densità di corrente} alla distanza $\delta = |\mathbf{r}_e - \mathbf{r}_n|$ è:
+
+$$ J(\delta) = \frac{I_n}{4 \pi \delta^2} $$
+
+dove $4\pi\delta^2$ è l'area della sfera di raggio $\delta$ centrata sulla sorgente. Poiché $\mathbf{E} = -\nabla\varphi$ e $J = \sigma E$, si ha:
+
+$$ \frac{\partial \varphi}{\partial \delta} = -\frac{J}{\sigma} = -\frac{I_n}{4\pi\sigma\delta^2} $$
+
+Integrando dal punto di misura (posizione dell'elettrodo a distanza $\delta$ dalla sorgente) fino all'infinito (dove $\varphi = 0$):
+
+$$ \varphi(\delta) = \int_{\delta}^{\infty} \frac{I_n}{4\pi\sigma\delta'^2} \, d\delta' = \frac{I_n}{4\pi\sigma\delta} $$
+
+Per \textbf{linearità del campo elettrico}, il contributo di $N$ sorgenti si somma:
+
+$$ \varphi(\mathbf{r}_e) = \sum_{n=1}^{N} \frac{I_n}{4\pi\sigma |\mathbf{r}_e - \mathbf{r}_n|} $$
+
+Questa è la \textbf{legge di Coulomb} per il potenziale extracellulare: ogni sorgente contribuisce con un termine inversamente proporzionale alla distanza $|\mathbf{r}_e - \mathbf{r}_n|$. Le sorgenti vicine all'elettrodo dominano il segnale; quelle lontane contribuiscono con un fattore trascurabile.
+
+
+\subsection{Il Dipolo Neuronale: Sinapsi e Soma}
+
+Le sorgenti di corrente neurali $\mathbf{J}_s$ corrispondono a specifici eventi elettrici nella membrana neuronale:
+
+\begin{itemize}
+    \item \textbf{Correnti sinaptiche}: l'apertura di recettori ionici postsinaptici (AMPA, NMDA per l'eccitazione; GABA$_A$ per l'inibizione) introduce un flusso di ioni attraverso la membrana in una posizione specifica (la sinapsi, tipicamente sui dendriti)
+    \item \textbf{Potenziali d'azione}: l'apertura sequenziale di canali Na$^+$ e K$^+$ durante lo spike produce correnti trans-membrana molto più intense ma localizzate al soma e al segmento iniziale dell'assone
+\end{itemize}
+
+In una simulazione computazionale del gruppo Hines-Carnevale, su un neurone ricostruito in silico, si inietta una corrente iperpolarizzante nella sinapsi apicale e si calcola il campo di potenziale risultante. I risultati mostrano:
+
+\begin{itemize}
+    \item \textbf{Zona sinaptica (apicale)}: il flusso di corrente entra nel dendrite $\rightarrow$ questa zona è un \textbf{sink} (sorgente negativa) $\rightarrow$ equipotenziali negative
+    \item \textbf{Soma}: il soma è soggetto alla corrente di leakage della membrana, che tende a portare il potenziale di membrana verso l'equilibrio $\rightarrow$ flusso di corrente uscente $\rightarrow$ il soma funziona come un \textbf{catodo} (sorgente positiva) $\rightarrow$ equipotenziali positive
+\end{itemize}
+
+Si forma quindi un \textbf{dipolo biologico} con il polo positivo somatico e il polo negativo dendritico. Le linee di campo del potenziale seguono la geometria di un dipolo classico, con le isoequipotenziali positive attorno al soma e negative attorno alla sinapsi apicale.
+
+\subsection{Celle Piramidali e Generazione del Segnale EEG}
+
+La ragione per cui l'EEG è registrabile dallo scalpo è legata alla geometria delle \textbf{cellule piramidali}: queste cellule di grandi dimensioni, che costituiscono il principale tipo di neurone eccitatorio della corteccia cerebrale, sono orientate in modo \textbf{perpendicolare alla superficie corticale}, con i dendriti apicali puntati verso la pia mater e il soma più in profondità.
+
+Quando molte cellule piramidali ricevono contemporaneamente correnti sinaptiche eccitatoriche ai loro dendriti apicali, ciascuna produce un dipolo orientato nella stessa direzione. I dipoli individuali si \textbf{sommano coerentemente}:
+
+$$ \varphi_{\text{EEG}} = \sum_{k=1}^{N_{\text{piramidali}}} \frac{I_k}{4\pi\sigma |\mathbf{r}_{\text{scalpo}} - \mathbf{r}_k|} $$
+
+Il risultato è un \textbf{macrodipolo} sufficientemente intenso da generare variazioni di potenziale rilevabili sullo scalpo.
+
+Al contrario, le \textbf{basket cells} (interneuroni inibitori) hanno geometrie più compatte e orientamenti variabili a seconda della sinapsi attivata. I loro dipoli si orientano in direzioni diverse e si cancellano statisticamente, contribuendo in modo trascurabile al segnale EEG. Ciò implica che \textbf{l'EEG registra principalmente l'attività delle cellule eccitatorie piramidali}, non quella degli interneuroni inibitori.
+
+
+
+\section{Local Field Potential (LFP)}
+
+\subsubsection{Il Local Field Potential come Filtro Passa-Basso}
+
+Il segnale registrato da un elettrodo immerso nel tessuto corticale — denominato \textbf{Local Field Potential (LFP)} o potenziale di campo locale — è la sovrapposizione delle correnti di tutte le sorgenti neurali nel volume di tessuto intorno alla punta dell'elettrodo.
+
+Una proprietà fondamentale dell'LFP è che esso è una \textbf{versione filtrata passa-basso} delle correnti sinaptiche che alimentano la rete. Questo si capisce con il seguente argomento: la corrente sinaptica iniettata in un dendrite deve propagarsi attraverso la membrana fino al punto di misura dell'elettrodo. La membrana neuronale è un sistema con proprietà capacitive e resistive, e agisce come un \textbf{filtro passa-basso} per i segnali elettrici che si propagano lungo i suoi compartimenti. Le componenti ad alta frequenza della corrente sinaptica vengono attenuate più rapidamente nel propagarsi dal punto di iniezione al punto di misura:
+
+
+
+\subsubsection{Spikes e Localizzazione Spaziale}
+
+Oltre alle correnti sinaptiche, l'LFP include anche i \textbf{potenziali d'azione (spikes)} prodotti dai soma vicini all'elettrodo. Uno spike è un evento enormemente più intenso di una corrente sinaptica (ampiezza del potenziale d'azione $\sim 100$ mV, rispetto a potenziali postsinaptici di pochi mV), ma la sua influenza sull'LFP decade molto rapidamente con la distanza: a \textbf{poche centinaia di micron} dalla sorgente, la deflection associata allo spike si confonde con il rumore di fondo.
+
+Questo decadimento rapido è dovuto a due fattori concorrenti: la legge di Coulomb ($1/\delta$) e l'attenuazione da parte del mezzo stesso. In pratica, un elettrodo immerso nel tessuto corticale "vede" gli spike solo dei neuroni entro un cilindro di raggio di circa \textbf{50 $\mu$m} attorno alla punta.
+
+\subsubsection{Registrazione Multi-informazione con un Singolo Elettrodo}
+
+Un aspetto notevole della registrazione elettrofisiologica è che un \textbf{singolo elettrodo di tungsteno} fornisce simultaneamente più tipi di informazione:
+
+\begin{enumerate}
+    \item \textbf{Componente a bassa frequenza dell'LFP} ($<300$ Hz): riflette le correnti sinaptiche della rete nel volume intorno all'elettrodo $\rightarrow$ attività dei circuiti locali
+    \item \textbf{Componente ad alta frequenza (dopo high-pass filter)} ($>300$ Hz): contiene i transienti veloci degli spikes $\rightarrow$ attività di scarica dei neuroni vicini
+\end{enumerate}
+
+Il procedimento pratico è il seguente: si registra il segnale grezzo (raw LFP), che contiene entrambe le componenti. Applicando un \textbf{filtro passa-basso} si isola la componente sinaptica. Applicando un \textbf{filtro passa-alto} si eliminano le basse frequenze e si ottiene un segnale in cui sono visibili le deflections veloci degli spike.
+
+\subsubsection{Single Unit Activity (SUA)}
+
+Quando la deflection di uno spike nell'LFP filtrato passa-alto è sufficientemente ampia e ha una forma caratteristica riconoscibile, essa appartiene a un neurone specifico e ben localizzato — entro il raggio di $\sim 50$ $\mu$m dall'elettrodo. Questi eventi riconoscibili individualmente costituiscono la \textbf{Single Unit Activity (SUA)}.
+
+La forma della SUA è \textbf{stereotipata per ciascun neurone} (firma neuronale): ha un profilo temporale peculiare che dipende dalla geometria del neurone, dalla distribuzione dei suoi canali ionici e dalla distanza relativa dal punto di misura. Riconoscendo questa forma attraverso algoritmi di \textbf{spike sorting}, è possibile attribuire ogni spike a un neurone specifico, ottenendo la serie temporale di firing di quel neurone.
+
+\subsubsection{Multi-Unit Activity (MUA)}
+
+Oltre alle SUA, nell'LFP filtrato passa-alto sono visibili molte altre deflections più piccole, non attribuibili singolarmente a neuroni specifici ma che rappresentano l'attività di tutti i neuroni nel volume di influenza dell'elettrodo (raggio $> 50$ $\mu$m). Queste deflections collettive costituiscono la \textbf{Multi-Unit Activity (MUA)}: l'attività di scarica non classificata dell'intera popolazione neuronale intorno alla punta.
+
+
+\subsubsection{Discriminazione Eccitatori/Inibitori dalla Forma dello Spike}
+
+La forma temporale della SUA non è solo una firma individuale: contiene informazione sul \textbf{tipo cellulare} del neurone che ha generato lo spike. Questo si basa sul seguente principio fisico:
+
+\begin{itemize}
+    \item \textbf{Neuroni eccitatori (cellule piramidali)}: sono cellule di grandi dimensioni con un albero dendritico esteso. L'apertura dei canali Na$^+$ e K$^+$ durante lo spike genera correnti trans-membrana distribuite su molti compartimenti della cellula, e l'integrazione di questi contributi produce una deflection nell'LFP che è relativamente \textbf{ampia nel tempo} (durata $\sim 0.5$--$1$ ms; spike "broad").
+    \item \textbf{Neuroni inibitori (interneuroni fast-spiking, basket cells)}: sono cellule più piccole con dendriti meno estesi. Il loro spike è più compatto nel tempo: la deflection nell'LFP è \textbf{più stretta} (durata $\sim 0.2$--$0.3$ ms; spike "narrow").
+\end{itemize}
+
+Questa distinzione permette, almeno in parte, di classificare le unità registrate come \textbf{eccitatorie} (spike larghi) o \textbf{inibitorie} (spike stretti) direttamente dalla forma temporale della SUA, senza necessità di identificare morfologicamente la cellula.
+
+
