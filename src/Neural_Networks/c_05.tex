@@ -1,0 +1,555 @@
+\chapter{Lezione 5}
+
+
+\textbf{Argomenti:} variabili di gate n, m, h, cinetica del primo ordine, funzioni di transizione $\alpha$ e $\beta$, valori all'equilibrio n$_\infty$/m$_\infty$/h$_\infty$, costanti di tempo $\tau_n$/$\tau_m$/$\tau_h$, simulazione Mathematica, potenziale di riposo HH, correnti ioniche Na$^+$/K$^+$/leakage, sistema a quattro dimensioni, potenziale d'azione come fenomeno stereotipato, soglia di eccitabilità, fasi dello spike (rising/decaying/iperpolarizzazione), periodo refrattario assoluto e relativo, inattivazione del Na$^+$, temperatura e velocità dello spike, propagazione del potenziale d'azione, corrente assiale, unidirezionalità, velocità di propagazione, mielinizzazione, conduzione saltatoria, nodi di Ranvier
+
+
+\subsubsection{Ricapitolazione dalla Lezione Precedente}
+
+L'assone gigante del calamaro (\textit{Loligo vulgaris}) presenta proprietà di \textbf{permeabilità ionica} al Na$^+$ e al K$^+$ che dipendono dal potenziale di membrana. Grazie agli esperimenti di Hodgkin e Huxley, fu possibile isolare il decorso temporale delle correnti del sodio e del potassio separatamente, rivelando la relazione tra conduttanze e potenziale di membrana.
+
+Per descrivere questo fenomeno, Hodgkin e Huxley ipotizzarono l'esistenza di \textbf{variabili di gate} (gating variables), ovvero variabili interne ai canali ionici che ne regolano l'apertura e la chiusura. Esse sono:
+
+\begin{itemize}
+    \item \textbf{$n$}: variabile di gate per il canale del K$^+$ (variabile di attivazione)
+    \item \textbf{$m$}: variabile di gate di attivazione per il canale del Na$^+$
+    \item \textbf{$h$}: variabile di gate di inattivazione per il canale del Na$^+$
+\end{itemize}
+
+Ogni variabile varia tra 0 (canale completamente chiuso) e 1 (canale completamente aperto).
+
+
+
+Ciascuna variabile di gate obbedisce a un'\textbf{equazione differenziale del primo ordine}:
+
+\begin{equation}
+\tau_x(V) \frac{dx}{dt} = -x + x_\infty(V)
+\end{equation}
+
+dove $x \in \{n, m, h\}$, $\tau_x(V)$ è la \textbf{costante di tempo} di rilassamento  e $x_\infty(V)$ è il \textbf{valore asintotico}. Questa equazione descrive il processo di apertura e chiusura dei canali ionici come un sistema a \textbf{due stati} (aperto/chiuso), con:
+
+\begin{itemize}
+    \item $\alpha_x(V)$: tasso di transizione verso lo stato aperto (opening rate)
+    \item $\beta_x(V)$: tasso di transizione verso lo stato chiuso (closing rate)
+\end{itemize}
+
+Le relazioni tra queste quantità e i parametri della cinetica del primo ordine sono:
+
+\begin{equation}
+x_\infty(V) = \frac{\alpha_x(V)}{\alpha_x(V) + \beta_x(V)}
+\end{equation}
+
+\begin{equation}
+\tau_x(V) = \frac{1}{\alpha_x(V) + \beta_x(V)}
+\end{equation}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Il rapporto $\alpha_x / (\alpha_x + \beta_x)$ fornisce la frazione di gate aperti all'equilibrio termodinamico.
+\end{tcolorbox}
+
+
+Le funzioni $\alpha$ e $\beta$ per ciascuna variabile di gate hanno un'espressione analitica derivata empiricamente da Hodgkin e Huxley fittando i dati sperimentali di voltage clamp. La struttura generale prevede un \textbf{termine lineare} al numeratore e una \textbf{dipendenza esponenziale} al denominatore:
+
+\begin{equation}
+\alpha_n(V) = \frac{0.01(V + 55)}{1 - e^{-(V+55)/10}}
+\quad \quad  ,  \quad \quad
+\beta_n(V) = 0.125 \, e^{-(V+65)/80}
+\end{equation}
+
+\begin{equation}
+\alpha_m(V) = \frac{0.1(V + 40)}{1 - e^{-(V+40)/10}}
+\quad \quad  ,  \quad \quad
+\beta_m(V) = 4 \, e^{-(V+65)/18}
+\end{equation}
+
+\begin{equation}
+\alpha_h(V) = 0.07 \, e^{-(V+65)/20}
+\quad \quad  ,  \quad \quad
+\beta_h(V) = \frac{1}{1 + e^{-(V+35)/10}}
+\end{equation}
+
+
+Le funzioni di transizione per le variabili $n$ ed $m$ mostrano un \textbf{comportamento qualitativo simile}: $\alpha$ cresce con il voltaggio (la probabilità di apertura aumenta con la depolarizzazione), mentre $\beta$ decresce. Per la variabile $h$, il comportamento è \textbf{invertito}: quando il voltaggio aumenta, $\alpha_h$ diminuisce e $\beta_h$ aumenta. Questo garantisce che l'inattivazione del sodio proceda con la depolarizzazione.
+
+
+Le curve $n_\infty(V)$ e $m_\infty(V)$ hanno un andamento \textbf{sigmoidale crescente}: aumentano da 0 a voltaggio molto negativo a 1 a voltaggio molto positivo. La curva $h_\infty(V)$ è invece una \textbf{sigmoide decrescente}: vale circa 1 a valori iperpolarizzati e si riduce verso 0 con la depolarizzazione.
+
+Al potenziale di riposo $V = -65 \; \text{mV}$, i  valori di equilibrio sono:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Variabile} & \textbf{Valore all'equilibrio} \\
+    \hline
+    $V$ & $-65 \; \text{mV}$ \\
+    $n_\infty(-65)$ & $\approx 0.32$ \\
+    $m_\infty(-65)$ & $\approx 0.05$ (molto vicino a 0) \\
+    $h_\infty(-65)$ & $\approx 0.60$ \\
+    \hline
+    \end{tabular}
+\end{table}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Il fatto che $m_\infty$ sia quasi zero a riposo significa che la conduttanza del sodio è praticamente nulla in assenza di stimolazione: $G_{Na} = \bar{G}_{Na} \cdot m^3 h \approx 0$. D'altra parte $h_\infty \approx 0.6$ — non è né 0 né 1 — e questo implica che una piccola porzione dei gate di inattivazione è già chiusa anche a riposo. Il sistema è quindi "pronto" ad attivarsi, ma non completamente libero dall'inattivazione basale.
+\end{tcolorbox}
+
+\subsubsection{Dipendenza dal Voltaggio delle Costanti di Tempo}
+
+Le costanti di tempo di rilassamento delle tre variabili di gate hanno una forma a \textbf{campana} (bell-shaped) in funzione del voltaggio, con un massimo nella regione del potenziale di riposo. A differenza del valore asintotico $x_\infty(V)$, le costanti di tempo non variano monotonicamente: hanno un massimo intorno alla tensione di riposo e si riducono sia a valori molto positivi che a valori molto negativi.
+
+Il risultato più importante è la \textbf{gerarchia delle scale temporali} delle tre variabili:
+
+\begin{equation}
+\tau_m(V) \ll \tau_n(V) \approx \tau_h(V)
+\end{equation}
+
+Concretamente, al potenziale di riposo e nelle sue vicinanze:
+\begin{itemize}
+    \item $\tau_m$ è dell'ordine di \textbf{frazioni di millisecondo} (scala rapida)
+    \item $\tau_n$ e $\tau_h$ sono dell'ordine di \textbf{qualche millisecondo} (scala lenta)
+\end{itemize}
+
+
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Questa separazione di scala temporale è la chiave di tutta la dinamica del potenziale d'azione. Quando il potenziale cambia bruscamente, $m$ si adatta quasi istantaneamente al nuovo valore di $m_\infty$, mentre $n$ e $h$ rimangono quasi "congelati" al loro valore precedente per diversi millisecondi. Questa differenza di velocità è ciò che genera la cascata non lineare che porta all'esplosione del potenziale d'azione.
+\end{tcolorbox}
+
+
+\section{Correnti Ioniche nel Modello HH}
+
+\subsubsection{Equazione del Modello di Hodgkin-Huxley}
+
+Il cuore del modello è l'equazione per il potenziale di membrana $V(t)$, che bilancia la corrente capacitiva con le correnti ioniche che attraversano la membrana:
+
+\begin{equation}
+C_m \frac{dV}{dt} = -G_L(V - E_L) - \bar{G}_{Na} m^3 h (V - E_{Na}) - \bar{G}_K n^4 (V - E_K) + I_{ext}
+\end{equation}
+
+Questo sistema è completato dalle tre equazioni differenziali del primo ordine per le variabili di gate:
+
+\begin{equation}
+\tau_m(V) \frac{dm}{dt} = m_\infty(V) - m
+\end{equation}
+
+\begin{equation}
+\tau_n(V) \frac{dn}{dt} = n_\infty(V) - n
+\end{equation}
+
+\begin{equation}
+\tau_h(V) \frac{dh}{dt} = h_\infty(V) - h
+\end{equation}
+
+Il sistema totale è dunque di \textbf{dimensione 4} nello spazio delle fasi: le quattro variabili di stato sono $V$, $n$, $m$, $h$.
+
+
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+I due potenziali di inversione delimitano l'\textbf{intervallo fisiologico operativo} della membrana: $E_K = -77 \; \text{mV}$ rappresenta il limite inferiore (non si può andare più negativi perché la corrente di K$^+$ scompare), mentre $E_{Na} = +50 \; \text{mV}$ rappresenta il limite superiore (sopra tale valore la corrente del Na$^+$ cambia segno e non spinge più la depolarizzazione).
+\end{tcolorbox}
+
+\subsubsection{Potenziale di Membrana a Riposo nel Modello HH}
+
+
+Lo stato di riposo del modello HH corrisponde alla soluzione stazionaria del sistema a quattro dimensioni, ovvero al punto per cui $\dot{V} = 0$, $\dot{m} = 0$, $\dot{n} = 0$, $\dot{h} = 0$. Imponendo queste condizioni, il sistema di quattro equazioni nonlineari da risolvere simultaneamente è:
+
+\begin{equation}
+G_L(V - E_L) + \bar{G}_{Na} m^3 h (V - E_{Na}) + \bar{G}_K n^4 (V - E_K) = 0
+\end{equation}
+\begin{equation}
+m = m_\infty(V)
+\end{equation}
+\begin{equation}
+n = n_\infty(V)
+\end{equation}
+\begin{equation}
+h = h_\infty(V)
+\end{equation}
+
+
+Il risultato della ricerca numerica dà:
+
+\begin{equation}
+V_{riposo} = -65 \; \text{mV}
+\end{equation}
+
+Questo valore coincide esattamente con quello misurato sperimentalmente da Hodgkin e Huxley sull'assone gigante del calamaro. Il professore sottolinea la \textbf{coerenza} tra il modello matematico e l'esperimento: fittando le funzioni $\alpha$ e $\beta$ sui dati di voltage clamp, si riproduce automaticamente il corretto potenziale di riposo.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Il fatto che $m_\infty \approx 0$ a riposo significa che la conduttanza del sodio è quasi nulla. Il potenziale di riposo è quindi determinato prevalentemente dall'equilibrio tra la corrente di leakage e la piccola ma non nulla conduttanza del potassio. Questo è fisicamente corretto: il K$^+$ è lo ione più permeabile a riposo.
+\end{tcolorbox}
+
+
+\section{Iniezione di Corrente a Gradino}
+
+\subsubsection{Setup dell'Esperimento in Silico}
+
+Per esplorare la risposta del modello a una stimolazione, il professore descrive un esperimento di \textbf{iniezione di corrente a gradino} che replica ciò che si fa in laboratorio con una micropipetta. Il protocollo è il seguente:
+
+\begin{enumerate}
+    \item Il sistema parte all'equilibrio: $V(0) = -65 \; \text{mV}$
+    \item Al tempo $t = 0$, si inietta un impulso di corrente molto breve e intenso che produce una \textbf{depolarizzazione istantanea} di $\Delta V$
+    \item Dopo l'impulso, il sistema evolve liberamente 
+\end{enumerate}
+
+Questo è fondamentalmente diverso dall'esperimento di voltage clamp originale di Hodgkin e Huxley: qui il potenziale di membrana è libero di variare, e si osserva l'\textbf{evoluzione spontanea} del sistema.
+
+\subsubsection{Risposta a Perturbazioni di Diversa Ampiezza}
+
+Il professore mostra sistematicamente i risultati per tre ampiezze di perturbazione:
+
+\textbf{Perturbazione di 90 mV} ($V(0^+) \approx +25 \; \text{mV}$): Si osserva una risposta rapida e decisa. Il potenziale raggiunge un massimo vicino a $+40 \; \text{mV}$ (leggermente al di sotto di $E_{Na} = +50 \; \text{mV}$), poi cala bruscamente attraversando la linea di equilibrio e raggiungendo una fase di iperpolarizzazione sotto $-65 \; \text{mV}$, per poi tornare lentamente al potenziale di riposo.
+
+\textbf{Perturbazione di 50 mV} ($V(0^+) \approx -15 \; \text{mV}$): Si osserva un comportamento qualitativamente identico. C'è una breve rampa nella fase iniziale, poi una rapida depolarizzazione verso lo stesso valore massimo ($\approx +40 \; \text{mV}$), seguita dalla stessa iperpolarizzazione. Il tempo complessivo e il picco sono quasi indistinguibili dal caso precedente.
+
+\textbf{Perturbazione di 7 mV} ($V(0^+) \approx -58 \; \text{mV}$): Anche in questo caso, dopo un periodo di rampa più lento, si osserva lo stesso potenziale d'azione a tutti gli effetti: stessa ampiezza, stesso picco, stessa iperpolarizzazione.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Questa è la proprietà più importante del potenziale d'azione: è un \textbf{evento stereotipato}. Indipendentemente dall'intensità della perturbazione iniziale (purché superi la soglia), la forma dell'evento è sempre identica. Il neurone non codifica l'informazione nell'ampiezza dello spike, ma nella sua semplice presenza o assenza. Il messaggio trasmesso al neurone postsinaptico è sempre lo stesso.
+\end{tcolorbox}
+
+\subsubsection{Il Concetto di Soglia}
+
+Riducendo ulteriormente l'ampiezza della perturbazione, si arriva a un punto critico: per una depolarizzazione di circa \textbf{6 mV} ($V(0^+) \approx -59 \; \text{mV}$), il sistema non produce più alcun potenziale d'azione. Invece di salire verso il picco, il potenziale di membrana torna lentamente all'equilibrio senza alcuna esplosione.
+
+Il confronto tra la traccia a 7 mV (che produce uno spike) e quella a 6 mV (che non lo produce) evidenzia un cambiamento \textbf{qualitativo} del comportamento. Non si tratta di una variazione quantitativa dello stesso fenomeno, ma di un salto di categoria: due traiettorie inizialmente molto simili divergono in modo drammatico.
+
+Questo è il comportamento caratteristico di un \textbf{sistema eccitabile}: esiste un valore soglia della variabile di stato (il potenziale di membrana) al di sopra del quale si innesca una traiettoria stereotipata nello spazio delle fasi (lo spike), e al di sotto del quale il sistema torna semplicemente all'equilibrio.
+
+\subsubsection{Soglia Sperimentale}
+
+Il professore indica che, in base alle simulazioni, la \textbf{soglia di eccitazione} si trova circa a $-58.5 \; \text{mV}$, ovvero una depolarizzazione di circa $6$–$7 \; \text{mV}$ rispetto al potenziale di riposo di $-65 \; \text{mV}$.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+ La soglia non è una proprietà fissa del neurone, ma dipende dallo stato delle variabili di gate nel momento della perturbazione. Come vedremo quando discuteremo il periodo refrattario, la stessa perturbazione di 7 mV può non produrre alcuno spike se applicata immediatamente dopo un potenziale d'azione.
+\end{tcolorbox}
+
+\section{Dinamica Temporale dello Spike}
+
+\subsubsection{Le Tre Fasi del Potenziale d'Azione}
+
+Un potenziale d'azione prodotto dal modello HH si articola in tre fasi temporalmente distinte, ciascuna governata da meccanismi biofisici specifici:
+
+\begin{enumerate}
+    \item \textbf{Fase di salita (rising phase)}: rapido aumento del potenziale da circa $-65 \; \text{mV}$ fino al picco ($\approx +40 \; \text{mV}$), che si completa in circa $1.2 \; \text{ms}$
+    \item \textbf{Fase di discesa (decaying phase)}: calo del potenziale dal picco attraverso il valore di riposo, guidato da una corrente netta negativa
+    \item \textbf{Fase di iperpolarizzazione}: il potenziale scende al di sotto di $E_m = -65 \; \text{mV}$ e poi torna lentamente al riposo, con una scala temporale di diversi millisecondi
+\end{enumerate}
+
+\subsubsection{Fase di Salita: il Ruolo di m e la Reazione a Catena}
+
+All'inizio della perturbazione, il sistema parte con $m \approx 0$ (a riposo). Tuttavia, il salto di voltaggio sposta immediatamente $m_\infty$ a un valore più alto. Poiché $\tau_m$ è molto piccolo, $m$ si adatta quasi istantaneamente al nuovo $m_\infty$.
+
+Si instaura quindi una \textbf{reazione a catena positiva}:
+
+\begin{equation}
+V \uparrow \Rightarrow m_\infty \uparrow \Rightarrow m \uparrow \Rightarrow G_{Na} = \bar{G}_{Na} m^3 h \uparrow \Rightarrow I_{Na,in} \uparrow \Rightarrow V \uparrow
+\end{equation}
+
+In questa fase, $n$ e $h$ rimangono quasi costanti ai loro valori di riposo ($n \approx 0.32$, $h \approx 0.60$) perché $\tau_n$ e $\tau_h$ sono grandi. La corrente del K$^+$ esiste ma è ancora piccola perché $n$ non ha avuto tempo di cambiare significativamente.
+
+La salita si arresta quando il potenziale si avvicina a $E_{Na} = +50 \; \text{mV}$: a quel punto il fattore $(V - E_{Na})$ tende a zero e la corrente del Na$^+$ scompare non per mancanza di conduttanza (che è anzi massima in quel momento), ma per mancanza di forza motrice.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+È fondamentale distinguere tra \textbf{conduttanza} e \textbf{corrente}. Al picco dello spike, la conduttanza del Na$^+$ è al suo valore massimo, ma la corrente del Na$^+$ è quasi zero perché $(V - E_{Na}) \approx 0$. Confondere i due concetti porta a un'errata comprensione del meccanismo di inversione.
+\end{tcolorbox}
+
+\subsubsection{Fase di Discesa: il Ruolo di h e n}
+
+Durante la fase di salita, mentre $m$ si adattava rapidamente, $n$ e $h$ stavano evolvendo lentamente verso i loro nuovi valori asintotici che ora corrispondere a voltaggio positivo. A voltaggio positivo:
+
+\begin{itemize}
+    \item $n_\infty \approx 1$, quindi $n$ cresce lentamente verso 1 $\rightarrow$ la corrente del K$^+$ \textbf{aumenta} (corrente iperpolarizzante)
+    \item $h_\infty \approx 0$, quindi $h$ decresce lentamente verso 0 $\rightarrow$ la conduttanza del Na$^+$ \textbf{diminuisce}
+\end{itemize}
+
+La \textbf{fase di discesa} è dunque il risultato combinato di:
+\begin{enumerate}
+    \item Aumento della conduttanza del K$^+$ (via aumento di $n$)
+    \item Diminuzione della conduttanza del Na$^+$ (via diminuzione di $h$, l'inattivazione)
+\end{enumerate}
+
+La discesa è più lenta della salita perché la corrente netta negativa (K$^+$ $-$ Na$^+$) rimane relativamente piccola.
+
+\subsubsection{Fase di Iperpolarizzazione: il Ruolo di n}
+
+Nella fase di iperpolarizzazione, $h$ ha raggiunto quasi zero (la conduttanza del Na$^+$ è pressoché nulla) e anche $m$ torna rapidamente verso zero perché $m_\infty \to 0$ a valori negativi. La corrente dominante è quindi esclusivamente quella del K$^+$, che continua a scorrere verso l'esterno perché $n$ è ancora elevato.
+
+Poiché $E_K = -77 \; \text{mV}$, la corrente del K$^+$ spinge il potenziale verso $-77 \; \text{mV}$, \textbf{al di sotto} del potenziale di riposo. La membrana è quindi \textbf{iperpolarizzata} rispetto a $E_m$.
+
+Il ritorno al potenziale di riposo avviene lentamente, man mano che $n$ decresce verso il suo valore di equilibrio $n_\infty(-65) \approx 0.32$ con la costante di tempo $\tau_n$.
+
+\begin{equation}
+\underbrace{\text{Fase di salita}}_{\text{dominata da } m} \longrightarrow \underbrace{\text{Fase di discesa}}_{\text{dominata da } m, h, n} \longrightarrow \underbrace{\text{Iperpolarizzazione}}_{\text{dominata da } n}
+\end{equation}
+
+
+\section{Analisi delle Correnti e delle Conduttanze durante lo Spike}
+
+\subsubsection{Evoluzione delle Conduttanze}
+
+Il professore mostra l'andamento temporale delle conduttanze $G_{Na}(t) $ e $G_K(t)$ durante un potenziale d'azione:
+
+\begin{itemize}
+    \item $G_{Na}$ ha un picco \textbf{precoce} e molto stretto: sale rapidamente durante la fase di salita, raggiunge il massimo appena prima del picco del potenziale, poi cala rapidamente a causa dell'inattivazione (diminuzione di $h$)
+    \item $G_K$ ha un picco \textbf{tardivo} e più largo: cresce lentamente durante la fase di salita, raggiunge il massimo nella fase di discesa, poi decresce lentamente nella fase di iperpolarizzazione
+\end{itemize}
+
+La corrente di leakage ha un ruolo del tutto marginale in questo fenomeno altamente nonlineare.
+
+\subsubsection{Corrente Netta e Segno della Derivata del Voltaggio}
+
+La derivata del potenziale di membrana è proporzionale alla corrente netta totale:
+
+\begin{equation}
+C_m \dot{V} = I_{Na} + I_K + I_L
+\end{equation}
+
+(segni positivi per le correnti entranti, negativi per le uscenti)
+
+\begin{itemize}
+    \item \textbf{Fase di salita}: $I_{Na}$ è entrante e grande, $I_K$ è ancora piccola $\rightarrow$ corrente netta positiva $\rightarrow$ $\dot{V} > 0$
+    \item \textbf{Apice dello spike}: $I_{Na} \approx 0$ (perché $V \to E_{Na}$), $I_K$ aumenta $\rightarrow$ il bilancio si annulla $\rightarrow$ $\dot{V} = 0$
+    \item \textbf{Fase di discesa}: $I_K$ supera $I_{Na}$ $\rightarrow$ corrente netta negativa $\rightarrow$ $\dot{V} < 0$
+    \item \textbf{Iperpolarizzazione}: solo $I_K$ significativa, $I_{Na} \approx 0$ $\rightarrow$ $\dot{V} < 0$ fino a $E_K$
+\end{itemize}
+
+
+
+\section{Periodo Refrattario}
+
+Nella fase di iperpolarizzazione che segue il potenziale d'azione, il sistema è in uno stato molto diverso dall'equilibrio. Il professore dimostra con una simulazione che, se si inietta la stessa perturbazione di 50 mV a $t = 5 \; \text{ms}$ (durante la fase di iperpolarizzazione), \textbf{non si produce alcun secondo potenziale d'azione}, nonostante la perturbazione sia ampiamente sopra-soglia nelle condizioni normali.
+
+Questo periodo di insensibilità agli stimoli è definito \textbf{periodo refrattario}. Durante questo intervallo:
+\begin{itemize}
+    \item Il neurone è completamente insensibile ai segnali sinaptici in ingresso
+    \item Non è un "difetto" del sistema, ma una proprietà funzionale che limita la frequenza massima di firing
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt] Il periodo refrattario ha un'implicazione profonda per la codifica dell'informazione neurale. Non solo esiste un \textbf{limite massimo alla frequenza di firing} del neurone, ma anche un limite teorico alla velocità con cui il neurone può trasmettere informazioni al neurone postsinaptico. Il neurone non è un trasmettitore ideale: ha una "finestra cieca" di diversi millisecondi dopo ogni spike.
+\end{tcolorbox}
+
+
+La causa del periodo refrattario risiede nella \textbf{stato delle variabili di gate} durante l'iperpolarizzazione:
+
+\begin{enumerate}
+    \item \textbf{$m \approx 0$}: il gate di attivazione del Na$^+$ è quasi completamente chiuso perché $m_\infty \to 0$ a potenziali negativi. In assenza di $m$, la conduttanza del Na$^+$ è nulla indipendentemente dal valore di $h$. \textbf{Nessuna reazione a catena del Na$^+$ è possibile}.
+    \item \textbf{$h \approx 0$}: il gate di inattivazione del Na$^+$ è quasi completamente chiuso. Anche se il potenziale venisse depolarizzato, i canali del Na$^+$ rimarrebbero inattivati finché $h$ non si recupera.
+    \item \textbf{$n$ elevato}: la variabile di gate del K$^+$ è ancora alta, producendo una corrente del K$^+$ iperpolarizzante che contrasta qualsiasi tentativo di depolarizzazione.
+\end{enumerate}
+
+Il risultato è che l'unica corrente disponibile è quella del K$^+$, che è \textbf{iperpolarizzante}. Iniettare corrente in questo stato non fa altro che rendere la corrente di K$^+$ ancora più negativa (aumentando $n^4 (V - E_K)$), senza alcuna possibilità di innescare la reazione a catena del Na$^+$.
+
+
+\subsubsection{Periodo Refrattario Assoluto}
+
+Il \textbf{periodo refrattario assoluto} è l'intervallo di tempo immediatamente successivo a un potenziale d'azione durante il quale \textbf{nessuna} stimolazione, per quanto intensa, è in grado di evocare un secondo spike. Corrisponde alla fase di discesa e alla prima parte dell'iperpolarizzazione.
+
+Il professore dimostra questo con una perturbazione di \textbf{90 mV} (ben al di sopra della soglia normale di circa 7 mV) applicata durante la fase di discesa: anche in questo caso la membrana non genera alcun potenziale d'azione. La corrente netta rimane negativa nonostante la forte depolarizzazione applicata.
+
+Il meccanismo è lo stesso: $m \approx 0$ e i canali del Na$^+$ sono inattivati ($h \approx 0$). Il sistema non è in grado di avviare la reazione a catena del sodio.
+
+\subsubsection{Periodo Refrattario Relativo}
+
+Il \textbf{periodo refrattario relativo} è la fase che segue quella assoluta, durante la quale il neurone può rispondere a stimoli eccezionalmente intensi. In questo periodo, $h$ si sta \textbf{recuperando} verso il suo valore di equilibrio $h_\infty \approx 0.6$, e $n$ sta lentamente diminuendo verso $n_\infty \approx 0.32$.
+
+Il professore mostra che se si applica la stessa perturbazione forte in questa fase più tardiva, si osserva una risposta: il potenziale d'azione viene prodotto, ma con un \textbf{profilo leggermente diverso} dall'ottimale (picco più basso, dinamica alterata), a causa dei valori di $h$ e $n$ ancora anomali rispetto al riposo.
+
+La transizione tra periodo refrattario assoluto e relativo è determinata dal recupero di $h$:
+
+\begin{equation}
+h(t) \approx h_\infty - (h_\infty - h_{min}) \cdot e^{-t/\tau_h}
+\end{equation}
+
+dove $h_{min}$ è il valore minimo raggiunto durante lo spike e $\tau_h$ è la costante di tempo di recupero.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+La distinzione pratica è semplice: durante il periodo assoluto, anche una stimolazione di 90 mV è inefficace. Durante il periodo relativo, una stimolazione normale (7 mV) è ancora insufficiente, ma una stimolazione molto forte (90 mV) può produrre uno spike, seppur distorto.
+\end{tcolorbox}
+
+
+
+\section{Firing Rate e Codifica della Frequenza}
+
+
+Poiché il neurone recupera il suo stato normale dopo il periodo refrattario, è possibile elicitare \textbf{treni di potenziali d'azione} iniettando una corrente continua. Il professore discute come il modello HH risponda a una corrente di iniezione costante $I_{ext}$:
+
+\begin{itemize}
+    \item Se $I_{ext}$ è sotto-soglia: il potenziale di membrana raggiunge un nuovo stato stazionario leggermente depolarizzato senza produrre spike
+    \item Se $I_{ext}$ è sopra-soglia: il neurone genera una serie ripetuta di spike con una certa \textbf{frequenza di firing} (firing rate)
+\end{itemize}
+
+\subsubsection{Relazione Frequenza-Corrente (f-I)}
+
+La frequenza di firing $f$ dipende dall'intensità della corrente iniettata $I_{ext}$. Nella forma più semplice:
+\begin{itemize}
+    \item Sotto la soglia $I_{thr}$: $f = 0$
+    \item Sopra la soglia: $f$ aumenta con $I_{ext}$
+\end{itemize}
+
+\noindent Il periodo refrattario impone un \textbf{limite massimo alla frequenza} di firing: se il periodo refrattario dura circa $T_{ref}$ millisecondi, la frequenza massima teorica è $f_{max} = 1/T_{ref}$.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+ Questo è il fondamento della \textbf{codifica in frequenza} (rate coding): il neurone rappresenta l'intensità di uno stimolo non nell'ampiezza del singolo spike (che è sempre uguale), ma nel \textbf{numero di spike per secondo}. Una sinapsi eccitatore forte produce una frequenza di firing più alta di una sinapsi debole.
+\end{tcolorbox}
+
+
+\section{Effetto della Temperatura sulla Cinetica del Modello HH}
+
+
+ Le funzioni $\alpha_x$ e $\beta_x$ hanno una dipendenza dalla temperatura descrivibile attraverso l'\textbf{equazione di Arrhenius}:
+
+\begin{equation}
+\alpha_x(V, T) \propto e^{-\Delta E / (k_B T)}
+\end{equation}
+
+dove $\Delta E$ è l'energia di attivazione per la transizione conformazionale del gate e $k_B T$ è l'energia termica. Aumentare la temperatura abbassa la barriera energetica relativa e aumenta i tassi di transizione.
+
+
+Poiché $\tau_x = 1/(\alpha_x + \beta_x)$, un aumento di $\alpha_x$ e $\beta_x$ porta a:
+
+\begin{equation}
+\tau_x(T_2) < \tau_x(T_1) \quad \text{per } T_2 > T_1
+\end{equation}
+
+Le variabili di gate si adattano quindi più velocemente, e l'intero potenziale d'azione si comprime nella scala temporale.
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Temperatura} & \textbf{Durata del potenziale d'azione} \\
+    \hline
+    $6.3 \; ^\circ\text{C}$ (condizioni originali HH) & $\approx 2 \; \text{ms}$ \\
+    \hline
+    $20 \; ^\circ\text{C}$ & notevolmente più breve \\
+    \hline
+    $37 \; ^\circ\text{C}$ (mammiferi) & $\approx 1 \; \text{ms}$ \\
+    \hline
+    \end{tabular}
+\end{table}
+
+\section{Propagazione del Potenziale d'Azione: Corrente Assiale}
+
+Nell'esperimento originale di Hodgkin e Huxley, il potenziale era \textbf{uniforme} lungo tutta la lunghezza dell'assone grazie all'elettrodo interno che imponeva il \textbf{space clamp}. In un assone reale, non esiste questa costrizione: il potenziale varia in funzione della posizione $x$ lungo l'assone, e questo genera una \textbf{corrente assiale} $I_{ax}$.
+
+
+Se il potenziale di membrana varia spazialmente, i gradienti di voltaggio interni generano una corrente assiale che scorre \textbf{longitudinalmente} nel citoplasma. Questa corrente è analoga a quella che scorre in un cavo elettrico:
+
+\begin{equation}
+I_{ax} = \frac{1}{r_a} \frac{\partial V}{\partial x}
+\end{equation}
+
+dove $r_a$ è la resistenza assiale per unità di lunghezza (resistenza del citoplasma, inversamente proporzionale alla sezione dell'assone).
+
+L'equazione del modello HH si arricchisce di un termine spaziale:
+
+\begin{equation}
+C_m \frac{\partial V}{\partial t} = \frac{1}{r_a} \frac{\partial^2 V}{\partial x^2} - I_{Na} - I_K - I_L
+\end{equation}
+
+
+
+Il professore descrive il meccanismo fisico della propagazione con la seguente immagine: quando un potenziale d'azione è in corso in una posizione $x_0$, le cariche positive (ioni Na$^+$ entrati) si accumulano nella faccia interna della membrana. Queste cariche creano un campo elettrico \textbf{longitudinale} che spinge altre cariche positive verso le regioni adiacenti in avanti ($x > x_0$), \textbf{depolarizzando} così il segmento successivo.
+
+Se la depolarizzazione indotta nel segmento successivo è superiore alla soglia, questo segmento a sua volta genera un potenziale d'azione, che a sua volta depolarizza il segmento ancora più avanti — e così via. Il potenziale d'azione si propaga come un'\textbf{onda solitaria} (soliton) lungo l'assone, con forma invariante nel tempo e nello spazio.
+
+\begin{equation}
+I_{ax} = C_m \dot{V} - (I_{Na} + I_K + I_L)
+\end{equation}
+
+Il professore mostra uno snapshot del profilo spaziale del potenziale lungo l'assone: la forma è speculare rispetto al profilo temporale, perché la parte "davanti" nella direzione di propagazione (dove lo spike non è ancora arrivato) corrisponde temporalmente al "futuro".
+
+
+
+Una delle proprietà più importanti della propagazione è la sua \textbf{unidirezionalità}: il potenziale d'azione si propaga sempre in una sola direzione, dal soma verso le terminazioni assonali (direzione \textbf{ortodromica}), senza tornare indietro.
+
+La spiegazione di questa proprietà è direttamente connessa al periodo refrattario assoluto:
+
+\begin{enumerate}
+    \item Un'onda di depolarizzazione si propaga in avanti verso il segmento \textbf{a riposo} ($x > x_0$): questo segmento è eccitabile e risponde generando un potenziale d'azione
+    \item La stessa onda genera anche una corrente assiale verso il segmento \textbf{già eccitato} ($x < x_0$): ma questo segmento è nel suo periodo refrattario assoluto ($m \approx 0$, $h \approx 0$, $n$ grande)
+    \item Nel segmento refrattario, la corrente assiale produce solo una piccola depolarizzazione che viene annullata dalla grande corrente uscente del K$^+$ — nessun secondo potenziale d'azione è possibile
+\end{enumerate}
+
+In sintesi: il segmento posteriore è "esausto" e impossibilitato a rigenerarsi, mentre il segmento anteriore è "fresco" e pienamente eccitabile.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+L'unidirezionalità ha un significato funzionale fondamentale per la comunicazione neurale. Se i potenziali d'azione potessero tornare indietro, si genererebbero cicli di rientro che renderebbero impossibile qualsiasi codifica ordinata dell'informazione. La refrattarietà assoluta è quindi un meccanismo che garantisce l'\textbf{integrità direzionale del segnale nervoso}.
+\end{tcolorbox}
+
+
+
+\subsubsection{Velocità di Propagazione}
+
+La velocità di propagazione del potenziale d'azione dipende dalla rapidità con cui la corrente assiale riesce a depolarizzare il segmento seguente. Questa dipende da due fattori:
+
+\begin{enumerate}
+    \item \textbf{L'ampiezza della corrente assiale}: maggiore è la sezione trasversale dell'assone, maggiore è la quantità di citoplasma e quindi maggiore è la corrente che può scorrere
+    \item \textbf{La resistenza assiale}: un assone più largo ha \textbf{resistenza assiale più bassa} $r_a \propto 1/A$ (dove $A$ è l'area della sezione), quindi la stessa differenza di voltaggio genera una corrente molto più grande
+\end{enumerate}
+
+Il risultato complessivo è che la \textbf{velocità di propagazione} cresce con il \textbf{raggio} dell'assone:
+
+\begin{equation}
+v_{prop} \propto \sqrt{r_{assone}}
+\end{equation}
+
+Questo spiega perché l'assone gigante del calamaro (diametro $\approx 1 \; \text{mm}$) propaghi i potenziali d'azione molto più velocemente di un assone di neurone mammaliano (diametro $\approx 1 \; \mu\text{m}$).
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+ Nell'assone gigante del calamaro, la grande sezione serve proprio a ridurre la resistenza assiale e aumentare la velocità di propagazione. Questa è una soluzione evolutiva "ingenua": aumentare il diametro dell'assone fino a raggiungere velocità di conduzione adeguate. I mammiferi hanno adottato una soluzione molto più efficiente: la mielinizzazione.
+\end{tcolorbox}
+
+
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|c|c|}
+    \hline
+    \textbf{Tipo di assone} & \textbf{Diametro} & \textbf{Velocità di conduzione} \\
+    \hline
+    Assone gigante del calamaro (non mielinizzato) & $\approx 1 \; \text{mm}$ & $\approx 25 \; \text{m/s}$ \\
+    \hline
+    Assone mammaliano non mielinizzato & $\approx 1 \; \mu\text{m}$ & $< 1 \; \text{m/s}$ \\
+    \hline
+    Assone mammaliano mielinizzato (fibra A$\alpha$) & $\approx 15 \; \mu\text{m}$ & $70$–$120 \; \text{m/s}$ \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+
+\subsubsection{La Mielina Come Isolante Elettrico}
+
+I neuroni dei mammiferi hanno risolto il problema della lentezza della propagazione in assoni sottili attraverso un meccanismo evolutivo elegante: la \textbf{mielinizzazione}. La \textbf{guaina mielinica} è formata da strati concentrici di membrane lipidiche di cellule di Schwann (nel sistema nervoso periferico) o oligodendrociti (nel sistema nervoso centrale) che avvolgono l'assone.
+
+La mielina agisce come un \textbf{isolante elettrico} che:
+\begin{enumerate}
+    \item Aumenta enormemente la resistenza transmembrana nei tratti mielinizzati: la corrente non può uscire lateralmente
+    \item Riduce la capacità di membrana nei tratti mielinizzati: $C_m$ ridotto significa che servono meno cariche per depolarizzare ogni segmento
+\end{enumerate}
+
+
+La guaina mielinica non è continua: è interrotta a intervalli regolari da piccole finestre di membrana nuda chiamate \textbf{nodi di Ranvier}. Solo in questi nodi:
+\begin{itemize}
+    \item La membrana è direttamente esposta al liquido extracellulare
+    \item Sono presenti canali ionici voltaggio-dipendenti (Na$^+$ e K$^+$) in alta densità
+    \item Può avvenire la rigenerazione attiva del potenziale d'azione
+\end{itemize}
+
+
+
+Il meccanismo risultante è la \textbf{conduzione saltatoria} (\textit{saltatory conduction}). Il potenziale d'azione non si propaga con un fronte continuo, ma "salta" da un nodo di Ranvier al successivo:
+
+\begin{enumerate}
+    \item Il potenziale d'azione viene generato nel nodo $n$
+    \item La corrente assiale si propaga attraverso il tratto mielinizzato (quasi senza dispersione, grazie all'isolamento) fino al nodo $n+1$
+    \item La depolarizzazione al nodo $n+1$ supera la soglia e genera un nuovo potenziale d'azione
+    \item Il processo si ripete al nodo $n+2$, e così via
+\end{enumerate}
+
+In questo modo la velocità effettiva di propagazione è \textbf{molto superiore} a quella che sarebbe possibile con un'assone non mielinizzato dello stesso diametro. La conduzione saltatoria consente ai neuroni mammaliani di raggiungere velocità di $70$–$120 \; \text{m/s}$ con assoni di soli $15 \; \mu\text{m}$ di diametro, performance altrimenti raggiungibili solo con un assone di $1 \; \text{mm}$ come quello del calamaro.
