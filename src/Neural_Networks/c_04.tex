@@ -1,0 +1,814 @@
+\chapter{Lezione 4}
+
+
+\textbf{Argomenti:} Equazioni di Goldman-Hodgkin-Katz, approssimazione ohmica, circuito equivalente passivo della membrana, equazione del neurone RC, esperimento di Hodgkin-Huxley, voltage clamp, space clamp, assone gigante di calamaro, correnti ioniche Na$^+$/K$^+$, TTX e TEA, circuito equivalente HH, variabili di gate n, m, h, modello di Markov per i canali ionici
+
+\vspace{0.5cm}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.5cm}
+
+\section{Riepilogo: Equazioni di Goldman-Hodgkin-Katz}
+
+
+Il professore riprende dal materiale presentato nella lezione precedente, riepilogando due equazioni fondamentali dell'elettrofisiologia della membrana: l'\textbf{equazione del potenziale di equilibrio di Goldman-Hodgkin-Katz} (GHK) e l'\textbf{equazione della corrente di Goldman-Hodgkin-Katz}.
+
+Entrambe le equazioni descrivono il comportamento elettrico di una membrana biologica in condizioni stazionarie, quando la membrana è permeabile a più specie ioniche simultaneamente.
+
+
+
+In condizioni stazionarie, il \textbf{potenziale di equilibrio di membrana} $E_m$ risultante dalla presenza simultanea di più specie ioniche (tipicamente K$^+$, Na$^+$, Cl$^-$) è dato dall'equazione di Goldman-Hodgkin-Katz. Questo potenziale dipende dalla \textbf{temperatura} $T$ e dalla \textbf{mobilità ionica} di ciascuna specie (che è l'inverso della resistenza).
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Al numeratore dell'equazione GHK si trovano sempre le concentrazioni esterne, con l'unica eccezione del Cl$^-$, per il quale compare la concentrazione interna. Questo segno invertito riflette la carica negativa dello ione cloruro.
+\end{tcolorbox}
+
+
+\subsubsection{Dati Sperimentali dell'Assone Gigante di Calamaro}
+
+Come riferimento canonico, il professore utilizza i dati dell'\textbf{assone gigante di calamaro} (\textit{Loligo vulgaris}), il sistema modello storico di Hodgkin e Huxley. Le condizioni sperimentali tipiche sono:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|}
+    \hline
+    \textbf{Specie ionica} & \textbf{Concentrazione interna} & \textbf{Concentrazione esterna} & \textbf{Potenziale di inversione} \\
+    \hline
+    K$^+$ & 400 mM & 20 mM & $E_K \approx -76$ mV \\
+    Na$^+$ & 50 mM & 440 mM & $E_{Na} \approx +52$ mV \\
+    Cl$^-$ & 52 mM & 560 mM & $E_{Cl} \approx -60$ mV \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{itemize}
+    \item \textbf{Temperatura sperimentale:} 6.3 $^\circ$C (condizioni HH storiche)
+    \item \textbf{Potenziale di equilibrio di membrana:} $E_m \approx -60$ mV
+\end{itemize}
+
+A questo potenziale:
+\begin{itemize}
+    \item La corrente di K$^+$ è \textbf{uscente} ($E_m > E_K$, quindi la forza motrice è verso l'esterno)
+    \item La corrente di Cl$^-$ è anch'essa \textbf{uscente} ($E_m > E_{Cl}$)
+    \item La corrente di Na$^+$ è \textbf{entrante} ($E_m \ll E_{Na} = +52$ mV, quindi la forza motrice è verso l'interno)
+\end{itemize}
+
+
+\section{Relazione Corrente-Tensione e Approssimazione Ohmica}
+
+\subsubsection{La Curva I-V dalla Legge GHK}
+
+Il potenziale di membrana di un \textbf{neurone in funzione} fluttua continuamente, a causa dei bombardamenti sinaptici eccitatori e inibitori. Il range operativo fisiologico si estende tipicamente da circa $-100$ mV a $+50$ mV.
+
+La relazione corrente-tensione (curva I-V) ricavata dall'equazione GHK per il potassio è una \textbf{curva esponenziale}. Il punto cruciale è il \textbf{potenziale di inversione} $E_K$: sopra di esso la corrente è uscente (positiva per convenzione), al di sotto è entrante (negativa).
+
+\subsubsection{Linearizzazione di Ohm}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Nell'intervallo operativo del neurone, la curva esponenziale può essere approssimata linearmente senza errore significativo. Questo è il passaggio chiave che permette di costruire il circuito equivalente.
+\end{tcolorbox}
+
+La \textbf{linearizzazione ohmica} di Ohm permette di scrivere:
+
+\begin{equation}
+I_\alpha \approx G_\alpha (V - E_\alpha)
+\end{equation}
+
+dove $G_\alpha$ è la \textbf{conduttanza} della specie ionica $\alpha$ (l'inverso della resistenza, misurata in Siemens) e $E_\alpha$ è il potenziale di inversione (che funge da \textbf{forza elettromotrice} nella notazione del circuito).
+
+Per le due specie ioniche principali:
+
+\begin{equation}
+I_{Na} = G_{Na}(V - E_{Na})
+\end{equation}
+
+\begin{equation}
+I_K = G_K(V - E_K)
+\end{equation}
+
+Queste due correnti scorrono \textbf{in parallelo} attraverso la membrana.
+
+\subsubsection{Validità della Linearizzazione e Caso del Ca$^{2+}$}
+
+La linearizzazione ohmica è \textbf{valida per le strutture grandi} del neurone (soma, dendriti, assone), dove le concentrazioni di Ca$^{2+}$ sono trascurabili. In queste strutture, Na$^+$, K$^+$ e Cl$^-$ obbediscono perfettamente all'approssimazione.
+
+Esiste tuttavia un'importante \textbf{eccezione}: le \textbf{spine sinaptiche}, strutture submicrometriche che ricevono l'input sinaptico. In questi compartimenti molto piccoli:
+
+\begin{itemize}
+    \item Il volume è ridottissimo, quindi piccoli flussi di Ca$^{2+}$ producono \textbf{grandi variazioni di concentrazione}
+    \item Il potenziale di inversione del Ca$^{2+}$ è $E_{Ca} \approx +150$ mV
+    \item La curva I-V del Ca$^{2+}$ è quindi \textbf{fortemente non lineare} su tutto l'intervallo operativo
+    \item L'approssimazione ohmica \textbf{non è applicabile} al Ca$^{2+}$ nelle spine
+\end{itemize}
+
+Per gli scopi di questa lezione — e per costruire il modello di Hodgkin-Huxley — ci si concentra su Na$^+$, K$^+$ e Cl$^-$ nelle strutture grandi, dove la linearizzazione è giustificata.
+
+
+\section{Circuito Equivalente della Membrana}
+
+\subsubsection{Struttura del Doppio Strato Lipidico}
+
+Consideriamo una \textbf{piccola sezione di membrana}. Il doppio strato lipidico ha due proprietà elettriche fondamentali:
+
+\begin{enumerate}
+    \item Le due pareti del doppio strato sono superfici conduttrici: le cariche ioniche in soluzione acquosa si distribuiscono rapidamente sulle superfici, rendendole \textbf{equipotenziali} (approssimazione di conduttori piani).
+    \item Le due pareti conduttrici separate da un isolante lipidico costituiscono un \textbf{condensatore piano}.
+\end{enumerate}
+
+Questa struttura suggerisce immediatamente un modello circuitale.
+
+\subsubsection{Componenti del Circuito Passivo}
+
+Attraverso una piccola sezione di membrana scorrono tre tipi di corrente:
+
+\begin{enumerate}
+    \item \textbf{Corrente del Na$^+$}: $I_{Na} = G_{Na}(V - E_{Na})$, rappresentata da una resistenza (conduttanza $G_{Na}$) in serie con una batteria (forza elettromotrice $E_{Na}$).
+    \item \textbf{Corrente del K$^+$}: $I_K = G_K(V - E_K)$, analogamente rappresentata da $G_K$ in serie con $E_K$.
+    \item \textbf{Corrente capacitiva}: la membrana immagazzina carica $Q = C_m \cdot V$ (dove $C_m$ è la \textbf{capacitanza di membrana}), e la corrente associata è:
+\end{enumerate}
+
+\begin{equation}
+I_C = C_m \frac{dV}{dt}
+\end{equation}
+
+\subsubsection{Equazione del Circuito Chiuso}
+
+Per il \textbf{principio di conservazione della carica} (legge di Kirchhoff), in un circuito chiuso la somma di tutte le correnti deve essere zero. Includendo anche una possibile corrente esterna $I_e$ iniettata tramite un \textbf{elettrodo intracellulare} (pipetta di vetro):
+
+\begin{equation}
+C_m \frac{dV}{dt} + I_{Na} + I_K = 0 \quad \text{(senza corrente esterna)}
+\end{equation}
+
+Con corrente esterna per unità di area $I_e/A$ (dove $A$ è la sezione della pipetta):
+
+\begin{equation}
+C_m \frac{dV}{dt} + I_{Na} + I_K = \frac{I_e}{A}
+\end{equation}
+
+
+\subsubsection{Derivazione dell'Equazione Completa}
+
+Sostituendo le espressioni ohmiche per le correnti ioniche nell'equazione del circuito, si ottiene:
+
+\begin{equation}
+C_m \frac{dV}{dt} = -\sum_\alpha G_\alpha(V - E_\alpha) + \frac{I_e}{A}
+\end{equation}
+
+Espandendo la somma e raccogliendo i termini:
+
+\begin{equation}
+C_m \frac{dV}{dt} = -\left(\sum_\alpha G_\alpha\right) V + \sum_\alpha G_\alpha E_\alpha + \frac{I_e}{A}
+\end{equation}
+
+Definendo la \textbf{conduttanza totale di membrana}:
+
+\begin{equation}
+G_m = \sum_\alpha G_\alpha
+\end{equation}
+
+l'equazione diventa:
+
+\begin{equation}
+C_m \frac{dV}{dt} = -G_m V + \sum_\alpha G_\alpha E_\alpha + \frac{I_e}{A}
+\end{equation}
+
+\subsubsection{Il Potenziale di Equilibrio Effettivo}
+
+Si può raccogliere ulteriormente definendo il \textbf{potenziale di equilibrio effettivo} $E_m$:
+
+\begin{equation}
+E_m = \frac{\sum_\alpha G_\alpha E_\alpha}{\sum_\alpha G_\alpha} = \frac{\sum_\alpha G_\alpha E_\alpha}{G_m}
+\end{equation}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Questo potenziale di equilibrio $E_m$, derivato qui tramite l'approssimazione ohmica, coincide esattamente con il potenziale di Goldman-Hodgkin-Katz! Abbiamo quindi ottenuto lo stesso risultato con due approcci completamente diversi, il che è una conferma della coerenza dei due modelli.
+\end{tcolorbox}
+
+L'equazione del circuito passivo assume quindi la forma compatta:
+
+\begin{equation}
+C_m \frac{dV}{dt} = -G_m(V - E_m) + \frac{I_e}{A}
+\end{equation}
+
+\subsubsection{Il Circuito RC di Membrana}
+
+Definendo la \textbf{costante di tempo di membrana}:
+
+\begin{equation}
+\tau_m = C_m R_m = \frac{C_m}{G_m}
+\end{equation}
+
+dove $R_m = 1/G_m$ è la \textbf{resistenza totale di membrana}, si ottiene la forma compatta adimensionale:
+
+\begin{equation}
+\tau_m \frac{dV}{dt} = E_m - V + R_m \frac{I_e}{A}
+\end{equation}
+
+Questa è identica all'\textbf{equazione di un circuito RC} standard con:
+\begin{itemize}
+    \item Costante di tempo $\tau_m$
+    \item Valore di equilibrio $E_m + R_m I_e/A$ (dipendente dalla corrente esterna)
+\end{itemize}
+
+
+\subsubsection{Risposta a un Gradino di Corrente}
+
+Consideriamo il caso in cui a $t = 0$ si applichi un gradino di corrente costante $I_e$ a partire dalla condizione di equilibrio $V(0) = E_m$. La soluzione dell'equazione RC è:
+
+\begin{equation}
+V(t) = E_m + R_m \frac{I_e}{A}\left(1 - e^{-t/\tau_m}\right)
+\end{equation}
+
+Il sistema presenta quindi:
+\begin{itemize}
+    \item Una \textbf{crescita esponenziale} dalla condizione iniziale $E_m$
+    \item Verso il \textbf{valore asintotico}: $V_\infty = E_m + R_m I_e/A$
+    \item Con costante di tempo $\tau_m$
+\end{itemize}
+
+Analogamente, alla rimozione della corrente (gradino negativo), si ha un \textbf{decadimento esponenziale} verso $E_m$ con la stessa costante di tempo $\tau_m$.
+
+\subsubsection{Caratterizzazione Sperimentale del Circuito}
+
+Questo semplice protocollo sperimentale (injection di correnti note) permette di \textbf{misurare completamente i parametri} del circuito RC:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|X|}
+    \hline
+    \textbf{Misura} & \textbf{Parametro ottenuto} \\
+    \hline
+    $V_\infty$ vs $I_e = 0$ & Potenziale di equilibrio $E_m$ \\
+    Pendenza $dV_\infty / dI_e = R_m/A$ & Resistenza di membrana $R_m$ (e conduttanza $G_m$) \\
+    Costante di decadimento & Costante di tempo $\tau_m$ \\
+    $\tau_m / R_m$ & Capacitanza di membrana $C_m = \tau_m G_m$ \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Validazione Sperimentale Storica}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Mostro dati sperimentali storici risalenti a più di 50 anni fa, ottenuti sulla \textbf{giunzione neuromuscolare di rana}. Questi esperimenti furono condotti da ricercatori che iniettarono diverse correnti e osservarono esattamente quanto previsto dal circuito RC equivalente: adattamento esponenziale alla corrente, poi decadimento esponenziale verso l'equilibrio al ritiro della corrente. Questo dimostra che l'approssimazione delle proprietà elettriche passive è straordinariamente efficace.
+\end{tcolorbox}
+
+Il professore menziona come riferimento bibliografico principale "\textit{Biophysics of Electrical Properties of Neurons}" (Cambridge Press), definendolo "la bibbia in neuroscienze" per questo argomento.
+
+\subsubsection{Limiti del Modello Passivo e Transizione al Modello HH}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Le proprietà passive non sono però l'unica storia. Il vero potere del neurone è la capacità di \textbf{trasformare nonlinearmente l'informazione sinaptica}. Questo fu scoperto da Hodgkin e Huxley negli anni '50. Dobbiamo estendere il circuito passivo per spiegare questa nonlinearità.
+\end{tcolorbox}
+
+Il circuito RC passivo descrive correttamente la risposta subliminale del neurone. Non può però spiegare il \textbf{potenziale d'azione} — lo spike — che è il meccanismo fondamentale di comunicazione neuronale.
+
+\newpage
+
+\section{L'Esperimento di Hodgkin e Huxley}
+
+\subsubsection{La Scelta dell'Assone Gigante di Calamaro}
+
+\textbf{Alan Hodgkin} e \textbf{Andrew Huxley} scelsero come sistema modello l'\textbf{assone gigante di calamaro} (\textit{Loligo vulgaris}). La motivazione era puramente pratica: le fibre nervose giganti di questo mollusco hanno un diametro di circa \textbf{1 mm} (centinaia di volte più grande degli assoni di mammifero), il che rende possibili manipolazioni sperimentali altrimenti impossibili.
+
+Il protocollo sperimentale prevedeva:
+\begin{enumerate}
+    \item Tagliare un pezzo di assone
+    \item Immergerlo in un bagno con \textbf{fluido cerebrospinale artificiale} (ACSF, \textit{Artificial Cerebrospinal Fluid})
+    \item Applicare la tecnica dello \textbf{space clamp} e del \textbf{voltage clamp}
+\end{enumerate}
+
+\subsubsection{Lo Space Clamp}
+
+Il problema fondamentale nello studio di un assone è che il potenziale d'azione si \textbf{propaga} lungo la fibra, rendendo il potenziale di membrana una funzione sia del tempo che della posizione. Per semplificare drasticamente il problema, HH introdussero la tecnica dello \textbf{space clamp}:
+
+\begin{itemize}
+    \item Un \textbf{anodo esterno} che copre l'intera lunghezza del pezzo di assone
+    \item Un \textbf{catodo interno} (un filo metallico inserito nel lume dell'assone)
+\end{itemize}
+
+Questa configurazione forza l'\textbf{intera membrana} ad avere lo stesso potenziale in ogni istante, eliminando la dipendenza spaziale. Il sistema si riduce così a un problema puramente temporale (equazione differenziale ordinaria, non PDE).
+
+\subsubsection{Il Voltage Clamp}
+
+Il \textbf{voltage clamp} (pinza di voltaggio) è la seconda tecnica fondamentale:
+
+\begin{enumerate}
+    \item Due elettrodi sono connessi a un \textbf{amplificatore di feedback}
+    \item L'amplificatore confronta continuamente il potenziale misurato $V_{mis}$ con il potenziale desiderato $V_{cmd}$ (imposto dall'esperimentalista)
+    \item L'amplificatore inietta la \textbf{corrente necessaria} per mantenere $V = V_{cmd}$
+    \item Questa corrente viene misurata con un \textbf{amperometro}
+\end{enumerate}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+ Con questo setup, fissando $V = -50$ mV, tutta la membrana ha esattamente quel potenziale di membrana in ogni istante. Si può misurare come cambia nel tempo la corrente che l'amplificatore deve iniettare per mantenere il potenziale costante — e questa corrente è esattamente uguale e opposta alla corrente ionica che fluisce attraverso la membrana.
+\end{tcolorbox}
+
+
+
+Con lo space clamp, il voltage clamp e la \textbf{modellizzazione numerica} (realizzata sui primi mainframe disponibili negli anni '50), Hodgkin e Huxley riuscirono a:
+\begin{enumerate}
+    \item \textbf{Misurare} le correnti ioniche in funzione del voltaggio e del tempo
+    \item \textbf{Isolare} le correnti di Na$^+$ e K$^+$ tramite farmaci specifici
+    \item \textbf{Costruire} un modello matematico quantitativo del potenziale d'azione
+    \item \textbf{Simulare} numericamente il potenziale d'azione, ottenendo un accordo eccellente con i dati
+\end{enumerate}
+
+Per questi risultati, \textbf{Alan Hodgkin} e \textbf{Andrew Huxley} ricevettero il \textbf{Premio Nobel per la Fisiologia e la Medicina nel 1963}, condiviso con \textbf{John Eccles} (che aveva scoperto indipendentemente i meccanismi della trasmissione sinaptica).
+
+
+\vspace{0.3 cm}
+
+
+\noindent Senza voltage clamp, se si lascia libero il potenziale, si osserva il \textbf{potenziale d'azione} come uno spike. L'obiettivo era capire \textit{perché} esiste questa amplificazione non lineare. La strategia di Hodgkin e Huxley fu:
+
+\textbf{Fissare} il voltaggio a diversi livelli (voltage clamp) $\rightarrow$ \textbf{misurare} la corrente risultante $\rightarrow$ \textbf{caratterizzare} come la corrente dipende da $V$ e dal tempo $\rightarrow$ \textbf{costruire} un modello.
+
+\subsection{Correnti Non Lineari: Piccolo vs Grande $\Delta$V}
+
+\subsubsection{Esperimento con Piccolo $\Delta$V (+10 mV)}
+
+Partendo dal potenziale di equilibrio $E_m$, si applica un salto di potenziale $\Delta V = +10$ mV. La corrente misurata presenta:
+
+\begin{enumerate}
+    \item Un \textbf{overshoot iniziale} (picco istantaneo): è la \textbf{corrente capacitiva} $I_C = C_m \, dV/dt$, proporzionale alla derivata del voltaggio (impulsiva per un gradino ideale)
+    \item Poi un \textbf{rilassamento esponenziale} verso il valore asintotico $\Delta V \cdot G_m$: questa è la corrente di leakage passiva, perfettamente descritta dal circuito RC
+\end{enumerate}
+
+Questo comportamento è \textbf{esattamente} quanto previsto dal circuito passivo.
+
+\subsubsection{Esperimento con Grande $\Delta$V (+60 mV)}
+
+Applicando invece $\Delta V = +60$ mV (una forte depolarizzazione), il comportamento cambia radicalmente:
+
+\begin{enumerate}
+    \item Stesso \textbf{overshoot iniziale} capacitivo
+    \item Poi una \textbf{forte corrente entrante} (\textit{inward current}): specie cationiche (Na$^+$) che entrano nella cellula, corrispondente alla depolarizzazione
+    \item Poi una \textbf{corrente uscente} (\textit{outward current}): specie cationiche (K$^+$) che escono, corrispondente alla ripolarizzazione
+\end{enumerate}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Questa non linearità nasce da qualcosa che il circuito RC passivo non è in grado di descrivere. Il circuito passivo prevede solo un rilassamento esponenziale monotono. Invece vediamo una corrente che cambia segno — prima entrante, poi uscente. Questo è il segnale che ci sono elementi attivi nella membrana.
+\end{tcolorbox}
+
+
+\subsection{Isolamento di $I_{Na}$ e $I_K$: TTX e TEA}
+
+
+Per identificare i contributi separati delle correnti ioniche, Hodgkin e Huxley (e i loro collaboratori) ricorsero a farmaci specifici che bloccano selettivamente un tipo di canale.
+
+\subsubsection{La Tetrodotossina (TTX)}
+
+La \textbf{tetrodotossina} (TTX) è un potente neurotossico di natura non proteica, prodotto da batteri simbiotici e accumulato in diversi animali marini, il più noto dei quali è il \textbf{pesce palla} (famiglia \textit{Tetraodontidae}).
+
+\begin{itemize}
+    \item \textbf{Meccanismo}: blocco specifico dei \textbf{canali ionici voltaggio-dipendenti del Na$^+$} (si inserisce fisicamente nel poro del canale)
+    \item \textbf{Effetto fisiologico}: paralisi muscolare (incluso il diaframma) $\rightarrow$ morte per arresto respiratorio
+    \item \textbf{Potenza}: circa 1200 volte più tossica del cianuro
+\end{itemize}
+
+Con TTX nel bagno di superfusione, la corrente misurata è \textbf{esclusivamente quella del K$^+$} (corrente uscente).
+
+\subsubsection{Il Tetraetilammonium (TEA)}
+
+Il \textbf{tetraetilammonium} (TEA) è un bloccante specifico dei \textbf{canali del K$^+$} voltaggio-dipendenti. Con TEA nel bagno, la corrente misurata è \textbf{esclusivamente quella del Na$^+$}.
+La corrente del Na$^+$ isolata è \textbf{non monotona}: presenta prima un picco inward (attivazione rapida dei canali Na$^+$), poi si esaurisce rapidamente (inattivazione).
+
+\subsubsection{Ricostruzione della Corrente Totale}
+
+La corrente totale osservata senza farmaci è la \textbf{somma} delle due correnti isolate:
+
+\begin{equation}
+I_{totale} = I_{Na} + I_K
+\end{equation}
+
+Questo risultato fondamentale permette di identificare le \textbf{due fasi} del potenziale d'azione:
+
+\begin{enumerate}
+    \item \textbf{Fase di salita (spike)}: i \textbf{canali Na$^+$} si aprono $\rightarrow$ corrente entrante $\rightarrow$ \textbf{depolarizzazione} rapida della membrana
+    \item \textbf{Fase di recupero (ripolarizzazione)}: i \textbf{canali K$^+$} si aprono (e i canali Na$^+$ si inattivano) $\rightarrow$ corrente uscente $\rightarrow$ \textbf{ripolarizzazione} verso $E_m$
+\end{enumerate}
+
+
+
+\subsection{Il Circuito Equivalente Hodgkin-Huxley}
+
+\subsubsection{Estensione del Circuito Passivo}
+
+Hodgkin e Huxley riconobbero che il circuito passivo deve essere \textbf{esteso} con canali \textbf{attivi} (voltaggio-dipendenti) per Na$^+$ e K$^+$. La differenza fondamentale rispetto al circuito passivo è che le conduttanze \textbf{non sono più costanti}:
+
+\begin{equation}
+G_{Na} = G_{Na}(V, t) \qquad G_K = G_K(V, t)
+\end{equation}
+
+Queste conduttanze dipendono sia dal potenziale di membrana $V$ che dal tempo $t$ (tramite le variabili di gate che vedremo nelle prossime sezioni).
+
+\subsubsection{L'Equazione HH Completa}
+
+L'equazione differenziale del modello di Hodgkin-Huxley completo è:
+
+\begin{equation}
+C_m \frac{dV}{dt} = -\bar{G}_{Na} m^3 h (V - E_{Na}) - \bar{G}_K n^4 (V - E_K) - G_L (V - E_L) + I_{ext}
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $\bar{G}_{Na}$ e $\bar{G}_K$ sono le \textbf{conduttanze massime} (valori costanti quando tutti i canali sono aperti)
+    \item $m$, $h$, $n$ sono le \textbf{variabili di gate} (comprese tra 0 e 1)
+    \item $G_L$ è la \textbf{conduttanza di leakage} (passiva, costante)
+    \item $E_L$ è il potenziale di inversione di leakage
+    \item $I_{ext}$ è la corrente esterna iniettata
+\end{itemize}
+
+Le \textbf{batterie ioniche} hanno polarità opposte:
+\begin{itemize}
+    \item $E_K \approx -70 \div -90$ mV: tende a iperpolarizzare la membrana
+    \item $E_{Na} \approx +50$ mV: tende a depolarizzare la membrana
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+
+Il circuito equivalente HH è topologicamente identico al circuito passivo, ma con la differenza cruciale che $G_{Na}$ e $G_K$ non sono resistori fissi bensì elementi il cui valore dipende dal voltaggio e dal tempo. Questo rende il sistema non lineare.
+\end{tcolorbox}
+
+
+\subsection{La Conduttanza del Potassio }
+
+
+Con la TTX nel bagno (per bloccare il Na$^+$), la corrente misurata è solo $I_K$. La conduttanza del potassio in funzione del tempo si ricava come:
+
+\begin{equation}
+G_K(t) = \frac{I_K(t)}{V - E_K}
+\end{equation}
+
+(il denominatore è la forza motrice, costante grazie al voltage clamp)
+
+
+I dati sperimentali a diversi valori di $\Delta V$ rivelano tre caratteristiche che \textbf{non possono essere spiegate} dal circuito passivo:
+
+\textbf{Prima differenza — Forma sigmoidale:}\\
+L'andamento temporale di $G_K(t)$ non è esponenziale ma \textbf{sigmoidale}. Nel circuito passivo, la risposta sarebbe puramente esponenziale con derivata iniziale diversa da zero. Invece sperimentalmente la derivata iniziale è \textbf{zero}: $G_K$ parte lentamente, poi accelera, poi satura.
+
+\textbf{Seconda differenza — Valore asintotico voltaggio-dipendente:}\\
+Il valore asintotico $G_K(\infty)$ dipende fortemente da $V$. Nel circuito passivo, $G_K$ sarebbe costante indipendentemente da $V$.
+
+\textbf{Terza differenza — Costante di tempo voltaggio-dipendente:}\\
+Il tempo caratteristico di avvicinamento al valore asintotico dipende da $V$. Ad esempio:
+\begin{itemize}
+    \item A $\Delta V = 109$ mV: $\tau \approx 1.5$ ms
+    \item A $\Delta V$ più piccolo: $\tau \approx 4$ ms
+\end{itemize}
+
+Tutti e tre questi comportamenti indicano la presenza di \textbf{canali ionici attivi} con proprietà voltaggio-dipendenti.
+
+
+\subsection{Il Modello di Markov per i Canali Ionici}
+
+\subsubsection{Struttura Molecolare dei Canali: Due Stati Discreti}
+
+Alla fine degli anni '40, era già noto che i canali ionici sono \textbf{molecole macromolecolari} con almeno due stati conformazionali discreti:
+\begin{itemize}
+    \item Stato \textbf{aperto} (\textit{open}): il poro è accessibile agli ioni, la corrente può fluire
+    \item Stato \textbf{chiuso} (\textit{closed}): il poro è bloccato, nessuna corrente
+\end{itemize}
+
+Questa struttura può essere rappresentata con un \textbf{paesaggio di energia a doppio pozzo}: due minimi di energia corrispondenti ai due stati, separati da una \textbf{barriera energetica}.
+
+\subsubsection{Transizioni Stocastiche e Velocità di Kramers}
+
+Le transizioni tra stati possono essere:
+\begin{itemize}
+    \item \textbf{Spontanee} (stocastiche): fluttuazioni termiche possono fornire l'energia necessaria per superare la barriera
+    \item \textbf{Voltaggio-indotte}: se il sensore di voltaggio del canale porta un campo elettrico locale, il potenziale di membrana modifica l'altezza della barriera
+\end{itemize}
+
+La \textbf{probabilità di transizione} è descritta dalla \textbf{velocità di Kramers}:
+
+\begin{equation}
+\text{rate} \propto e^{-\Delta E / k_B T}
+\end{equation}
+
+dove $\Delta E$ è l'altezza della barriera e $k_B T$ è l'energia termica. Se il voltaggio modifica $\Delta E$, allora le rate constants sono \textbf{voltaggio-dipendenti}.
+
+\subsubsection{Equazione Cinetica del Primo Ordine per n}
+
+Hodgkin e Huxley modellarono il canale del K$^+$ come avente una \textbf{variabile di gate} $n$ che rappresenta la \textbf{frazione di canali aperti} in un dato istante.
+
+Le transizioni seguite da un processo di Markov (dipendente solo dallo stato attuale):
+\begin{itemize}
+    \item Chiuso $\rightarrow$ Aperto con rate $\alpha_n(V)$
+    \item Aperto $\rightarrow$ Chiuso con rate $\beta_n(V)$
+\end{itemize}
+
+In un intervallo $\Delta t$, la variazione di $n$ è:
+
+\begin{equation}
+\Delta n = \alpha_n(1-n)\Delta t - \beta_n \cdot n \cdot \Delta t
+\end{equation}
+
+Nel limite $\Delta t \to 0$, si ottiene l'\textbf{equazione cinetica del primo ordine}:
+
+\begin{equation}
+\dot{n} = \alpha_n(V)(1 - n) - \beta_n(V) \, n
+\end{equation}
+
+Questa è un'equazione di Markov: la dinamica di $n$ dipende solo dal valore attuale di $n$ (non dalla storia passata).
+
+
+\subsubsection{Riscrittura in Forma Canonica}
+
+L'equazione cinetica per $n$ si può riscrivere nella forma canonica:
+
+\begin{equation}
+\dot{n} = \frac{n_\infty(V) - n}{\tau_n(V)}
+\end{equation}
+
+dove il \textbf{valore asintotico} e la \textbf{costante di tempo} sono:
+
+\begin{equation}
+n_\infty(V) = \frac{\alpha_n(V)}{\alpha_n(V) + \beta_n(V)}, \qquad \tau_n(V) = \frac{1}{\alpha_n(V) + \beta_n(V)}
+\end{equation}
+
+
+\subsubsection{Il Problema della Forma Sigmoidale}
+
+La soluzione di $\dot{n} = (n_\infty - n)/\tau_n$ (con $V$ costante sotto voltage clamp) è un'evoluzione \textbf{esponenziale} da $n(0)$ verso $n_\infty$. Ma la $G_K$ sperimentale ha forma \textbf{sigmoidale}, non esponenziale!
+
+Hodgkin e Huxley proposero una soluzione elegante: la conduttanza del K$^+$ è proporzionale a una \textbf{potenza di n}. Testando $n$, $n^2$, $n^3$, $n^4$, trovarono che:
+
+\begin{equation}
+G_K(V, t) = \bar{G}_K \cdot n^4(V, t)
+\end{equation}
+
+Il termine $n^4$ (prodotto di quattro variabili esponenziali indipendenti) genera una forma sigmoidale che \textbf{fitta perfettamente} i dati sperimentali.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Perché n$^4$? Non c'era allora una spiegazione strutturale: era solo il fitting migliore. Decenni dopo, la cristallografia a raggi X dei canali del K$^+$ rivelò che i canali sono effettivamente \textbf{tetrameri} — composti da quattro subunità, ciascuna con una propria variabile di gate. Hodgkin e Huxley avevano indovinato la struttura molecolare solo dall'analisi funzionale!
+\end{tcolorbox}
+
+
+
+\subsection{Fitting con n$^4$ e Dipendenza da V delle Rate Constants}
+
+Il fitting di $G_K \propto n^4$ viene eseguito per ogni valore di $\Delta V$, ottenendo le coppie $(\alpha_n(V), \beta_n(V))$. In totale si ottengono le \textbf{dipendenze funzionali} di $\alpha_n$ e $\beta_n$ dal voltaggio.
+
+
+Dai dati sperimentali a diversi $\Delta V$, Hodgkin e Huxley trovarono comportamenti asintotici precisi:
+
+\begin{itemize}
+    \item \textbf{Per V molto positivo} (depolarizzazione forte): $\beta_n \to 0$ e $\alpha_n \propto V$ $\rightarrow$ $n_\infty \to 1$ (tutti i canali K$^+$ aperti)
+    \item \textbf{Per V molto negativo} (iperpolarizzazione forte): $\alpha_n \to 0$ $\rightarrow$ $n_\infty \to 0$ (tutti i canali K$^+$ chiusi)
+\end{itemize}
+
+Le forme funzionali adottate da Hodgkin e Huxley per le rate constants sono combinazioni di termini lineari in $V$ ed esponenziali in $V$. Questa scelta è giustificata fisicamente dalla \textbf{velocità di Kramers}: la barriera energetica dipende linearmente dal voltaggio (attraverso la carica del sensore di voltaggio), quindi il rate di transizione va come $e^{\pm eV/k_BT}$.
+
+Di conseguenza, $n_\infty(V) = \alpha_n(V)/[\alpha_n(V) + \beta_n(V)]$ ha la forma di una \textbf{funzione sigmoidale}:
+\begin{itemize}
+    \item $n_\infty \to 1$ per $V$ depolarizzato
+    \item $n_\infty \to 0$ per $V$ iperpolarizzato
+\end{itemize}
+
+
+
+\subsubsection{Sintesi del Modello per il Potassio}
+
+L'equazione completa per la conduttanza del potassio è:
+
+\begin{equation}
+G_K(V, t) = \bar{G}_K \cdot n^4(V, t)
+\end{equation}
+
+con la cinetica governata da:
+
+\begin{equation}
+\dot{n} = \alpha_n(V)(1-n) - \beta_n(V) \cdot n
+\end{equation}
+
+I comportamenti limite:
+\begin{itemize}
+    \item $n_\infty \to 1$ per $V$ depolarizzato $\rightarrow$ $G_K \to \bar{G}_K$ (conduttanza massima, tutti i canali aperti)
+    \item $n_\infty \to 0$ per $V$ iperpolarizzato $\rightarrow$ $G_K \to 0$ (tutti i canali chiusi, nessuna corrente)
+\end{itemize}
+
+Questo meccanismo spiega la fase di \textbf{ripolarizzazione} del potenziale d'azione: la depolarizzazione provoca l'apertura dei canali K$^+$ (con un certo ritardo, per via della cinetica di $n$), che produce una corrente uscente che riporta $V$ verso $E_K$.
+
+
+
+\subsection{La Conduttanza del Sodio}
+
+\subsubsection{L'Andamento Non Monotono di $G_{Na}$}
+
+Isolare $G_{Na}$ tramite TEA rivela un comportamento \textbf{qualitativamente diverso} da $G_K$: l'andamento temporale di $G_{Na}$ è \textbf{non monotono}. A grande $\Delta V$:
+
+\begin{enumerate}
+    \item \textbf{Fase di attivazione}: $G_{Na}$ cresce rapidamente (in pochi decimi di ms)
+    \item \textbf{Fase di inattivazione}: $G_{Na}$ decresce in meno di 1 ms, tornando a zero anche se $V$ è ancora mantenuto a un valore depolarizzato
+\end{enumerate}
+
+Questo comportamento non può essere descritto da una sola variabile del primo ordine $\rightarrow$ servono \textbf{due variabili di gate} con dinamiche separate e comportamenti opposti.
+
+\subsubsection{Le Due Variabili m e h}
+
+Hodgkin e Huxley introdussero:
+
+\begin{itemize}
+    \item \textbf{m}: variabile di \textbf{attivazione} (apertura del gate)
+    \item \textbf{h}: variabile di \textbf{inattivazione} (chiusura/blocco del gate)
+\end{itemize}
+
+La conduttanza del Na$^+$ è:
+
+\begin{equation}
+G_{Na}(V, t) = \bar{G}_{Na} \cdot m^3(V, t) \cdot h(V, t)
+\end{equation}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} La potenza $m^3$ e il fattore $h$ sono trovati per fitting numerico dei dati sperimentali, esattamente come per $n^4$. La struttura molecolare dei canali del Na$^+$ (scoperta molto più tardi) confermò questa intuizione: i canali del Na$^+$ hanno effettivamente tre subunità di attivazione e un dominio di inattivazione separato.
+\end{tcolorbox}
+
+
+
+
+\subsubsection{Cinetica di m (Attivazione)}
+
+L'equazione cinetica per la variabile di attivazione $m$ è:
+
+\begin{equation}
+\dot{m} = \alpha_m(V)(1-m) - \beta_m(V) \cdot m
+\end{equation}
+
+con il valore asintotico e la costante di tempo:
+
+\begin{equation}
+m_\infty(V) = \frac{\alpha_m(V)}{\alpha_m(V) + \beta_m(V)}, \qquad \tau_m(V) = \frac{1}{\alpha_m(V) + \beta_m(V)}
+\end{equation}
+
+Le rate constants per $m$ hanno una forma funzionale analoga a quelle di $\alpha_n$: il termine lineare domina per $V$ positivo e $\alpha_m \to 0$ per $V \to -\infty$.
+
+Risultato: $m_\infty(V)$ è una \textbf{sigmoide crescente}:
+\begin{itemize}
+    \item $m_\infty \to 1$ per $V$ depolarizzato (gate di attivazione aperto)
+    \item $m_\infty \to 0$ per $V$ iperpolarizzato (gate di attivazione chiuso)
+\end{itemize}
+
+La \textbf{costante di tempo} $\tau_m$ è molto piccola rispetto a $\tau_n$ e $\tau_h$: $m$ è la variabile più \textbf{rapida} del modello HH (si attiva quasi istantaneamente).
+
+\subsubsection{Cinetica di h (Inattivazione)}
+
+L'equazione cinetica per la variabile di inattivazione $h$ è:
+
+\begin{equation}
+\dot{h} = \alpha_h(V)(1-h) - \beta_h(V) \cdot h
+\end{equation}
+
+con:
+
+\begin{equation}
+h_\infty(V) = \frac{\alpha_h(V)}{\alpha_h(V) + \beta_h(V)}, \qquad \tau_h(V) = \frac{1}{\alpha_h(V) + \beta_h(V)}
+\end{equation}
+
+
+
+Le rate constants per $h$ hanno un \textbf{comportamento inverso} rispetto a quelle di $m$:
+
+\begin{itemize}
+    \item \textbf{Per V molto positivo} (depolarizzazione): $\alpha_h \to 0$ e $\beta_h$ è grande $\rightarrow$ $h_\infty = \alpha_h/(\alpha_h + \beta_h) \to 0$
+    \item \textbf{Per V molto negativo} (iperpolarizzazione): $\beta_h \to 0$ e $\alpha_h$ è grande $\rightarrow$ $h_\infty \to 1$
+\end{itemize}
+
+Quindi $h_\infty(V)$ è una \textbf{sigmoide decrescente}:
+\begin{itemize}
+    \item $h_\infty \to 1$ per $V$ iperpolarizzato: i canali Na$^+$ sono "pronti" ad attivarsi (gate di inattivazione aperto)
+    \item $h_\infty \to 0$ per $V$ depolarizzato: i canali Na$^+$ sono inattivati (gate di inattivazione chiuso)
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} L'interpretazione biologica è precisa: h è la variabile che dice "il canale è disponibile per aprirsi". Quando la membrana è a riposo (iperpolarizzata), h è vicino a 1 — i canali sono "carichi". Dopo un potenziale d'azione (quando V è rimasto a lungo depolarizzato), h crolla verso 0 — i canali sono inattivati e non possono riaprirsi. Questo è il meccanismo del \textbf{periodo refrattario assoluto}.
+\end{tcolorbox}
+
+\subsubsection{Generazione del Comportamento Non Monotono di $G_{Na}$}
+
+La combinazione di $m^3$ (sigmoide crescente, rapida) e $h$ (sigmoide decrescente, lenta) crea il comportamento non monotono osservato:
+
+\begin{enumerate}
+    \item \textbf{Inizio} (subito dopo depolarizzazione): $m$ cresce rapidamente, $h$ è ancora vicino al suo valore di riposo (alto) $\rightarrow$ $G_{Na} = \bar{G}_{Na} m^3 h$ cresce
+    \item \textbf{Picco}: $m$ ha quasi raggiunto $m_\infty$, $h$ sta iniziando a diminuire $\rightarrow$ $G_{Na}$ al massimo
+    \item \textbf{Inattivazione}: $m$ è saturo, ma $h$ diminuisce rapidamente $\rightarrow$ $G_{Na}$ crolla
+\end{enumerate}
+
+
+
+\section*{Riepilogo del Modello di Hodgkin-Huxley}
+
+
+Il modello di Hodgkin-Huxley è un sistema di \textbf{quattro equazioni differenziali ordinarie} accoppiate:
+
+\textbf{Equazione di membrana:}
+\begin{equation}
+C_m \frac{dV}{dt} = -\bar{G}_{Na} m^3 h (V - E_{Na}) - \bar{G}_K n^4 (V - E_K) - G_L (V - E_L) + I_{ext}
+\end{equation}
+
+\textbf{Cinetica di m (attivazione Na$^+$):}
+\begin{equation}
+\dot{m} = \alpha_m(V)(1-m) - \beta_m(V) \, m
+\end{equation}
+
+\textbf{Cinetica di h (inattivazione Na$^+$):}
+\begin{equation}
+\dot{h} = \alpha_h(V)(1-h) - \beta_h(V) \, h
+\end{equation}
+
+\textbf{Cinetica di n (attivazione K$^+$):}
+\begin{equation}
+\dot{n} = \alpha_n(V)(1-n) - \beta_n(V) \, n
+\end{equation}
+
+\subsubsection{Gerarchia Temporale delle Variabili}
+
+Le tre variabili di gate operano su scale temporali diverse, il che è essenziale per il meccanismo del potenziale d'azione:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|X|X|X|}
+    \hline
+    \textbf{Variabile} & \textbf{Tipo} & \textbf{Velocità} & \textbf{Comportamento a V depolarizzato} \\
+    \hline
+    $m$ & Attivazione Na$^+$ & Rapida ($\tau_m \sim 0.1$ ms) & $m_\infty \to 1$ \\
+    $h$ & Inattivazione Na$^+$ & Lenta ($\tau_h \sim 1{-}10$ ms) & $h_\infty \to 0$ \\
+    $n$ & Attivazione K$^+$ & Intermedia ($\tau_n \sim 1{-}4$ ms) & $n_\infty \to 1$ \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Meccanismo del Potenziale d'Azione (Anteprima)}
+
+Il potenziale d'azione emerge dall'interazione delle variabili come un'\textbf{instabilità autoamplificata}:
+
+\begin{enumerate}
+    \item Una perturbazione depolarizzante supera la soglia $\rightarrow$ $m$ si attiva rapidamente
+    \item Corrente Na$^+$ entrante $\rightarrow$ ulteriore depolarizzazione (\textbf{feedback positivo})
+    \item La depolarizzazione attiva $n$ (K$^+$) più lentamente e inattiva $h$ $\rightarrow$ inizio della ripolarizzazione
+    \item $G_K$ cresce, $G_{Na}$ crolla $\rightarrow$ ripolarizzazione rapida (\textbf{feedback negativo})
+    \item Iperpolarizzazione transitoria (afterhyperpolarization) $\rightarrow$ periodo refrattario
+\end{enumerate}
+
+
+\newpage
+\section*{Tabella Riepilogativa}
+
+\begin{table}[htbp]
+    \centering
+    \footnotesize
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3cm}|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+    \hline
+    \textbf{Simbolo / Termine} & \textbf{Definizione} & \textbf{Unità / Note} \\
+    \hline
+    $E_{Na}$ & Potenziale di inversione del Na$^+$ & $\approx +52$ mV (assone di calamaro) \\
+    \hline
+    $E_K$ & Potenziale di inversione del K$^+$ & $\approx -76$ mV (assone di calamaro) \\
+    \hline
+    $E_{Cl}$ & Potenziale di inversione del Cl$^-$ & $\approx -60$ mV (assone di calamaro) \\
+    \hline
+    $E_m$ & Potenziale di equilibrio di membrana & $\approx -60$ mV \\
+    \hline
+    $G_\alpha$ & Conduttanza ionica per la specie $\alpha$ & S/cm$^2$ \\
+    \hline
+    $G_m$ & Conduttanza totale di membrana & $G_m = \sum_\alpha G_\alpha$ \\
+    \hline
+    $R_m$ & Resistenza di membrana & $\Omega \cdot$cm$^2$; $R_m = 1/G_m$ \\
+    \hline
+    $C_m$ & Capacitanza di membrana & F/cm$^2$; tipico $\approx 1 \mu$F/cm$^2$ \\
+    \hline
+    $\tau_m$ & Costante di tempo di membrana & ms; $\tau_m = C_m/G_m = C_m R_m$ \\
+    \hline
+    $I_e/A$ & Corrente esterna iniettata per unità di area & A/cm$^2$ \\
+    \hline
+    $\bar{G}_{Na}$ & Conduttanza massima del Na$^+$ & S/cm$^2$; quando tutti i canali Na$^+$ sono aperti \\
+    \hline
+    $\bar{G}_K$ & Conduttanza massima del K$^+$ & S/cm$^2$; quando tutti i canali K$^+$ sono aperti \\
+    \hline
+    $G_L$ & Conduttanza di leakage (passiva) & S/cm$^2$; costante \\
+    \hline
+    $m$ & Variabile di gate di attivazione del Na$^+$ & $\in [0,1]$; sigmoide crescente in V \\
+    \hline
+    $h$ & Variabile di gate di inattivazione del Na$^+$ & $\in [0,1]$; sigmoide decrescente in V \\
+    \hline
+    $n$ & Variabile di gate di attivazione del K$^+$ & $\in [0,1]$; sigmoide crescente in V; potenza 4 \\
+    \hline
+    $\alpha_x(V)$ & Rate di transizione chiuso$\rightarrow$aperto per la variabile $x$ & ms$^{-1}$; voltaggio-dipendente \\
+    \hline
+    $\beta_x(V)$ & Rate di transizione aperto$\rightarrow$chiuso per la variabile $x$ & ms$^{-1}$; voltaggio-dipendente \\
+    \hline
+    $x_\infty(V)$ & Valore asintotico della variabile di gate $x$ a voltaggio $V$ & Adimensionale \\
+    \hline
+    $\tau_x(V)$ & Costante di tempo della variabile di gate $x$ a voltaggio $V$ & ms \\
+    \hline
+    Modello di Markov & Transizioni tra stati con rate costanti & Dipende solo dallo stato attuale \\
+    \hline
+    Velocità di Kramers & Rate di transizione termica su barriera energetica & $\propto e^{-\Delta E/k_BT}$ \\
+    \hline
+   
+    \end{tabularx}
+\end{table}
