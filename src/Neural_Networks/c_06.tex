@@ -1,0 +1,707 @@
+\chapter{Lezione 6}
+
+\textbf{Argomenti:} Risposta del modello HH a correnti costanti, treni di spike, curva frequenza-corrente (F-I), neuroni di Tipo I e Tipo II, adattamento della frequenza di scarica (SFA), canali HVA calcio-dipendenti, dinamica intracellulare del Ca$^{2+}$, canali K$^+$ Ca$^{2+}$-dipendenti, trasmissione sinaptica chimica, esocitosi, EPSP/IPSP, stochasticità sinaptica, analisi quantale, modello cinetico della conduttanza sinaptica, filtro sinaptico passa-basso
+
+\section{Risposta del Modello HH a Correnti Costanti}
+
+Il professore riprende dal modello di \textbf{Hodgkin-Huxley (HH)}, che descrive l'eccitabilità della membrana neuronale attraverso le variabili di gate $m$, $h$ ed $n$ per i canali Na$^+$ voltaggio-dipendenti (attivazione e inattivazione) e K$^+$ voltaggio-dipendenti (attivazione ritardata). L'obiettivo di questa sezione è comprendere come il neurone risponde a una \textbf{corrente costante a gradino} (step current), che modella in modo semplificato il \textbf{bombardamento sinaptico} continuo che il neurone riceve in vivo dai neuroni della rete.
+
+La corrente iniettata $I_e$ (corrente esterna) simula la somma di tutti gli input sinaptici eccitatori e inibitori che arrivano sul dendrite e sul soma. In laboratorio, questa procedura è realizzata sperimentalmente con l'\textbf{iniezione di corrente intracellulare} attraverso un elettrodo.
+
+\subsubsection{L'Equazione Sub-soglia del Potenziale di Membrana}
+
+Quando la corrente iniettata $I_e$ è sufficientemente piccola, il neurone non supera la soglia di produzione di potenziali d'azione. In questo \textbf{regime lineare sub-soglia}, i canali Na$^+$ e K$^+$ voltaggio-dipendenti non si aprono significativamente: la dinamica del potenziale di membrana $V$ è dominata dal solo canale di perdita (leak) con conduttanza $G_L$ e potenziale di inversione $E_L \approx E_m = -65$ mV (nel modello HH standard).
+
+L'equazione che governa questo regime è:
+
+\begin{equation}
+C_m \frac{dV}{dt} = -G_L(V - E_L) + \frac{I_e}{A}
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $C_m$ è la capacità di membrana per unità di area $[\mu\text{F/cm}^2]$,
+    \item $G_L$ è la conduttanza di perdita per unità di area $[\text{mS/cm}^2]$,
+    \item $E_L$ è il potenziale di inversione del leak $[\text{mV}]$,
+    \item $\frac{I_e}{A}$ è la densità di corrente iniettata $[\mu\text{A/cm}^2]$ (corrente totale divisa per l'area della membrana).
+\end{itemize}
+
+\subsubsection{Deviazione Stazionaria dal Potenziale di Riposo}
+
+In condizioni stazionarie ($dV/dt = 0$), il potenziale di membrana raggiunge un nuovo valore di equilibrio $V_{ss}$ spostato rispetto al valore di riposo $E_m = -65$ mV. La \textbf{deviazione stazionaria} $\Delta V$ vale:
+
+\begin{equation}
+\Delta V = V_{ss} - E_m = \frac{I_e / A}{G_L}
+\end{equation}
+
+Questa è semplicemente la legge di Ohm applicata al circuito RC della membrana. Il neurone si comporta come un filtro passa-basso del primo ordine con costante di tempo $\tau_m = C_m / G_L$ (la \textbf{costante di tempo di membrana}).
+
+\subsubsection{Oscillazioni Smorzate nell'Avvicinamento all'Equilibrio}
+
+Un fenomeno caratteristico e non banale del modello HH è che, durante la transizione verso il nuovo potenziale stazionario, il $V_m$ \textbf{non si avvicina monotonicamente} all'equilibrio, bensì presenta \textbf{oscillazioni smorzate} (damped oscillations). Il sistema HH è, vicino al punto di equilibrio, un oscillatore sottoammortizzato: il potenziale di membrana oscilla attorno a $V_{ss}$ con ampiezza decrescente esponenzialmente prima di stabilizzarsi.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Queste oscillazioni smorzate sono un primo indizio della \textbf{struttura di biforcazione} del sistema HH: il punto fisso è uno spirale stabile (stable focus) e il sistema si trova vicino a una biforcazione di Hopf. Questo è connesso alla classificazione dei neuroni in Tipo I e Tipo II che vedremo tra poco.
+\end{tcolorbox}
+
+
+
+\section{Treni di Spike}
+
+\subsubsection{Soglia e Produzione di un Singolo Spike}
+
+Quando la corrente iniettata viene raddoppiata a $I_e \approx 4 \, \mu\text{A/cm}^2$, il sistema supera la \textbf{soglia di eccitabilità}: si produce un singolo \textbf{potenziale d'azione} (spike). Il meccanismo è il seguente:
+
+\begin{enumerate}
+    \item La corrente capacitiva iniziale carica rapidamente la membrana (fase di ramping di $V_m$).
+    \item Quando $V_m$ supera la soglia $V_{th} \approx -58.5$ mV (nel modello HH), i canali Na$^+$ voltaggio-dipendenti si aprono con retroazione positiva (overshoot).
+    \item Il potenziale raggiunge il \textbf{potenziale di picco} (peak) vicino al potenziale di inversione del sodio: $E_{Na} \approx +50$ mV.
+    \item Segue la \textbf{fase di ripolarizzazione} (apertura dei canali K$^+$ ritardati e inattivazione dei canali Na$^+$) e l'\textbf{iperpolarizzazione} (la cosiddetta \textbf{undershoot} o \textbf{periodo refrattario}).
+    \item Il potenziale ritorna lentamente al valore di riposo $E_m$.
+\end{enumerate}
+
+
+\subsubsection{Dal Singolo Spike al Treno di Spike}
+
+A corrente $I_e = 8 \, \mu\text{A/cm}^2$: si produce un \textbf{treno di spike} (spike train). La corrente iniettata è ora sufficiente a mantenere il potenziale di membrana in un regime che supera \textbf{ripetutamente e periodicamente} la soglia, generando una sequenza di potenziali d'azione.
+
+Il meccanismo è il seguente: dopo ogni spike, durante il periodo refrattario il $V_m$ scende sotto soglia (iperpolarizzazione); poi la corrente iniettata fa ricrescere lentamente il $V_m$ (ramping) fino a raggiungere nuovamente la soglia, producendo un nuovo spike. Il processo si ripete indefinitamente a corrente costante.
+
+A $I_e = 16 \, \mu\text{A/cm}^2$: il treno è ancora più denso, perché $dV/dt \propto I_e$ è più elevato $\rightarrow$ il ramping è più veloce $\rightarrow$ la soglia viene raggiunta in minor tempo $\rightarrow$ periodo tra spike più breve.
+
+
+\subsection{Frequenza di Scarica e Inter-Spike Interval (ISI)}
+
+Durante un treno di spike periodico, il parametro più importante è l'\textbf{Inter-Spike Interval (ISI)}, cioè il tempo tra due spike consecutivi:
+
+\begin{equation}
+T_{ISI} = t_{f+1} - t_f
+\end{equation}
+
+dove $t_f$ è il tempo del $f$-esimo spike e $t_{f+1}$ è il tempo del successivo.
+
+La \textbf{frequenza di scarica} (firing rate) $\nu$ è l'inverso dell'ISI:
+
+\begin{equation}
+\nu = \frac{1}{T_{ISI}}
+\end{equation}
+
+Si misura in Hz (scariche al secondo). Per un treno perfettamente periodico, $\nu$ è costante; in presenza di adattamento o rumore, $\nu$ varia nel tempo.
+
+
+
+L'ISI dipende direttamente dall'intensità della corrente iniettata:
+\begin{itemize}
+    \item \textbf{Alta corrente} $\Rightarrow$ ramping più rapido $\Rightarrow$ $T_{ISI}$ più corto $\Rightarrow$ $\nu$ più alta.
+    \item \textbf{Bassa corrente (ma sopra soglia)} $\Rightarrow$ ramping lento $\Rightarrow$ $T_{ISI}$ lungo $\Rightarrow$ $\nu$ bassa.
+\end{itemize}
+
+La relazione tra $I_e$ e $\nu$ definisce la \textbf{curva F-I} o curva guadagno del neurone.
+
+
+\subsection{La Curva F-I del Modello HH}
+
+La \textbf{curva frequenza-corrente} (F-I curve, anche chiamata curva guadagno o curva di trasferimento) mappa la corrente iniettata $I_e$ nella frequenza di scarica stazionaria $\nu$:
+
+\begin{equation}
+\nu = f(I_e)
+\end{equation}
+
+Per il modello HH, la curva F-I ha le seguenti proprietà:
+\begin{itemize}
+    \item Per $I_e$ piccola (sotto soglia): $\nu = 0$ (nessun firing).
+    \item Esiste una \textbf{corrente di reobase} $I_{rh}$ (rheobase current): la corrente minima necessaria per produrre spike. Sotto $I_{rh}$, il sistema HH non oscilla.
+    \item A $I_e = I_{rh}$, il firing rate \textbf{salta discontinuamente} a un valore $\nu_{min} > 0$: non si può avere firing a frequenza arbitrariamente bassa.
+\end{itemize}
+
+Questo comportamento è la firma dei \textbf{neuroni di Tipo II}.
+
+\subsubsection{Neuroni di Tipo II (Discontinuous F-I Curve)}
+
+Un \textbf{neurone di Tipo II} è caratterizzato da una curva F-I con salto discontinuo alla reobase. Il modello HH è l'esempio prototipico di neurone di Tipo II.
+
+La caratteristica matematica sottostante è che il punto fisso del sistema HH perde stabilità attraverso una \textbf{biforcazione di Hopf subcritica}, nella quale il ciclo limite (oscillazione periodica) appare a frequenza finita. Questo spiega il salto: il neurone passa direttamente dalla quiescenza a una frequenza minima $\nu_{min}$.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+La biforcazione di Hopf subcritica implica che il sistema HH è \textbf{bistabile} in un piccolo intervallo di corrente attorno alla reobase: coesistono il punto fisso stabile e il ciclo limite stabile. Questo ha conseguenze importanti per la risposta del neurone a stimoli transitori.
+\end{tcolorbox}
+
+\subsubsection{Neuroni di Tipo I (Continuous F-I Curve)}
+
+I \textbf{neuroni di Tipo I} hanno invece una curva F-I \textbf{continua}: la frequenza di firing parte da zero alla reobase e cresce in modo continuo (anche se la derivata $d\nu/dI_e$ può essere discontinua o molto elevata alla soglia). Un neurone di Tipo I può perciò scaricare a frequenze arbitrariamente basse, basta avere una corrente di poco superiore alla reobase.
+
+Il meccanismo sottostante è una \textbf{biforcazione SNIC (Saddle-Node on Invariant Circle)}: il punto fisso collide con un punto di sella su un ciclo invariante. Il ciclo limite nasce con frequenza zero e cresce continuamente.
+
+Esempio biologico: i neuroni della corteccia di tipo RS (Regular Spiking) si comportano approssimativamente come neuroni di Tipo I.
+
+\subsubsection{Classificazione come Prima Tassonomia dei Neuroni}
+
+Questa distinzione Tipo I / Tipo II rappresenta la \textbf{prima classificazione dei neuroni} a seconda del loro \textbf{pattern di eccitabilità}. Fu introdotta da \textbf{Rinzel e Ermentrout} negli anni '80-'90, sulla base dell'analisi delle biforcazioni dei sistemi dinamici neurali. Ha implicazioni importanti per la codifica dell'informazione: un neurone di Tipo I può codificare segnali deboli attraverso la modulazione fine della frequenza; un neurone di Tipo II risponde in modo più tutto-o-nulla.
+
+
+\section{Dinamica del Calcio}
+
+
+Negli anni '30, \textbf{Sir Edgar Douglas Adrian} osservò sperimentalmente che i neuroni sensoriali non scaricano a frequenza costante in risposta a uno stimolo costante: la frequenza di scarica \textbf{decresce progressivamente nel tempo}, anche a corrente iniettata costante. Questo fenomeno è chiamato \textbf{adattamento della frequenza di scarica} (Spike Frequency Adaptation, SFA).
+
+Adrian ricevette il Premio Nobel per la Fisiologia o Medicina nel 1932 per le sue scoperte sulla funzione dei neuroni, tra cui questo fenomeno.
+
+Il modello HH standard (con soli canali Na$^+$ e K$^+$ voltaggio-dipendenti) \textbf{non predice} l'SFA: a corrente costante, il modello HH produce un treno di spike a frequenza perfettamente costante. Per spiegare l'SFA è necessario introdurre canali ionici aggiuntivi.
+
+\subsubsection{Canali HVA (High-Voltage Activated) del Calcio}
+
+La chiave dell'SFA è l'esistenza di \textbf{canali ionici Ca$^{2+}$ voltaggio-dipendenti} di tipo \textbf{HVA} (High-Voltage Activated). Questi canali:
+
+\begin{itemize}
+    \item Si aprono quando il potenziale di membrana è \textbf{molto elevato}, tipicamente durante la fase ascendente di un potenziale d'azione ($V_m > -20$ mV circa).
+    \item Rimangono sostanzialmente chiusi al potenziale di riposo.
+    \item Permettono un rapido \textbf{influsso di Ca$^{2+}$} nella cellula durante ogni spike.
+\end{itemize}
+
+La concentrazione di calcio extracellulare $[\text{Ca}^{2+}]_o \approx 2$ mM è molto maggiore di quella intracellulare (a riposo: $[\text{Ca}^{2+}]_i \approx 100$ nM $= 10^{-7}$ M), quindi il gradiente elettrochimico favorisce fortemente l'ingresso del calcio.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+ I canali HVA del calcio esistono in diversi sottotipi (L, N, P/Q, R), con caratteristiche di cinetica e localizzazione subcellulare diverse. Ai fini del modello di SFA che trattiamo, interessa solo che si aprano durante gli spike e permettano l'ingresso di Ca$^{2+}$.
+\end{tcolorbox}
+
+
+\subsubsection{Equazione Differenziale per la Concentrazione di Calcio}
+
+La concentrazione di calcio intracellulare $[\text{Ca}^{2+}]_i$ (abbreviata $[\text{Ca}]_i$ nelle equazioni) varia dinamicamente durante il treno di spike. La sua evoluzione temporale è descritta da un'equazione del primo ordine:
+
+\begin{equation}
+\frac{d[\text{Ca}]_i}{dt} = -\frac{[\text{Ca}]_i}{\tau_{Ca}} + \alpha_{Ca} \sum_{f} \delta(t - t_f)
+\end{equation}
+
+
+\begin{itemize}
+    \item $\tau_{Ca} \approx 150$ ms è la \textbf{costante di tempo di rilassamento del Ca$^{2+}$} verso il valore di equilibrio (bassissimo);
+    \item $\alpha_{Ca}$ è l'\textbf{ampiezza del salto} di $[\text{Ca}]_i$ per ogni spike;
+    \item $t_f$ sono i tempi dei potenziali d'azione;
+    \item $\delta(t - t_f)$ è la delta di Dirac, che modella l'apertura istantanea dei canali HVA durante lo spike.
+\end{itemize}
+
+Il termine $-[\text{Ca}]_i / \tau_{Ca}$ descrive il rilassamento esponenziale verso la concentrazione basale (effettivamente $\approx 0$ nel modello semplificato), dovuto ai \textbf{trasportatori del calcio} (pompa Ca$^{2+}$-ATPasi, scambiatore Na$^+$/Ca$^{2+}$, tamponamento intracellulare).
+
+\subsubsection{Accumulo di Ca$^{2+}$ durante il Treno di Spike}
+
+Durante un treno di spike con periodo $T_{ISI}$, ogni spike aggiunge un salto $\alpha_{Ca}$ a $[\text{Ca}]_i$. Se il decadimento nell'ISI non è completo (cioè se $T_{ISI} \ll \tau_{Ca}$), la concentrazione di calcio si \textbf{accumula progressivamente}:
+
+\begin{itemize}
+    \item Dopo il primo spike: $[\text{Ca}]_i \approx \alpha_{Ca}$.
+    \item Dopo il secondo spike: $[\text{Ca}]_i \approx 2\alpha_{Ca} - \alpha_{Ca}(1 - e^{-T_{ISI}/\tau_{Ca}}) = \alpha_{Ca}(1 + e^{-T_{ISI}/\tau_{Ca}})$.
+    \item Asintoticamente, $[\text{Ca}]_i$ si stabilizza su un valore medio $\langle[\text{Ca}]_i\rangle = \alpha_{Ca} \tau_{Ca} / T_{ISI} \cdot (1 - e^{-T_{ISI}/\tau_{Ca}})^{-1}$.
+\end{itemize}
+
+Poiché $\tau_{Ca} \approx 150$ ms è molto maggiore di un tipico ISI (ad es. 20–50 ms), il Ca$^{2+}$ si accumula efficacemente spike dopo spike.
+
+\subsubsection{Canali K$^+$ Ca$^{2+}$-Dipendenti e la Variabile di Gate $n_\infty$}
+
+Il calcio accumulato attiva una \textbf{corrente di K$^+$ aggiuntiva} attraverso \textbf{canali K$^+$ Ca$^{2+}$-dipendenti} (SKCa: Small-conductance Calcium-activated Potassium channels). Questi canali sono \textbf{diversi} dai canali K$^+$ voltaggio-dipendenti del modello HH standard: si aprono in risposta alla concentrazione intracellulare di Ca$^{2+}$, non al potenziale di membrana.
+
+La variabile di gate $n$ per questi canali ha un'asintoto sigmoidale:
+
+\begin{equation}
+n_\infty([\text{Ca}]) = \frac{[\text{Ca}]}{[\text{Ca}] + K_2}
+\end{equation}
+
+dove $K_2$ è una costante di dissociazione:
+\begin{itemize}
+    \item Quando $[\text{Ca}]_i \approx 0$ (a riposo): $n_\infty \approx 0$ $\rightarrow$ canali chiusi.
+    \item Quando $[\text{Ca}]_i \gg K_2$: $n_\infty \to 1$ $\rightarrow$ canali completamente aperti.
+\end{itemize}
+
+La costante di tempo di questa variabile di gate è $\tau_n \approx 10$ ms, che è molto \textbf{più rapida} di $\tau_{Ca} \approx 150$ ms. Questo significa che $n$ insegue quasi istantaneamente $[\text{Ca}]_i$: si può applicare l'\textbf{approssimazione adiabatica} $n \approx n_\infty([\text{Ca}]_i)$.
+
+\subsubsection{Corrente K$^+$ Ca$^{2+}$-Dipendente}
+
+La corrente $K^+$ Ca$^{2+}$-dipendente è:
+
+\begin{equation}
+I_{K,Ca} = G_{K,Ca} \cdot n_\infty([\text{Ca}]_i) \cdot (V - E_K)
+\end{equation}
+
+dove $E_K \approx -76$ mV (potenziale di inversione del K$^+$). Poiché durante il normale firing $V > E_K$, questa corrente è \textbf{uscente} (positiva per convenzione elettrofisiologica) e quindi \textbf{iperpolarizzante}: tende ad allontanare il potenziale di membrana dalla soglia.
+
+
+\subsubsection{Come la Corrente K$^+$ Ca$^{2+}$-Dipendente Allunga l'ISI}
+
+Il meccanismo dell'\textbf{adattamento della frequenza di scarica} è ora chiaro: la corrente $I_{K,Ca}$ (negativa = iperpolarizzante) si \textbf{somma algebricamente} alla corrente iniettata $I_e$, riducendo la corrente netta disponibile per caricare la membrana:
+
+\begin{equation}
+I_{netto}(t) = \frac{I_e}{A} - G_{K,Ca} \cdot n_\infty([\text{Ca}]_i(t)) \cdot (V - E_K)
+\end{equation}
+
+Poiché $[\text{Ca}]_i$ aumenta nel corso del treno, il termine $I_{K,Ca}$ cresce progressivamente nel tempo. Questo riduce $I_{netto}$, che a sua volta riduce la velocità di ramping del potenziale di membrana tra due spike ($dV/dt = I_{netto}/C_m$).
+
+La conseguenza diretta è che \textbf{l'ISI si allunga progressivamente}: il potenziale ci mette più tempo a raggiungere la soglia, quindi la frequenza di scarica $\nu = 1/T_{ISI}$ \textbf{diminuisce nel tempo}.
+
+\subsubsection{Andamento Temporale dell'Adattamento}
+
+L'evoluzione dell'SFA ha due fasi temporali caratteristiche:
+
+\begin{enumerate}
+    \item \textbf{Fase rapida} (scala di $\tau_n \approx 10$ ms): ogni spike produce immediatamente un piccolo incremento di $I_{K,Ca}$, che allunga leggermente l'ISI successivo.
+    \item \textbf{Fase lenta} (scala di $\tau_{Ca} \approx 150$ ms): il Ca$^{2+}$ si accumula lentamente, aumentando gradualmente il livello basale di $I_{K,Ca}$, con un ulteriore allungamento progressivo degli ISI.
+\end{enumerate}
+
+L'SFA porta il sistema verso un nuovo stato stazionario in cui l'ISI si è stabilizzato su un valore più lungo rispetto all'ISI iniziale. Se la corrente iniettata viene rimossa, $[\text{Ca}]_i$ decade con $\tau_{Ca} \approx 150$ ms e il sistema torna alla condizione di riposo.
+
+
+\subsubsection{La Frequenza Massima Assoluta}
+
+Esiste un limite fisico superiore alla frequenza di firing, determinato dal \textbf{periodo refrattario assoluto} $\tau_{ref}$. Durante il periodo refrattario, i canali Na$^+$ sono completamente inattivati (variabile $h \approx 0$) e il neurone è assolutamente incapace di produrre un nuovo spike, indipendentemente dall'entità della corrente iniettata.
+
+La \textbf{frequenza massima di scarica} è quindi:
+
+\begin{equation}
+\nu_{max} = \frac{1}{\tau_{ref}} \approx \frac{1}{2 \times 10^{-3} \, \text{s}} = 500 \, \text{Hz}
+\end{equation}
+
+dove $\tau_{ref} \approx 2$ ms è il periodo refrattario assoluto tipico.
+
+\subsubsection{Rilevanza Biologica}
+
+In vivo, le frequenze di scarica tipiche nella corteccia cerebrale sono dell'ordine di \textbf{poche decine di Hz} (tipicamente 5–80 Hz), ben al di sotto di $\nu_{max} = 500$ Hz. Questo non è casuale: l'SFA è uno dei meccanismi che \textbf{impedisce} ai neuroni di avvicinarsi alla frequenza massima in condizioni fisiologiche normali.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+ Se i neuroni corticali potessero scaricare a 500 Hz, il consumo energetico del cervello diventerebbe insostenibile (già a riposo il cervello consuma circa il 20\% dell'energia corporea totale). L'SFA agisce come un meccanismo di \textbf{risparmio energetico}: abbassa automaticamente il firing rate in risposta a stimoli prolungati.
+\end{tcolorbox}
+
+L'SFA ha anche un \textbf{significato computazionale}: favorisce la codifica dei \textbf{transitori} degli stimoli (onset) rispetto alla loro componente stazionaria. Un neurone con SFA risponde con un burst iniziale ad alta frequenza e poi adatta la sua scarica, "segnalando" l'inizio di un nuovo stimolo più che la sua durata.
+
+
+\section{Trasmissione Sinaptica Chimica}
+
+ Le correnti che il neurone riceve e che determinano il suo firing non sono generate direttamente dall'interno della cellula, ma arrivano da altri neuroni attraverso le \textbf{sinapsi}.
+
+Nel sistema nervoso centrale dei mammiferi, la forma di comunicazione interneuronale più comune è la \textbf{trasmissione sinaptica chimica} (in opposizione alle \textbf{sinapsi elettriche} o gap junctions, che sono presenti in strutture più antiche filogeneticamente come il cervelletto e il talamo, ma anche in alcune regioni corticali).
+
+\subsubsection{Morfologia della Sinapsi Chimica}
+
+La struttura morfologica di una sinapsi chimica comprende tre componenti principali:
+
+\begin{enumerate}
+    \item \textbf{Bottone presinaptico} (presynaptic terminal o bouton): è il rigonfiamento terminale dell'assone del neurone presinaptico. Contiene migliaia di \textbf{vescicole sinaptiche} — piccole sfere membranose (diametro $\approx$ 40 nm) riempite di molecole di \textbf{neurotrasmettitore}.
+    \item \textbf{Fessura sinaptica} (synaptic cleft): spazio extracellulare di circa \textbf{20 nm} che separa la membrana presinaptica da quella postsinaptica. È crucialmente stretto: i neurotrasmettitori possono diffondere attraverso di esso in pochi microsecondi.
+    \item \textbf{Membrana postsinaptica}: si trova tipicamente sul \textbf{dendrite} (o sul soma) del neurone postsinaptico. Contiene alta densità di \textbf{recettori ionotropici} (canali ionici ligando-dipendenti) nella \textbf{densità postsinaptica} (PSD, PostSynaptic Density).
+\end{enumerate}
+
+\subsubsection{Neuroni Piramidali e Organizzazione Corticale}
+
+I principali neuroni eccitatori della corteccia cerebrale sono i \textbf{neuroni piramidali}. Hanno un \textbf{dendrite apicale} orientato verticalmente verso la superficie corticale e numerosi \textbf{dendriti basali}. Le sinapsi sono distribuite sull'albero dendritico: le sinapsi apicali (provenienti da neuroni di altri strati corticali o aree remote) sono vicine alla superficie, mentre le sinapsi basali ricevono input locali.
+
+\subsubsection{Il Ruolo del Calcio nel Processo Presinaptico}
+
+Quando uno spike raggiunge il bottone presinaptico, la \textbf{depolarizzazione della membrana presinaptica} apre i canali Ca$^{2+}$ \textbf{HVA} presenti nel terminale. Il Ca$^{2+}$ extracellulare entra rapidamente nel bottone presinaptico. Questo evento è \textbf{indispensabile} per la trasmissione: in assenza di Ca$^{2+}$ extracellulare, gli spike presinaptici non producono rilascio di neurotrasmettitori.
+
+Il Ca$^{2+}$ che entra nel bottone presinaptico si lega a proteine sensori del calcio (come la \textbf{sinaptotagmina}), inducendo la fusione delle vescicole sinaptiche con la membrana presinaptica (esocitosi).
+
+
+\subsection{Meccanismo di Esocitosi}
+
+\subsubsection{Le Proteine SNARE e il Meccanismo di Fusione}
+
+Il meccanismo molecolare dell'esocitosi è mediato dalle \textbf{proteine SNARE} (Soluble NSF Attachment Protein Receptors):
+
+\begin{itemize}
+    \item \textbf{Synaptobrevin} (o VAMP): proteina SNARE sulla vescicola (v-SNARE).
+    \item \textbf{Syntaxin} e \textbf{SNAP-25}: proteine SNARE sulla membrana presinaptica (t-SNARE).
+\end{itemize}
+
+Quando il Ca$^{2+}$ si lega alla \textbf{sinaptotagmina} (il sensore del calcio), si scatena un cambiamento conformazionale che permette alle proteine SNARE di formare un complesso a quattro eliche (SNARE complex). Questo complesso è un motore molecolare che "cuce" insieme la membrana vescicolare e quella presinaptica, permettendo la \textbf{fusione} e l'apertura di un poro di fusione (fusion pore).
+
+\subsubsection{Rilascio dei Neurotrasmettitori nella Fessura}
+
+Una volta aperto il poro di fusione, le molecole di \textbf{neurotrasmettitore} contenute nella vescicola (tipicamente migliaia di molecole per vescicola: ad es. $\sim$5000 molecole di glutammato per vescicola glutamatergica) vengono rilasciate nella fessura sinaptica per \textbf{diffusione}.
+
+Date le dimensioni nanometriche della fessura (20 nm), la diffusione è estremamente rapida: le molecole di neurotrasmettitore raggiungono i recettori postsinaptici in pochi \textbf{microsecondi}.
+
+\subsubsection{Apertura dei Canali Ionici Postsinaptici}
+
+I neurotrasmettitori rilasciati si legano ai \textbf{recettori ionotropici} sulla membrana postsinaptica. I recettori ionotropici sono canali ionici \textbf{ligando-dipendenti}: si aprono quando una o più molecole di neurotrasmettitore si legano al loro sito di riconoscimento. Esempi principali:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|X|X|X|X|}
+    \hline
+    \textbf{Neurotrasmettitore} & \textbf{Recettore} & \textbf{Ione principale} & \textbf{Effetto} \\
+    \hline
+    Glutammato & AMPA & Na$^+$ & Depolarizzazione (EPSP) \\
+    \hline
+    Glutammato & NMDA & Na$^+$/Ca$^{2+}$ & Depolarizzazione (EPSP) \\
+    \hline
+    GABA & GABA$_A$ & Cl$^-$ & Iperpolarizzazione (IPSP) \\
+    \hline
+    Glicina & Recettore glicina & Cl$^-$ & Iperpolarizzazione (IPSP) \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+Il lavoro sperimentale su questi meccanismi è stato premiato con il \textbf{Nobel per la Fisiologia o Medicina 1963}, assegnato a \textbf{John Eccles} (sinapsi), \textbf{Alan Hodgkin} e \textbf{Andrew Huxley} (potenziale d'azione).
+
+
+\section{EPSP, IPSP e Chiusura Spontanea dei Canali}
+
+\subsubsection{EPSP (Excitatory PostSynaptic Potential)}
+
+Un \textbf{EPSP} (Potenziale Postsinaptico Eccitatorio) è la variazione di potenziale di membrana indotta dall'apertura di canali ionici eccitatori (tipicamente Na$^+$ o Na$^+$/K$^+$):
+
+\begin{itemize}
+    \item I canali AMPA si aprono $\rightarrow$ ingresso di Na$^+$ $\rightarrow$ depolarizzazione della membrana postsinaptica.
+    \item Il potenziale di membrana si allontana dal potenziale di riposo verso valori meno negativi (più vicini a $E_{Na} \approx +50$ mV).
+    \item L'ampiezza tipica di un singolo EPSP in un neurone corticale di mammifero è di $\sim 0.1$–$1$ mV (quindi molto al di sotto della soglia di firing $\sim 20$ mV sopra il riposo).
+\end{itemize}
+
+\subsubsection{IPSP (Inhibitory PostSynaptic Potential)}
+
+Un \textbf{IPSP} (Potenziale Postsinaptico Inibitorio) è la variazione di potenziale opposta:
+
+\begin{itemize}
+    \item I canali GABA$_A$ si aprono $\rightarrow$ ingresso di Cl$^-$ (o uscita di K$^+$) $\rightarrow$ iperpolarizzazione della membrana postsinaptica.
+    \item Il potenziale di membrana scende verso $E_{Cl}$ o $E_K$, che sono entrambi più negativi del potenziale di riposo.
+    \item Questo rende il neurone postsinaptico più difficile da portare a soglia (inibizione).
+\end{itemize}
+
+\subsubsection{Decadimento dell'EPSP: Rising e Decaying Phase}
+
+Una volta che i neurotrasmettitori iniziano a diffondere fuori dalla fessura sinaptica, la loro concentrazione nella fessura stessa diminuisce. Di conseguenza i recettori ionotropici postsinaptici \textbf{si chiudono spontaneamente} (per dissociazione del ligando), e la corrente postsinaptica decade.
+
+L'andamento temporale di un EPSP presenta quindi due fasi:
+\begin{enumerate}
+    \item \textbf{Rising phase} (fase ascendente): durata $\sim 1$–$2$ ms, corrispondente all'apertura dei canali.
+    \item \textbf{Decaying phase} (fase discendente): durata variabile (da $\sim 3$ ms per sinapsi veloci AMPA fino a centinaia di ms per sinapsi NMDA/metabotropiche), corrispondente alla chiusura spontanea dei canali.
+\end{enumerate}
+
+
+
+
+\subsubsection{L'Esperimento di Stimolazione Ripetuta}
+
+Un esperimento fondamentale per comprendere la trasmissione sinaptica consiste nel stimolare ripetutamente il neurone presinaptico con spike identici (stessa ampiezza, stesso timing) e misurare la risposta postsinaptica. I risultati sono sorprendenti:
+
+\begin{itemize}
+    \item A volte si osserva un EPSP \textbf{grande} ($\Delta V \approx 1$–$1.2$ mV).
+    \item A volte un EPSP \textbf{piccolo} ($\Delta V \approx 0.4$ mV).
+    \item A volte si osserva un \textbf{failure} (nessun EPSP: $\Delta V = 0$).
+\end{itemize}
+
+La risposta non è deterministica: è \textbf{stocastica}. Ogni stimolazione ha un esito diverso, anche a parità di stimolo presinaptico. Questo è un dato sperimentale robusto e riproducibile.
+
+\subsubsection{Analisi Quantale: Distribuzione Multimodale di $\Delta$V}
+
+La distribuzione degli $\Delta V$ osservati sperimentalmente presenta caratteristicamente più \textbf{picchi (modes) equidistanti}, separati di circa $\mu_1 \approx 0.4$ mV. Questa struttura a picchi multipli è la firma dell'\textbf{analisi quantale} della trasmissione sinaptica.
+
+L'ipotesi fondamentale è:
+\begin{itemize}
+    \item Il rilascio del neurotrasmettitore avviene in unità discrete dette \textbf{quanti}: ciascun quanto corrisponde alla fusione di \textbf{una singola vescicola} e produce un EPSP di ampiezza $\mu_1$ (EPSP unitario o mEPSP — miniature EPSP).
+    \item Il numero di quanti rilasciati per ogni stimolo sinaptico $k$ è una variabile aleatoria.
+\end{itemize}
+
+
+
+\section{Modello Statistico: Distribuzione Binomiale + Gaussiana}
+
+\subsubsection{La Distribuzione Binomiale per il Numero di Vescicole}
+
+L'ipotesi del modello quantale è che la sinapsi disponga di $N$ siti di rilascio (release sites), ciascuno con una vescicola pronta al rilascio. Per ogni spike presinaptico, ciascun sito rilascia la sua vescicola con probabilità $p$ (probabilità di rilascio), indipendentemente dagli altri siti. Il numero totale di quanti (vescicole) rilasciati $k$ segue quindi una \textbf{distribuzione binomiale}:
+
+\begin{equation}
+P(k) = \binom{N}{k} p^k (1-p)^{N-k}
+\end{equation}
+
+I casi speciali:
+\begin{itemize}
+    \item $k = 0$ (failure): $P(0) = (1-p)^N$.
+    \item $k = N$ (rilascio massimale): $P(N) = p^N$.
+    \item Valore atteso: $\langle k \rangle = Np$ (\textbf{quantal content}).
+\end{itemize}
+
+\subsubsection{La Distribuzione Gaussiana per il $\Delta$V dato k}
+
+Fissato il numero di quanti rilasciati $k$, l'ampiezza dell'EPSP $\Delta V$ non è esattamente $k \mu_1$, ma fluttua attorno a questo valore. Questo è dovuto a:
+\begin{itemize}
+    \item Variabilità nell'ampiezza del singolo EPSP unitario (fluttuazioni del numero di molecole per vescicola, della conduttanza dei recettori, ecc.).
+    \item Rumore di fondo nel potenziale di membrana postsinaptico.
+\end{itemize}
+
+Si assume che, dato $k$, la distribuzione di $\Delta V$ sia \textbf{gaussiana}:
+
+\begin{equation}
+P(\Delta V \mid k) = \mathcal{N}(k\mu_1, \, \sqrt{k}\,\sigma_1)
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $\mu_1$ è l'ampiezza media del singolo quanto (mEPSP unitario) $\approx 0.4$ mV,
+    \item $\sigma_1$ è la deviazione standard dell'EPSP per un singolo quanto.
+\end{itemize}
+
+La varianza del $\Delta V$ per $k$ quanti è $k\sigma_1^2$ (perché la somma di $k$ variabili indipendenti con varianza $\sigma_1^2$ ha varianza $k\sigma_1^2$).
+
+\subsubsection{Distribuzione Complessiva del $\Delta$EPSP}
+
+La distribuzione totale degli EPSP osservata sperimentalmente è la \textbf{somma pesata} delle distribuzioni gaussiane (una per ogni $k$), pesata dalla distribuzione binomiale:
+
+\begin{equation}
+P(\Delta V) = \sum_{k=0}^{N} P(k) \cdot \mathcal{N}(k\mu_1, \sqrt{k}\,\sigma_1)
+\end{equation}
+
+Questa è una \textbf{miscela di gaussiane} (Gaussian mixture model) con pesi dati dalla distribuzione binomiale. Il primo termine ($k=0$) è un delta di Dirac in $\Delta V = 0$ (i failure).
+
+Il fit di questa distribuzione teorica ai dati sperimentali permette di stimare:
+\begin{itemize}
+    \item $N$: numero di siti di rilascio.
+    \item $p$: probabilità di rilascio per sito.
+    \item $\mu_1$: ampiezza del quanto unitario.
+    \item $\sigma_1$: variabilità del quanto unitario.
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Questa distribuzione teorica fitta \textbf{perfettamente} i dati sperimentali. Questo costituisce una delle prove più eleganti della natura quantale della trasmissione sinaptica, introdotta originalmente da \textbf{Bernard Katz} (Nobel 1970).
+\end{tcolorbox}
+
+\subsubsection{La Trasmissione Sinaptica come Fonte di Stocasticità}
+
+La trasmissione sinaptica è una delle principali \textbf{fonti di stocasticità} nel sistema nervoso. Con $10^{10}$ neuroni e $\sim 10^4$ sinapsi per neurone, il cervello ha $\sim 10^{14}$ sinapsi, ciascuna con una propria probabilità di rilascio. Eppure questo sistema massiccio stocastico produce comportamenti affidabili e riproducibili, grazie a meccanismi di \textbf{averaging di campo medio} (mean-field averaging): le fluttuazioni di una singola sinapsi sono irrilevanti quando centinaia di sinapsi convergono sullo stesso neurone.
+
+
+\section{Modello Matematico della Conduttanza Sinaptica}
+
+\subsubsection{La Corrente Sinaptica}
+
+La corrente sinaptica prodotta dall'apertura dei canali postsinaptici è descritta dalla forma ohmica:
+
+\begin{equation}
+I_{syn}(t) = G_{syn}(t) \cdot (V - E_{syn})
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $G_{syn}(t) = G_{max} \cdot R(t)$ è la conduttanza sinaptica variabile nel tempo,
+    \item $G_{max}$ è la conduttanza massima (quando tutti i canali sono aperti),
+    \item $R(t) \in [0, 1]$ è la \textbf{frazione di canali postsinaptici aperti} in funzione del tempo,
+    \item $E_{syn}$ è il potenziale di inversione della corrente sinaptica ($E_{syn} = E_{Na} \approx +50$ mV per sinapsi eccitatorie AMPA; $E_{syn} = E_{Cl} \approx -70$ mV per sinapsi inibitorie GABA$_A$).
+\end{itemize}
+
+\subsubsection{Equazione Cinetica per R: Un Processo di Markov}
+
+La variabile $R(t)$ descrive la cinetica di transizione dei canali ionici postsinaptici tra lo stato chiuso (C) e lo stato aperto (O):
+
+\begin{equation}
+\text{C} \underset{\beta}{\overset{\alpha N(t)}{\rightleftharpoons}} \text{O}
+\end{equation}
+
+La dinamica di $R$ come sistema del primo ordine è:
+
+\begin{equation}
+\dot{R} = \alpha N(t)(1-R) - \beta R
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $N(t)$ è la \textbf{concentrazione di neurotrasmettitore} nella fessura sinaptica in funzione del tempo,
+    \item $\alpha$ è il rate di transizione chiuso $\to$ aperto (processo bimolecolare),
+    \item $\beta$ è il rate di transizione aperto $\to$ chiuso (decadimento monomolecolare),
+    \item $(1-R)$ è la frazione di canali nello stato chiuso.
+\end{itemize}
+
+
+
+Il profilo temporale della concentrazione di neurotrasmettitore $N(t)$ nella fessura sinaptica in risposta a uno spike presinaptico al tempo $t = 0$ è complesso, ma può essere modellato con una \textbf{funzione alpha}:
+
+\begin{equation}
+N(t) \propto N_{max} \frac{t}{\tau^2} \cdot e^{-t/\tau_T}
+\end{equation}
+
+Questa funzione ha un'ascesa lineare seguita da un decadimento esponenziale, con un picco al tempo $t_{peak} = \tau_T$.
+
+
+\subsubsection{L'Approssimazione a Scalino (Heaviside)}
+
+Per semplificare la soluzione dell'equazione per $R$, si approssima il profilo temporale del neurotrasmettitore con una \textbf{funzione a scalino di durata finita} $\Delta$:
+
+\begin{equation}
+N(t) \approx N_{max} \cdot [\Theta(t)  \Theta(t - \Delta)]
+\end{equation}
+
+dove $N_{max}$ è la concentrazione massima di neurotrasmettitore. Questa approssimazione trasforma l'equazione differenziale per $R$ in un sistema \textbf{a coefficienti costanti a tratti}, risolvibile analiticamente in ciascuna delle due fasi.
+
+\subsubsection{Fase di Rising (0 $\leq$ t $\leq$ $\Delta$)}
+
+Durante la fase di rising, $N = N_{max} = \text{cost}$. L'equazione diventa:
+
+\begin{equation}
+\dot{R} = (\alpha N_{max} + \beta)\left(\frac{\alpha N_{max}}{\alpha N_{max} + \beta} - R\right)
+\end{equation}
+
+La soluzione è un'esponenziale che si avvicina all'asintoto:
+
+\begin{equation}
+R_\infty^{rise} = \frac{\alpha N_{max}}{\alpha N_{max} + \beta} \approx 1 \quad \text{(poiché } \alpha N_{max} \gg \beta \text{)}
+\end{equation}
+
+con costante di tempo:
+
+\begin{equation}
+\tau_{rise} = \frac{1}{\alpha N_{max} + \beta} \approx \frac{1}{\alpha N_{max}}
+\end{equation}
+
+Tipicamente $\tau_{rise} \sim 1$ ms, dell'ordine della durata dello spike presinaptico.
+
+\subsubsection{Fase di Decaying (t > $\Delta$)}
+
+Quando $N = 0$ (il neurotrasmettitore è diffuso fuori dalla fessura), l'equazione si riduce a:
+
+\begin{equation}
+\dot{R} = -\beta R
+\end{equation}
+
+La soluzione è il puro decadimento esponenziale:
+
+\begin{equation}
+R(t) = R(\Delta) \cdot e^{-\beta(t - \Delta)}
+\end{equation}
+
+con asintoto $R_\infty^{decay} = 0$ e costante di tempo:
+
+\begin{equation}
+\tau_{decay} = \frac{1}{\beta}
+\end{equation}
+
+La conduttanza sinaptica decade quindi con la costante di tempo $\tau_{decay}$, che è determinata unicamente dal rate di chiusura spontanea $\beta$ dei canali.
+
+\subsubsection{Rappresentazione Continua con la Funzione Alpha}
+
+Invece della soluzione a tratti, si può usare la soluzione dell'equazione completa con la funzione alpha come forzante. Il risultato è una curva con:
+\begin{itemize}
+    \item Slope iniziale $\sim 1/\tau_{rise}$ durante la fase ascendente,
+    \item Decadimento esponenziale con $\tau_{decay}$ dopo il picco.
+\end{itemize}
+
+Questa curva a "campana" asimmetrica è la \textbf{forma d'onda tipica} di un EPSP o di una conduttanza sinaptica.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Nel passaggio tra l'approssimazione a scalino e la funzione alpha, il parametro $\Delta$ viene aggiustato in modo che l'\textbf{integrale della corrente} (cioè la carica totale trasferita) sia conservato. Questo garantisce che le due rappresentazioni siano equivalenti dal punto di vista della fisiologia postsinaptica.
+\end{tcolorbox}
+
+
+
+
+\subsubsection{La Carica per Singolo Evento Sinaptico}
+
+La carica totale $Q$ consegnata al neurone postsinaptico durante un singolo evento sinaptico è:
+
+\begin{equation}
+Q = \int_0^\infty I_{syn}(t) \, dt = G_{max} \int_0^\infty R(t) \cdot (V - E_{syn}) \, dt
+\end{equation}
+
+Poiché l'ampiezza del singolo EPSP è piccola ($\Delta V \approx 0.4$ mV $\ll$ soglia $\approx 20$ mV), il potenziale di membrana postsinaptico $V$ rimane quasi costante durante l'evento sinaptico. Si può quindi estrarre $(V - E_{syn})$ dall'integrale:
+
+\begin{equation}
+Q \approx G_{max} (V - E_{syn}) \int_0^\infty R(t) \, dt
+\end{equation}
+
+Di conseguenza, \textbf{la conservazione della carica equivale alla conservazione dell'integrale di} $R(t)$. Nel passaggio tra diverse approssimazioni del profilo temporale di $N(t)$, si sceglie $\Delta$ (o l'ampiezza della funzione alpha) in modo che $\int R(t) dt$ rimanga invariato.
+
+\subsubsection{Classificazione delle Sinapsi per la Velocità}
+
+Le sinapsi chimiche si classificano in base alle costanti di tempo $\tau_{rise}$ e $\tau_{decay}$:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|l|l|X|X|}
+    \hline
+    \textbf{Tipo} & \textbf{$\tau_{rise}$} & \textbf{$\tau_{decay}$} & \textbf{Esempio biologico} & \textbf{Funzione} \\
+    \hline
+    \textbf{Sinapsi veloci} (fast) & $\sim 1$ ms & $3$–$5$ ms & AMPA, GABA$_A$ & Trasmissione fedele di strutture temporali fini \\
+    \hline
+    \textbf{Sinapsi lente} (slow) & $\sim 1$–$5$ ms & $10$–$100$+ ms & NMDA, GABA$_B$ & Integrazione della frequenza media del treno \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+Per le sinapsi veloci: $\tau_{rise} \approx \tau_{decay}/5$ o meno, e $\tau_{decay} \sim$ durata dello spike.
+Per le sinapsi lente: $\tau_{decay} \gg \tau_{rise}$, e la decaying phase domina il profilo temporale.
+
+
+
+\section{Il Filtro Passa-Basso Sinaptico: Sinapsi Veloci e Lente}
+
+\subsubsection{L'Approssimazione Esponenziale per Sinapsi con $\tau_{rise} \ll \tau_{decay}$}
+
+Quando $\tau_{rise} \ll \tau_{decay}$, la fase di rising è trascurabile rispetto alla fase di decaying. In questo caso, si può approssimare la risposta sinaptica con un singolo esponenziale con un piccolo ritardo temporale $\delta_t$ (che incorpora l'effetto della fase ascendente):
+
+\begin{equation}
+R(t) \approx A \cdot e^{-(t )/\tau_{decay}} \cdot \Theta(t)
+\end{equation}
+
+dove $t_f$ è il tempo dello spike presinaptico.
+
+Questa è l'equazione di un \textbf{filtro del primo ordine} applicato al treno di spike presinaptico. In termini di risposta all'impulso (risposta impulsiva del sistema), la funzione $R(t)$ è un esponenziale decrescente con costante di tempo $\tau_{decay}$.
+
+\subsubsection{Il Filtro Sinaptico come Filtro Passa-Basso}
+
+In termini di elaborazione del segnale, la sinapsi chimica (con $\tau_{rise} \ll \tau_{decay}$) si comporta come un \textbf{filtro passa-basso del primo ordine} con frequenza di taglio:
+
+\begin{equation}
+f_c = \frac{1}{2\pi \tau_{decay}}
+\end{equation}
+
+Questo significa che:
+\begin{itemize}
+    \item Componenti del segnale a frequenza $f \ll f_c$ (variazioni lente): passano attraverso il filtro quasi inalterate.
+    \item Componenti del segnale a frequenza $f \gg f_c$ (variazioni rapide): vengono attenuate (filtrate).
+\end{itemize}
+
+\subsubsection{Sinapsi Veloci: Trasmissione Fedele delle Strutture Temporali}
+
+Per sinapsi con $\tau_{decay} \sim 4$ ms, la frequenza di taglio è:
+
+\begin{equation}
+f_c \approx \frac{1}{2\pi \times 4 \times 10^{-3}} \approx 40 \, \text{Hz}
+\end{equation}
+
+Questo significa che variazioni del treno di spike a frequenze fino a $\sim 40$ Hz vengono trasmesse fedelmente alla membrana postsinaptica. Poiché le frequenze di firing tipiche nella corteccia sono nell'ordine di decine di Hz, le \textbf{sinapsi veloci riproducono fedelmente le strutture temporali fini} del treno di spike presinaptico.
+
+Il potenziale postsinaptico $V_m$ varia quindi in modo simile al profilo temporale del treno di spike: ogni spike presinaptico produce un EPSP riconoscibile e separato.
+
+\subsubsection{Sinapsi Lente: Integrazione della Frequenza Media}
+
+Per sinapsi con $\tau_{decay} \sim 64$ ms, la frequenza di taglio è:
+
+\begin{equation}
+f_c \approx \frac{1}{2\pi \times 64 \times 10^{-3}} \approx 2.5 \, \text{Hz}
+\end{equation}
+
+In questo caso, le \textbf{alte frequenze del segnale vengono filtrate}: la corrente postsinaptica non segue i singoli spike, ma è quasi costante e riflette la \textbf{frequenza media} del treno presinaptico. Il potenziale $V_m$ varia attorno a un valore quasi costante con oscillazioni molto smorzate.
+
+Le \textbf{sinapsi lente integrano la frequenza media} del treno di spike: sono sensori di rate code, non di spike code temporale.
+
+\subsubsection{Significato Computazionale}
+
+La coesistenza sull'albero dendritico di \textbf{sinapsi veloci} (AMPA, GABA$_A$) e \textbf{sinapsi lente} (NMDA, GABA$_B$) ha un profondo significato computazionale:
+
+\begin{itemize}
+    \item Le sinapsi veloci trasmettono informazione con granularità temporale fine (coding temporale, sincronizzazione tra neuroni, binding).
+    \item Le sinapsi lente calcolano la frequenza media (rate coding), permettendo al neurone di integrare l'attività del neurone presinaptico su finestre temporali più lunghe.
+\end{itemize}
+
+Il neurone postsinaptico riceve quindi informazioni su \textbf{molteplici scale temporali} simultaneamente, aumentando la sua capacità computazionale.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+ Questo è uno dei motivi biologici per cui sotto l'albero dendritico di ogni neurone corticale coesistono sinapsi veloci e lente. Non è ridondanza, è complessità computazionale distribuita.
+\end{tcolorbox}
+
+\subsubsection{Condizione per la Perdita di Informazione}
+
+La condizione limite per la perdita completa dell'informazione temporale è:
+
+\begin{equation}
+f_c = \frac{1}{\tau_{decay}} < f_{segnale}
+\end{equation}
+
+dove $f_{segnale}$ è la frequenza caratteristica del contenuto informativo del treno di spike presinaptico. Se questa condizione è soddisfatta, la sinapsi filtra completamente le variazioni temporali del segnale, e la corrente postsinaptica diventa proporzionale alla sola frequenza media del firing presinaptico.
+
