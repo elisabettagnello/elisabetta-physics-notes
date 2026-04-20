@@ -1,0 +1,634 @@
+\chapter{Lezione 7 }
+
+
+\textbf{Argomenti:} Modello di conduttanza sinaptica, funzione alpha, cinetica R, recettori ionotropici veloci e lenti, GABA-A e GABA-B, sinapsi inibitorie, IPSP e potenziale di inversione, dipendenza dell'IPSP dal potenziale di membrana, sinapsi eccitatorie AMPA e NMDA, stato bilanciato eccitazione-inibizione, blocco Mg$^{2+}$ del recettore NMDA, memoria di lavoro, plasticità sinaptica a breve termine (STP), depressione sinaptica a breve termine (STD), deplezione delle vescicole presinaptiche, facilitazione sinaptica a breve termine (STF), riduzione dimensionale del modello HH da 4D a 2D, approssimazione adiabatica di m, anticorrelazione h-n, variabile di recupero W, modello FitzHugh-Nagumo, modello Morris-Lecar
+
+
+
+\section{Modello di Conduttanza per la Trasmissione Sinaptica}
+
+
+Il professore riprende dalla lezione precedente il modello della \textbf{trasmissione sinaptica chimica}. Una sinapsi chimica funziona attraverso la seguente catena di eventi: lo \textbf{spike presinaptico} (potenziale d'azione nel terminale presinaptico) provoca l'esocitosi delle \textbf{vescicole sinaptiche}, con rilascio del \textbf{neurotrasmettitore} nello \textbf{spazio sinaptico} (fessura sinaptica). Il neurotrasmettitore diffonde e si lega ai \textbf{recettori postsinaptici}, che sono canali ionici ligando-dipendenti. Quando i canali si aprono, fluiscono ioni attraverso la membrana postsinaptica, generando una variazione del potenziale di membrana: l'\textbf{EPSP} (Excitatory Postsynaptic Potential) per le sinapsi eccitatorie o l'\textbf{IPSP} (Inhibitory Postsynaptic Potential) per quelle inibitorie.
+
+Il neurotrasmettitore delle sinapsi \textbf{eccitatorie} nei neuroni corticali è il \textbf{glutammato}; quello delle sinapsi \textbf{inibitorie} è l'\textbf{acido gamma-aminobutirrico} (\textbf{GABA}). Questi due neurotrasmettitori sono i principali segnali chimici dell'elaborazione corticale nei vertebrati.
+
+\subsubsection{La Corrente Sinaptica: Modello a Conduttanza}
+
+La \textbf{corrente sinaptica} postsinaptica è descritta, nel quadro del modello a conduttanza, da:
+
+\begin{equation}
+I_{syn}(t) = G_{max} \cdot R(t) \cdot (V - E_{syn})
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $G_{max}$ è la conduttanza massima sinaptica $[\text{nS}]$, determinata dal numero di recettori disponibili e dalla loro conduttanza unitaria,
+    \item $R(t) \in [0, 1]$ è la \textbf{frazione di recettori aperti} (noti anche come neuroreceptors), adimensionale,
+    \item $V$ è il potenziale di membrana postsinaptico $[\text{mV}]$,
+    \item $E_{syn}$ è il \textbf{potenziale di inversione} (reversal potential) della sinapsi $[\text{mV}]$, che dipende dagli ioni permeanti il canale.
+\end{itemize}
+
+La corrente ha segno: quando $V > E_{syn}$, la corrente è uscente (depolarizzante se $E_{syn}$ è più positivo di $V$, iperpolarizzante se $E_{syn}$ è più negativo di $V$).
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+La convenzione corretta per la corrente sinaptica nell'equazione del potenziale di membrana è $-G_{syn}(t)(V - E_{syn})$, con il segno negativo davanti. Questo riflette la convenzione in cui le correnti che depolarizzano la membrana contribuiscono positivamente a $dV/dt$.
+\end{tcolorbox}
+
+\subsubsection{La Cinetica dei Recettori: Funzione Alpha Generalizzata}
+
+La dinamica della variabile $R(t)$ è governata dall'equazione:
+
+\begin{equation}
+\dot{R} = \alpha N(t)(1 - R) - \beta R
+\end{equation}
+
+
+Il termine $\alpha N(t)(1 - R)$ descrive l'\textbf{apertura} dei canali: è proporzionale alla concentrazione di neurotrasmettitore e alla frazione di recettori chiusi. Il termine $-\beta R$ descrive la \textbf{chiusura spontanea} dei canali con costante di tempo $\tau_{decay} = 1/\beta$ (il decadimento esponenziale che avviene quando il neurotrasmettitore si è diffuso via dallo spazio sinaptico).
+
+La risposta $R(t)$ a uno spike presinaptico singolo ha una forma caratteristica: \textbf{salita rapida} (fase di apertura, determinata da $\alpha$ e dalla durata dell'impulso di $[T]$) seguita da \textbf{decadimento esponenziale} (fase di chiusura, con costante $\tau_{decay} = 1/\beta$). Questa forma a campana asimmetrica è la \textbf{funzione alpha} generalizzata.
+
+
+\subsubsection{Diversità Cinetica nei Recettori per lo Stesso Neurotrasmettitore}
+
+Un aspetto cruciale della trasmissione sinaptica è che per uno stesso \textbf{neurotrasmettitore} possono esistere recettori con cinetiche molto diverse. Il parametro chiave che distingue i diversi tipi di recettori è $\beta$: la costante di chiusura dei canali.
+
+\begin{itemize}
+    \item \textbf{Sinapsi veloci} (fast synapses): $\beta$ grande $\Rightarrow$ $\tau_{decay} = 1/\beta$ piccolo $\Rightarrow$ la conduttanza postsinaptica decade rapidamente. Questi recettori codificano eventi sinaptici brevi e precisi.
+    \item \textbf{Sinapsi lente} (slow synapses): $\beta$ piccolo $\Rightarrow$ $\tau_{decay} = 1/\beta$ grande $\Rightarrow$ la conduttanza persiste a lungo. Questi recettori producono un'integrazione temporale più ampia dell'input presinaptico.
+\end{itemize}
+
+\subsubsection{Conduttanza Sinaptica Totale come Combinazione Lineare}
+
+Quando un neurone postsinaptico esprime sia recettori veloci sia recettori lenti per lo stesso neurotrasmettitore, la \textbf{conduttanza sinaptica totale} è una combinazione lineare delle risposte dei due tipi:
+
+\begin{equation}
+G_{syn}(t) = G_{max} \left[ \alpha_f \cdot R_f(t) + (1 - \alpha_f) \cdot R_s(t) \right]
+\end{equation}
+
+dove $\alpha_f \in [0,1]$ è la \textbf{frazione di componente veloce} (fast) e $(1 - \alpha_f)$ è la frazione di componente lenta (slow). Ciascuna variabile $R_f(t)$ e $R_s(t)$ segue la cinetica descritta nella sezione precedente, con parametri $\beta_f$ (grande) e $\beta_s$ (piccolo) rispettivamente.
+
+
+\subsubsection{I Due Tipi di Recettori Inibitori}
+
+Il GABA (acido gamma-aminobutirrico) agisce su due classi principali di recettori:
+
+\begin{itemize}
+    \item \textbf{GABA-A}: recettore ionotropico. È un canale ionico ligando-dipendente che, in seguito al legame con il GABA, apre un canale permeabile prevalentemente agli ioni $\text{Cl}^-$ (e in misura minore a $\text{HCO}_3^-$). È una sinapsi \textbf{veloce}: $\tau_{decay} \approx 6 \, \text{ms}$. Il $\tau_{rise} \approx 1 \, \text{ms}$ per entrambi i tipi (limitato dalla durata dello spike presinaptico).
+    \item \textbf{GABA-B}: recettore metabotropico. È un recettore accoppiato a proteina G (GPCR). Il GABA-B attiva indirettamente canali per il $\text{K}^+$ (canali GIRK, G-protein-coupled Inwardly-Rectifying Potassium channels) attraverso una cascata di segnale intracellulare. È una sinapsi \textbf{lenta}: $\tau_{decay} \approx 200 \, \text{ms}$.
+\end{itemize}
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|X|X|X|}
+    \hline
+    \textbf{Proprietà} & \textbf{GABA-A} & \textbf{GABA-B} \\
+    \hline
+    Tipo di recettore & Ionotropico (canale ligando-dipendente) & Metabotropico (GPCR) \\
+    \hline
+    Ioni permeanti & $\text{Cl}^-$ (prevalente), $\text{HCO}_3^-$ & $\text{K}^+$ (GIRK) \\
+    \hline
+    $\tau_{decay}$ & $\approx 6 \, \text{ms}$ & $\approx 200 \, \text{ms}$ \\
+    \hline
+    Velocità & Veloce & Lenta \\
+    \hline
+    Meccanismo & Diretto (canale si apre al legame) & Indiretto (cascasca G-proteica) \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+
+
+
+\subsubsection{Meccanismo Ionico dell'IPSP}
+
+I recettori \textbf{GABA-A} aprono canali selettivi per $\text{Cl}^-$ e $\text{K}^+$:
+\begin{itemize}
+    \item Lo ione $\text{K}^+$ \textbf{fuoriesce} dalla cellula (perdita di cariche positive intracellulari).
+    \item Lo ione $\text{Cl}^-$ \textbf{entra} nella cellula (aggiunta di cariche negative intracellulari).
+\end{itemize}
+
+Entrambi i movimenti ionici portano a una \textbf{iperpolarizzazione} della membrana postsinaptica: il potenziale di membrana diventa più negativo, allontanandosi dalla soglia di emissione degli spike. Questo è il meccanismo del \textbf{potenziale postsinaptico inibitorio (IPSP)}.
+
+I potenziali di inversione individuali sono:
+\begin{equation}
+E_K \approx -70 \, \text{mV}, \qquad E_{Cl} \approx -75 \, \text{mV}
+\end{equation}
+
+Il potenziale di inversione della sinapsi inibitoria $E_{inh}$ è una media pesata tra $E_K$ e $E_{Cl}$ (pesata sulle rispettive permeabilità del canale):
+
+\begin{equation}
+E_{inh} \approx -70 \div -75 \, \text{mV}
+\end{equation}
+
+La corrente inibitoria è:
+
+\begin{equation}
+I_{inh} = G_{inh}(t)(V - E_{inh}), \qquad E_{inh} \approx -70 \, \text{mV}
+\end{equation}
+
+
+\subsubsection{La Forza Motrice della Corrente Inibitoria}
+
+L'ampiezza dell'IPSP non è fissa: dipende dal \textbf{potenziale di membrana} del neurone postsinaptico al momento dell'arrivo dello spike inibitorio. La corrente inibitoria è:
+
+\begin{equation}
+I_{inh}(t) = G_{inh}(t) \cdot (V - E_{inh})
+\end{equation}
+
+Il fattore $(V - E_{inh})$ è la \textbf{forza motrice} (driving force). Nel modello HH standard, il potenziale di membrana a riposo è $E_m = -65 \, \text{mV}$, mentre $E_{inh} \approx -70 \, \text{mV}$.
+
+Poiché $E_m = -65 \, \text{mV} > E_{inh} = -70 \, \text{mV}$, in condizioni di riposo la forza motrice è positiva:
+
+\begin{equation}
+(V - E_{inh}) = -65 - (-70) = +5 \, \text{mV} > 0
+\end{equation}
+
+La corrente inibitoria è quindi una \textbf{corrente uscente} (da dentro a fuori per gli ioni positivi equivalenti), che iperpolarizza la membrana. Si noti che nella convenzione HH il segno della corrente postsinaptica nell'equazione del potenziale è negativo ($-G_{inh}(V - E_{inh})$), il che significa che questa corrente riduce $dV/dt$.
+
+\subsubsection{Saturazione e Sicurezza Biologica}
+
+Si osserva il seguente comportamento cruciale:
+
+\begin{enumerate}
+    \item \textbf{Se il neurone è fortemente depolarizzato} ($V \gg E_{inh}$): la forza motrice $(V - E_{inh})$ è grande $\Rightarrow$ la corrente inibitoria è intensa $\Rightarrow$ l'IPSP è grande.
+    \item \textbf{Se il neurone è a riposo} ($V \approx E_m = -65 \, \text{mV}$): la forza motrice è piccola (+5 mV) $\Rightarrow$ l'IPSP è piccolo.
+    \item \textbf{Se il neurone è già iperpolarizzato a} $V = E_{inh}$: la forza motrice è zero $\Rightarrow$ l'IPSP è zero. La corrente inibitoria non può spingere il potenziale di membrana al di sotto di $E_{inh}$.
+\end{enumerate}
+
+Questo costituisce un \textbf{meccanismo di sicurezza biologica}: l'iperpolarizzazione massima raggiungibile per via inibitoria è limitata da $E_{inh} \approx -70/-75 \, \text{mV}$. Il sistema è intrinsecamente saturante: non è possibile iperpolarizzare il neurone indefinitamente tramite stimolazione inibitoria.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+Questo comportamento "bounded" dell'IPSP è un esempio di auto-regolazione elettrochimica. Il fatto che l'inibizione sia più forte quando il neurone è più attivo (depolarizzato) crea una retroazione negativa che stabilizza l'attività neuronale.
+\end{tcolorbox}
+
+
+
+\subsubsection{Recettori per il Glutammato}
+
+Le sinapsi eccitatorie corticali utilizzano il \textbf{glutammato} come neurotrasmettitore. Il glutammato agisce su due principali classi di recettori ionotropici, caratterizzate da cinetiche molto diverse:
+
+\begin{itemize}
+    \item \textbf{Recettori AMPA} ($\alpha$-amino-3-idrossi-5-metil-4-isossazolpropionato): recettori ionotropici veloci, con $\tau_{decay} \approx 3 \div 5 \, \text{ms}$. Sono canali permeabili principalmente a $\text{Na}^+$ e $\text{K}^+$, e sono responsabili della trasmissione eccitatoria rapida. Costituiscono la principale corrente portante durante la trasmissione sinaptica basale.
+    \item \textbf{Recettori NMDA} ($N$-metil-$D$-aspartato): recettori ionotropici lenti, con $\tau_{decay}$ molto maggiore di $\tau_{rise}$. Sono permeabili non solo a $\text{Na}^+$ e $\text{K}^+$ ma anche, in modo importante, agli ioni $\text{Ca}^{2+}$.
+\end{itemize}
+
+\subsubsection{Potenziale di Inversione delle Sinapsi Eccitatorie}
+
+I recettori AMPA e NMDA aprono canali permeabili sia a $\text{Na}^+$ che a $\text{K}^+$. Il potenziale di inversione $E_{exc}$ è una media pesata tra $E_{Na} \approx +50 \, \text{mV}$ e $E_K \approx -70 \, \text{mV}$, con una permeabilità maggiore al $\text{Na}^+$ rispetto al $\text{K}^+$. Il risultato è:
+
+\begin{equation}
+E_{exc} \approx 0 \, \text{mV}
+\end{equation}
+
+Per la sinapsi eccitatoria si ha quindi:
+
+\begin{equation}
+I_{exc} = G_{exc}(t)(V - E_{exc}), \qquad E_{exc} \approx 0 \, \text{mV}
+\end{equation}
+
+Analogamente all'IPSP, anche la corrente eccitatoria è auto-limitante: quando il potenziale di membrana si avvicina a $E_{exc} \approx 0 \, \text{mV}$, la forza motrice $(V - E_{exc})$ diminuisce, riducendo l'ampiezza dell'EPSP. Non è possibile depolarizzare il neurone al di sopra di $E_{exc}$ tramite stimolazione eccitatoria glutamatergica da sola.
+
+
+
+\section{Lo Stato Bilanciato Eccitazione-Inibizione}
+
+\subsubsection{Bombardamento Sinaptico e Dinamica del Potenziale di Membrana}
+
+In condizioni fisiologiche in vivo, un neurone corticale riceve un \textbf{bombardamento sinaptico} (synaptic bombardment) continuo: migliaia di input sinaptici eccitatori e inibitori al secondo, da centinaia o migliaia di neuroni presinaptici. In questo regime, il potenziale di membrana $V_m$ non è mai costante ma fluttua continuamente.
+
+Il \textbf{quadro dello stato bilanciato} (balanced state) descrive la situazione in cui i contributi eccitatori e inibitori sono numericamente bilanciati. In questo stato, si può analizzare dove si assesta il $V_m$ medio.
+
+\subsubsection{Il Meccanismo dell'Attrattore Bilanciato}
+
+Consideriamo un neurone sotto bombardamento sinaptico stazionario con conduttanze eccitatorie $G_{exc}$ e inibitorie $G_{inh}$ medie non nulle. La forza motrice di ciascuna sinapsi dipende da $V$:
+
+\begin{itemize}
+    \item \textbf{Quando $V$ è vicino a $E_{exc} \approx 0 \, \text{mV}$}: la forza motrice eccitatoria $(V - E_{exc}) \approx 0$ è piccola (EPSP debole), ma la forza motrice inibitoria $(V - E_{inh}) = (0 - (-70)) = +70 \, \text{mV}$ è grande (IPSP forte). L'inibizione prevale $\Rightarrow$ il neurone viene spinto verso valori più negativi di $V$.
+    \item \textbf{Quando $V$ è vicino a $E_{inh} \approx -70 \, \text{mV}$}: la forza motrice inibitoria $(V - E_{inh}) \approx 0$ è piccola (IPSP debole), ma la forza motrice eccitatoria $(V - E_{exc}) = (-70 - 0) = -70 \, \text{mV}$ è grande in valore assoluto (EPSP forte). L'eccitazione prevale $\Rightarrow$ il neurone viene spinto verso valori meno negativi.
+\end{itemize}
+
+Questo crea un \textbf{attrattore stabile} per il potenziale di membrana. Il sistema è auto-regolante: qualunque deviazione dal valore di equilibrio viene corretta dalla retroazione elettrochimica delle correnti sinaptiche conduttanza-based.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+ Questo meccanismo di retroazione negativa è automatico e non richiede alcun meccanismo neurale aggiuntivo: emerge direttamente dalle proprietà fisiche della conduzione ionica attraverso i canali selettivi. È una proprietà fondamentale dei neuroni reali operanti sotto bombardamento sinaptico.
+\end{tcolorbox}
+
+\subsubsection{Il Potenziale di Equilibrio Bilanciato}
+
+Il valore di equilibrio del potenziale di membrana nello stato bilanciato dipende dal rapporto tra le conduttanze eccitatorie e inibitorie medie. Il $V_m$ è \textbf{sempre compreso} tra i due potenziali di inversione:
+
+\begin{equation}
+E_{inh} \lesssim V_m \lesssim E_{exc}, \qquad -70 \, \text{mV} \lesssim V_m \lesssim 0 \, \text{mV}
+\end{equation}
+
+In condizioni fisiologiche tipiche, con una predominanza relativa dell'inibizione, il valore medio di $V_m$ si assesta intorno a $-60 \div -70 \, \text{mV}$: ben al di sotto della soglia di emissione degli spike ($V_{th} \approx -55 \div -50 \, \text{mV}$).
+
+\subsubsection{Emissione di Spike per Fluttuazione}
+
+Il fatto che il $V_m$ medio sia al di sotto della soglia implica che gli \textbf{spike vengono emessi solo per fluttuazioni} attorno al valore medio. Le fluttuazioni sono causate dalla \textbf{stocasticità} della trasmissione sinaptica: il numero di vescicole rilasciate per ogni spike presinaptico, il numero di recettori postsinaptici attivati e i tempi di arrivo degli spike presinaptici sono tutti processi stocastici. Il neurone, in questo regime, è quindi un \textbf{rivelatore di fluttuazioni}: la sua frequenza di scarica è determinata dall'ampiezza delle fluttuazioni del $V_m$ rispetto alla soglia.
+
+Questa irregolarità della scarica è pienamente coerente con le osservazioni sperimentali in vivo nei neuroni corticali, che mostrano una distribuzione degli ISI approssimativamente esponenziale (processo di Poisson) con coefficiente di variazione $CV \approx 1$.
+
+
+\subsection{Il Recettore NMDA}
+
+\subsubsection{Il Blocco Voltaggio-Dipendente da Mg$^{2+}$}
+
+Il recettore \textbf{NMDA} presenta una proprietà di eccezionale importanza funzionale: la sua conduttanza dipende non solo dal legame con il glutammato, ma anche dal \textbf{potenziale di membrana postsinaptico}. Questo lo rende, in un certo senso, sia un recettore chimico che un sensore di voltaggio.
+
+Il meccanismo è il seguente: in condizioni di riposo (bassa attività del neurone postsinaptico, $V_m$ negativo), lo ione $\text{Mg}^{2+}$ penetra nel canale del recettore NMDA e lo \textbf{blocca fisicamente} dall'interno (blocco del canale dal lato intracellulare del vestibolo). Questo blocco da $\text{Mg}^{2+}$ è voltaggio-dipendente:
+
+\begin{itemize}
+    \item \textbf{A basso potenziale} ($V_m$ negativo, neurone inattivo): $\text{Mg}^{2+}$ occupa il sito di blocco nel canale $\Rightarrow$ $G_{NMDA} \approx 0$ (anche in presenza di glutammato).
+    \item \textbf{Ad alto potenziale} ($V_m$ meno negativo o positivo, neurone attivo): la forza elettrostatica non è sufficiente a trattenere $\text{Mg}^{2+}$ nel canale $\Rightarrow$ $\text{Mg}^{2+}$ viene espulso $\Rightarrow$ il canale si apre $\Rightarrow$ $G_{NMDA} > 0$.
+\end{itemize}
+
+Formalmente, la conduttanza del recettore NMDA è modulata da un fattore di dipendenza da $\text{Mg}^{2+}$:
+
+\begin{equation}
+G_{NMDA}(V) \propto \frac{1}{1 + [\text{Mg}^{2+}]_o \cdot e^{-V/V_{Mg}}}
+\end{equation}
+
+dove $[\text{Mg}^{2+}]_o$ è la concentrazione esterna di $\text{Mg}^{2+}$ (tipicamente $1 \, \text{mM}$) e $V_{Mg} \approx 16.5 \, \text{mV}$ è un parametro caratteristico della dipendenza dal voltaggio.
+
+
+\subsubsection{Il Recettore NMDA come Rivelatore di Coincidenza}
+
+La dipendenza sia dal glutammato (richiede attività presinaptica) sia dal voltaggio postsinaptico (richiede attività postsinaptica) rende il recettore NMDA un \textbf{rivelatore di coincidenza} (coincidence detector): si attiva solo quando il neurone presinaptico \textbf{e} quello postsinaptico sono attivi simultaneamente. Questa proprietà è alla base del principio hebbiano dell'apprendimento sinaptico associativo.
+
+\subsubsection{Ruolo nella Memoria di Lavoro}
+
+Il professore sottolinea un ruolo funzionale specifico del recettore NMDA: la \textbf{stabilizzazione della memoria di lavoro} (working memory). Consideriamo un neurone che rappresenta un'informazione (ad esempio, l'immagine di una mela nel campo visivo). La corrente NMDA, essendo attiva solo quando il neurone stesso è attivo (depolarizzato), crea una retroazione eccitatoria auto-sostenuta: il neurone che spara mantiene aperto il suo stesso canale NMDA (attraverso la depolarizzazione), il che sostiene ulteriormente la scarica. Questo meccanismo di \textbf{retroazione positiva voltaggio-dipendente} è un substrato biofisico plausibile per il mantenimento dell'attività persistente osservata nella corteccia prefrontale durante i compiti di memoria di lavoro.
+
+
+
+\subsection{Plasticità Sinaptica a Breve Termine}
+
+\subsubsection{La Sinapsi come Filtro Non Stazionario}
+
+Fino a questo punto abbiamo trattato la sinapsi come un sistema con parametri fissi: $G_{max}$, $\alpha$, $\beta$. In realtà, la \textbf{plasticità sinaptica a breve termine} (Short-Term Plasticity, \textbf{STP}) descrive il fatto che l'efficacia di una sinapsi è dinamica: cambia in funzione della storia recente dell'attività presinaptica, su scale temporali che vanno da decine di millisecondi a qualche secondo.
+
+Il termine "breve termine" distingue questi fenomeni dalla \textbf{plasticità sinaptica a lungo termine} (Long-Term Potentiation/Depression, LTP/LTD), che opera su scale di ore o giorni e implica modifiche strutturali permanenti della sinapsi.
+
+\subsubsection{Deplezione dei Neuroreceptors Postsinaptici}
+
+Il primo meccanismo di STP che il professore introduce opera \textbf{sul lato postsinaptico} ed è di natura puramente matematica: la conseguenza diretta della cinetica dei recettori.
+
+Il numero totale di \textbf{neuroreceptors} (canali ionici postsinaptici) disponibili è finito. Dopo l'apertura da parte di uno spike, ogni recettore impega un tempo dell'ordine di $\tau_{decay} = 1/\beta$ per chiudersi e tornare disponibile. Se due spike presinaptici arrivano con un \textbf{intervallo inter-spike (ISI)} inferiore a $\tau_{decay}$:
+
+\begin{itemize}
+    \item Al momento del secondo spike, una frazione $R(t_2^-)$ di recettori è ancora \textbf{aperta} (in stato conduttivo).
+    \item Solo la frazione $1 - R(t_2^-)$ di recettori è \textbf{chiusa} e disponibile per essere riaperta.
+    \item Il salto $\Delta R$ prodotto dal secondo spike è proporzionale ai soli recettori chiusi: $\Delta R_2 \propto (1 - R(t_2^-))$, che è minore di $\Delta R_1 \propto (1 - R(t_1^-)) \approx 1$ (per il primo spike).
+\end{itemize}
+
+Il secondo EPSP è quindi più piccolo del primo. Questo è il meccanismo \textbf{postsinaptico} della depressione a breve termine.
+
+
+\subsection{Depressione Sinaptica a Breve Termine (STD)}
+
+\subsubsection{Formalizzazione Matematica}
+
+Si modella il rilascio del neurotrasmettitore come una serie di impulsi di Dirac ai tempi degli spike presinaptici $\{t_k\}$:
+
+\begin{equation}
+N(t) = N_{max} \cdot \sum_k \delta(t - t_k)
+\end{equation}
+
+dove $N_{max}$ è una costante proporzionale alla quantità di neurotrasmettitore rilasciato per spike.
+
+L'equazione cinetica per $R(t)$ diventa, tra uno spike e il successivo, un decadimento esponenziale:
+
+\begin{equation}
+\dot{R} = -\beta R \qquad \text{(tra gli spike)}
+\end{equation}
+
+con soluzione $R(t) = R(t_k^+) \cdot e^{-\beta(t - t_k)}$.
+
+Al momento di ogni spike $t_k$, la variabile $R$ riceve un salto impulsivo:
+
+\begin{equation}
+\Delta R_k = \alpha N_{max} \cdot (1 - R(t_k^-))
+\end{equation}
+
+Il salto è proporzionale alla \textbf{frazione di recettori chiusi} al momento dello spike: $1 - R(t_k^-)$. Se $R(t_k^-)$ è grande (molti recettori ancora aperti dal spike precedente), il salto è piccolo.
+
+\subsubsection{Dinamica di R durante un Treno di Spike}
+
+Consideriamo un treno di spike regolari con ISI costante $T_{ISI}$:
+
+\begin{itemize}
+    \item \textbf{Primo spike} ($t_1$): $R(t_1^-) \approx 0$ (sinapsi a riposo). Il salto è massimo: $\Delta R_1 = \alpha N_{max}$.
+    \item \textbf{Spike successivi}: $R(t_k^-)$ cresce progressivamente (i recettori non si richiudono completamente tra uno spike e il successivo se ISI $< \tau_{decay}$). Il salto $\Delta R_k = \alpha N_{max}(1 - R(t_k^-))$ diminuisce progressivamente.
+    \item \textbf{Stato stazionario}: $R$ raggiunge asintoticamente un valore massimo $R_{max}$ tale che il guadagno (salto) sia esattamente bilanciato dal decadimento nell'ISI. L'EPSP si stabilizza a un valore di plateau ridotto rispetto al primo.
+\end{itemize}
+
+Se ISI $\gg \tau_{decay}$: i recettori si richiudono completamente tra uno spike e il successivo $\Rightarrow$ nessuna depressione.\\
+Se ISI $\ll \tau_{decay}$: forte depressione; l'EPSP di plateau è molto inferiore al primo EPSP.
+
+
+
+\subsection{Meccanismo Presinaptico della Depressione}
+
+Oltre al meccanismo postsinaptico già descritto (deplezione dei neuroreceptors), esiste un meccanismo analogo che opera sul \textbf{lato presinaptico}: la \textbf{deplezione delle vescicole sinaptiche}.
+
+Le \textbf{vescicole sinaptiche} rappresentano il "serbatoio" di neurotrasmettitore del terminale presinaptico. Ogni spike presinaptico causa l'esocitosi di un certo numero di vescicole. Il processo di ripristino del pool di vescicole pronte al rilascio (il cosiddetto \textbf{readily releasable pool}, RRP) richiede un tempo finito: le vescicole devono essere riciclate per endocitosi o sintetizzate ex novo, riempite di neurotrasmettitore e trasportate alla zona attiva (active zone) della membrana presinaptica per il docking.
+
+Se l'attività presinaptica è intensa (alta frequenza di spike), le vescicole vengono consumate più rapidamente di quanto non vengano ricostituiti $\Rightarrow$ il pool si esaurisce $\Rightarrow$ ogni spike successivo rilascia meno neurotrasmettitore $\Rightarrow$ il segnale postsinaptico si riduce.
+
+Al contrario, se il terminale presinaptico è rimasto inattivo per un periodo sufficiente, il pool di vescicole è completamente ricostituito e il primo spike produce il massimo rilascio di neurotrasmettitore.
+
+
+\subsection{Facilitazione Sinaptica a Breve Termine (STF)}
+
+\subsubsection{Il Meccanismo Opposto alla Depressione}
+
+La \textbf{facilitazione sinaptica a breve termine} (Short-Term Facilitation, \textbf{STF}) è il meccanismo opposto alla STD: invece di ridursi, l'ampiezza dell'EPSP \textbf{aumenta} progressivamente durante un treno di spike. La STF può prevalere sulla STD in certi tipi sinaptici, a seconda delle caratteristiche molecolari del terminale presinaptico.
+
+Il meccanismo biologico della STF è legato all'accumulo di ioni $\text{Ca}^{2+}$ nel terminale presinaptico durante l'attività. Ogni spike presinaptico apre i canali del calcio voltaggio-dipendenti del terminale, causando un influsso di $\text{Ca}^{2+}$. Se gli spike arrivano ravvicinati (ISI breve), il $\text{Ca}^{2+}$ si accumula progressivamente (la pompa del calcio non riesce a espellerlo abbastanza rapidamente). La concentrazione di $\text{Ca}^{2+}$ residua (residual calcium) aumenta, e poiché il rilascio di vescicole è altamente dipendente dal $\text{Ca}^{2+}$ (si stima una dipendenza da $[\text{Ca}^{2+}]^4$), anche un piccolo accumulo di $\text{Ca}^{2+}$ residuo porta a un forte aumento del rilascio $\Rightarrow$ più neurotrasmettitore rilasciato $\Rightarrow$ EPSP più grande.
+
+\subsubsection{Riepilogo: STD vs. STF}
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3cm}|X|X|}
+    \hline
+    \textbf{Parametro} & \textbf{STD (Depressione)} & \textbf{STF (Facilitazione)} \\
+    \hline
+    Effetto sull'EPSP & Riduzione progressiva durante il treno & Aumento progressivo durante il treno \\
+    \hline
+    Meccanismo principale & Deplezione dei neuroreceptors o delle vescicole & Accumulo di $\text{Ca}^{2+}$ residuo presinaptico \\
+    \hline
+    Sede principale & Post-sinaptica (recettori) o pre-sinaptica (vescicole) & Pre-sinaptica \\
+    \hline
+    Recupero & Con $\tau_{decay}$ (chiusura dei canali) o $\tau_{vesicle}$ (ricostituzione) & Con $\tau_{Ca}$ (espulsione del $\text{Ca}^{2+}$ residuo) \\
+    \hline
+    Effetto sulla codifica & Filtro passa-basso (deprime le alte frequenze) & Filtro passa-alto (potenzia le alte frequenze) \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+In molte sinapsi reali, STD e STF \textbf{coesistono} e interagiscono. Il profilo netto (depressione o facilitazione) dipende dalla frequenza presinaptica, dal tipo sinaptico e dalla temperatura. Alcune sinapsi mostrano facilitazione a basse frequenze e depressione ad alte frequenze (o viceversa). Queste proprietà conferiscono alle sinapsi capacità di filtraggio frequenziale della trasmissione neuronale.
+\end{tcolorbox}
+
+\newpage
+
+\section{Transizione al Modello Semplificato}
+
+
+Il professore introduce la seconda metà della lezione: la \textbf{semplificazione del modello di Hodgkin-Huxley} (HH) da 4 dimensioni a 2. L'obiettivo è rendere il modello trattabile analiticamente tramite l'analisi del \textbf{piano delle fasi} (phase plane analysis), che sarà il tema centrale delle lezioni successive.
+
+Il modello HH completo ha quattro variabili di stato:
+\begin{equation}
+\{V, m, h, n\}
+\end{equation}
+
+L'analisi completa del sistema 4D richiede tecniche avanzate di teoria dei sistemi dinamici (varietà, attrattori, biforcazioni in alta dimensione). La riduzione a 2D consente invece di visualizzare le \textbf{nullcline} nel piano $(V, W)$ e applicare l'analisi grafica del piano delle fasi.
+
+
+
+\subsubsection{Le Quattro Variabili del Modello HH e le Loro Scale Temporali}
+
+Il modello HH completo è descritto dal sistema:
+
+\begin{equation}
+C_m \frac{dV}{dt} = I_{ext} - \bar{G}_{Na} m^3 h (V - E_{Na}) - \bar{G}_K n^4 (V - E_K) - G_L (V - E_L)
+\end{equation}
+
+\begin{equation}
+\dot{m} = \frac{m_\infty(V) - m}{\tau_m(V)}, \qquad \dot{h} = \frac{h_\infty(V) - h}{\tau_h(V)}, \qquad \dot{n} = \frac{n_\infty(V) - n}{\tau_n(V)}
+\end{equation}
+
+Le scale temporali tipiche delle variabili di gate nel modello HH sono molto diverse tra loro:
+\begin{itemize}
+    \item $\tau_m(V)$: dell'ordine di \textbf{frazioni di millisecondo} (es. $0.1 \div 0.5 \, \text{ms}$) — scala molto rapida.
+    \item $\tau_h(V)$: dell'ordine di \textbf{alcuni millisecondi} (es. $1 \div 10 \, \text{ms}$) — scala lenta.
+    \item $\tau_n(V)$: dell'ordine di \textbf{alcuni millisecondi} (es. $1 \div 10 \, \text{ms}$) — scala lenta (simile a $\tau_h$).
+\end{itemize}
+
+\subsubsection{Prima Riduzione: Approssimazione Adiabatica di m ($\tau_m \approx 0$)}
+
+Poiché $\tau_m \ll \tau_h, \tau_n, \tau_V$, la variabile di attivazione $m$ segue istantaneamente le variazioni di $V$. Formalmente, nel limite $\tau_m \to 0$:
+
+\begin{equation}
+\tau_m \approx 0 \implies m(t) \approx m_\infty(V(t))
+\end{equation}
+
+Questa è l'\textbf{approssimazione adiabatica} (o quasi-statica) per la variabile $m$. $m$ non è più una variabile dinamica indipendente ma diventa una \textbf{funzione algebrica} del potenziale di membrana $V$.
+
+Sostituendo $m \to m_\infty(V)$ nel modello HH, il sistema si riduce a:
+
+\begin{equation}
+C_m \frac{dV}{dt} = I_{ext} - \bar{G}_{Na} m_\infty^3(V) h (V - E_{Na}) - \bar{G}_K n^4 (V - E_K) - G_L (V - E_L)
+\end{equation}
+
+\begin{equation}
+\dot{h} = \frac{h_\infty(V) - h}{\tau_h(V)}, \qquad \dot{n} = \frac{n_\infty(V) - n}{\tau_n(V)}
+\end{equation}
+
+Il sistema è ora \textbf{tridimensionale}: $\{V, h, n\}$.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+ L'approssimazione adiabatica di $m$ è estremamente accurata. La curva $m(t)$ ottenuta dal modello ridotto 3D è praticamente indistinguibile da quella del modello completo 4D durante un potenziale d'azione. La correttezza dell'approssimazione si verifica graficamente: $m(t)$ segue quasi perfettamente $m_\infty(V(t))$.
+\end{tcolorbox}
+
+
+\subsection{Anticorrelazione tra h e n: la Variabile di Recupero W}
+
+\subsubsection{L'Osservazione Empirica di Hodgkin e Huxley}
+
+Hodgkin e Huxley osservarono empiricamente che durante il ciclo del potenziale d'azione, le variabili $h$ (inattivazione del $\text{Na}^+$) e $n$ (attivazione del $\text{K}^+$) si comportano in modo \textbf{anticorrelato}: quando $n$ cresce (apertura progressiva dei canali $\text{K}^+$ durante la ripolarizzazione), $h$ diminuisce (inattivazione progressiva dei canali $\text{Na}^+$), e viceversa.
+
+Più precisamente: se si calcola la combinazione lineare $h + n/2$ (o, equivalentemente, $h + a \cdot n$ per un opportuno coefficiente $a$), questo valore è \textbf{quasi costante} durante il ciclo del potenziale d'azione. Graficamente, nel piano $(n, h)$, la traiettoria del sistema segue approssimativamente una retta.
+
+\subsubsection{La Variabile di Recupero W}
+
+Si introduce la \textbf{variabile di recupero} $W$ come trasformazione lineare di $n$:
+
+\begin{equation}
+W = a \cdot n
+\end{equation}
+
+con $a \approx 0.78$ (dal fit ai dati originali HH). La variabile $h$ è approssimata come:
+
+\begin{equation}
+h \approx b - W, \qquad b \approx 0.78
+\end{equation}
+
+o equivalentemente:
+
+\begin{equation}
+h \approx b - a \cdot n
+\end{equation}
+
+Questa relazione lineare riduce le due variabili indipendenti $\{h, n\}$ a una sola variabile $W$. Il sistema 3D $\{V, h, n\}$ si riduce quindi a un sistema \textbf{bidimensionale} $\{V, W\}$.
+
+\subsubsection{La Dinamica di W}
+
+Poiché $\tau_h(V) \approx \tau_n(V)$ nel modello HH (stesse scale temporali), si può definire una costante di tempo comune $\tau_W(V)$ come media:
+
+\begin{equation}
+\tau_W(V) \approx \frac{\tau_h(V) + \tau_n(V)}{2}
+\end{equation}
+
+La $\tau_W(V)$ ha forma a campana (bell-shaped): è grande ai valori di $V$ lontani dalla soglia e più piccola attorno alla soglia. L'equazione di evoluzione per $W$ è:
+
+\begin{equation}
+\frac{dW}{dt} = \frac{W_\infty(V) - W}{\tau_W(V)}
+\end{equation}
+
+dove $W_\infty(V) = a \cdot n_\infty(V)$ è il valore asintotico di $W$ per un dato potenziale $V$.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+ La scoperta di Fitzhugh degli anni '60 non fu solo l'anticorrelazione $h$-$n$, ma anche la constatazione che le scale temporali $\tau_h$ e $\tau_n$ sono comparabili, il che giustifica l'introduzione di un'unica variabile $W$ con una singola scala temporale. La riduzione è quindi una semplificazione non solo del numero di variabili, ma anche della struttura temporale del sistema.
+\end{tcolorbox}
+
+
+
+\subsection{Il Modello HH 2D e le Approssimazioni di Fitzhugh}
+
+\subsubsection{Il Modello HH Ridotto a 2D}
+
+Sostituendo $m = m_\infty(V)$, $n = W/a$ e $h = b - W$ nel modello HH originale, si ottiene il \textbf{modello HH 2D ridotto}:
+
+\begin{equation}
+C_m \frac{dV}{dt} = F(V, W)
+\end{equation}
+
+\begin{equation}
+\frac{dW}{dt} = \frac{W_\infty(V) - W}{\tau_W(V)}
+\end{equation}
+
+dove:
+
+\begin{equation}
+F(V, W) = I_{ext} - \bar{G}_{Na} \cdot m_\infty^3(V) \cdot (b - W) \cdot (V - E_{Na}) - \bar{G}_K \cdot \left(\frac{W}{a}\right)^4 \cdot (V - E_K) - G_L(V - E_L)
+\end{equation}
+
+Questo sistema mantiene la forma funzionale delle variabili di gate originali (sigmoidali) ma è trattabile nel piano delle fasi $(V, W)$.
+
+Il ciclo di un potenziale d'azione nel piano $(V, W)$ è un \textbf{ciclo limite} (limit cycle): una traiettoria chiusa nello spazio delle fasi verso cui convergono le traiettorie vicine. La presenza o assenza di un ciclo limite (e il tipo di biforcazione che lo genera) determina le proprietà di eccitabilità del neurone.
+
+
+
+\subsection{Il Modello FitzHugh-Nagumo}
+
+\subsubsection{Le Ulteriori Semplificazioni di Fitzhugh}
+
+\textbf{Richard Fitzhugh}, negli anni '60, identificò non solo la riduzione da 4D a 2D del modello HH, ma propose anche una successiva semplificazione analitica che rende il modello pienamente trattabile algebricamente. Le approssimazioni aggiuntive di Fitzhugh sono:
+
+\begin{enumerate}
+    \item \textbf{$W_\infty(V)$ lineare}: la curva sigmoide $W_\infty(V) = a \cdot n_\infty(V)$ viene approssimata con una retta:
+\end{enumerate}
+
+\begin{equation}
+W_\infty(V) \approx b_1 \cdot V + b_0
+\end{equation}
+
+\begin{enumerate}
+    \item[2.] \textbf{$\tau_W$ costante} (non dipendente da $V$): la costante di tempo bell-shaped $\tau_W(V)$ viene sostituita con una costante $\tau_W$.
+\end{enumerate}
+
+Con queste approssimazioni, l'equazione per $W$ diventa:
+
+\begin{equation}
+\tau_W \frac{dW}{dt} = b_1 V + b_0 - W
+\end{equation}
+
+Questa equazione è \textbf{lineare} in $W$ e $V$, il che semplifica enormemente l'analisi delle nullcline.
+
+\subsubsection{L'Equazione per V nel Modello FHN}
+
+Per la variabile $V$, Fitzhugh osserva che il termine $n^4 = (W/a)^4 \ll 1$ per $n < 1$ e propone di approssimarlo con un contributo trascurabile. La non-linearità principale del modello è la corrente del sodio, che dipende da $m_\infty^3(V) \cdot (b - W)$. Approssimando $m_\infty^3(V)$ con un polinomio cubico in $V$ (espansione di Taylor della funzione sigmoidale cubicata) e combinando i termini, si ottiene la famosa forma del modello \textbf{FitzHugh-Nagumo (FHN)}:
+
+\begin{equation}
+C_m \frac{dV}{dt} \approx V - \frac{V^3}{3} - W + I_{ext}
+\end{equation}
+
+\begin{equation}
+\tau_W \frac{dW}{dt} = b_1 V + b_0 - W
+\end{equation}
+
+Il termine cubico $V - V^3/3$ è la non-linearità essenziale del modello: produce un'isoclina (nullcline per $V$) a forma di cubo nel piano $(V, W)$, con tre rami (due stabili e uno instabile). Questa struttura a N è responsabile dell'eccitabilità del modello.
+
+\subsubsection{Il Contributo di Nagumo: L'Implementazione Circuitale}
+
+\textbf{Jinichi Nagumo} fornì un contributo complementare ma indipendente: la \textbf{realizzazione circuitale} del modello FHN con componenti elettronici:
+\begin{itemize}
+    \item La non-linearità cubica è implementata con un \textbf{trigger di Schmitt} (Schmitt trigger) o un elemento a resistenza negativa.
+    \item La variabile di recupero $W$ è modellata da un circuito \textbf{RL} (resistenza-induttanza).
+    \item Il circuito di Nagumo riproduce esattamente le proprietà del modello teorico di Fitzhugh: eccitabilità, ciclo limite, biforcazioni.
+\end{itemize}
+
+Il circuito di Nagumo era un importante strumento di simulazione analogica prima dell'era dei computer digitali e dimostrò che le proprietà dell'eccitabilità neuronale sono universali e non specifiche della biologia.
+
+
+
+\subsection{Il Modello Morris-Lecar e Anteprima del Piano delle Fasi}
+
+\subsubsection{Il Modello Morris-Lecar (ML)}
+
+\textbf{Cathy Morris e Harold Lecar}, negli anni '80, proposero un modello 2D alternativo al FHN: il \textbf{modello Morris-Lecar (ML)}. A differenza del FHN (che usa polinomi), il modello ML utilizza espressioni \textbf{sigmoidali} basate sulla tangente iperbolica, che approssimano più accuratamente le curve di gate misurate sperimentalmente.
+
+Le funzioni di gate del modello Morris-Lecar sono:
+
+\begin{equation}
+m_\infty(V) = \frac{1 + \tanh\!\left(\dfrac{V - V_1}{V_2}\right)}{2}
+\end{equation}
+
+\begin{equation}
+W_\infty(V) = \frac{1 + \tanh\!\left(\dfrac{V - V_3}{V_4}\right)}{2}
+\end{equation}
+
+\begin{equation}
+\tau_W(V) = \frac{1}{\cosh\!\left(\dfrac{V - V_3}{2V_4}\right)}
+\end{equation}
+
+dove $V_1$, $V_2$, $V_3$, $V_4$ sono parametri liberi del modello, aggiustabili per riprodurre le proprietà di eccitabilità desiderate.
+
+La funzione $\tau_W(V) = 1/\cosh(\cdot)$ è bell-shaped centrata in $V_3$: ha un massimo finito in $V = V_3$ e decade asintoticamente a zero per $|V - V_3| \to \infty$. Questa forma riproduce bene la dipendenza dal voltaggio della costante di tempo delle variabili di gate HH.
+
+\subsubsection{Morris-Lecar vs. FitzHugh-Nagumo: Confronto}
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}X|}
+    \hline
+    \textbf{Proprietà} & \textbf{FitzHugh-Nagumo} & \textbf{Morris-Lecar} \\
+    \hline
+    Anno & 1961 (Fitzhugh), 1962 (Nagumo) & 1981 \\
+    \hline
+    Forma di $m_\infty(V)$ & Polinomio (cubica) & $\tanh$ (sigmoide) \\
+    \hline
+    Forma di $W_\infty(V)$ & Lineare ($b_1 V + b_0$) & $\tanh$ (sigmoide) \\
+    \hline
+    Forma di $\tau_W(V)$ & Costante & $1/\cosh$ (bell-shaped) \\
+    \hline
+    Accuratezza quantitativa & Bassa (approssimazione grossolana) & Alta (riproduce bene i dati HH) \\
+    \hline
+    Trattabilità analitica & Alta (nullcline algebriche semplici) & Media (nullcline transcendenti) \\
+    \hline
+    Uso principale & Analisi qualitativa delle biforcazioni & Modellistica quantitativa \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Il modello ML è preferito nelle simulazioni numeriche quando si vuole una buona corrispondenza quantitativa con il modello HH 4D. Il modello FHN è preferito per l'analisi analitica: le sue nullcline polinomiali permettono di calcolare esplicitamente i punti fissi e di tracciare il diagramma di biforcazione in funzione di $I_{ext}$.
+\end{tcolorbox}
+
+\subsubsection{Anteprima: il Piano delle Fasi del Modello HH 2D}
+
+Il professore conclude la lezione annunciando che nella prossima lezione si discuterà in dettaglio il \textbf{piano delle fasi del modello HH 2D} (equivalentemente, FHN o ML). Gli strumenti principali saranno:
+
+\begin{itemize}
+    \item Le \textbf{nullcline}: le curve nel piano $(V, W)$ su cui rispettivamente $dV/dt = 0$ (nullcline di $V$, la cubica) e $dW/dt = 0$ (nullcline di $W$, la retta per FHN o la sigmoide per ML).
+    \item I \textbf{punti fissi}: le intersezioni delle due nullcline, dove entrambe le derivate sono nulle.
+    \item La \textbf{stabilità dei punti fissi}: determinata dagli autovalori della matrice Jacobiana del sistema valutata nel punto fisso.
+    \item Le \textbf{biforcazioni}: i valori critici del parametro $I_{ext}$ a cui la struttura dei punti fissi cambia qualitativamente (nascita o scomparsa di cicli limite).
+\end{itemize}
+
