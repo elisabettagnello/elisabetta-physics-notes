@@ -1,0 +1,922 @@
+\chapter{Lezione 8}
+
+
+\textbf{Argomenti:} riduzione dimensionale del modello HH, modello FitzHugh-Nagumo, modello Morris-Lecar, piano di fase, nullcline, campo vettoriale, punti di equilibrio, analisi lineare e Jacobiano, autovalori, classificazione dei punti fissi (nodo stabile/instabile, fuoco stabile/instabile, sella), eccitabilità di tipo I e tipo II, singolo spike vs. firing ripetitivo, cicli limite, biforcazioni, biforcazione saddle-node su cerchio invariante (SNIC), biforcazione di Hopf, curva f-I, termine esponenziale del campo di forza, modello integrate-and-fire esponenziale
+
+
+\section{Modelli Bidimensionali}
+
+\subsubsection{Il Problema della Dimensionalità}
+
+Il modello di \textbf{Hodgkin-Huxley} (HH) è un sistema dinamico a \textbf{quattro dimensioni}: le variabili di stato sono il potenziale di membrana $V$ e le tre variabili di gate $m$, $n$, $h$. Sebbene questo modello catturi con accuratezza quantitativa la forma del potenziale d'azione, la sua elevata dimensionalità rende difficile l'analisi geometrica della dinamica. Il piano di fase, strumento potentissimo per la comprensione qualitativa dei sistemi dinamici, è applicabile direttamente solo a sistemi bidimensionali. La lezione di oggi prosegue il filo conduttore della \textbf{riduzione dimensionale} affrontato nella lezione precedente, mostrando come i modelli a due dimensioni siano capaci di riprodurre l'intera ricchezza qualitativa del comportamento neuronale.
+
+
+La motivazione principale per studiare i modelli bidimensionali non è dunque la convenienza computazionale, bensì la possibilità di ottenere una \textbf{comprensione geometrica} della dinamica che il modello a quattro dimensioni non può offrire. Studiare la struttura del piano di fase permette di rispondere a domande qualitative fondamentali.
+
+\subsubsection{Le Approssimazioni che Portano alla Riduzione}
+
+La derivazione del modello ridotto a due dimensioni dal modello HH si basa su due approssimazioni fondamentali.
+
+\begin{enumerate}
+    \item \textbf{La variabile $m$ è ultra-rapida.} La costante di tempo $\tau_m(V)$ è dell'ordine di frazioni di millisecondo, enormemente più piccola di $\tau_n$ e $\tau_h$ (dell'ordine di alcuni millisecondi). Questa separazione di scala temporale giustifica l'approssimazione adiabatica $m \approx m_\infty(V)$: la variabile $m$ segue istantaneamente il potenziale di membrana, eliminando un grado di libertà.
+    \item \textbf{Le variabili $n$ e $h$ sono anti-correlate.} Analisi numeriche del modello HH mostrano che durante il potenziale d'azione, la variabile di inattivazione del sodio $h$ e la variabile di attivazione del potassio $n$ evolvono in modo approssimativamente anti-correlato: $h \approx 1 - n$ (con opportuna riscalatura). Questo permette di eliminare $h$ e di introdurre un'unica \textbf{variabile di recupero} $w$, che coincide essenzialmente con la corrente del potassio $I_K$.
+\end{enumerate}
+
+Il risultato è un sistema di soli due gradi di libertà:
+
+\begin{equation}
+C \frac{dV}{dt} = F(V, w) + I_{\text{ext}}
+\end{equation}
+
+\begin{equation}
+\frac{dw}{dt} = G(V, w)
+\end{equation}
+
+dove $F$ e $G$ sono funzioni non lineari che dipendono dal modello specifico considerato.
+
+
+
+\subsection{Il Modello FitzHugh-Nagumo}
+
+Il \textbf{modello di FitzHugh-Nagumo} (FHN) è stato introdotto da Richard FitzHugh nel 1961 (e implementato analogicamente da Nagumo nello stesso anno) come il prototipo minimalista di neurone bidimensionale eccitabile. Le sue equazioni sono:
+
+\begin{equation}
+\frac{dV}{dt} = V - \frac{V^3}{3} - w + I_{\text{ext}}
+\end{equation}
+
+\begin{equation}
+\tau \frac{dw}{dt} = V + a - bw
+\end{equation}
+
+dove $a$, $b$, $\tau$ sono parametri del modello con $\tau \gg 1$ (il recupero è più lento dell'eccitazione).
+
+Le caratteristiche salienti di questo modello sono:
+\begin{itemize}
+    \item Il \textbf{campo di forza per $V$} è un \textbf{polinomio cubico} $V - V^3/3 - w$, che dà alla nullcline del potenziale la sua forma caratteristica a "N rovesciata" con un ramo decrescente e due rami crescenti.
+    \item Il \textbf{campo di forza per $w$} è \textbf{lineare} in entrambe le variabili, il che rende la nullcline della variabile di recupero una \textbf{retta} nel piano di fase.
+\end{itemize}
+
+\subsubsection{Giustificazione dalla Riduzione HH}
+
+Il professore sottolinea che la scelta di una nullcline cubica per $V$ e lineare per $w$ non è arbitraria: essa è giustificata dalla riduzione del modello HH completo.
+
+Analizzando il modello HH ridotto a due dimensioni, si osserva che:
+\begin{itemize}
+    \item La nullcline $\dot{V} = 0$ del modello ridotto presenta effettivamente una forma \textbf{non monotona} con un andamento compatibile con un polinomio cubico: una curva con due estremi, una regione di pendenza negativa al centro, e due regioni di pendenza positiva ai lati.
+    \item La nullcline $\dot{w} = 0$ del modello ridotto si comporta in modo molto simile a una \textbf{retta} nel range di valori fisiologicamente rilevanti, perché la variabile di gate del potassio $n$ può essere linearizzata in quella regione.
+\end{itemize}
+
+Per comprendere quest'ultimo punto nel dettaglio: nella nullcline $\dot{w} = 0$ del FHN, l'equazione è $w = b_0 + b_1 V$ con $b_1 > 0$. Se $b_1$ è positivo, significa che al crescere di $V$ aumenta anche il valore di $w$ sull'equilibrio della variabile di recupero. Questo corrisponde al fatto che un potenziale di membrana più positivo apre progressivamente di più i canali del potassio, alzando il livello di equilibrio della corrente inibitoria. Questa linearizzazione è giustificata dal fatto che nella regione in cui $w$ varia significativamente (ovvero nella regione in cui il potassio si apre e si chiude), la relazione tra la variabile $n$ e il potenziale $V$ è approssimativamente lineare.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Mostrando le nullcline del modello HH ridotto, si verifica visivamente che la forma cubica per la nullcline di $V$ e quella lineare per $w$ non sono semplici scelte matematiche comode, ma riflettono fedelmente la struttura non lineare del modello biofisico completo. Il FitzHugh-Nagumo non è solo un modello fenomenologico: è una approssimazione controllata del modello di Hodgkin-Huxley.
+\end{tcolorbox}
+
+\subsubsection{Parametri del Modello FitzHugh-Nagumo e Regime di Eccitabilità}
+
+I parametri $a$, $b$ e $\tau$ del modello FHN controllano il regime di comportamento:
+
+\begin{itemize}
+    \item \textbf{$a$}: sposta il punto fisso della variabile di recupero (corrisponde al livello di corrente di base). Valori tipici: $a \approx 0.7$.
+    \item \textbf{$b$}: controlla la pendenza della nullcline lineare di $w$ (la retta nel piano di fase). Valori tipici: $b \approx 0.8$.
+    \item \textbf{$\tau$}: scala temporale relativa del recupero (tipicamente $\tau = 12.5$, imponendo che il recupero sia 12.5 volte più lento dell'eccitazione).
+\end{itemize}
+
+Variando $I_{\text{ext}}$ e i parametri $a$, $b$, $\tau$ si possono ottenere:
+\begin{enumerate}
+    \item \textbf{Regime di riposo} (punto fisso stabile): con $I_{\text{ext}}$ basso, il sistema ha un unico punto fisso stabile.
+    \item \textbf{Regime eccitabile} (singolo spike): con $I_{\text{ext}}$ di ampiezza sufficiente a superare la separatrice.
+    \item \textbf{Regime oscillatorio} (ciclo limite, firing ripetitivo): con $I_{\text{ext}}$ tale da destabilizzare il punto fisso.
+\end{enumerate}
+
+
+
+\subsection{Il Modello Morris-Lecar}
+
+\subsubsection{Formulazione del Modello Morris-Lecar}
+
+Il \textbf{modello di Morris-Lecar} (ML) fu introdotto da Catherine Morris e Harold Lecar nel 1981 per descrivere le oscillazioni del potenziale nella cellula muscolare del percebes (\textit{Barnacle}). È considerato un modello più vicino alla biofisica del modello HH rispetto al FHN, pur mantenendo la semplicità di due gradi di libertà. Le sue equazioni sono:
+
+\begin{equation}
+C \frac{dV}{dt} = -G_{Ca} \, m_\infty(V)(V - E_{Ca}) - G_K \, w(V - E_K) - G_L(V - E_L) + I_{\text{ext}}
+\end{equation}
+
+\begin{equation}
+\frac{dw}{dt} = \phi \, \frac{w_\infty(V) - w}{\tau_w(V)}
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $m_\infty(V) = \frac{1}{2}\left[1 + \tanh\!\left(\frac{V - V_1}{V_2}\right)\right]$ è la \textbf{funzione di attivazione del calcio} (istantanea, perché il calcio si attiva molto rapidamente)
+    \item $w_\infty(V) = \frac{1}{2}\left[1 + \tanh\!\left(\frac{V - V_3}{V_4}\right)\right]$ è il \textbf{valore di equilibrio della variabile di gate del potassio}
+    \item $\tau_w(V) = \frac{1}{\cosh\!\left(\frac{V - V_3}{2V_4}\right)}$ è la \textbf{costante di tempo} voltaggio-dipendente del gate del potassio
+    \item $\phi$ è un fattore di scala per la velocità del recupero
+    \item $G_{Ca}$, $G_K$, $G_L$ sono le conduttanze massime rispettivamente per calcio, potassio e leakage
+    \item $E_{Ca}$, $E_K$, $E_L$ sono i rispettivi potenziali di inversione
+\end{itemize}
+
+\subsubsection{Descrizione Fisica delle Variabili del Morris-Lecar}
+
+Il professore spiega in modo approfondito la fisica dietro le equazioni del Morris-Lecar. La variabile $w$ nel modello Morris-Lecar corrisponde alla \textbf{frazione di canali del potassio aperti} (o più precisamente, la probabilità di apertura del gate della conduttanza del potassio), in analogia con la variabile di gate $n$ nel modello di Hodgkin-Huxley. A differenza del FHN, dove $w$ è una variabile puramente fenomenologica, nel Morris-Lecar $w$ ha una diretta interpretazione biofisica.
+
+La funzione $w_\infty(V) = \frac{1}{2}[1 + \tanh((V-V_3)/V_4)]$ è la \textbf{curva di attivazione all'equilibrio} del canale del potassio: per $V \ll V_3$, quasi nessun canale è aperto ($w_\infty \to 0$); per $V \gg V_3$, quasi tutti sono aperti ($w_\infty \to 1$). Il parametro $V_3$ è il voltaggio di mezza-attivazione e $V_4$ controlla la pendenza della transizione.
+
+La costante di tempo $\tau_w(V) = 1/\cosh((V-V_3)/(2V_4))$ ha un massimo in $V = V_3$ e decresce sia a valori più positivi che più negativi. Questo modella il fatto che la velocità di apertura e chiusura dei canali ha un massimo intorno al voltaggio di mezza-attivazione e diminuisce agli estremi.
+
+Il calcio, a differenza del potassio, è assunto avere un'attivazione \textbf{istantanea} ($m \approx m_\infty(V)$, con $m_\infty(V) = \frac{1}{2}[1 + \tanh((V-V_1)/V_2)]$): i canali del Ca$^{2+}$ si aprono e chiudono su una scala temporale molto più rapida di quella del potassio, giustificando questa approssimazione adiabatica analoga all'approssimazione su $m$ nel modello HH.
+
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+    \hline
+    \textbf{Caratteristica} & \textbf{FitzHugh-Nagumo} & \textbf{Morris-Lecar} \\
+    \hline
+    Funzione di gate & Polinomiale (cubica) & Sigmoidale ($\tanh$) \\
+    \hline
+    Nullcline $\dot{V}=0$ & Cubica esplicita & Forma a S, sigmoide \\
+    \hline
+    Nullcline $\dot{w}=0$ & Retta & Curva sigmoidale \\
+    \hline
+    Scale temporali & Parametro $\tau$ fisso & $\tau_w(V)$ voltaggio-dipendente \\
+    \hline
+    Amplificazione & Lineare & Guadagno sigmoidale realistico \\
+    \hline
+    Ispirazione biofisica & Fenomenologica & Canali Ca$^{2+}$ e K$^+$ espliciti \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+La forma sigmoidale di $m_\infty(V)$ e $w_\infty(V)$ nel modello Morris-Lecar è analoga alle funzioni di attivazione che abbiamo introdotto per le variabili di gate del modello HH. Il vantaggio del Morris-Lecar è che, pur rimanendo bidimensionale, le sue non linearità sono biofisicamente più realistiche e possono essere messe in corrispondenza diretta con proprietà misurabili dei canali ionici.
+\end{tcolorbox}
+
+\subsection{Analisi del Piano di Fase: Nullcline e Punti di Equilibrio}
+
+\subsubsection{Il Piano di Fase come Spazio degli Stati}
+
+Un sistema bidimensionale della forma
+
+\begin{equation}
+\dot{V} = F(V, w)
+\end{equation}
+\begin{equation}
+\dot{w} = G(V, w)
+\end{equation}
+
+può essere visualizzato in un \textbf{piano di fase} avente come assi le due variabili di stato $V$ (potenziale di membrana, asse orizzontale) e $w$ (variabile di recupero, asse verticale). Ogni punto del piano di fase rappresenta un possibile \textbf{stato del sistema}, e l'evoluzione temporale è rappresentata da una \textbf{traiettoria} in questo spazio. Una proprietà fondamentale delle traiettorie in un sistema autonomo è che \textbf{non si intersecano mai}: per ogni punto del piano di fase esiste una e una sola traiettoria che vi passa.
+
+\subsubsection{Le Nullcline: Definizione e Significato}
+
+Le \textbf{nullcline} sono curve del piano di fase lungo le quali una delle due componenti del campo vettoriale si annulla:
+
+\begin{itemize}
+    \item \textbf{Nullcline di $V$} (nullcline rossa): l'insieme dei punti $(V, w)$ tali che $\dot{V} = F(V, w) = 0$.
+    Lungo questa curva, il campo vettoriale ha \textbf{solo componente verticale}: le traiettorie la attraversano in direzione verticale.
+    \item \textbf{Nullcline di $w$} (nullcline blu): l'insieme dei punti $(V, w)$ tali che $\dot{w} = G(V, w) = 0$.
+    Lungo questa curva, il campo vettoriale ha \textbf{solo componente orizzontale}: le traiettorie la attraversano in direzione orizzontale.
+\end{itemize}
+
+I punti di \textbf{intersezione} tra le due nullcline sono i \textbf{punti fissi} (o punti di equilibrio) del sistema: in questi punti entrambe le componenti del campo vettoriale sono nulle e il sistema non evolve.
+
+\subsubsection{Forma della Nullcline di $V$ nel Modello Ridotto HH}
+
+Per il modello HH ridotto, la nullcline $\dot{V} = 0$ si presenta come una \textbf{curva non monotona}: ha una prima regione di pendenza positiva per $V$ molto negativo, poi una regione di pendenza negativa intorno al potenziale di riposo, e infine torna a pendenza positiva per $V$ positivo. Questa forma è reminiscente di un \textbf{polinomio cubico} e giustifica retroattivamente l'assunzione del modello FitzHugh-Nagumo.
+
+La forma non monotona ha una spiegazione fisica precisa. Per impostare $\dot{V} = 0$, la corrente eccitatoria del sodio deve bilanciare la corrente inibitoria del potassio più la leakage. A potenziali molto negativi, la conduttanza del sodio è quasi nulla e serve poco potassio per bilanciarla: la nullcline è bassa. Al crescere di $V$, la conduttanza del sodio cresce esponenzialmente (la sigmoide $m_\infty(V)$ nella sua parte ascendente), per cui serve sempre più potassio per bilanciare $\rightarrow$ la nullcline sale steeply. Poi, quando $V$ è molto positivo, la forza motrice del Na$^+$ si riduce (ci si avvicina al potenziale di inversione $E_{Na}$) e la corrente del sodio satura: la nullcline scende di nuovo. Questo meccanismo produce esattamente il profilo a "N rovesciata" con i tre rami caratteristici.
+
+\subsubsection{Forma della Nullcline di $w$ nel Modello Ridotto HH}
+
+La nullcline $\dot{w} = 0$ nel modello ridotto è approssimativamente \textbf{lineare} nella regione fisiologicamente rilevante. Questo è dovuto al fatto che la variabile di gate del potassio $n$ può essere linearizzata nel range di $V$ in cui si osservano le variazioni di $w$. Anche questa osservazione giustifica l'assunzione del FHN di avere una nullcline lineare per la variabile di recupero.
+
+
+\subsection{Campo Vettoriale e Traiettorie nel Piano di Fase}
+
+\subsubsection{Direzione del Campo Vettoriale nelle Quattro Regioni}
+
+Le due nullcline dividono il piano di fase in quattro regioni, in ciascuna delle quali il segno di $\dot{V}$ e di $\dot{w}$ è costante. Conoscendo il segno di $F$ e $G$ in ciascuna regione, si può dedurre la direzione qualitativa del campo vettoriale.
+
+\textbf{Ragionamento per $\dot{V}$:}
+La variabile di recupero $w$ rappresenta la corrente inibitoria del potassio. Quando $w$ è grande, la corrente inibitoria domina sul campo eccitatorio, abbassando il potenziale di membrana. Pertanto:
+\begin{itemize}
+    \item \textbf{Al di sopra della nullcline $\dot{V} = 0$}: $w$ è grande, la corrente del K$^+$ domina, quindi $\dot{V} < 0$ (il potenziale diminuisce, il campo vettoriale punta verso sinistra).
+    \item \textbf{Al di sotto della nullcline $\dot{V} = 0$}: la corrente eccitatoria del Na$^+$ è dominante, quindi $\dot{V} > 0$ (il potenziale aumenta, il campo vettoriale punta verso destra).
+\end{itemize}
+
+\textbf{Ragionamento per $\dot{w}$:}
+\begin{itemize}
+    \item \textbf{A destra della nullcline $\dot{w} = 0$}: $V$ è grande, i canali del K$^+$ si aprono più intensamente, quindi $\dot{w} > 0$ (la variabile di recupero aumenta, il campo vettoriale punta verso l'alto).
+    \item \textbf{A sinistra della nullcline $\dot{w} = 0$}: la corrente del K$^+$ si rilassa, quindi $\dot{w} < 0$ (il campo vettoriale punta verso il basso).
+\end{itemize}
+
+\subsubsection{Composizione del Campo nelle Quattro Regioni}
+
+Combinando i segni delle due componenti, si ottiene la direzione del campo vettoriale nelle quattro regioni del piano di fase:
+
+\begin{enumerate}
+    \item \textbf{Regione in basso a destra} (sotto nullcline $V$, a destra di nullcline $w$): $\dot{V} > 0$, $\dot{w} > 0$ $\rightarrow$ campo diretto in alto a destra.
+    \item \textbf{Regione in alto a destra} (sopra nullcline $V$, a destra di nullcline $w$): $\dot{V} < 0$, $\dot{w} > 0$ $\rightarrow$ campo diretto in alto a sinistra.
+    \item \textbf{Regione in alto a sinistra} (sopra nullcline $V$, a sinistra di nullcline $w$): $\dot{V} < 0$, $\dot{w} < 0$ $\rightarrow$ campo diretto in basso a sinistra.
+    \item \textbf{Regione in basso a sinistra} (sotto nullcline $V$, a sinistra di nullcline $w$): $\dot{V} > 0$, $\dot{w} < 0$ $\rightarrow$ campo diretto in basso a destra.
+\end{enumerate}
+
+Questo schema di campo vettoriale spiega le traiettorie \textbf{orbitali} osservate nel piano di fase: il sistema segue un percorso rotazionale attorno al punto fisso.
+
+
+
+\subsection{Descrizione del Potenziale d'Azione nel Piano di Fase}
+
+\subsubsection{Perturbazione Iniziale: Lo Spostamento Orizzontale}
+
+Consideriamo il sistema all'equilibrio nel punto fisso $(V^*, w^*)$, che corrisponde al potenziale di riposo $E_m \approx -65 \; \text{mV}$. Quando si inietta un \textbf{impulso di corrente} di durata brevissima, si produce un improvviso cambiamento $\Delta V$ del potenziale di membrana. Poiché la durata dell'impulso è molto inferiore alle scale temporali della variabile di recupero $w$, quest'ultima non ha il tempo di cambiare: si ha cioè $\Delta w \approx 0$.
+
+Questo implica che la perturbazione corrisponde a uno \textbf{spostamento puramente orizzontale} nel piano di fase: il punto che rappresenta lo stato del sistema si sposta da $(V^*, w^*)$ a $(V^* + \Delta V, w^*)$. La perturbazione è quindi:
+
+\begin{equation}
+\Delta V = \frac{Q}{C} = \frac{I_{\text{pulse}} \cdot \Delta t}{C}
+\end{equation}
+
+dove $Q$ è la carica iniettata, $C$ la capacità di membrana, $I_{\text{pulse}}$ l'intensità e $\Delta t$ la durata dell'impulso.
+
+\subsubsection{Il Potenziale di Riposo nel Piano di Fase}
+
+Prima di descrivere la traiettoria del potenziale d'azione, vale la pena soffermarsi sullo \textbf{stato di riposo} nel piano di fase. All'equilibrio, il sistema si trova al punto fisso $(V^*, w^*)$, dove $V^* \approx -65 \; \text{mV}$ per il modello HH ridotto. Questo punto corrisponde alla situazione in cui la corrente del sodio, quella del potassio e la corrente di leakage si bilanciano esattamente. La variabile di recupero al riposo è $w^* = w_\infty(V^*)$, ovvero il valore di equilibrio della conduttanza del potassio al potenziale di riposo.
+
+Il professore sottolinea che questo punto fisso è un \textbf{fuoco stabile} in condizioni fisiologiche: se perturbato lievemente, il sistema ruota in spirale attorno a esso e converge. La frequenza di queste oscillazioni smorzate è determinata dalla parte immaginaria degli autovalori della Jacobiana $\omega = \text{Im}(\lambda_\pm)$, e la velocità di convergenza dalla parte reale $|S| = |\text{Re}(\lambda_\pm)|$.
+
+\subsubsection{Le Quattro Fasi del Potenziale d'Azione come Traiettoria}
+
+Se la perturbazione è sufficientemente grande da portare il sistema \textbf{oltre la separatrice} (soglia di eccitabilità), la traiettoria nel piano di fase descrive un'orbita che percorre le quattro fasi del potenziale d'azione:
+
+\textbf{Fase 1 — Fase crescente (rising phase):}\\
+Il sistema si trova nella regione in basso a destra del piano di fase ($\dot{V} > 0$, $\dot{w} > 0$). Il potenziale di membrana cresce rapidamente verso valori positivi perché la corrente del sodio (eccitatoria) domina. La traiettoria si dirige verso destra e verso l'alto, fino a quando non incrocia la nullcline $\dot{V} = 0$. All'incrocio, la traiettoria è \textbf{verticale} (solo componente $\dot{w} \neq 0$).
+
+\textbf{Fase 2 — Fase decrescente (decaying phase):}\\
+Il sistema ha superato la nullcline di $V$ e si trova ora nella regione in alto a destra ($\dot{V} < 0$, $\dot{w} > 0$). Il potenziale di membrana inizia a decrescere, mentre la variabile di recupero $w$ continua ad aumentare (il potassio si sta aprendo progressivamente). Quando la traiettoria incrocia la nullcline $\dot{w} = 0$, la traiettoria è \textbf{orizzontale}.
+
+\textbf{Fase 3 — Iperpolarizzazione:}\\
+Il sistema si trova nella regione in alto a sinistra ($\dot{V} < 0$, $\dot{w} < 0$). Il potenziale di membrana scende al di sotto del potenziale di riposo (iperpolarizzazione) mentre la variabile di recupero inizia a diminuire (i canali del K$^+$ si chiudono). Questa corrisponde alla \textbf{fase iperpolarizzante} successiva all'emissione dello spike.
+
+\textbf{Fase 4 — Recupero dell'equilibrio:}\\
+Il sistema si trova nella regione in basso a sinistra ($\dot{V} > 0$, $\dot{w} < 0$). Il potenziale di membrana risale verso il valore di riposo mentre $w$ diminuisce verso il suo valore di equilibrio. La traiettoria a spirale converge verso il punto fisso.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} In questa descrizione bidimensionale, il \textbf{periodo refrattario assoluto} corrisponde alla fase in cui il sistema si trova sulla ramo superiore del percorso, dove la variabile di recupero $w$ è molto elevata (i canali del potassio sono aperti al massimo e impediscono qualsiasi nuova eccitazione). Il \textbf{periodo refrattario relativo} corrisponde alla fase di recupero verso l'equilibrio, in cui il sistema è ancora nel territorio subthreshold ma non è del tutto insensibile a una nuova perturbazione.
+\end{tcolorbox}
+
+
+
+\subsection{La Separatrice: Soglia di Eccitabilità nel Piano di Fase}
+
+\subsubsection{Definizione della Separatrice}
+
+Non tutte le perturbazioni producono un potenziale d'azione completo. Esiste nel piano di fase una curva speciale, chiamata \textbf{separatrice} (o manifold stabile dell'orbita o threshold manifold), che separa le traiettorie che generano un potenziale d'azione da quelle che ritornano direttamente all'equilibrio.
+
+La separatrice è un \textbf{manifold monodimensionale} (una curva nel piano $V$-$w$) che passa in prossimità del ramo intermedio (quello di pendenza negativa) della nullcline cubica. La sua posizione definisce una \textbf{soglia dinamica}: per ogni valore di $w$, esiste un valore soglia di $V$ tale che:
+\begin{itemize}
+    \item Se la perturbazione porta il sistema \textbf{a destra della separatrice}, il sistema produrrà un potenziale d'azione percorrendo la grande orbita attorno alle nullcline.
+    \item Se la perturbazione porta il sistema \textbf{a sinistra della separatrice}, il sistema tornerà all'equilibrio con una piccola oscillazione smorzata (risposta sub-soglia).
+\end{itemize}
+
+\subsubsection{Risposta Sub-Soglia}
+
+Quando l'impulso di corrente è \textbf{inferiore alla soglia}, la perturbazione porta il sistema nella regione immediatamente a sinistra della separatrice. In questo caso:
+\begin{itemize}
+    \item Il sistema percorre una traiettoria che si avvicina brevemente al ramo intermedio della nullcline cubica, producendo una piccola depolarizzazione transitoria.
+    \item Il sistema poi attraversa la nullcline $\dot{V} = 0$ sul ramo sinistro (pendenza positiva) ed entra nella regione in cui $\dot{V} < 0$.
+    \item La traiettoria a spirale converge verso il punto fisso stabile, producendo oscillazioni smorzate attorno all'equilibrio.
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} La soglia di eccitabilità non è una retta verticale nel piano di fase, ma una curva. Questo implica che la "soglia" dipende dallo stato iniziale del sistema: se la variabile di recupero $w$ è già elevata (come durante la fase di recupero dopo uno spike), la soglia per un nuovo spike è più alta. Questo è il meccanismo del \textbf{periodo refrattario relativo} in questa descrizione bidimensionale.
+\end{tcolorbox}
+
+
+
+\section{Analisi Lineare e Jacobiano}
+
+\subsubsection{Linearizzazione Attorno al Punto Fisso}
+
+Per studiare la \textbf{stabilità locale} del punto fisso $(V^*, w^*)$, si ricorre alla \textbf{linearizzazione} del sistema. Si introducono le variabili perturbative:
+
+\begin{equation}
+\tilde{V} = V - V^*, \quad \tilde{w} = w - w^*
+\end{equation}
+
+che rappresentano la deviazione dallo stato di equilibrio. Sviluppando in serie di Taylor le funzioni $F$ e $G$ al primo ordine attorno al punto fisso, si ottiene il sistema lineare approssimato:
+
+\begin{equation}
+\frac{d}{dt}\begin{pmatrix} \tilde{V} \\ \tilde{w} \end{pmatrix} = J \begin{pmatrix} \tilde{V} \\ \tilde{w} \end{pmatrix}
+\end{equation}
+
+dove $J$ è la \textbf{matrice Jacobiana} valutata nel punto fisso:
+
+\begin{equation}
+J = \begin{pmatrix} \partial_V F & \partial_w F \\ \partial_V G & \partial_w G \end{pmatrix}\bigg|_{(V^*, w^*)}
+\end{equation}
+
+Il professore sottolinea che questa approssimazione lineare descrive solo il comportamento \textbf{locale} nell'intorno del punto fisso: le grandi orbite associate alla produzione del potenziale d'azione richiedono l'analisi non lineare globale.
+
+\subsubsection{Struttura della Jacobiana}
+
+Per i modelli bidimensionali considerati, gli elementi della Jacobiana hanno un'interpretazione geometrica precisa:
+
+\begin{itemize}
+    \item $\partial_V F = F_V$: \textbf{pendenza della nullcline $\dot{V} = 0$} nel punto fisso (coefficiente angolare della curva cubica)
+    \item $\partial_w F = F_w = -1$ (per FHN, è costante): forza dell'accoppiamento inibitorio di $w$ su $V$
+    \item $\partial_V G = G_V$: pendenza della nullcline $\dot{w} = 0$ (coefficiente angolare $m_w$ della retta)
+    \item $\partial_w G = G_w$: quanto rapidamente $w$ si rilassa verso il suo valore di equilibrio
+\end{itemize}
+
+Il professore introduce due parametri compatti:
+\begin{itemize}
+    \item $m_V$: coefficiente angolare (pendenza) della nullcline $\dot{V} = 0$ nel punto fisso
+    \item $m_w$: coefficiente angolare della nullcline $\dot{w} = 0$
+\end{itemize}
+
+Scegliendo opportunamente le unità di tempo in modo che la scala temporale di $V$ sia l'unità ($\tau_V = 1$), e normalizzando la forza inibitoria a $-1$, la Jacobiana assume la forma:
+
+\begin{equation}
+J = \begin{pmatrix} m_V & -1 \\ \varepsilon \, m_w & -\varepsilon \end{pmatrix}
+\end{equation}
+
+dove $\varepsilon = \tau_V / \tau_w \ll 1$ è il rapporto tra la scala temporale rapida del potenziale ($\tau_V \sim 20 \; \text{ms}$) e quella lenta del recupero ($\tau_w \sim 100 \; \text{ms}$).
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Il parametro $\varepsilon$ quantifica la separazione di scala temporale tra i due gradi di libertà. Il fatto che $\varepsilon \ll 1$ significa che la variabile di recupero $w$ è molto lenta rispetto al potenziale di membrana. Questa separazione di scala è cruciale per l'eccitabilità e per l'esistenza della soglia: senza di essa, il sistema non potrebbe produrre potenziali d'azione.
+\end{tcolorbox}
+
+
+
+\subsection{Classificazione dei Punti Fissi}
+
+\subsubsection{Il Polinomio Caratteristico e gli Autovalori}
+
+La stabilità del punto fisso è determinata dagli \textbf{autovalori} $\lambda_{\pm}$ della matrice Jacobiana $J$. Per una matrice $2 \times 2$, gli autovalori soddisfano il polinomio caratteristico:
+
+\begin{equation}
+\lambda^2 - \text{tr}(J) \cdot \lambda + \det(J) = 0
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $\text{tr}(J) = \lambda_+ + \lambda_-$ è la \textbf{traccia} della Jacobiana
+    \item $\det(J) = \lambda_+ \cdot \lambda_-$ è il \textbf{determinante} della Jacobiana
+\end{itemize}
+
+Introducendo la notazione $S = \text{tr}(J)/2$ (metà della traccia) e $D = \det(J)$, la soluzione esplicita per gli autovalori è:
+
+\begin{equation}
+\lambda_{\pm} = S \pm \sqrt{S^2 - D}
+\end{equation}
+
+\subsubsection{Autovalori Reali vs. Complessi}
+
+Il discriminante $\Delta = S^2 - D$ determina la natura degli autovalori:
+\begin{itemize}
+    \item Se $S^2 > D$ (cioè $\Delta > 0$): gli autovalori sono \textbf{reali} e distinti.
+    \item Se $S^2 = D$ (cioè $\Delta = 0$): autovalori reali coincidenti (caso di frontiera).
+    \item Se $S^2 < D$ (cioè $\Delta < 0$): gli autovalori sono \textbf{complessi coniugati} $\lambda_{\pm} = S \pm i\sqrt{D - S^2}$, il che implica una \textbf{componente oscillatoria} nella dinamica locale.
+\end{itemize}
+
+Nel piano $(S, D)$ (traccia/2 vs. determinante), questa frontiera è descritta dalla \textbf{parabola} $D = S^2$.
+
+\subsubsection{Relazione tra Autovalori e Traccia/Determinante}
+
+Il professore mostra esplicitamente come dalla conoscenza di $S$ e $D$ si ricavino le proprietà degli autovalori:
+
+\begin{itemize}
+    \item \textbf{Parte reale:} $\text{Re}(\lambda_\pm) = S \pm \text{Re}\!\left(\sqrt{S^2 - D}\right)$. Se si è fuori dalla parabola (autovalori reali), entrambi gli autovalori hanno parte reale uguale a $\lambda_\pm = S \pm \sqrt{S^2 - D}$. Se si è dentro la parabola (autovalori complessi coniugati), la parte reale di entrambi è uguale a $S$.
+    \item \textbf{Parte immaginaria:} Per autovalori complessi, $\text{Im}(\lambda_\pm) = \pm\sqrt{D - S^2}$. Questa è la \textbf{frequenza angolare} delle oscillazioni smorzate (o crescenti) attorno al punto fisso.
+\end{itemize}
+
+Da queste relazioni, il professore deduce le regioni nel piano $(S, D)$:
+\begin{itemize}
+    \item Per $S < 0$ e fuori dalla parabola ($S^2 > D > 0$): $\lambda_+$ e $\lambda_-$ entrambi reali negativi (nodo stabile).
+    \item Per $S > 0$ e fuori dalla parabola ($S^2 > D > 0$): $\lambda_+$ e $\lambda_-$ entrambi reali positivi (nodo instabile).
+    \item Per $S < 0$ e dentro la parabola ($D > S^2 > 0$): autovalori complessi con $\text{Re} = S < 0$ (fuoco stabile).
+    \item Per $S > 0$ e dentro la parabola: autovalori complessi con $\text{Re} = S > 0$ (fuoco instabile).
+    \item Per $D < 0$ (qualunque $S$): autovalori reali di segno opposto (sella).
+\end{itemize}
+
+\subsubsection{Rappresentazione nel Piano Traccia-Determinante}
+
+Nel piano $(S, D)$ si possono distinguere le seguenti regioni e i corrispondenti tipi di punti fissi:
+
+\textbf{Nodo stabile} (stable node):
+\begin{itemize}
+    \item Regione: $D > 0$, $S < 0$, $S^2 > D$ (fuori dalla parabola, semipiano sinistro)
+    \item Autovalori: entrambi reali e negativi
+    \item Dinamica: il sistema converge al punto fisso come \textbf{sovrapposizione di due esponenziali decrescenti}, senza oscillazioni
+\end{itemize}
+
+\textbf{Nodo instabile} (unstable node):
+\begin{itemize}
+    \item Regione: $D > 0$, $S > 0$, $S^2 > D$ (fuori dalla parabola, semipiano destro)
+    \item Autovalori: entrambi reali e positivi
+    \item Dinamica: il sistema diverge dal punto fisso come \textbf{sovrapposizione di due esponenziali crescenti}
+\end{itemize}
+
+\textbf{Fuoco stabile} (stable focus o stable spiral):
+\begin{itemize}
+    \item Regione: $D > S^2$ (dentro la parabola), $S < 0$
+    \item Autovalori: complessi coniugati con parte reale negativa $\text{Re}(\lambda_\pm) = S < 0$
+    \item Dinamica: il sistema \textbf{converge al punto fisso con oscillazioni smorzate} (spirale verso il centro)
+\end{itemize}
+
+\textbf{Fuoco instabile} (unstable focus o unstable spiral):
+\begin{itemize}
+    \item Regione: $D > S^2$ (dentro la parabola), $S > 0$
+    \item Autovalori: complessi coniugati con parte reale positiva
+    \item Dinamica: il sistema si \textbf{allontana dal punto fisso con oscillazioni crescenti} (spirale che diverge dal centro)
+\end{itemize}
+
+\textbf{Centro}:
+\begin{itemize}
+    \item Regione: $D > 0$, $S = 0$ (asse verticale, dentro la parabola)
+    \item Autovalori: immaginari puri $\lambda_\pm = \pm i\omega$
+    \item Dinamica: \textbf{orbite chiuse} (caso non genericamente stabile, tipico dei sistemi Hamiltoniani)
+\end{itemize}
+
+\textbf{Sella} (saddle point):
+\begin{itemize}
+    \item Regione: $D < 0$
+    \item Autovalori: uno reale positivo e uno reale negativo
+    \item Dinamica: il sistema converge lungo una \textbf{direzione instabile} (manifold instabile) e diverge lungo un'altra (\textbf{manifold stabile}). Un punto sella non è mai stabile.
+\end{itemize}
+
+
+\subsection{Scomposizione Spettrale e Soluzione del Sistema Linearizzato}
+
+\subsubsection{Autovettori come Base dello Spazio}
+
+Per risolvere il sistema lineare $\dot{\mathbf{x}} = J \mathbf{x}$ (dove $\mathbf{x} = (\tilde{V}, \tilde{w})^T$), il professore ricorre alla \textbf{scomposizione spettrale} della Jacobiana. Gli autovettori $|\lambda_+\rangle$ e $|\lambda_-\rangle$ (notazione bra-ket della meccanica quantistica, usata per convenienza) formano una base dello spazio bidimensionale se sono \textbf{ortonormali}:
+
+\begin{equation}
+\langle \lambda_+ | \lambda_+ \rangle = 1, \quad \langle \lambda_- | \lambda_- \rangle = 1
+\end{equation}
+\begin{equation}
+\langle \lambda_+ | \lambda_- \rangle = 0, \quad \langle \lambda_- | \lambda_+ \rangle = 0
+\end{equation}
+
+L'identità si decompone come:
+
+\begin{equation}
+\mathbb{1} = |\lambda_+\rangle\langle \lambda_+| + |\lambda_-\rangle\langle \lambda_-|
+\end{equation}
+
+e la Jacobiana si decompone come:
+
+\begin{equation}
+J = \lambda_+ |\lambda_+\rangle\langle \lambda_+| + \lambda_- |\lambda_-\rangle\langle \lambda_-|
+\end{equation}
+
+\subsubsection{Proiezione e Soluzione Temporale}
+
+Definendo le proiezioni del vettore di stato sugli autovettori:
+
+\begin{equation}
+a_{\pm}(t) = \langle \lambda_{\pm} | \mathbf{x}(t) \rangle
+\end{equation}
+
+il sistema lineare si disaccoppia in due equazioni \textbf{scalari indipendenti}:
+
+\begin{equation}
+\dot{a}_{\pm} = \lambda_{\pm} \, a_{\pm}
+\end{equation}
+
+ciascuna con soluzione elementare:
+
+\begin{equation}
+a_{\pm}(t) = a_{\pm}(0) \, e^{\lambda_{\pm} t}
+\end{equation}
+
+Lo stato del sistema al tempo $t$ è quindi:
+
+\begin{equation}
+\mathbf{x}(t) = a_+(t) |\lambda_+\rangle + a_-(t) |\lambda_-\rangle = a_+(0) e^{\lambda_+ t} |\lambda_+\rangle + a_-(0) e^{\lambda_- t} |\lambda_-\rangle
+\end{equation}
+
+\subsubsection{Interpretazione Fisica}
+
+Se gli autovalori sono complessi coniugati $\lambda_\pm = S \pm i\omega$ (con $\omega = \sqrt{D - S^2}$), l'esponenziale si decompone:
+
+\begin{equation}
+e^{\lambda_\pm t} = e^{St} \left[\cos(\omega t) \pm i\sin(\omega t)\right]
+\end{equation}
+
+Questo spiega il comportamento oscillatorio smorzato (o divergente) del fuoco stabile (o instabile): la parte reale $S$ determina se le oscillazioni sono smorzate ($S < 0$) o amplificate ($S > 0$), mentre la parte immaginaria $\omega$ determina la \textbf{frequenza di oscillazione}.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questa analisi per autovalori è esatta solo per il sistema linearizzato e vale quindi solo localmente, nell'intorno del punto fisso. Le grandi orbite associate ai potenziali d'azione sono fenomeni non lineari globali che non possono essere descritti da questa analisi locale. Tuttavia, l'analisi lineare è fondamentale per capire se il punto fisso è attrattivo o repulsivo, e con quale modalità (con o senza oscillazioni).
+\end{tcolorbox}
+
+
+
+\subsection{Condizioni per la Stabilità del Punto Fisso}
+
+\subsubsection{Condizioni Necessarie e Sufficienti}
+
+Un punto fisso è \textbf{stabile} (nel senso di Lyapunov, asintoticamente stabile) se e solo se le parti reali di entrambi gli autovalori sono negative:
+
+\begin{equation}
+\text{Re}(\lambda_+) < 0 \quad \text{e} \quad \text{Re}(\lambda_-) < 0
+\end{equation}
+
+Nelle variabili traccia e determinante, queste condizioni si esprimono come:
+
+\begin{equation}
+S = \frac{\text{tr}(J)}{2} < 0 \quad \text{e} \quad D = \det(J) > 0
+\end{equation}
+
+La condizione $D > 0$ garantisce che i due autovalori abbiano lo stesso segno reale (non si ha una sella). La condizione $S < 0$ garantisce che la parte reale comune sia negativa.
+
+\subsubsection{Interpretazione Geometrica: Pendenze delle Nullcline}
+
+Nella forma parametrica della Jacobiana introdotta nella Sezione 8.2:
+
+\begin{equation}
+J = \begin{pmatrix} m_V & -1 \\ \varepsilon \, m_w & -\varepsilon \end{pmatrix}
+\end{equation}
+
+la traccia e il determinante sono:
+
+\begin{equation}
+\text{tr}(J) = m_V - \varepsilon
+\end{equation}
+
+\begin{equation}
+\det(J) = -m_V \varepsilon + \varepsilon \, m_w = \varepsilon(m_w - m_V)
+\end{equation}
+
+Le condizioni di stabilità diventano quindi:
+
+\begin{itemize}
+    \item $\text{tr}(J) < 0 \Rightarrow m_V < \varepsilon$: la \textbf{pendenza della nullcline $\dot{V}=0$} deve essere inferiore a $\varepsilon = \tau_V/\tau_w$.
+    \item $\det(J) > 0 \Rightarrow m_w > m_V$: la \textbf{pendenza della nullcline $\dot{w}=0$} deve essere maggiore di quella della nullcline $\dot{V}=0$.
+\end{itemize}
+
+\subsubsection{Significato Pratico per i Modelli Neuronali}
+
+Il professore chiarisce il ruolo numerico del parametro $\varepsilon$. La costante di tempo della membrana (che governa $V$) è tipicamente dell'ordine di $\tau_V \sim 20 \; \text{ms}$, mentre la costante di tempo del recupero (che governa $w$, ossia la cinetica del potassio) è $\tau_w \sim 100 \; \text{ms}$. Quindi:
+
+\begin{equation}
+\varepsilon = \frac{\tau_V}{\tau_w} \approx \frac{20}{100} = 0.2
+\end{equation}
+
+Poiché $\varepsilon = \tau_V/\tau_w \ll 1$ (tipicamente $\approx 20/100 = 0.2$), la condizione di stabilità sull'elemento diagonale della Jacobiana diventa approssimativamente:
+
+\begin{equation}
+m_V < \varepsilon \approx 0 \quad \Rightarrow \quad m_V < 0
+\end{equation}
+
+ovvero la \textbf{pendenza della nullcline del potenziale deve essere negativa} nel punto fisso.
+
+Nel piano di fase del modello FHN (o HH ridotto), questo corrisponde al fatto che il punto fisso deve trovarsi sul \textbf{ramo intermedio decrescente} della curva cubica, non sui due rami laterali crescenti. Quando il punto di equilibrio è sul ramo decrescente, la pendenza locale è negativa e il sistema è stabile.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Ecco il significato fisico di questa condizione: sul ramo decrescente della nullcline cubica, un piccolo aumento del potenziale di membrana fa sì che la forza $F$ diventi negativa (cioè il sistema tende a tornare verso il punto fisso). Sui rami crescenti, invece, l'aumento di $V$ aumenta la forza $F$, producendo un'amplificazione positiva (feedback positivo) che destabilizza il punto fisso.
+\end{tcolorbox}
+
+
+
+\subsection{Regime di Firing Ripetitivo}
+
+\subsubsection{Effetto di una Corrente Costante Sulle Nullcline}
+
+Quando si inietta una \textbf{corrente costante} $I_{\text{ext}} > 0$ nel neurone, l'equazione per $\dot{V}$ diventa:
+
+\begin{equation}
+\dot{V} = F(V, w) + \frac{I_{\text{ext}}}{C}
+\end{equation}
+
+Questo aggiunge un \textbf{offset positivo} alla forza che governa il potenziale. La condizione di nullcline $\dot{V} = 0$ diventa $F(V, w) = -I_{\text{ext}}/C$, il che equivale a \textbf{traslare verticalmente verso l'alto} la nullcline cubica (in termini di $w$). In altre parole, per bilanciare la corrente eccitatoria aggiuntiva, è necessaria una corrente inibitoria del potassio $w$ maggiore: la nullcline si sposta verso valori più alti di $w$.
+
+\subsubsection{Spostamento del Punto Fisso con l'Intensità di Corrente}
+
+Al crescere dell'intensità della corrente iniettata $I_{\text{ext}}$, il punto fisso si sposta lungo la curva cubica:
+\begin{itemize}
+    \item Per \textbf{correnti basse}: il punto fisso rimane sul ramo decrescente della curva cubica, a basso $V$ e basso $w$. Il sistema è stabile e risponde con oscillazioni smorzate.
+    \item Per \textbf{correnti moderate}: il punto fisso si sposta verso l'alto lungo la curva cubica e, a un certo valore critico di $I_{\text{ext}}$, raggiunge il ramo decrescente vicino al massimo locale. Qui la pendenza è ancora negativa ma diventa meno negativa (e poi zero nel massimo).
+    \item Per \textbf{correnti elevate}: il punto fisso si sposta oltre il massimo della curva cubica, sul ramo ascendente destro. La pendenza della nullcline diventa \textbf{positiva} e il punto fisso diventa \textbf{instabile} (fuoco instabile).
+\end{itemize}
+
+\subsubsection{Firing Ripetitivo e Ciclo Limite}
+
+Quando il punto fisso diventa instabile (ramo crescente della cubica), il sistema non può più convergere all'equilibrio. Le traiettorie nel piano di fase non si possono avvolgere in spirale attorno al punto fisso (poiché questo è instabile), ma devono necessariamente percorrere \textbf{orbite grandi}. Se il sistema è dissipativo (non conservativo), queste orbite grandi possono stabilizzarsi su un \textbf{ciclo limite} stabile.
+
+Un \textbf{ciclo limite} è una traiettoria chiusa isolata nel piano di fase: il sistema ripete indefinitamente lo stesso percorso, corrispondendo a un'oscillazione periodica. Nel contesto neuronale, questo corrisponde alla \textbf{generazione di potenziali d'azione ripetitivi} (spike train) in risposta a una corrente sostenuta.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Il passaggio da un punto fisso stabile a un ciclo limite, al variare del parametro di controllo $I_{\text{ext}}$, è un esempio di \textbf{biforcazione}. Il tipo di biforcazione determina molte proprietà della risposta neuronale, in particolare la relazione frequenza-corrente ($f$-$I$). Distingueremo nel dettaglio due tipi principali di biforcazione nei prossimi paragrafi.
+\end{tcolorbox}
+
+
+\section{Biforcazioni}
+
+
+Una \textbf{biforcazione} è una modificazione qualitativa della struttura degli attrattori di un sistema dinamico al variare di un parametro di controllo. Nel contesto dei modelli neuronali, il parametro di controllo principale è la corrente iniettata $I_{\text{ext}}$. Al variare di $I_{\text{ext}}$, il sistema può passare da un regime di riposo (punto fisso stabile) a un regime di firing (ciclo limite) attraverso una biforcazione.
+
+Il professore precisa che una biforcazione non è semplicemente un cambiamento quantitativo del comportamento, ma un cambiamento \textbf{qualitativo}: prima della biforcazione il sistema ha un attrattore di un certo tipo (ad esempio un punto fisso), dopo la biforcazione l'attrattore cambia natura (ad esempio diventa un ciclo limite). La corrente $I_c$ alla quale avviene la biforcazione è la \textbf{corrente reobase} o \textbf{corrente critica}: è la minima corrente costante che può indurre il firing ripetitivo.
+
+Le proprietà della biforcazione determinano:
+\begin{itemize}
+    \item Con quale \textbf{minima frequenza} il neurone può sparare
+    \item Se la transizione al firing è \textbf{continua o discontinua} (isteresi)
+    \item La forma della \textbf{curva frequenza-corrente} ($f$-$I$)
+    \item Se il neurone è sensibile a \textbf{perturbazioni veloci} (oscillazioni) o a \textbf{segnali lenti} (variazione graduale dell'input)
+\end{itemize}
+
+Nella classificazione di Hodgkin del 1948, le due classi principali di eccitabilità — Tipo I e Tipo II — corrispondono esattamente alle due biforcazioni che analizzeremo: SNIC e Hopf rispettivamente.
+
+\subsubsection{Biforcazione Saddle-Node su Cerchio Invariante (SNIC)}
+
+La \textbf{biforcazione SNIC} (Saddle-Node on Invariant Circle) è caratteristica dei neuroni di \textbf{Tipo I} (o \textbf{classe 1 di eccitabilità} nella classificazione di Hodgkin). Il suo meccanismo è il seguente:
+
+\textbf{Stato di riposo} (corrente bassa):\\
+Il piano di fase presenta un \textbf{punto fisso stabile} (nodo stabile o fuoco stabile) e un \textbf{punto sella} nelle vicinanze. Esiste già nel piano di fase un \textbf{cerchio invariante} (una curva chiusa non attraversata dalle traiettorie) che passa vicino al punto sella e circonda il punto fisso stabile.
+
+\textbf{Al valore critico di corrente} $I_{\text{ext}} = I_{\text{SNIC}}$:\\
+Il punto fisso stabile e il punto sella si \textbf{avvicinano e si fondono} in un singolo punto di tipo \textbf{saddle-node}. Questo punto si trova esattamente sul cerchio invariante.
+
+\textbf{Dopo la biforcazione} (corrente elevata):\\
+Il saddle-node scompare dal piano di fase, lasciando il cerchio invariante come \textbf{ciclo limite stabile} su cui il sistema percorre orbite chiuse. Il sistema inizia a generare potenziali d'azione ripetitivi.
+
+\textbf{Proprietà chiave della biforcazione SNIC:}
+\begin{itemize}
+    \item Alla biforcazione, il \textbf{periodo del ciclo limite} $T \to \infty$ (la frequenza tende a zero): il neurone inizia a sparare con frequenza arbitrariamente bassa.
+    \item La relazione frequenza-corrente ha andamento $f \propto \sqrt{I_{\text{ext}} - I_{\text{SNIC}}}$ per $I_{\text{ext}}$ appena sopra la soglia.
+    \item La transizione è \textbf{continua} (non c'è isteresi): il neurone passa gradualmente dal riposo al firing.
+\end{itemize}
+
+
+\subsection{Biforcazione di Hopf }
+
+La \textbf{biforcazione di Hopf} è la transizione caratteristica dei neuroni di \textbf{Tipo II} (classe 2 di Hodgkin). Il meccanismo è profondamente diverso dalla SNIC:
+
+\textbf{Stato di riposo} (corrente bassa):\\
+Il piano di fase ha un \textbf{fuoco stabile} come unico attrattore. Le traiettorie convergono a spirale al punto fisso.
+
+\textbf{Al valore critico di corrente} $I_{\text{ext}} = I_H$:\\
+La parte reale degli autovalori complessi del fuoco stabile attraversa zero: $\text{Re}(\lambda_\pm) = S(I_H) = 0$. Il fuoco stabile \textbf{perde la sua stabilità} e diventa un fuoco instabile.
+
+\textbf{Dopo la biforcazione} (corrente superiore alla soglia):\\
+Il fuoco instabile è circondato da un \textbf{piccolo ciclo limite stabile} che emerge dal punto fisso. L'ampiezza del ciclo limite cresce con $I_{\text{ext}}$ a partire da zero (biforcazione \textbf{supercritica}).
+
+Nella variante \textbf{sottocritica}, il ciclo limite instabile circonda il fuoco stabile prima della biforcazione, e la transizione è discontinua (con isteresi).
+
+\textbf{Proprietà chiave della biforcazione di Hopf:}
+\begin{itemize}
+    \item Alla biforcazione, la \textbf{frequenza del ciclo limite} $f \to f_0 \neq 0$: il neurone inizia a sparare con frequenza \textbf{finita} non nulla (la frequenza del ciclo limite al punto di biforcazione è $f_0 = \omega/(2\pi) = \sqrt{D - S^2}/(2\pi)$).
+    \item La curva $f$-$I$ ha un \textbf{salto}: da frequenza zero (riposo) il sistema passa bruscamente a una frequenza minima $f_0 > 0$ alla soglia.
+    \item Nel caso supercritico, la transizione è \textbf{continua} nell'ampiezza ma con frequenza minima non nulla.
+\end{itemize}
+
+
+
+\subsection{Confronto Tipo I vs. Tipo II: Curva $f$-$I$}
+
+
+La \textbf{curva $f$-$I$} (frequenza media di firing in funzione della corrente iniettata) è una delle misure sperimentali più informative sul tipo di eccitabilità di un neurone. Essa riflette direttamente il tipo di biforcazione attraverso cui avviene la transizione riposo $\rightarrow$ firing.
+
+\subsubsection{Tipo I (Biforcazione SNIC)}
+
+Nei neuroni di Tipo I:
+\begin{itemize}
+    \item La soglia di firing corrisponde alla biforcazione SNIC.
+    \item Per correnti appena sopra la soglia $I_c$, la frequenza di firing cresce \textbf{continuamente da zero} secondo la legge:
+    \begin{equation}
+    f \propto \sqrt{I_{\text{ext}} - I_c} \quad \text{per} \quad I_{\text{ext}} \gtrsim I_c
+    \end{equation}
+    \item La curva $f$-$I$ è una curva che parte dall'origine (nel piano $I_{\text{ext}}$-$f$) con pendenza infinita e poi si appiattisce.
+    \item Il neurone è in grado di generare potenziali d'azione con \textbf{frequenza arbitrariamente bassa}: può codificare segnali deboli con bassa frequenza di firing.
+\end{itemize}
+
+\subsubsection{Tipo II (Biforcazione di Hopf)}
+
+Nei neuroni di Tipo II:
+\begin{itemize}
+    \item La soglia di firing corrisponde alla biforcazione di Hopf.
+    \item Per correnti appena sopra la soglia $I_H$, il neurone inizia a sparare con una \textbf{frequenza minima non nulla} $f_0$:
+    \begin{equation}
+    f(I_H^+) = f_0 > 0
+    \end{equation}
+    \item La curva $f$-$I$ ha un \textbf{salto discontinuo} alla soglia: non esiste una frequenza di firing intermedia tra 0 e $f_0$.
+    \item Il neurone è un \textbf{oscillatore a frequenza preferenziale} e risponde in modo tutto-o-niente alla soglia.
+    \item Dopo la transizione, la frequenza cresce con la corrente in modo quasi lineare.
+\end{itemize}
+
+\subsubsection{La Curva $f$-$I$ come Strumento Diagnostico Sperimentale}
+
+Prima di presentare la tabella comparativa, il professore spiega come la curva $f$-$I$ venga misurata in laboratorio e come permetta di identificare il tipo di eccitabilità:
+
+\begin{enumerate}
+    \item Si prepara una registrazione in patch-clamp in configurazione whole-cell su un neurone isolato (o in slice).
+    \item Si iniettano \textbf{gradini di corrente} di ampiezza crescente ($I_1 < I_2 < \ldots < I_n$), ciascuno della durata di $0.5$–$1 \; \text{s}$.
+    \item Per ogni gradino, si conta il numero di spike emessi e si calcola la frequenza media $f = N_{\text{spike}}/\Delta t$.
+    \item Si costruisce il grafico $f$ vs. $I$.
+\end{enumerate}
+
+Un neurone di \textbf{Tipo I} mostrerà:
+\begin{itemize}
+    \item Nessun firing per $I < I_c$
+    \item Per $I$ appena sopra $I_c$: firing molto sporadico (1–2 Hz), con lunghi periodi inter-spike
+    \item Crescita quasi continua della frequenza con la corrente
+\end{itemize}
+
+Un neurone di \textbf{Tipo II} mostrerà:
+\begin{itemize}
+    \item Nessun firing per $I < I_H$
+    \item Per $I$ appena sopra $I_H$: firing brusco a frequenza $f_0$ (tipicamente $20$–$50 \; \text{Hz}$ per molti neuroni corticali)
+    \item Curva $f$-$I$ che parte da $f_0$ e poi cresce con andamento quasi lineare
+\end{itemize}
+
+\subsubsection{Implicazioni Funzionali}
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3cm}|X|X|}
+    \hline
+    \textbf{Proprietà} & \textbf{Tipo I (SNIC)} & \textbf{Tipo II (Hopf)} \\
+    \hline
+    Biforcazione & Saddle-Node su cerchio invariante & Hopf (supercritica o sottocritica) \\
+    \hline
+    Frequenza alla soglia & $f \to 0$ (continua) & $f \to f_0 > 0$ (salto) \\
+    \hline
+    Modulazione frequenza & Ampia gamma, da 0 in su & Gamma limitata attorno a $f_0$ \\
+    \hline
+    Sensibilità a correnti deboli & Alta (risponde con $f$ bassa) & Bassa (non risponde sotto soglia) \\
+    \hline
+    Codifica segnale & Tasso di firing (rate coding) & Presenza/assenza dello spike \\
+    \hline
+    Esempi biologici & Neuroni piramidali corticali (alcune classi) & Neuroni del neurone B del ganglio viscerale \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questa distinzione tra Tipo I e Tipo II non è solo teorica: è misurabile sperimentalmente iniettando rampe di corrente lentamente crescenti e registrando la frequenza di firing. Un neurone di Tipo I inizierà a sparare con frequenza bassa (intorno a pochi Hz), mentre un neurone di Tipo II inizierà bruscamente con una frequenza di almeno 20-40 Hz, senza frequenze intermedie. Questa classificazione è stata proposta dallo stesso Hodgkin nel 1948, prima ancora della pubblicazione del modello matematico del 1952.
+\end{tcolorbox}
+
+
+\section{Dinamica del Modello HH Ridotto con Corrente Costante}
+
+\subsubsection{Tre Regimi al Crescere della Corrente}
+
+Il professore presenta in dettaglio tre casi distinti per il modello HH ridotto (o equivalentemente, FitzHugh-Nagumo) al crescere dell'intensità della corrente costante iniettata:
+
+\textbf{Caso 1 — Corrente bassa} (sotto-soglia):
+\begin{itemize}
+    \item La nullcline $\dot{V} = 0$ è traslata verso l'alto di poco.
+    \item Il nuovo punto fisso si trova ancora sul ramo decrescente della cubica con pendenza $m_V < 0$.
+    \item Il punto fisso è un \textbf{fuoco stabile}: le traiettorie convergono a spirale.
+    \item Il sistema risponde con una singola oscillazione smorzata senza produzione di spike.
+    \item La costante di tempo di rilassamento è determinata dagli autovalori del fuoco stabile.
+\end{itemize}
+
+\textbf{Caso 2 — Corrente intermedia} (vicino alla soglia):\\
+Il professore descrive un caso particolarmente interessante: la nullcline è salita abbastanza da portare il punto fisso vicino al massimo della curva cubica, dove la pendenza è quasi nulla. La pendenza $m_V$ è ancora lievemente negativa, ma si avvicina a zero. Il punto fisso è ancora un fuoco stabile, ma la separatrice si è spostata vicino al punto fisso.
+
+In questo regime, dal punto fisso stabile si produce una \textbf{prima eccitazione a spike}: la traiettoria percorre la grande orbita (potenziale d'azione), ma poi — nella fase di recupero — il sistema incontra una separatrice ora diversa dall'iniziale e torna al punto fisso con oscillazioni smorzate. Si produce \textbf{un solo spike} seguito da smorzamento.
+
+\textbf{Caso 3 — Corrente elevata} (sopra la biforcazione):
+\begin{itemize}
+    \item La nullcline è salita ulteriormente portando il punto fisso sul ramo crescente della cubica, con $m_V > 0$.
+    \item Il punto fisso diventa \textbf{instabile} (fuoco instabile se siamo dentro la parabola $D > S^2$, oppure nodo instabile).
+    \item Il sistema si trova su un \textbf{ciclo limite}: genera potenziali d'azione ripetitivi indefinitamente.
+    \item La frequenza di firing dipende dall'intensità di corrente.
+\end{itemize}
+
+\subsubsection{Meccanismo del Singolo Spike con Ritorno Smorzato}
+
+Il professore spiega con attenzione il meccanismo del caso intermedio (un singolo spike seguito da smorzamento), che è rappresentativo dell'\textbf{eccitabilità} in senso stretto:
+
+\begin{enumerate}
+    \item Il sistema parte dal punto fisso stabile $(V^*, w^*)$.
+    \item La corrente aumenta istantaneamente (step): la nullcline si sposta verso l'alto.
+    \item Il nuovo punto fisso (ancora stabile) è a un $w$ più alto e un $V$ più alto, ma vicino alla separatrice spostata.
+    \item La prima traiettoria verso il nuovo equilibrio attraversa la separatrice e percorre la grande orbita $\rightarrow$ primo spike.
+    \item Dopo il primo spike, il sistema rientra nella fase di recupero con $w$ ancora elevato.
+    \item In questa condizione, il sistema è sulla \textbf{sinistra della separatrice del nuovo equilibrio}: le successive traiettorie non sono capaci di generare un altro spike.
+    \item Il sistema converge a spirale al nuovo punto fisso: smorzamento oscillatorio.
+\end{enumerate}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questo comportamento — un singolo spike di transizione seguito dall'adattamento a un nuovo equilibrio — è esattamente ciò che si osserva sperimentalmente in molti neuroni corticali in risposta a un gradino di corrente di intensità moderata. Si chiama \textbf{eccitabilità di Tipo I} nel senso fenomenologico: il neurone risponde all'inizio della stimolazione con un burst iniziale e poi si adatta silenziosamente.
+\end{tcolorbox}
+
+
+
+\section{Il Firing Ripetitivo}
+
+Il professore spiega in dettaglio perché il firing ripetitivo è possibile anche quando il punto fisso è ancora stabile: la chiave è che la \textbf{separatrice si sposta} al variare della corrente iniettata.
+
+Quando la corrente $I_{\text{ext}}$ aumenta, la nullcline di $V$ si sposta verso l'alto. Questo porta il punto fisso a posizioni diverse lungo la curva cubica. Ma anche la separatrice, che è legata alla geometria delle nullcline, si sposta di conseguenza. In particolare, la separatrice può avvicinarsi così tanto al punto fisso stabile che praticamente qualsiasi perturbazione porta il sistema oltre la soglia.
+
+\subsubsection{Meccanismo del Secondo Spike nel Firing Ripetitivo}
+
+Nel regime di ciclo limite, il meccanismo che porta alla generazione del secondo (e successivi) spike è il seguente:
+
+\begin{enumerate}
+    \item Dopo il primo spike, il sistema si trova in fase di recupero con $w$ elevato (iperpolarizzazione).
+    \item La corrente costante $I_{\text{ext}}$ continua a "spingere" il sistema: compensa la corrente iperpolarizzante del potassio.
+    \item Il punto fisso (istantaneo) del sistema è instabile, quindi il sistema non può convergere verso di esso.
+    \item Il sistema è costretto a percorrere nuovamente la grande orbita $\rightarrow$ secondo spike.
+    \item Il processo si ripete indefinitamente, generando un treno di spike periodico.
+\end{enumerate}
+
+\subsubsection{Periodo del Ciclo Limite e Frequenza di Firing}
+
+La \textbf{frequenza di firing} nel regime di ciclo limite è semplicemente $f = 1/T$, dove $T$ è il periodo dell'orbita chiusa. Il periodo dipende dalla geometria del ciclo limite nel piano di fase e dalla velocità con cui il sistema percorre le diverse parti dell'orbita.
+
+In generale, il sistema trascorre la maggior parte del tempo nella fase di recupero (ramo in basso a sinistra del piano di fase), perché in quella regione il campo vettoriale è più debole (la variabile di recupero si rilassa lentamente). La fase di amplificazione esplosiva (rising phase) è invece molto rapida. Questo spiega perché la durata dello spike (circa $1 \; \text{ms}$) sia molto più breve del periodo inter-spike, che può essere di decine di millisecondi.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} La velocità con cui il sistema percorre il ramo lento del ciclo limite è essenzialmente determinata dalla scala temporale $\tau_w$ della variabile di recupero. Questo è il collo di bottiglia che limita la frequenza massima di firing: non si può sparare più velocemente di quanto $w$ riesca a rilassarsi. Una corrente inibitoria del potassio con $\tau_w$ breve consente frequenze di firing più alte.
+\end{tcolorbox}
+
+\subsubsection{Visualizzazione nel Piano di Fase}
+
+Nel piano di fase, il \textbf{ciclo limite} appare come una \textbf{curva chiusa stabile}: le traiettorie che iniziano all'interno del ciclo limite convergono verso di esso dall'interno, e quelle che iniziano all'esterno convergono verso di esso dall'esterno. Questo contrasta con il caso del punto fisso stabile (in cui tutte le traiettorie nelle vicinanze convergono al punto).
+
+Il ciclo limite nel piano di fase del modello FHN/HH ridotto ha la forma caratteristica di una grande orbita che:
+\begin{itemize}
+    \item Si trova sulla destra (alto $V$) corrispondente alla fase di depolarizzazione
+    \item Attraversa la nullcline $\dot{V} = 0$ con traiettoria verticale (massimo del potenziale d'azione)
+    \item Si porta in alto a sinistra (alto $w$, basso $V$) corrispondente all'iperpolarizzazione
+    \item Attraversa la nullcline $\dot{w} = 0$ con traiettoria orizzontale
+    \item Ritorna al punto di partenza passando per la fase di recupero
+\end{itemize}
+
+
+\section{Il Campo di Forza Esponenziale: Verso l'Integrate-and-Fire Esponenziale}
+
+\subsubsection{Il Termine Esponenziale nel Campo di Forza}
+
+Il professore introduce un'analisi quantitativa fondamentale: la struttura del \textbf{campo di forza} $F(V, w)$ nella direzione di $V$, al variare di $w$.
+
+Nel modello HH ridotto, il campo di forza per il potenziale è dominato dalla corrente del sodio attraverso il termine $m_\infty(V)$. Come discusso nelle lezioni precedenti, $m_\infty(V)$ ha una forma sigmoidale. Nella regione in cui si sviluppa la \textbf{fase crescente} del potenziale d'azione (la fase di amplificazione esplosiva), la funzione $m_\infty(V)$ è ancora nella sua parte ascendente ripida, e può essere approssimata dalla sua espansione esponenziale:
+
+\begin{equation}
+m_\infty(V) \approx e^{(V - V_T)/\Delta_T}
+\end{equation}
+
+dove $V_T$ è la \textbf{soglia di sparo} e $\Delta_T$ è la \textbf{pendenza della soglia} (sharpness of threshold).
+
+\subsubsection{Evidenza Numerica del Comportamento Esponenziale}
+
+Il professore mostra un grafico notevole: per sezioni orizzontali fisse del piano di fase (a $w = \text{costante}$), si traccia $F(V, w)$ in funzione di $V$ su scala \textbf{logaritmica} dell'asse $y$.
+
+L'osservazione chiave è:
+\begin{itemize}
+    \item Nella regione di potenziale attorno alla soglia, la curva $F$ vs. $V$ è approssimativamente una \textbf{retta su scala logaritmica}.
+    \item Una retta su scala logaritmica corrisponde a una \textbf{funzione esponenziale} su scala lineare.
+    \item Questo vale sia per il modello HH ridotto che per il modello Morris-Lecar: entrambi mostrano un \textbf{comportamento esponenziale} di $F$ nella regione sub-soglia e peri-soglia.
+\end{itemize}
+
+Il professore mostra due sezioni specifiche del campo di forza:
+
+\textbf{Sezione a $w = 0.3$:}\\
+- Si traccia $F(V, 0.3)$ vs. $V$ su scala semilogaritmica.\\
+- Per potenziali compresi tra circa $-65$ e $-40 \; \text{mV}$, il grafico mostra un andamento in prima approssimazione lineare su scala log (cioè esponenziale su scala lineare).\\
+- La pendenza della retta semilog corrisponde alla costante $1/\Delta_T$ del termine esponenziale.
+
+\textbf{Sezione a $w = 0.84$:}\\
+- Si traccia $F(V, 0.84)$ vs. $V$ su scala semilogaritmica.\\
+- La forma è qualitativamente identica: retta semilog nella regione sub-soglia.\\
+- Le due curve (a $w = 0.3$ e $w = 0.84$) sono \textbf{quasi coincidenti} nella regione di amplificazione: il termine esponenziale domina e $w$ non modifica significativamente il comportamento.\\
+- Una leggera differenza appare solo a potenziali più positivi, dove la corrente inibitoria $w$ non è più trascurabile rispetto all'amplificazione del sodio.
+
+La conclusione del professore è che \textbf{nella regione peri-soglia e nella fase di amplificazione esplosiva}:
+
+\begin{equation}
+F(V, w) \approx -G_L(V - E_L) + G_L \Delta_T \exp\!\left(\frac{V - V_T}{\Delta_T}\right) - w
+\end{equation}
+
+dove i parametri $\Delta_T$ e $V_T$ sono determinati dalla forma di $m_\infty(V)$ (la funzione di attivazione del sodio nel modello HH ridotto). Questo è esattamente il campo di forza del modello EIF (con $w$ che rappresenta l'inibitore del potassio).
+
+\subsubsection{Struttura del Modello Integrate-and-Fire Esponenziale}
+
+Questa osservazione motiva l'introduzione di un modello monodimensionale ancora più semplice: il \textbf{modello Integrate-and-Fire Esponenziale} (EIF, Exponential Integrate-and-Fire). In questo modello, si mantiene un solo grado di libertà (il potenziale di membrana $V$) e si aggiunge al termine passivo della membrana una non-linearità esponenziale che modella l'amplificazione del sodio:
+
+\begin{equation}
+C \frac{dV}{dt} = -G_L(V - E_L) + G_L \Delta_T \exp\!\left(\frac{V - V_T}{\Delta_T}\right) + I_{\text{ext}}
+\end{equation}
+
+L'emissione di uno spike viene definita \textbf{convenzionalmente} quando $V$ raggiunge un valore di soglia $V_{\text{th}} \gg V_T$ (tipicamente $0 \; \text{mV}$), dopodiché il potenziale viene resettato a un valore $V_r$ (tipicamente $-65 \; \text{mV}$).
+
+I parametri del modello EIF sono:
+\begin{itemize}
+    \item $C$: capacità di membrana
+    \item $G_L$: conduttanza di leakage (o conduttanza passiva)
+    \item $E_L$: potenziale di inversione del leakage (approssimativamente il potenziale di riposo)
+    \item $\Delta_T$: sharpness della soglia (tipicamente $1$–$2 \; \text{mV}$)
+    \item $V_T$: potenziale di soglia effettivo (tipicamente $-55 \; \text{mV}$)
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Il modello EIF è il più semplice modello monodimensionale in grado di riprodurre in modo realistico la forma della \textbf{rampa suprathreshold} del potenziale d'azione. A differenza del semplice integrate-and-fire lineare (LIF), l'EIF non ha bisogno di definire una soglia fissa: lo spike emerge spontaneamente dalla non-linearità esponenziale quando il potenziale supera $V_T$. Il parametro $\Delta_T$ controlla quanto è "sharp" la soglia: per $\Delta_T \to 0$ si recupera il LIF con soglia fissa; per $\Delta_T$ finito la soglia è "morbida" e il rumore può indurre spike anche sotto $V_T$.
+\end{tcolorbox}
+
