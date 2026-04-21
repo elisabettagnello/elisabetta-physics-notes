@@ -1,0 +1,524 @@
+\chapter{Lezione 9}
+
+
+\textbf{Argomenti:} neuroni tipo 1 e tipo 2; biforcazione saddle-node sul ciclo limite (SNIC); biforcazione di Hopf subcritica e supercritica; oscillatore a rilassamento; dinamica veloce/lenta ($\varepsilon \ll 1$); riduzione a modello monodimensionale; modello integrate-and-fire (IF); modello exponential integrate-and-fire (EIF); campo di forza e paesaggio energetico; funzione di Lyapunov; modello leaky integrate-and-fire (LIF); prescrizione di reset e condizioni al contorno di Fokker-Planck
+
+\section{Ripasso: Sistemi Eccitabili, Separatrice e Tipi di Neuroni}
+
+\subsubsection{Il Sistema Eccitabile e la Separatrice}
+
+Il professore apre la lezione ricordando i risultati della lezione precedente sui modelli neuronali bidimensionali. I modelli a due variabili di stato — il potenziale di membrana $V$ e la variabile di recupero $W$ — sono \textbf{sistemi eccitabili} perché esiste una \textbf{separatrice} nel piano di fase che divide due regimi qualitativamente distinti:
+
+\begin{itemize}
+    \item Se le condizioni iniziali si trovano \textbf{al di sotto} della separatrice, il campo di forza riporta il sistema al punto di equilibrio senza produrre un potenziale d'azione.
+    \item Se le condizioni iniziali si trovano \textbf{al di sopra} della separatrice, la dinamica porta all'emissione di un singolo spike, grazie alle correnti del sodio che rendono il campo di forza $F = \dot{V}$ molto più grande della componente $G = \dot{W}$ (flusso quasi orizzontale nel piano di fase).
+\end{itemize}
+
+La fase crescente del potenziale d'azione è dominata dalla \textbf{corrente del sodio} (meccanismo di amplificazione non lineare dell'apertura dei canali $\text{Na}^+$): sezionando orizzontalmente il piano di fase a tre diversi valori della variabile di recupero, si ottengono tre profili del campo di forza $F(V)$ tutti con la medesima componente esponenziale, indipendente da $W$. Questa fase di salita è quindi \textbf{determinata esclusivamente} dalla dinamica del sodio.
+
+\subsubsection{Funzione di Guadagno Corrente-Frequenza (Curva f-I)}
+
+La proprietà più importante che differenzia le famiglie di neuroni è la \textbf{curva di guadagno corrente-frequenza} $f(I)$, dove la frequenza di firing $f$ è definita come
+
+\begin{equation}
+f = \frac{1}{\langle T_{\text{ISI}} \rangle}
+\end{equation}
+
+con $\langle T_{\text{ISI}} \rangle$ l'intervallo interspike medio. La curva $f(I)$ è monotonamente crescente in quanto iniettare più corrente nel neurone porta a una maggiore produzione di spike per unità di tempo. Le famiglie si distinguono per il comportamento vicino alla corrente di soglia $I_\theta$:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{2cm}|X|>{\raggedright\arraybackslash}p{4.5cm}|}
+    \hline
+    \textbf{Tipo} & \textbf{Comportamento di $f(I)$ per $I \to I_\theta^+$} & \textbf{Biforcazione} \\
+    \hline
+    \textbf{Tipo 1} & $f \to 0$ continuamente (con discontinuità nella derivata) & Saddle-node sul ciclo limite (SNIC) \\
+    \hline
+    \textbf{Tipo 2} & $f$ salta a un valore minimo non nullo (discontinuità) & Hopf subcritica \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+Il \textbf{tipo 1} è tipico dei neuroni piramidali della corteccia cerebrale dei mammiferi; il \textbf{tipo 2} è invece meglio descritto dal modello di Hodgkin-Huxley nella sua parametrizzazione originale.
+
+\section{Neuroni di Tipo 1}
+
+\subsubsection{Il Modello di Morris-Lecar}
+
+Per descrivere i neuroni di tipo 1 il professore introduce il \textbf{modello di Morris-Lecar} (ML), ricordandone la struttura generale dalla lezione 8:
+
+\begin{equation}
+C \frac{dV}{dt} = -G_{Ca}\, m_\infty(V)(V - E_{Ca}) - G_K\, W(V - E_K) - G_L(V - E_L) + I_{\text{ext}}
+\end{equation}
+
+\begin{equation}
+\frac{dW}{dt} = \phi \frac{W_\infty(V) - W}{\tau_W(V)}
+\end{equation}
+
+La funzione $m_\infty(V) = \frac{1}{2}[1 + \tanh((V-V_1)/V_2)]$ ha una forma \textbf{sigmoidale}, a differenza della nullcline cubica del modello FitzHugh-Nagumo. Questo rende le nullcline del Morris-Lecar più simili a sigmoidi che a cubiche, e la nullcline $\dot{W}=0$ è a sua volta una curva non lineare (ramo inferiore di una sigmoide), poiché anche $G$ è funzione di una costante di tempo $\tau_W(V) = 1/\cosh((V-V_3)/(2V_4))$.
+
+\subsubsection{Configurazione di Equilibrio e Spostamento della Nullcline}
+
+Per valori di $I_{\text{ext}}$ bassi o nulli, le due nullcline si intersecano in due punti (e talvolta tre):
+
+\begin{itemize}
+    \item Il punto a sinistra, dove la pendenza tangente alla nullcline $\dot{V}=0$ è \textbf{negativa}, corrisponde a un \textbf{fuoco stabile} (attrattore).
+    \item Il punto successivo, dove la pendenza è \textbf{positiva}, corrisponde a un \textbf{fuoco instabile} o nodo instabile.
+\end{itemize}
+
+Quando si inietta una corrente positiva $I_{\text{ext}} > 0$, la nullcline $\dot{V}=0$ si sposta \textbf{verso l'alto}: occorre una variabile di recupero $W$ più grande per annullare $\dot{V}$, perché la corrente eccitatoria aggiuntiva deve essere bilanciata da un maggiore contributo inibitorio. Aumentando progressivamente $I_{\text{ext}}$, si raggiunge una \textbf{corrente di reobasi} $I_\theta$ al di sopra della quale le due nullcline non si intersecano più, e il neurone entra in un regime di firing ripetitivo.
+
+\subsubsection{La Biforcazione Saddle-Node sul Ciclo Limite (SNIC)}
+
+Questo scenario di transizione è noto come \textbf{biforcazione saddle-node sul ciclo limite} (Saddle-Node on Invariant Circle, SNIC), e deve il suo nome alla presenza di una sella e di un nodo nelle vicinanze del quale le traiettorie effettuano un detour molto lento.
+
+Il meccanismo fisico che genera la curva f-I continua e la frequenza di firing tendente a zero è il seguente: quando la corrente iniettata è appena sopra $I_\theta$, le due nullcline si trovano quasi a toccarsi. In questa condizione, la traiettoria che rappresenta il treno di spike si avvicina alla regione di quasi-coalescenza delle nullcline e vi trascorre un tempo \textbf{arbitrariamente lungo}, poiché in quella regione entrambi i componenti del campo di forza $F$ e $G$ sono quasi nulli. L'intervallo interspike $T_{\text{ISI}}$ può quindi tendere a infinito, rendendo la frequenza di firing $f \to 0^+$ in modo continuo.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} In questo regime, il componente principale del campo di forza vicino alla quasi-coalescenza è quello legato alla variabile di recupero: $F \approx 0$ lungo la nullcline, e la traiettoria scende lungo la nullcline $\dot{V}=0$ con velocità dettata da $G$ e quindi da $\tau_W$. Quanto più le nullcline si avvicinano, tanto più lungo è il tempo necessario per compiere l'orbita completa. È possibile selezionare una corrente tale che le due nullcline siano quasi tangenti: la traiettoria avrebbe bisogno di un tempo infinito per attraversare quella regione. Questo giustifica fisicamente la possibilità di avere una frequenza di firing arbitrariamente bassa.
+\end{tcolorbox}
+
+\section{Neuroni di Tipo 2}
+
+\subsubsection{Campo di Forza Più Debole nel Modello Morris-Lecar con Parametri HH}
+
+La transizione ai neuroni di tipo 2 avviene quando si modificano i parametri del modello Morris-Lecar in modo da rendere il campo di forza $F = \dot{V}$ \textbf{più debole}. Fisicamente questo corrisponde a rendere la dinamica della salita del potenziale d'azione più lenta, il che equivale ad aumentare la costante di tempo della corrente eccitatoria (legata ai parametri $\alpha_3$ e $\alpha_4$ della sigmoide di Morris-Lecar).
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Domanda di uno studente:} Perché il professore menziona il modello di Hodgkin-Huxley per il tipo 2? Il modello Morris-Lecar non è usato per entrambi i tipi?
+
+\textbf{Risposta del professore:} Sì, in entrambi i casi si usa il modello di Morris-Lecar. La differenza è solo nella scelta dei parametri. Scegliendo i parametri $\alpha_3$ e $\alpha_4$ in modo da rendere il modello Morris-Lecar più simile al modello Hodgkin-Huxley originale (dove le scale temporali della corrente eccitatoria sono comparabili a quelle della corrente inibitoria), si ottiene il comportamento di tipo 2. In questo senso si dice che la parametrizzazione tipo HH del Morris-Lecar è associata al tipo 2. Negli script condivisi su Google Classroom sono riportati i valori numerici dei parametri per riprodurre entrambi i comportamenti.
+\end{tcolorbox}
+
+\subsubsection{Conseguenza Geometrica: Traiettoria al di qua della Nullcline}
+Quando $F$ è relativamente piccolo, le frecce orizzontali nel piano di fase sono più corte. Questo implica che, dopo l'emissione dello spike, la traiettoria \textbf{non attraversa} la nullcline $\dot{V}=0$ verso il basso come nel tipo 1. Al contrario, essa rimane \textbf{al di qua} (a destra) della nullcline, procedendo verso valori crescenti di $V$ prima di voltare. La traiettoria aggira la sella rimanendo sul suo lato destro: da qui il nome \textbf{saddle-node fuori dal ciclo limite}.
+
+\subsubsection{Bistabilità}
+Una conseguenza importante di questa geometria è la \textbf{bistabilità}: il sistema può avere simultaneamente un ciclo limite stabile (treno di spike) e un punto fisso stabile (potenziale di riposo), anche \textbf{senza corrente iniettata}. In assenza di corrente, le nullcline presentano ancora due intersezioni (il fuoco stabile $E_M$ e la sella). Dipendentemente dalle condizioni iniziali:
+\begin{itemize}
+    \item Se il potenziale di membrana iniziale è inferiore alla sella (separatrice), il neurone si rilassa verso $E_M$.
+    \item Se il potenziale di membrana iniziale è superiore alla sella, il neurone produce un treno di spike stabile (ciclo limite stabile).
+\end{itemize}
+
+\subsubsection{Salto Discontinuo nella Curva f-I}
+Questa geometria determina la discontinuità nella curva f-I: poiché le traiettorie passano sul lato destro della sella, la forza del campo in quel punto non è mai trascurabile. Anche quando si aumenta la corrente in modo da far quasi coalescere le nullcline, il tempo necessario per compiere un'orbita rimane \textbf{finito} (e non può tendere a infinito). Ne consegue che la frequenza di firing non può tendere a zero: quando il sistema entra in regime oscillatorio, lo fa con una \textbf{frequenza minima non nulla}, producendo il caratteristico salto discontinuo nella curva f-I.
+
+\section{Analisi degli Autovalori: da Nodo Stabile a Biforcazione di Hopf}
+
+\subsubsection{Variazione degli Autovalori con la Corrente}
+
+Per il modello tipo 2 (parametrizzazione FitzHugh-Nagumo o Morris-Lecar con $F$ debole), si può seguire l'evoluzione degli autovalori $\lambda_\pm$ della matrice Jacobiana al punto fisso al variare della corrente iniettata $I/C_m$.
+
+Ricordando il diagramma usato nella lezione precedente, gli autovalori si classificano in base a due quantità:
+\begin{itemize}
+    \item La \textbf{semitraccia} $\mu = \text{tr}(J)/2$, che determina il segno della parte reale.
+    \item Il \textbf{discriminante} $\Delta = \text{tr}(J)^2/4 - \det(J)$, che separa la regione con autovalori reali ($\Delta > 0$) da quella con autovalori complessi coniugati ($\Delta < 0$, oscillazioni).
+\end{itemize}
+
+Al crescere di $I$, il punto fisso percorre il seguente percorso nel piano $(\mu, \Delta)$:
+
+\begin{enumerate}
+    \item \textbf{Nodo stabile}: $\lambda_\pm$ reali e negativi ($\Delta > 0$, $\mu < 0$). Il neurone si rilassa senza oscillazioni.
+    \item \textbf{Fuoco stabile}: $\lambda_\pm$ complessi coniugati con parte reale negativa ($\Delta < 0$, $\mu < 0$). Il neurone si rilassa con oscillazioni smorzate sempre più lente.
+    \item \textbf{Crossing dell'asse immaginario} ($\mu = 0$): la parte reale diventa nulla e poi positiva $\rightarrow$ \textbf{biforcazione di Hopf}.
+    \item \textbf{Fuoco instabile}: $\lambda_\pm$ complessi coniugati con parte reale positiva ($\Delta < 0$, $\mu > 0$). Il punto fisso è instabile e compare un ciclo limite.
+\end{enumerate}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Nelle vicinanze della biforcazione di Hopf, la parte immaginaria degli autovalori determina la \textbf{frequenza delle oscillazioni} (smorzate prima, del ciclo limite dopo). Poiché nella biforcazione di Hopf (subcritica) la parte immaginaria è già non nulla prima del crossing, il ciclo limite compare con una \textbf{frequenza di onset non nulla}, producendo il salto discontinuo nella curva f-I caratteristico del tipo 2.
+\end{tcolorbox}
+
+\subsubsection{Biforcazione di Hopf Subcritica}
+
+La \textbf{biforcazione di Hopf subcritica} si manifesta con un salto discontinuo dell'ampiezza del ciclo limite: al valore critico di corrente $I_\theta$, il punto fisso stabile perde stabilità e \textbf{immediatamente} compare un ciclo limite di ampiezza finita. Nel diagramma biforcazione (ampiezza massima e minima del potenziale vs $I$):
+\begin{itemize}
+    \item Per $I < I_\theta$: il potenziale di membrana all'equilibrio è un valore stabile costante (punto fisso).
+    \item Appena $I > I_\theta$: compare un'orbita con ampiezza finita, rappresentata da un valore massimo e un valore minimo ben separati.
+\end{itemize}
+
+Il comportamento è dunque \textbf{discontinuo}: questa è la firma della Hopf subcritica ed è il meccanismo alla base dei neuroni di tipo 2.
+
+\subsubsection{Biforcazione di Hopf Supercritica}
+
+In alternativa, se la nullcline $\dot{V}=0$ è \textbf{meno ripida} (il parametro $m_V$ della pendenza è maggiore di zero ma non molto grande, ossia il sistema è meno non lineare), si osserva una \textbf{biforcazione di Hopf supercritica}. In questo caso:
+\begin{itemize}
+    \item La parte reale degli autovalori diventa positiva attraversando il crossing.
+    \item La parte immaginaria rimane diversa da zero prima e dopo.
+    \item L'ampiezza del ciclo limite cresce in modo \textbf{continuo e dolce} dalla biforcazione.
+\end{itemize}
+
+In questa condizione il neurone \textbf{non produce spike}: genera oscillazioni sottosoglia sostenute di ampiezza crescente con la corrente. Questi neuroni si comportano come \textbf{pacemaker di fase} e sono rilevanti in strutture subcorticali, dove un sottoinsieme di neuroni può produrre oscillazioni in grado di sincronizzare l'attività della rete.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Il punto chiave per la Hopf supercritica è che il raggio del ciclo limite (distanza tra massimo e minimo del potenziale) cresce in modo dolce con la corrente iniettata. Ma sotto queste condizioni il neurone non produce spike: genera solo oscillazioni di ampiezza sub-soglia.
+\end{tcolorbox}
+
+
+\subsubsection{Oscillazioni Sottosoglia come Pacemaker}
+
+I neuroni che sperimentano una biforcazione di Hopf supercritica producono oscillazioni di membrana sottosoglia di ampiezza crescente al crescere della corrente iniettata, senza mai emettere spike. Il professore evidenzia che questo tipo di dinamica è biologicamente rilevante: in strutture \textbf{subcorticali}, alcuni neuroni agiscono come pacemaker producendo oscillazioni ritmiche che inducono una sincronizzazione a livello di popolazione (activity lock in the network). L'ampiezza dell'oscillazione, che cresce dolcemente con $I$, rappresenta una modalità di codifica dell'informazione alternativa al firing.
+
+
+
+\subsection{Oscillatore a Rilassamento: Separazione delle Scale Temporali}
+
+\subsubsection{La Condizione $\varepsilon \ll 1$}
+
+Si considera ora una condizione fondamentale che riguarda la separazione delle scale temporali delle due variabili di stato. La costante di tempo del potenziale di membrana è dell'ordine
+
+\begin{equation}
+\tau_V \sim 10\text{–}20 \; \text{ms}
+\end{equation}
+
+mentre i canali del potassio (corrispondenti alle variabili $N$ e $H$ del modello HH) hanno una cinetica più lenta:
+
+\begin{equation}
+\tau_W \sim 150 \; \text{ms}
+\end{equation}
+
+Il loro rapporto
+
+\begin{equation}
+\varepsilon = \frac{\tau_V}{\tau_W} \ll 1
+\end{equation}
+
+è molto minore di 1. Questo parametro $\varepsilon$ è lo stesso che era stato introdotto nelle lezioni precedenti come fattore moltiplicativo davanti al campo di forza $G$ della variabile di recupero:
+
+\begin{equation}
+\dot{W} = \varepsilon \cdot G(V, W)
+\end{equation}
+
+Poiché $\varepsilon$ è piccolo, il campo di forza verticale $G$ è \textbf{debole} rispetto alla componente orizzontale $F$. Nel piano di fase, il flusso è quindi rappresentato da \textbf{linee quasi orizzontali}.
+
+\subsubsection{Decomposizione del Potenziale d'Azione in Componenti Veloci e Lente}
+
+In questo regime, il potenziale d'azione si decompone in quattro fasi ben distinte, ciascuna con la propria scala temporale:
+
+\begin{enumerate}
+    \item \textbf{Fase di salita veloce} (scala $\tau_V$): il neurone si avvicina rapidamente alla nullcline $\dot{V}=0$ da sinistra. Il campo di forza $F$ è positivo e grande: le frecce orizzontali sono lunghe e puntano verso destra.
+    \item \textbf{Fase lungo la nullcline} (scala $\tau_W$): una volta raggiunta la nullcline $\dot{V}=0$, la traiettoria la percorre lentamente verso l'alto (verso valori crescenti di $W$). La velocità in questa fase è determinata da $G$ e quindi da $\tau_W$.
+    \item \textbf{Fase di discesa veloce} (scala $\tau_V$): quando la variabile di recupero diventa sufficientemente grande da non avere più la nullcline $\dot{V}=0$ disponibile, il campo di forza $F$ è negativo e grande: il sistema collassa rapidamente verso il ramo sinistro della nullcline, producendo la \textbf{fase iperpolarizzante} del potenziale d'azione.
+    \item \textbf{Periodo interspike} (scala $\tau_W$): dopo l'iperpolarizzazione, la variabile di recupero diminuisce lentamente (scala $\tau_W$) fino a che la traiettoria non raggiunge il ramo destro della nullcline, producendo il successivo spike.
+\end{enumerate}
+
+Questo meccanismo è denominato \textbf{oscillatore a rilassamento} poiché la dinamica si articola in due fasi di rilassamento lente (sulle scale $\tau_W$) intervallate da due transizioni veloci (sulle scale $\tau_V$).
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Il termine "oscillatore a rilassamento" evidenzia che l'intervallo interspike — e quindi la frequenza di firing — è determinata principalmente dalla scala temporale lenta $\tau_W$, ma dipende anche dalla corrente iniettata. Iniettare più corrente accelera la fase di rilassamento lenta, aumentando la frequenza di firing.
+\end{tcolorbox}
+
+\subsubsection{Meccanismo a Scalini lungo la Nullcline}
+
+Il professore descrive in dettaglio il meccanismo di progressione lenta lungo la nullcline $\dot{V}=0$. Immaginando di integrare numericamente il sistema con passi discreti:
+
+\begin{itemize}
+    \item Quando la traiettoria si trova esattamente sulla nullcline $\dot{V}=0$, la componente orizzontale del campo di forza è nulla: il passo successivo è \textbf{puramente verticale} (determinato da $G$).
+    \item Ma dopo il passo verticale, la traiettoria si trova leggermente fuori dalla nullcline: $F \neq 0$ e, poiché $|F|$ è grande, la traiettoria viene \textbf{rapidamente riportata} sulla nullcline (passo quasi orizzontale).
+    \item Si ottiene così un percorso a scalini (staircase): un passo verticale piccolo (scala $\tau_W$) seguito da un ritorno quasi istantaneo alla nullcline (scala $\tau_V$).
+\end{itemize}
+
+Questo meccanismo si ripete fino a quando la variabile di recupero supera il valore per cui non esiste più alcun punto della nullcline $\dot{V}=0$ con quel valore di $W$: in quel momento il campo di forza $F$ diventa positivo senza possibilità di ritorno alla nullcline, e si innesca la fase di discesa veloce.
+
+\section{Riduzione a una Dimensione: verso il Modello Integrate-and-Fire}
+
+\subsubsection{Regime Sottosoglia con $W \approx W^*$ Costante}
+
+Un esperimento concettuale permette di apprezzare la possibilità di ridurre il sistema da due a una sola dimensione. Si consideri il neurone in una configurazione in cui:
+\begin{itemize}
+    \item Il potenziale di membrana è \textbf{iperpolarizzato} (ben al di sotto della separatrice).
+    \item Non si inietta alcuna corrente, oppure la corrente è insufficiente a produrre spike.
+\end{itemize}
+
+In questa condizione, le traiettorie nel piano di fase sono quasi orizzontali: la variabile di recupero $W$ cambia pochissimo durante il moto del potenziale. Si può quindi approssimare $W \approx W^*$, dove $W^*$ è il valore di equilibrio, e l'equazione per $V$ diventa:
+
+\begin{equation}
+C_m \frac{dV}{dt} \approx -G_L(V - E_M)
+\end{equation}
+
+ovvero una semplice equazione di rilassamento esponenziale verso il potenziale di equilibrio $E_M$. Questa è la dinamica delle \textbf{proprietà elettriche passive} del neurone: la membrana si comporta come un circuito $RC$ con costante di tempo $\tau_m = C_m/G_m$.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} In questo regime possiamo dimenticarci di $W$. La dinamica del potenziale di membrana è ben descritta da quella associata alle proprietà elettro-passive del neurone: la perdita passiva delle correnti (potassio, cloro, sodio in regime di equilibrio), senza alcun contributo della corrente escitatoria del sodio responsabile dello spike.
+\end{tcolorbox}
+
+\subsubsection{Risposta a un Impulso di Corrente: la Separatrice come Soglia}
+
+Si inietta un \textbf{impulso di corrente} (corrente di breve durata): questo provoca un salto rapido nel potenziale di membrana, senza modificare sensibilmente la variabile di recupero $W$ (poiché la dinamica di $W$ è lenta).
+
+Due scenari si presentano:
+\begin{enumerate}
+    \item \textbf{Impulso sub-soglia} ($V$ rimane al di sotto della separatrice): il campo di forza riporta $V$ verso $E_M$ con rilassamento esponenziale di costante di tempo $\tau_m = C_m/G_m$.
+    \item \textbf{Impulso sopra-soglia} ($V$ supera la separatrice): la componente esponenziale del sodio domina il campo di forza, producendo l'emissione dello spike.
+\end{enumerate}
+
+Questo esperimento dimostra che nel regime sottosoglia possiamo trascurare $W$ e descrivere la dinamica di $V$ con un modello monodimensionale.
+
+\subsubsection{Prescrizione dello Spike: Riduzione a un Grado di Libertà}
+
+La riduzione dimensionale si completa con una \textbf{prescrizione esplicita} per la produzione dello spike: si rimuove il grado di libertà della variabile di recupero e si sostituisce la sua dinamica con una regola semplice. La dinamica dell'oscillatore a rilassamento mostra che, dopo lo spike, la traiettoria percorre la fase di iperpolarizzazione e rientra nella regione dove $W \approx W^*$. In questa regione, il potenziale di membrana si trova a un valore di \textbf{reset} $V_{\text{reset}}$ (tipicamente inferiore a $E_M$).
+
+La prescrizione formale è:
+
+\begin{equation}
+\text{se } V(t_k) > V_{\text{soglia}} \Rightarrow \text{spike a } t_k, \quad V(t_k + \tau_0) = V_{\text{reset}}
+\end{equation}
+
+dove $\tau_0$ è il \textbf{periodo refrattario assoluto} (la durata dello spike e dell'iperpolarizzazione che segue).
+
+Questa prescrizione definisce la classe dei \textbf{modelli integrate-and-fire (IF)}.
+
+\section{Il Modello Integrate-and-Fire (IF)}
+
+\subsubsection{Equazione Dinamica Sottosoglia}
+
+Il modello integrate-and-fire nella sua formulazione generale è un sistema \textbf{monodimensionale} con la seguente struttura:
+
+\begin{equation}
+\tau_m \frac{dV}{dt} = \mathcal{F}(V) + R_m I(t)
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $\tau_m = C_m / G_m$ è la costante di tempo di membrana (tipicamente 10–20 ms per i neuroni corticali).
+    \item $\mathcal{F}(V)$ è il campo di forza sottosoglia (dipende dalla variante del modello).
+    \item $R_m = 1/G_m$ è la resistenza di membrana.
+    \item $I(t)$ è la corrente iniettata.
+\end{itemize}
+
+La \textbf{prescrizione di spike} è:
+\begin{itemize}
+    \item Quando $V(t) \geq V_{\text{soglia}}$: si registra un'emissione a tempo $t_k$.
+    \item Dopo un periodo refrattario $\tau_0$: $V(t_k + \tau_0) = V_{\text{reset}}$.
+\end{itemize}
+
+Il nome "integrate-and-fire" deriva dal fatto che:
+\begin{itemize}
+    \item \textbf{Integrate}: nel regime sottosoglia il potenziale di membrana integra la corrente iniettata (è un \textbf{integratore} del segnale di ingresso).
+    \item \textbf{Fire}: quando il potenziale supera la soglia, il neurone emette uno spike.
+\end{itemize}
+
+\subsubsection{Il Potenziale di Reset}
+
+Il professore risponde a una domanda degli studenti sul significato del potenziale di reset:
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Domanda di uno studente:} Dopo lo spike, perché il neurone riprende la dinamica da $V_{\text{reset}}$ e non dal potenziale di equilibrio $E_M$?
+
+\textbf{Risposta del professore:} Il reset non è il potenziale di equilibrio, ma il potenziale che il neurone ha quando rientra nella regione del piano di fase dove $W \approx W^*$, ossia quando la variabile di recupero ha raggiunto il suo valore di quasi-stazionarietà. In questa regione, il potenziale di membrana è tipicamente \textbf{più negativo} di $E_M$ (iperpolarizzato), perché la fase di iperpolarizzazione porta il sistema al di sotto dell'equilibrio. Quindi $V_{\text{reset}} < E_M$. È il prezzo che si paga per dimenticare la variabile di recupero: si introduce una condizione iniziale ben definita con cui il modello monodimensionale riprende la sua evoluzione dopo ogni spike.
+\end{tcolorbox}
+
+\section{Il Campo di Forza dell'EIF: Parametri $V_T$ e $\Delta_T$}
+
+\subsubsection{Struttura del Campo di Forza dal Piano di Fase}
+
+Effettuando tagli orizzontali nel piano di fase del modello Morris-Lecar (o del modello HH ridotto) a diversi valori di $W^*$, si ottiene la forma del campo di forza $F(V, W^*)$ come funzione di $V$ a $W$ fissato. Il risultato mostra (in scala logaritmica per la componente positiva):
+\begin{itemize}
+    \item Una regione centrale con $F < 0$: il campo di forza è negativo, il potenziale è attratto verso l'equilibrio stabile (a sinistra).
+    \item Un valore di $V$ dove $F = 0$: l'equilibrio instabile (a destra), corrispondente alla soglia di spike.
+    \item Una regione ancora più a destra con $F > 0$, che esplode esponenzialmente: la corrente del sodio domina e si innesca lo spike.
+\end{itemize}
+
+Questa struttura si può scomporre come \textbf{sovrapposizione} di due componenti:
+\begin{enumerate}
+    \item Una componente \textbf{lineare} (leakage): $F_{\text{lin}}(V) = -(V - E_M)/\tau_m$, che descrive il regime passivo e crea l'equilibrio stabile a $E_M$.
+    \item Una componente \textbf{esponenziale} (sodio): $F_{\text{exp}}(V) = \frac{\Delta_T}{\tau_m} \exp\!\left(\frac{V - V_T}{\Delta_T}\right)$, che è responsabile dell'esplosione del campo di forza vicino alla soglia.
+\end{enumerate}
+
+\subsubsection{Il Modello Exponential Integrate-and-Fire (EIF)}
+
+L'equazione dinamica del modello \textbf{Exponential Integrate-and-Fire (EIF)} è:
+
+\begin{equation}
+C_m \frac{dV}{dt} = -G_L(V - E_L) + G_L \Delta_T \exp\!\left(\frac{V - V_T}{\Delta_T}\right) + I
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $E_L$ è il potenziale di riposo (leakage).
+    \item $V_T$ è la \textbf{soglia di iniziazione dello spike} (spike initiation threshold): il valore di potenziale dove il campo di forza $F$ ha il suo \textbf{minimo} (il "saddle" del campo di forza monodimensionale).
+    \item $\Delta_T$ è la \textbf{sharpness del threshold} (threshold sharpness): la finestra di tensione entro cui si produce il blow-up esponenziale.
+\end{itemize}
+
+Il significato fisico di $\Delta_T$:
+\begin{itemize}
+    \item Se $V - V_T \gg \Delta_T$: il termine esponenziale è enorme $\rightarrow$ spike inevitabile.
+    \item Se $V - V_T \ll -\Delta_T$: il termine esponenziale è trascurabile $\rightarrow$ dinamica puramente passiva.
+    \item $\Delta_T$ piccolo: la soglia è "netta" (il blow-up avviene in un intervallo di tensione stretto).
+    \item $\Delta_T$ grande: la soglia è "morbida" (il blow-up si distribuisce su un intervallo più ampio).
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} $V_T$ corrisponde a dove si trova il minimo del campo di forza nel diagramma lineare. In questa regione si ha l'iniziazione dello spike. $\Delta_T$ è la sharpness: se $V - V_T$ è molto maggiore di $\Delta_T$, l'esponenziale esplode. Se $\Delta_T$ è piccolo, il blow-up avviene in una piccola finestra di tensione, rendendola più riproducibile.
+\end{tcolorbox}
+
+
+\section{Corrente di Reobase e Soglia Dipendente dal Protocollo}
+
+\subsubsection{Il Campo di Forza Totale Include la Corrente}
+
+Il professore precisa una domanda emersa durante la lezione: il campo di forza $F$ che si visualizza nel piano di fase è il campo di forza \textbf{totale}, che include già la corrente iniettata divisa per la capacità di membrana:
+
+\begin{equation}
+F_{\text{tot}}(V) = F_{\text{intrinseche}}(V, W^*) + \frac{I}{C_m}
+\end{equation}
+
+Quando si inietta una corrente positiva $I > 0$, il campo di forza totale si sposta \textbf{verso l'alto} di un valore costante $I/C_m$. Questo sposta il profilo del campo di forza rispetto alla posizione dello zero, avvicinando le radici del campo di forza.
+
+\subsubsection{Due Protocolli di Stimolazione, Due Soglie}
+
+La \textbf{soglia di voltaggio per l'emissione dello spike} dipende dal \textbf{protocollo di stimolazione} adottato:
+
+\textbf{Protocollo 1: impulso di corrente}
+\begin{itemize}
+    \item La corrente impulsiva cambia rapidamente $V$ senza modificare le nullcline (che dipendono da $I$ costante).
+    \item La soglia è il potenziale di sella del piano di fase originale: $V_{\text{soglia, impulso}} = V_{\text{reobase}}$.
+    \item Il neurone deve essere spinto fisicamente al di sopra di questa sella dall'impulso.
+\end{itemize}
+
+\textbf{Protocollo 2: corrente costante}
+\begin{itemize}
+    \item La corrente costante sposta il campo di forza totale verso l'alto di $I/C_m$.
+    \item La corrente di reobase $I_{\text{reo}}$ è il valore minimo di corrente continua per cui il campo di forza totale è sempre positivo (non ha più radici).
+    \item La soglia effettiva di voltaggio in questo caso è $V_T$ (dove il campo di forza ha il minimo), che è \textbf{inferiore} a $V_{\text{reobase}}: V_T < V_{\text{reobase}}$.
+\end{itemize}
+
+La corrente di reobase si calcola imponendo che il minimo del campo di forza totale sia zero:
+
+\begin{equation}
+I_{\text{reo}} \approx G_L \cdot \Delta_T
+\end{equation}
+
+(l'espressione esatta si ricava derivando $F_{\text{tot}}$ e imponendo $F_{\text{tot}} = 0$ e $\partial F_{\text{tot}}/\partial V = 0$ contemporaneamente).
+
+\subsubsection{Analogia del Livello del Mare}
+
+Il professore illustra questo meccanismo con una metafora geometrica: si immagini il campo di forza $F(V)$ come il profilo di una costa con una montagna (il termine esponenziale). Iniettare una corrente positiva equivale ad \textbf{abbassare il livello del mare}. Abbassando il livello del mare:
+\begin{itemize}
+    \item La "costa" (il valore dove $F_{\text{tot}} = 0$) si sposta verso destra, avvicinandosi alla montagna.
+    \item Abbassando ancora il livello del mare, si raggiunge la situazione in cui la costa tocca la base della montagna: questa è la corrente di reobase.
+    \item Abbassando ulteriormente, non c'è più costa: il campo di forza è sempre positivo e lo spike è inevitabile.
+\end{itemize}
+
+
+
+\section{Funzione di Lyapunov e Paesaggio Energetico}
+
+\subsubsection{Dal Campo di Forza all'Energia}
+
+Poiché nel regime sottosoglia la dinamica di $V$ è monodimensionale e il campo di forza $F(V, W^*)$ dipende solo da $V$, esso è integrabile e si può definire una \textbf{funzione di energia totale immagazzinata} (analogia con l'energia potenziale):
+
+\begin{equation}
+U(V) = -\int F(V, W^*) \, dV
+\end{equation}
+
+La variazione temporale di $U$ è:
+
+\begin{equation}
+\frac{dU}{dt} = \frac{\partial U}{\partial V} \dot{V} = -F(V) \cdot \dot{V} = -\dot{V}^2 \leq 0
+\end{equation}
+
+Questa quantità è sempre \textbf{non positiva}: $U$ è una funzione monotonamente decrescente nel tempo (eccetto agli equilibri dove $\dot{V} = 0$). Questa proprietà identifica $U$ come una \textbf{funzione di Lyapunov} per il sistema.
+
+\subsubsection{La Funzione di Lyapunov e la Stabilità}
+
+Una funzione di Lyapunov $U(V)$ per un sistema dissipativo ha le seguenti proprietà:
+\begin{itemize}
+    \item $\dot{U} \leq 0$ per ogni traiettoria del sistema.
+    \item $\dot{U} = 0$ se e solo se $\dot{V} = 0$, cioè ai punti di equilibrio.
+\end{itemize}
+
+Questo significa che il sistema si muove \textbf{sempre in discesa} lungo il paesaggio energetico definito da $U(V)$: la dinamica equivale a quella di una pallina che rotola giù per una superficie. Gli \textbf{attrattori} corrispondono a \textbf{avvallamenti} (minimi locali di $U$), mentre le \textbf{selle} (punti instabili) corrispondono a \textbf{selle del paesaggio energetico}.
+
+\subsubsection{Paesaggio Energetico del Modello EIF}
+
+Per il modello EIF, il paesaggio energetico $U(V)$ ha la seguente forma:
+\begin{itemize}
+    \item Un \textbf{avvallamento} (minimo stabile) in corrispondenza di $E_M$: questo è il potenziale di riposo (attrattore).
+    \item Una \textbf{sella} in corrispondenza di $V_T$ (circa): questo è il punto di massimo locale di $U$, che corrisponde alla soglia di spike nel paesaggio energetico.
+    \item Una \textbf{discesa ripida} (minimo profondo) per $V > V_T$: una volta superata la sella, il sistema cade in una buca praticamente irreversibile, emettendo lo spike.
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Il paesaggio energetico rende intuitivo perché lo spike sia difficile da "annullare" una volta innescato: per fermare un neurone che si trova oltre la sella $V_T$, occorrerebbe iniettare una corrente inibitoria molto intensa (che alzi il paesaggio energetico al di là della buca), mentre per innescarlo basta superare la sella. Questa asimmetria è una proprietà fondamentale dell'eccitabilità neuronale.
+\end{tcolorbox}
+
+\subsubsection{Effetto della Corrente sul Paesaggio Energetico}
+
+L'iniezione di una corrente costante $I$ sposta il paesaggio energetico abbassando il contributo lineare. Il professore descrive tre regimi:
+\begin{itemize}
+    \item \textbf{$I = 0$}: un unico attrattore a $E_M$, sella a $V_{\text{reobase}}$, buca profonda per $V > V_{\text{reobase}}$.
+    \item \textbf{$0 < I < I_{\text{reo}}$}: l'avvallamento a $E_M$ si sposta verso destra (potenziale di equilibrio $E_M + I/G_L$) e la sella si avvicina: il sistema è metastabile.
+    \item \textbf{$I \to I_{\text{reo}}$}: la sella e l'avvallamento si avvicinano finché la sella scompare (coalescenza saddle-node nel paesaggio energetico).
+    \item \textbf{$I > I_{\text{reo}}$}: il paesaggio non ha più minimi locali per $V$ finito: lo spike è inevitabile.
+\end{itemize}
+
+\subsubsection{Barriera Assorbente e Limite $\Delta_T \to 0$}
+
+Il professore illustra come la variazione del parametro $\Delta_T$ modifichi la forma della barriera nel paesaggio energetico:
+\begin{itemize}
+    \item \textbf{$\Delta_T$ standard (1.5 mV)}: la sella nel paesaggio energetico è "morbida"; c'è una zona di transizione finita tra il potenziale di riposo e la buca dello spike.
+    \item \textbf{$\Delta_T$ ridotto}: la sella diventa più ripida; la barriera assorbente è più netta.
+    \item \textbf{$\Delta_T \to 0$}: la componente esponenziale scompare ($G_L \Delta_T \exp((V - V_T)/\Delta_T) \to 0$ per $V < V_T$ e $\to \infty$ per $V > V_T$). La sella diventa una \textbf{barriera assorbente verticale}: tutti i neuroni che raggiungono $V_T$ vengono "assorbiti" verso $+\infty$, ovvero emettono lo spike con certezza.
+\end{itemize}
+
+\subsubsection{Il Modello Leaky Integrate-and-Fire (LIF)}
+
+Nel limite $\Delta_T \to 0$, il modello EIF si riduce al \textbf{modello Leaky Integrate-and-Fire (LIF)}, introdotto da \textbf{Louis Lapicque} (matematico francese) all'inizio del XX secolo:
+
+\begin{equation}
+\tau_m \frac{dV}{dt} = -(V - E_L) + R_m I(t)
+\end{equation}
+
+con la prescrizione:
+\begin{itemize}
+    \item $V(t) \geq V_{\text{th}} \Rightarrow$ spike a $t$, poi $V \to V_{\text{reset}}$ dopo un periodo refrattario $\tau_0$.
+\end{itemize}
+
+Il campo di forza è puramente parabolico (lineare in $V$), con un unico avvallamento in $E_L$ e una \textbf{barriera dura} a $V_{\text{th}}$ (nessuna dinamica intrinseca della soglia: la soglia è una soglia fissa, non una proprietà della dinamica del campo di forza).
+
+Il paesaggio energetico del LIF è quindi:
+\begin{equation}
+U_{\text{LIF}}(V) = \frac{(V - E_L)^2}{2}
+\end{equation}
+(parabola) con una barriera assorbente a $V_{\text{th}}$.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Il LIF è il modello integrate-and-fire più semplice storicamente (non il più semplice in assoluto, poiché ce n'è uno lineare, ma il più usato). È stato inventato da Lapicque circa cento anni fa e permette di evitare la complessità della componente esponenziale mantenendo la proprietà essenziale di integrare il segnale e sparare a soglia.
+\end{tcolorbox}
+
+
+\section{Prescrizione di Reset e Condizioni al Contorno per la Fokker-Planck}
+
+\subsubsection{Il Potenziale di Reset}
+
+La prescrizione di reset completa il modello integrate-and-fire: dopo l'emissione di uno spike al tempo $t_k$, la variabile di membrana riparte da $V_{\text{reset}}$ dopo il periodo refrattario $\tau_0$:
+
+\begin{equation}
+V(t_k + \tau_0) = V_{\text{reset}}
+\end{equation}
+
+Il potenziale di reset ha un significato preciso in relazione alla dinamica bidimensionale originale: è il valore del potenziale di membrana quando la traiettoria rientra nella regione del piano di fase dove $W \approx W^*$. Tipicamente $V_{\text{reset}} < E_M$ (la fase iperpolarizzante porta il potenziale al di sotto dell'equilibrio di riposo).
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Diciamo che questo è il reset. È il potenziale di membrana che si ha quando la traiettoria rientra nell'intervallo di $W$ dove possiamo approssimare la variabile di recupero come costante e quindi considerare il neurone come descritto da un sistema Hamiltoniano monodimensionale dissipativo. Tipicamente questo valore è inferiore al potenziale di equilibrio $E_M$, quindi $V_{\text{reset}} < E_M$.
+\end{tcolorbox}
+
+\subsubsection{Interpretazione come Condizioni al Contorno di Fokker-Planck}
+
+Il professore accenna alla rilevanza della prescrizione di reset per la descrizione di \textbf{popolazioni di neuroni}. Quando si descrive l'evoluzione di una distribuzione di probabilità $P(V, t)$ per una popolazione di neuroni IF soggetti a rumore (equazione di Fokker-Planck), la prescrizione di reset si traduce in condizioni al contorno speciali:
+
+\begin{itemize}
+    \item \textbf{Pozzo alla soglia $V_{\text{th}}$}: i neuroni che raggiungono la soglia vengono "assorbiti" (sparano lo spike e scompaiono dall'integrazione). Il flusso di neuroni attraverso la soglia è una sorgente: il \textbf{tasso di firing} della popolazione.
+    \item \textbf{Sorgente a $V_{\text{reset}}$}: i neuroni che hanno appena sparato vengono "reiniettati" nel sistema al potenziale di reset con il tasso di firing (come delta di Dirac nel flusso di probabilità).
+\end{itemize}
+
+Formalmente:
+\begin{equation}
+J(V_{\text{th}}, t) = -r(t) \quad \text{(pozzo)}
+\end{equation}
+\begin{equation}
+J(V_{\text{reset}}^+, t) - J(V_{\text{reset}}^-, t) = r(t) \quad \text{(sorgente)}
+\end{equation}
+
+dove $J(V, t)$ è la corrente di probabilità e $r(t)$ è il tasso di firing istantaneo della popolazione. Questa struttura è fondamentale per lo studio delle reti di neuroni IF con rumore, che sarà argomento di lezioni future.
