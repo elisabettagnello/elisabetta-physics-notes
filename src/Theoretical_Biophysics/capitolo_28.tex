@@ -1,0 +1,138 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 28
+%-------------------------------------------------------------------------------
+\chapter{Lezione 28}
+\label{capitolo_28}
+\textit{10/06/2025}
+
+
+\section{Ordine in Due Dimensioni: Vicsek vs. Heisenberg}
+
+Il modello di Vicsek presenta una transizione di fase verso uno stato ordinato anche in due dimensioni ($d=2$). Questo è un risultato notevole, poiché per modelli di equilibrio con simmetria continua, come il modello di Heisenberg, il teorema di Mermin-Wagner proibisce l'ordine a lungo raggio in $d \le 2$. Per capire questa differenza, iniziamo analizzando il caso di equilibrio.
+
+\subsection{Fluttuazioni e Ordine nel Modello di Heisenberg}
+Consideriamo il modello di Heisenberg (o modello O(N)) , la cui Hamiltoniana è:
+\begin{equation}
+    H = -J \sum_{\avg{i,j}} m_{ij} \vec{S}_i \cdot \vec{S}_j
+\end{equation}
+A basse temperature, gli spin $\vec{S}_i$ tendono ad allinearsi lungo una direzione media, definendo un parametro d'ordine (magnetizzazione) $\vec{m}$. Tuttavia, la simmetria continua del sistema (rotazionale) permette l'esistenza di fluttuazioni collettive a bassissimo costo energetico, dette \textbf{modi soffici} (\textit{soft modes}). Queste corrispondono a rotazioni lente e globali della direzione di magnetizzazione, che avvengono su una "manifold" di stati di equilibrio degeneri. Il costo energetico di questi modi tende a zero nel limite termodinamico.
+
+Per determinare se l'ordine è stabile, dobbiamo quantificare l'ampiezza di queste fluttuazioni. Un modo per farlo è calcolare la varianza delle fluttuazioni su un singolo sito:
+\begin{equation}
+    \avg{(\delta\vec{S}_i)^2} \quad \text{dove} \quad \delta\vec{S}_i = \vec{S}_i - \vec{m}
+\end{equation}
+La fluttuazione $\delta\vec{S}_i$ può essere scomposta in una componente parallela alla magnetizzazione media, $\delta S_i^\parallel \hat{m}$, e una perpendicolare, $\vec{\Pi}_i$. Le fluttuazioni del modulo sono energeticamente sfavorite, quindi i contributi dominanti vengono dalle fluttuazioni di direzione (i modi soffici).
+
+La varianza totale è legata all'integrale della funzione di correlazione connessa $\hat{C}(\vec{k})$ nello spazio di Fourier:
+\begin{equation}
+    \avg{(\delta\vec{S}_i)^2} = C(r=0) \propto \int d\vec{k} \, \hat{C}(\vec{k})
+\end{equation}
+Per i modi soffici, si può dimostrare che $\hat{C}(\vec{k}) \sim 1/k^2$. L'integrale va calcolato su tutti i possibili vettori d'onda, da un minimo $k_{min} \sim 2\pi/L$ (legato alla taglia del sistema $L$) a un massimo $k_{max} \sim 2\pi/l$ (legato alla spaziatura reticolare $l$). In $d$ dimensioni, l'elemento di volume è $d\vec{k} \propto k^{d-1}dk$, quindi l'integrale diventa:
+\begin{equation}
+    \avg{(\delta\vec{S}_i)^2} \sim \int_{2\pi/L}^{2\pi/l} dk \, k^{d-1} \frac{1}{k^2} = \int_{2\pi/L}^{2\pi/l} dk \, k^{d-3} \label{eq:integral_fluct}
+\end{equation}
+Valutando l'integrale, si ottiene:
+\begin{equation}
+    \int k^{d-3} dk = \frac{k^{d-2}}{d-2}
+\end{equation}
+Il comportamento nel limite termodinamico ($L \to \infty$) dipende crucialmente dalla dimensione $d$:
+\begin{itemize}
+    \item \textbf{Per $d > 2$}: L'integrale converge a una costante finita: $\avg{(\delta\vec{S}_i)^2} \to \text{const}$. Le fluttuazioni sono limitate, e l'ordine a lungo raggio è stabile.
+    \item \textbf{Per $d = 2$}: L'esponente è $-1$. L'integrale di $1/k$ è un logaritmo, quindi $\avg{(\delta\vec{S}_i)^2} \sim \ln(L/l)$. Le fluttuazioni divergono logaritmicamente con la taglia del sistema.
+    \item \textbf{Per $d < 2$}: L'esponente $d-2$ è negativo. Il termine dipendente da $L$ diverge: $\avg{(\delta\vec{S}_i)^2} \sim L^{2-d}$. Le fluttuazioni divergono come una legge di potenza.
+\end{itemize}
+La divergenza delle fluttuazioni per $d \le 2$ implica la distruzione dell'ordine a lungo raggio, un risultato noto come \textbf{Teorema di Mermin-Wagner}. La dimensione critica inferiore per l'ordinamento è quindi $d_c=2$.
+
+\subsection{Ordine Quasi a Lungo Raggio e la Teoria di Toner-Tu}
+In $d=2$, sebbene l'ordine a lungo raggio sia distrutto, le fluttuazioni crescono molto lentamente (logaritmicamente). Questo porta a un \textbf{ordine quasi a lungo raggio}: localmente il sistema è ordinato, ma su grandi scale la direzione di ordine fluttua lentamente.
+
+Contrariamente a questa previsione, le simulazioni di Vicsek mostravano un ordine robusto in $d=2$, anche per sistemi molto grandi, suggerendo che non fosse un artefatto di taglia finita. La ragione è che le particelle attive possiedono un meccanismo aggiuntivo di propagazione dell'informazione: la \textbf{motilità}.
+
+I fisici Toner e Tu svilupparono una teoria di campo per i sistemi attivi che incorpora questo effetto. Scoprirono che i termini idrodinamici di avvezione, dovuti al movimento delle particelle, modificano la funzione di correlazione. Nello spazio di Fourier, questa diventa:
+\begin{equation}
+    \hat{C}_{conn}(\vec{k}) \sim \frac{1}{k^x} \quad \text{con } x < 2 \quad \text{}
+\end{equation}
+Reinserendo questo risultato nel calcolo della varianza delle fluttuazioni in $d=2$, l'integrale diventa:
+\begin{equation}
+    \avg{(\delta\vec{S}_i)^2} \sim \int dk \, k^{1-x}
+\end{equation}
+Poiché $x<2$, l'esponente $1-x$ è maggiore di $-1$, e l'integrale \textbf{converge} a una costante nel limite termodinamico. Le fluttuazioni rimangono quindi finite, permettendo l'esistenza di un vero ordine a lungo raggio anche in due dimensioni.
+
+\section{Teoria di Campo e Idrodinamica Generalizzata}
+La teoria di Toner-Tu si basa su un approccio di \textit{coarse-graining} (grana grossa) , analogo a quello usato in idrodinamica.
+\begin{enumerate}
+    \item Si sostituiscono i gradi di libertà microscopici (gli spin $\vec{S}_i$) con un campo continuo $\vec{\psi}(\vec{x})$, ottenuto mediando su piccoli volumi.
+    \item Si scrive una Hamiltoniana (o energia libera) per questo campo, $\mathcal{H}[\vec{\psi}(\vec{x})]$. Questa contiene tipicamente:
+    \begin{itemize}
+        \item Un termine di gradiente, come $K|\nabla\vec{\psi}|^2$, che penalizza le variazioni spaziali del campo e favorisce l'allineamento.
+        \item Un potenziale a doppia buca, come $+\frac{\lambda}{4}\psi^4 - \frac{\mu}{2}\psi^2$, che impone al modulo del campo di avere un valore circa costante, $|\vec{\psi}| \approx \psi_0$.
+    \end{itemize}
+    \item Per i sistemi attivi, si deve tener conto del fatto che le "particelle" di fluido si muovono. Questo si fa introducendo la \textbf{derivata covariante} (o materiale) nelle equazioni del moto:
+    \begin{equation}
+        \frac{D}{Dt} = \left[ \frac{\partial}{\partial t} + \vec{v} \cdot \vec{\nabla} \right]
+    \end{equation}
+    Questo termine descrive la variazione di una quantità tenendo conto sia della sua evoluzione temporale intrinseca sia del fatto che il volume di fluido si sta spostando in regioni dove la quantità ha valori diversi.
+\end{enumerate}
+Toner e Tu combinarono le equazioni idrodinamiche per i campi di densità e velocità con i termini di allineamento tipici dei ferromagneti, derivando così il loro celebre risultato.
+
+\section{La Transizione di Fase nel Modello di Vicsek}
+\subsection{Argomento di Campo Medio e Linea Critica}
+Il diagramma di fase del modello di Vicsek è tipicamente rappresentato nel piano (densità $\rho$, rumore $\eta$). Un semplice argomento di campo medio permette di stimare la forma della linea critica $\eta_c(\rho)$ che separa la fase ordinata da quella disordinata. L'idea è confrontare due scale di lunghezza caratteristiche:
+\begin{itemize}
+    \item \textbf{La distanza media dal primo vicino $l_{nn}$}: Questa scala dipende dalla densità. In 2D, l'area che contiene in media un vicino è $\pi l_{nn}^2$, quindi $\pi l_{nn}^2 \rho = 1$, da cui $l_{nn} \sim 1/\sqrt{\rho}$.
+    \item \textbf{La lunghezza di persistenza $l_d$}: È la distanza su cui una particella mantiene memoria della sua direzione di volo prima che il rumore la distrugga. Il tempo di decorrelazione angolare, dovuto a un processo diffusivo dell'angolo ($\avg{(\Delta\phi)^2} \sim \eta t$), è $\tau_d \sim 1/\eta$. La lunghezza di persistenza è quindi $l_d = v_0 \tau_d \sim v_0/\eta$.
+\end{itemize}
+L'ordine collettivo è possibile se l'informazione sulla direzione può essere trasmessa prima di essere persa, ovvero se $l_d > l_{nn}$. Questo porta alla condizione:
+\begin{equation}
+    \frac{v_0}{\eta} > \frac{1}{\sqrt{\rho}} \quad \implies \quad \eta_c(\rho) \propto \sqrt{\rho} \quad \text{}
+\end{equation}
+Questa relazione si adatta sorprendentemente bene ai dati delle simulazioni.
+
+\subsection{Un Scenario Errato: la Transizione del Primo Ordine}
+L'argomento di campo medio discusso in precedenza, che suggerisce una transizione di fase continua (del secondo ordine), si rivela \textbf{non corretto} per il modello di Vicsek. Per molti anni la natura di questa transizione è stata oggetto di dibattito nella comunità scientifica.
+
+Grazie all'aumento della potenza di calcolo , è stato possibile eseguire simulazioni su sistemi di dimensioni sempre maggiori. Mentre le simulazioni originali di Vicsek arrivavano a circa 8000 particelle , studi successivi hanno raggiunto le 20000 e poi 100000 particelle. Queste simulazioni su larga scala hanno rivelato la presenza di \textbf{strutture eterogenee} in prossimità della linea di transizione.
+
+Queste eterogeneità si manifestano, in simulazioni con condizioni al contorno periodiche, come \textbf{bande viaggianti} : regioni ad alta densità in cui le particelle sono fortemente allineate e si muovono in modo coeso, immerse in un "gas" di particelle a bassa densità e disordinate. A seconda delle varianti del modello, le strutture possono apparire anche come cluster compatti che si muovono in un gas disordinato.
+
+Il punto cruciale è la presenza di questa eterogeneità , ovvero la \textbf{coesistenza di fase} tra uno stato ordinato e uno disordinato. Questo è il segno distintivo di una \textbf{transizione di fase del primo ordine} , un fenomeno analogo alla separazione di fase tra liquido e gas durante la compressione a pressione costante. Questo significa che la conclusione iniziale di Vicsek, che suggeriva una transizione del secondo ordine , era un'interpretazione tratta da sistemi non abbastanza grandi da mostrare questo comportamento asintotico.
+
+Il meccanismo che porta alla formazione di queste bande è un feedback positivo:
+\begin{enumerate}
+    \item Fluttuazioni casuali di densità creano una regione localmente più densa.
+    \item In questa regione più densa, le interazioni di allineamento diventano più efficaci, e la regione diventa anche più ordinata.
+    \item Il gruppo ordinato si muove in modo coeso e rimane aggregato per un tempo maggiore.
+    \item Se il rumore è sufficientemente basso, questo nucleo ordinato può attrarre altre particelle prima di dissolversi, portando alla crescita di cluster stabili che formano le bande.
+\end{enumerate}
+Questo scenario è simile alla \textit{Motility-Induced Phase Separation} (MIPS) , con la differenza che qui, grazie all'allineamento, le regioni dense si muovono in modo coerente e collettivo.
+
+\subsection{Rilevanza per i Sistemi Biologici}
+Per i gruppi biologici naturali, come stormi e sciami, questa fenomenologia del primo ordine è spesso irrilevante, poiché le dimensioni del gruppo non sono sufficientemente grandi da raggiungere il limite termodinamico in cui queste strutture emergono in modo stabile. Le eterogeneità misurate in stormi e sciami reali non sono mai così marcate come quelle osservate nelle simulazioni asintotiche. Il discorso cambia per sistemi di materia attiva non vivente (es. micro-robot), dove è possibile realizzare sperimentalmente sistemi di grandi dimensioni e osservare questo comportamento. Bisogna quindi distinguere tra sistemi fisici, dove il limite termodinamico è fondamentale, e sistemi biologici, dove i regimi a taglia finita e intermedia sono quelli di interesse.
+
+\section{Fluttuazioni Giganti di Densità}
+
+Una caratteristica importante, che ha la stessa origine delle strutture eterogenee, è la presenza di \textbf{fluttuazioni giganti di densità}. Questo fenomeno è una conseguenza diretta dell'accoppiamento tra densità locale e ordine locale.
+
+\begin{itemize}
+    \item \textbf{Sistemi passivi}: In un liquido o gas all'equilibrio, le fluttuazioni del numero di particelle $n$ in un dato volume obbediscono al Teorema del Limite Centrale. La deviazione standard scala con la radice quadrata del numero medio: $\sqrt{\avg{\delta n^2}} \sim \avg{n}^{1/2}$. Le fluttuazioni relative, $\sqrt{\avg{\delta n^2}}/\avg{n} \sim 1/\sqrt{\avg{n}}$, diminuiscono all'aumentare della taglia del campione.
+    \item \textbf{Sistemi attivi}: Nei sistemi attivi, si può dimostrare che le fluttuazioni sono molto più forti. La deviazione standard scala come una legge di potenza con un esponente anomalo:
+    \begin{equation}
+        \sqrt{\avg{\delta n^2}} \sim \avg{n}^{\alpha} \quad \text{con } \frac{1}{2} < \alpha < 1 \quad \text{}
+    \end{equation}
+    Questo significa che le fluttuazioni relative, $\sim \avg{n}^{\alpha-1}$, decadono più lentamente con la dimensione del sistema.
+\end{itemize}
+Questa previsione teorica è stata confermata sperimentalmente in sistemi di materia attiva non vivente, come dischi granulari vibrati  e chicchi di riso , dove un grafico log-log di $\ln(\avg{\delta n^2})$ contro $\ln(\avg{n})$ mostra una pendenza $2\alpha > 1$.
+
+\section{Conclusioni e Rilevanza del Modello di Vicsek}
+
+Il modello di Vicsek, nonostante le sue semplificazioni, si è rivelato un potente strumento concettuale. Esso ci insegna che gli ingredienti essenziali per il moto collettivo sono:
+\begin{enumerate}
+    \item \textbf{Interazione di allineamento}: Gli individui tendono ad allineare la loro direzione di moto con quella dei vicini. Negli animali, questo non è una forza fisica semplice, ma il risultato di complessi processi cognitivi di imitazione.
+    \item \textbf{Rumore}: L'allineamento non è mai perfetto, a causa di errori nella percezione o nel controllo motorio.
+\end{enumerate}
+L'applicazione di questo schema concettuale a sistemi reali ha portato a scoperte importanti.
+\begin{itemize}
+    \item \textbf{Stormi di uccelli}: Sono sistemi ordinati, con alta polarizzazione. Il modello di Vicsek sembra un candidato naturale per descriverli, dato che gli uccelli mostrano comportamenti di imitazione.
+    \item \textbf{Sciami di insetti}: Sono sistemi disordinati , che stazionano attorno a un punto fisso. La scoperta sorprendente è che anche loro possono essere descritti dal modello di Vicsek. Sebbene la polarizzazione media sia nulla, le correlazioni tra le direzioni di volo sono significativamente diverse da zero e a lungo raggio. Questo indica che gli insetti non sono indipendenti , ma interagiscono tra loro, e che il sistema si trova in uno stato disordinato ma vicino alla criticità, cosa che il modello di Vicsek prevede.
+\end{itemize}
+Questo evidenzia una strategia di ricerca fondamentale: quando un'osservabile a un punto (come la polarizzazione media) non fornisce informazioni sufficienti (è zero per gli sciami), è necessario analizzare osservabili a due punti (come le funzioni di correlazione) per rivelare la presenza di interazioni nel sistema.
