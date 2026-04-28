@@ -1,0 +1,77 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 29
+%-------------------------------------------------------------------------------
+\chapter{Lezione 29}
+\label{capitolo_29}
+\textit{11/06/2026}
+
+
+\section{Il Modello di Vicsek e i Sistemi Reali}
+
+In questa lezione finale, ci chiediamo se il modello di Vicsek sia adeguato a descrivere sistemi reali come stormi di uccelli e sciami di insetti. Il modello prevede un diagramma di fase con una regione ordinata e una disordinata. Esperimenti hanno permesso di collocare i sistemi reali all'interno di questo diagramma.
+\begin{itemize}
+    \item Gli \textbf{stormi} si trovano nella fase ordinata, caratterizzata da alta polarizzazione ($\phi \approx 1$) e correlazioni a lungo raggio (legge di potenza).
+    \item Gli \textbf{sciami} si trovano in una fase disordinata ($\phi \approx 0$), ma in una regione molto vicina alla transizione, detta \textbf{regime critico}. Anche se disordinati, mostrano forti correlazioni spaziali.
+\end{itemize}
+
+\subsection{Tecnica Sperimentale: Fotografia Stereoscopica}
+Per ottenere dati quantitativi, si utilizzano tecniche di fotografia stereoscopica.
+\begin{itemize}
+    \item Una singola fotocamera proietta un oggetto 3D su un sensore 2D (CCD), perdendo l'informazione sulla profondità.
+    \item Utilizzando due fotocamere sincronizzate, poste a una distanza nota $d$, si ottengono due proiezioni 2D diverse dello stesso oggetto.
+    \item Da queste due proiezioni (4 coordinate 2D in totale) è possibile, tramite relazioni geometriche, ricostruire la posizione 3D originale dell'oggetto (3 coordinate). Questo processo è analogo alla visione binoculare umana.
+    \item Quando si osservano molti oggetti identici (come gli uccelli in uno stormo, che appaiono come puntini neri ), sorge il complesso \textbf{problema del matching stereoscopico} : bisogna associare correttamente la proiezione di ogni individuo sulla camera 1 con la sua corrispondente proiezione sulla camera 2. Un'associazione errata produce una ricostruzione 3D fasulla.
+    \item Questo problema di Computer Vision è stato risolto trasformandolo in un problema probabilistico di ottimizzazione, calcolando dei "pesi" per ogni possibile accoppiamento.
+    \item Estendendo la tecnica a brevi filmati, si possono ricostruire le traiettorie 3D $\vec{x}_i(t)$ e le velocità $\vec{v}_i(t)$ di ogni individuo, superando problemi come le occlusioni.
+\end{itemize}
+Da questi dati si calcolano osservabili come la polarizzazione $\phi(t) = \frac{1}{N} \sum_i \frac{\vec{v}_i(t)}{|\vec{v}_i(t)|}$.
+
+\section{Risultati Sperimentali e Confronto con il Modello}
+
+\subsection{Polarizzazione e Funzioni di Correlazione}
+Le misurazioni confermano la classificazione qualitativa:
+\begin{itemize}
+    \item \textbf{Stormi}: $\phi$ è alta e stabile, circa $0.9$.
+    \item \textbf{Sciami}: $\phi$ è bassa e molto fluttuante, circa $0.05 \div 0.1$.
+\end{itemize}
+Per investigare più a fondo, si calcola la funzione di correlazione connessa spaziale, $C(r)$, che misura come le fluttuazioni di velocità $\delta\vec{v}_i = \vec{v}_i - \vec{V}$ (dove $\vec{V}$ è la velocità media del gruppo ) sono correlate a una certa distanza $r$.
+\begin{itemize}
+    \item Per gli \textbf{stormi}, si osserva che la lunghezza di correlazione $\xi$ (stimata dalla distanza $r_0$ dove $C(r)$ si annulla ) scala linearmente con la taglia dello stormo $L$. Questo indica \textbf{correlazioni scale-free} ($\xi = \infty$ nel limite termodinamico) , un risultato atteso per un sistema che rompe una simmetria continua (come il modello di Heisenberg), a causa dei "modi soffici" (Teorema di Goldstone).
+    \item Per gli \textbf{sciami}, sorprendentemente, si trova lo stesso comportamento: la lunghezza di correlazione scala con la taglia del sistema. Poiché in questo caso il sistema è disordinato e non c'è rottura di simmetria , l'unica spiegazione per correlazioni a lungo raggio è che il sistema operi \textbf{in prossimità di un punto critico}. Ulteriori conferme vengono dall'analisi delle correlazioni spazio-temporali, che obbediscono a leggi di scaling dinamico tipiche dei sistemi critici.
+\end{itemize}
+Questo suggerisce che essere vicini alla criticità possa essere una strategia evolutivamente vantaggiosa, permettendo una rapida propagazione dell'informazione pur mantenendo la robustezza del gruppo.
+
+\subsection{Prima Deviazione da Vicsek: Interazione Topologica vs. Metrica}
+Nonostante la coerenza generale, un'analisi più fine della struttura spaziale degli stormi rivela una discrepanza fondamentale con il modello di Vicsek. Studiando la distribuzione spaziale dei vicini, si è scoperto che:
+\begin{itemize}
+    \item L'interazione non è isotropa. Gli uccelli tendono ad evitare di avere vicini direttamente di fronte a loro.
+    \item L'anisotropia della distribuzione spaziale dei vicini svanisce dopo circa il 7°-8° vicino. Questo definisce un "vicinato di interazione" composto da un numero fisso di individui, $n_c \approx 7$.
+    \item Il dato cruciale è che questo numero $n_c$ \textbf{è costante} per stormi di densità molto diverse.
+\end{itemize}
+Questa osservazione contraddice l'assunzione base del modello di Vicsek, che prevede un'\textbf{interazione metrica}: ogni individuo interagisce con tutti i vicini entro un raggio fisso $r_c$. In un modello metrico, $r_c$ sarebbe costante e il numero di vicini interagenti $n_c$ dovrebbe aumentare con la densità $\rho$ (specificamente, $n_c \propto \rho$).
+
+I dati sperimentali supportano invece un'\textbf{interazione topologica}: ogni uccello interagisce con un numero fisso $n_c$ dei suoi vicini più prossimi, indipendentemente dalla loro distanza metrica. Questo implica che il "raggio di interazione" $r_c$ si adatta, restringendosi in stormi densi e allargandosi in stormi sparsi, per mantenere costante il numero di vicini monitorati. Questo comportamento è coerente con i limiti cognitivi degli animali sulla capacità di tracciare oggetti multipli (circa 7).
+
+Questa ipotesi è stata confermata da un'analisi indipendente basata su un modello di Massima Entropia, che, partendo dalle correlazioni tra le velocità, ha inferito un numero di partner di interazione $n_c^*$ costante e indipendente dalla densità.
+
+\subsection{Seconda Deviazione da Vicsek: Inerzia e Propagazione di Onde}
+Una seconda discrepanza emerge dall'analisi della dinamica, in particolare durante le virate collettive. Si osserva che:
+\begin{itemize}
+    \item Le virate non sono sincrone, ma si propagano attraverso lo stormo come un'\textbf{onda} a partire da un iniziatore.
+    \item Sperimentalmente, la relazione tra la distanza $x$ percorsa dall'onda e il tempo $t$ è \textbf{lineare}: $x = c_s t$. Questa è una legge di dispersione \textbf{propagatoria}.
+\end{itemize}
+Il modello di Vicsek, essendo un'equazione del primo ordine nel tempo ($\dot{\vec{v}} = F_{allineamento}$), prevede invece una propagazione \textbf{diffusiva} , con una legge di dispersione $x \sim \sqrt{t}$. Questo è in netto contrasto con i dati.
+
+Per ottenere una propagazione ondulatoria ($x \sim t$), l'equazione del moto deve essere del secondo ordine nel tempo, ovvero deve includere un termine di \textbf{inerzia}. L'equazione corretta dovrebbe avere la forma:
+\begin{equation}
+    \chi \frac{d^2\vec{v}}{dt^2} + \zeta \frac{d\vec{v}}{dt} = \vec{F}_{allineamento} + \dots
+\end{equation}
+dove $\chi$ è un coefficiente di inerzia "comportamentale" e $\zeta$ un coefficiente dissipativo. Negli uccelli, il termine inerziale domina su quello dissipativo per fenomeni rapidi come le virate. La scala temporale intrinseca di questo processo, $\tau \sim \chi/\zeta$, è dell'ordine dei secondi, paragonabile alla durata di una virata, rendendo l'inerzia non trascurabile. Per fenomeni su scale temporali più lunghe, il comportamento ridiventa simile a quello del modello di Vicsek (sovrasmorzato), spiegando perché le proprietà statiche erano ben descritte.
+
+\section{Conclusioni}
+Il modello di Vicsek cattura gli ingredienti essenziali (allineamento e rumore) per il moto collettivo. Tuttavia, per descrivere quantitativamente gli stormi di uccelli, sono necessarie due modifiche cruciali:
+\begin{enumerate}
+    \item Sostituire l'interazione \textbf{metrica} con una \textbf{topologica}, in cui ogni individuo interagisce con un numero fisso di vicini. Questo aumenta la coesione del gruppo di fronte a fluttuazioni di densità, una caratteristica fondamentale per la difesa contro i predatori.
+    \item Introdurre un termine di \textbf{inerzia} nell'equazione del moto. Questo spiega la propagazione di informazione sotto forma di onde, come osservato nelle virate collettive, e introduce una memoria a breve termine nel comportamento degli individui.
+\end{enumerate}
+Curiosamente, per gli sciami di moscerini, l'analisi indica che l'interazione è di tipo metrico, probabilmente a causa della natura della loro comunicazione acustica, che decade con la distanza. Questo dimostra come diversi vincoli biologici e fisici portino a diverse strategie di interazione collettiva.
