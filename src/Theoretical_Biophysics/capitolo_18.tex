@@ -1,0 +1,193 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 18
+%-------------------------------------------------------------------------------
+\chapter{Lezione 18}
+\label{capitolo_18}
+\textit{08/05/2025}
+
+\section{Isteresi, Transizioni di Fase ed Esponenti Critici}
+
+\subsection*{Comportamento del Sistema per $T < T_c$ con Campo Esterno $h$}
+Quando la temperatura del sistema è inferiore alla temperatura critica ($T < T_c$), l'applicazione di un campo magnetico esterno $h$ modifica il comportamento della magnetizzazione $m$.
+L'equazione di stato nel modello di campo medio è data da:
+
+\begin{equation} \label{eq:ch18_1}
+m = \tanh(\beta h + \beta J z m)
+\end{equation}
+
+\begin{itemize}
+    \item \textbf{Effetto del Campo:} Se applichiamo un campo $h > 0$, l'intera curva $\tanh(x)$ viene traslata verso sinistra, mentre il potenziale efficace $f_{eff}(m)$ viene spinto verso destra.
+Man mano che $h$ diminuisce, la curva $\tanh(x)$ si sposta verso destra e $m_{eq}$ si sposta verso sinistra.
+    \item \textbf{Effetto della Temperatura:} Se diminuiamo la temperatura $T$, la pendenza della funzione $\tanh(x)$ nell'origine diventa più ripida. Questo favorisce un maggiore ordine e quindi una magnetizzazione più grande.
+\end{itemize}
+
+A una certa temperatura, definita Temperatura Spinodale, la comparsa di una seconda intersezione tra la retta $y=m$ e la curva $\tanh$ segnala la formazione di un secondo minimo nel potenziale efficace $f_{eff}(m)$.
+Questo nuovo minimo è metastabile: ha un'energia libera più alta del minimo globale (lo stato di equilibrio vero) ma è comunque un punto di equilibrio localmente stabile. Per $h > 0$, lo stato con magnetizzazione positiva è favorito, quindi il suo minimo di energia libera sarà più basso.
+
+Un comportamento simile si osserva mantenendo $T < T_c$ fissa e riducendo il campo $h$ da un valore elevato. Esiste un campo spinodale al di sotto del quale compare lo stato metastabile.
+
+Per tempi di osservazione finiti, il sistema può rimanere "intrappolato" in questo stato metastabile.
+
+
+\section{Isteresi e Transizione di Fase del 1° Ordine}
+Il fenomeno dell'isteresi emerge quando si traccia la magnetizzazione $m$ in funzione del campo $h$ a temperatura costante $T < T_c$.
+
+\begin{itemize}
+    \item \textbf{Ramo di Equilibrio:} Partendo da $h \gg 0$, il sistema si trova nel suo stato di equilibrio con $m > 0$. Riducendo lentamente $h$, il sistema segue il ramo di equilibrio della curva.
+    \item \textbf{Ramo Metastabile:} Se il campo viene ridotto e poi invertito ($h < 0$) rapidamente, il sistema può persistere nello stato con $m > 0$, che ora è metastabile. Questo ramo è una continuazione del ramo di equilibrio.
+    \item \textbf{Transizione Discontinua:} Per un valore di $h$ sufficientemente negativo, lo stato metastabile scompare e il sistema "salta" bruscamente allo stato di equilibrio con magnetizzazione negativa.
+\end{itemize}
+
+Questo ciclo $m(h)$ è noto come ciclo di isteresi. Il salto della magnetizzazione a $h = 0$ (in condizioni sperimentali standard) è una transizione di fase discontinua del primo ordine.
+Viene definita del primo ordine perché la grandezza che presenta una discontinuità, il parametro d'ordine $m$, è la derivata prima dell'energia libera $F$ rispetto al campo $h$.
+
+\vspace{0.5cm}
+\noindent\fbox{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+        \begin{equation} \label{eq:ch18_2}
+        m = -\frac{1}{N}\frac{\partial F}{\partial h}
+        \end{equation}
+    }%
+}
+\vspace{0.5cm}
+
+La prova di questa relazione è la seguente:
+
+\begin{equation} \label{eq:ch18_3}
+F(T, N, h) = -\frac{1}{\beta} \ln(Z)
+\end{equation}
+
+\begin{equation} \label{eq:ch18_4}
+Z = \sum_{\{S_i\}} e^{-\beta H(\{S_i\})} \quad \text{con} \quad H = -J\sum_{\langle i,j \rangle} S_i S_j - h\sum_i S_i
+\end{equation}
+
+Calcoliamo la derivata:
+
+\begin{equation} \label{eq:ch18_5}
+-\frac{1}{N}\frac{\partial F}{\partial h} = -\frac{1}{N} \frac{\partial}{\partial h} \left( -\frac{1}{\beta} \ln Z \right) = \frac{1}{N\beta} \frac{1}{Z} \frac{\partial Z}{\partial h}
+\end{equation}
+
+\begin{equation} \label{eq:ch18_6}
+\frac{\partial Z}{\partial h} = \frac{\partial}{\partial h} \sum_{\{S_i\}} e^{-\beta H} = \sum_{\{S_i\}} e^{-\beta H} \left( -\beta \frac{\partial H}{\partial h} \right) = \sum_{\{S_i\}} e^{-\beta H} \left( \beta \sum_i S_i \right)
+\end{equation}
+
+Sostituendo, otteniamo:
+
+\begin{equation} \label{eq:ch18_7}
+-\frac{1}{N}\frac{\partial F}{\partial h} = \frac{1}{N\beta} \frac{1}{Z} \sum_{\{S_i\}} \left(\beta \sum_i S_i\right) e^{-\beta H} = \frac{1}{N} \sum_i \left( \sum_{\{S_i\}} S_i \frac{e^{-\beta H}}{Z} \right) = \frac{1}{N} \sum_i \langle S_i \rangle = m
+\end{equation}
+
+Poiché $m$ (la derivata prima di $F$) ha un salto, la transizione è del primo ordine e discontinua.
+
+
+\section{Transizione di Fase del 2° Ordine ed Esponenti Critici}
+Se fissiamo $h=0$ e variamo la temperatura $T$, osserviamo una transizione di fase del secondo ordine a $T = T_c$. È detta continua perché $m$ va a zero con continuità. L'anomalia si trova nella derivata seconda dell'energia libera.
+La suscettibilità magnetica $\chi$ è la derivata seconda di $F$:
+
+\vspace{0.5cm}
+\noindent\fbox{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+        \begin{equation} \label{eq:ch18_8}
+        \chi := \frac{\partial m}{\partial h}\bigg|_{h=0} = -\frac{1}{N}\frac{\partial^2 F}{\partial h^2}\bigg|_{h=0}
+        \end{equation}
+    }%
+}
+\vspace{0.5cm}
+
+Per $T$ vicino a $T_c$ e $h$ piccolo, linearizziamo l'equazione di campo medio: $m \approx \beta h + \beta z J m$.
+Da cui:
+
+\begin{equation} \label{eq:ch18_9}
+(1 - \beta z J)m \approx \beta h \implies \chi = \frac{m}{h} = \frac{\beta}{1 - \beta z J}
+\end{equation}
+
+Ricordando che $T_c = zJ/k_B$, si può riscrivere il denominatore come $1 - T_c/T = (T - T_c)/T$
+
+\begin{equation} \label{eq:ch18_10}
+\chi \propto \frac{1}{T - T_c}
+\end{equation}
+
+Quindi $\chi$ diverge per $T \to T_c$.
+
+\subsection*{Calcolo degli Esponenti Critici}
+Gli esponenti critici descrivono il comportamento delle grandezze fisiche vicino al punto critico.
+
+\begin{itemize}
+    \item \textbf{Esponente $\gamma$ (Suscettibilità):} Definito da $\chi \sim (T - T_c)^{-\gamma}$. Il nostro calcolo mostra $\gamma = 1$ in campo medio.
+    \item \textbf{Esponente $\beta$ (Parametro d’ordine):} Definito da $m \sim (T_c - T)^{\beta}$ per $T < T_c$ e $h=0$. Sviluppiamo $\tanh(x) \approx x - x^3/3$:
+\end{itemize}
+
+\begin{equation} \label{eq:ch18_11}
+m = \tanh(\beta z J m) \approx (\beta z J m) - \frac{1}{3}(\beta z J m)^3
+\end{equation}
+
+Semplificando $m$ e riarrangiando:
+
+\begin{equation} \label{eq:ch18_12}
+1 \approx \beta z J - \frac{1}{3}(\beta z J)^3 m^2 \implies m^2 \approx \frac{3( \beta z J - 1)}{(\beta z J)^3} = \frac{3(T_c/T - 1)}{(T_c/T)^3}
+\end{equation}
+
+Per $T \approx T_c$, $m^2 \propto (T_c - T)$, quindi $\beta = 1/2$ in campo medio.
+
+\begin{itemize}
+    \item \textbf{Esponente $\delta$ (Isoterma Critica):} Definito da $m \sim h^{1/\delta}$ a $T = T_c$. A $T_c$, si ha $\beta_c z J = 1$
+\end{itemize}
+
+L'espansione diventa:
+
+\begin{equation*} 
+m = \tanh(\beta_c h + \beta_c z J m) = \tanh(\beta_c h + m) \approx (\beta_c h + m) - \frac{1}{3}(\beta_c h + m)^3
+\end{equation*}
+
+Trascurando $m$ a primo ordine, si ottiene:
+
+\begin{equation} \label{eq:ch18_13}
+0 \approx \beta_c h - \frac{1}{3}(\beta_c h + m)^3
+\end{equation}
+
+Per $h$ piccolo, $m$ domina nel termine cubico: $m^3 \approx 3 \beta_c h$, da cui $m \sim h^{1/3}$.
+Quindi $\delta = 3$ in campo medio.
+
+Sistemi fisici molto diversi possono condividere gli stessi esponenti critici, appartenendo così alla stessa classe di universalità. Questo implica che il comportamento collettivo su larga scala vicino a una transizione di fase è indipendente dai dettagli microscopici del sistema. Questo concetto permette di usare modelli semplici per predire il comportamento di sistemi complessi.
+
+
+\section{Funzioni di Correlazione e FDT}
+Per analizzare il comportamento collettivo, si usa la funzione di correlazione connessa:
+
+\begin{equation} \label{eq:ch18_14}
+C_{ij}^{conn} = \langle S_i S_j \rangle - \langle S_i \rangle \langle S_j \rangle
+\end{equation}
+
+Questa funzione è non nulla solo se il sistema è interagente. Poiché l'approssimazione di campo medio tratta gli spin come indipendenti, darebbe erroneamente $C_{ij}^{conn} = 0$. Si aggira il problema usando il Teorema di Fluttuazione-Dissipazione (FDT), che lega la correlazione alla risposta del sistema a una perturbazione:
+
+\vspace{0.5cm}
+\noindent\fbox{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+        \begin{equation} \label{eq:ch18_15}
+        \chi_{ij} = \frac{\partial \langle S_i \rangle}{\partial h_j} \bigg|_{h=0}= \beta C_{ij}^{conn} \bigg|_{h=0}
+        \end{equation}
+    }%
+}
+\vspace{0.5cm}
+
+\textbf{Dimostrazione del FDT:}
+
+Partiamo da $\langle S_i \rangle = (1/Z) \sum_{\{S_k\}} S_i e^{-\beta H}$. Derivando rispetto a $h_j$:
+
+\begin{equation} \label{eq:ch18_16}
+\frac{\partial \langle S_i \rangle}{\partial h_j} = \frac{\partial}{\partial h_j} \left( \frac{1}{Z} \right) \sum S_i e^{-\beta H} + \frac{1}{Z} \sum S_i \frac{\partial}{\partial h_j} (e^{-\beta H})
+\end{equation}
+
+Usando $\partial(e^{-\beta H})/\partial h_j = \beta S_j e^{-\beta H}$ e $\partial(1/Z)/\partial h_j = -(1/Z^2) \partial Z/\partial h_j = -(1/Z) \beta \langle S_j \rangle$, si ottiene:
+
+\begin{equation} \label{eq:ch18_17}
+\frac{\partial \langle S_i \rangle}{\partial h_j} = -\beta \langle S_j \rangle \langle S_i \rangle + \beta \langle S_i S_j \rangle
+\end{equation}
+
+Che, per $h=0$, è esattamente l'FDT:
+
+\begin{equation} \label{eq:ch18_18}
+\chi_{ij}\bigg|_{h=0} = \beta [ \langle S_i S_j \rangle - \langle S_i \rangle \langle S_j \rangle ]\bigg|_{h=0}
+\end{equation}
+
+Questo teorema è cruciale: lega le fluttuazioni interne del sistema a riposo ($C_{ij}^{conn}$) alla sua risposta lineare a una perturbazione esterna ($\chi_{ij}$).
