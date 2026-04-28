@@ -1,0 +1,314 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 27
+%-------------------------------------------------------------------------------
+\chapter{Lezione 27}
+\label{capitolo_27}
+\textit{06/06/2025}
+
+\section{Particelle Attive}
+Si considerano modelli di particelle attive descritte da un'equazione di Langevin generalizzata. Le equazioni del moto per la posizione $\vec{x}$ e la velocità $\vec{v}$ di una singola particella sono:
+
+\begin{equation} \label{eq:ch27_1}
+\frac{d\vec{x}}{dt}=\vec{v}
+\end{equation}
+
+\begin{equation} \label{eq:ch27_2}
+\frac{d\vec{v}}{dt}=\vec{F}_{act}(\vec{v})+\vec{F}_{ext}(\vec{x})+\vec{\xi}
+\end{equation}
+
+In queste equazioni, i termini di forza sono da intendersi come forze divise per la massa per semplificare la notazione. Il termine $\vec{F}_{ext}(\vec{x})$ rappresenta un campo di forze esterne, mentre $\vec{\xi}$ è un termine di rumore che modella l'interazione con l'ambiente.
+
+
+
+Il termine $\vec{F}_{act}(\vec{v})$ è definito come la "forza attiva". Nel caso passivo, questa forza è semplicemente una forza di attrito, $\vec{F}_{act} = -\gamma\vec{v}$, riconducendo l'equazione al caso standard di una particella passiva in un potenziale esterno.
+Nel caso attivo, invece, questa forza può essere descritta come derivata da un potenziale attivo $\Phi_{act}$ che dipende dalla velocità stessa:
+
+\begin{equation} \label{eq:ch27_3}
+\vec{F}_{act}=-\frac{\partial}{\partial\vec{v}}\Phi_{act}(\vec{v})
+\end{equation}
+
+Questo potenziale ha la funzione di regolare la velocità della particella. Ad esempio, scegliendo un potenziale $\Phi_{act}$ molto ripido attorno a un certo valore di velocità $v_0$, si forza la velocità della particella a rimanere vicina a tale valore, a meno di piccole fluttuazioni.
+Il punto fondamentale è che la velocità non è determinata da una relazione lineare con la temperatura dell'ambiente (come nel caso passivo), ma è controllata da questo potenziale attivo.
+La particella, quindi, non obbedisce alla distribuzione di Maxwell-Boltzmann per le velocità. Sebbene ci sia anche un effetto dell'ambiente, il meccanismo principale di regolazione della velocità è questo potenziale.
+
+
+\section{Modello Attivo di Ornstein-Uhlenbeck}
+Un'altra classe di modelli per descrivere le particelle attive è il cosiddetto modello di Ornstein-Uhlenbeck attivo. Per comprendere la differenza, ricordiamo il modello di O-U standard nel limite "overdamped" (sovrasmorzato):
+
+\begin{equation} \label{eq:ch27_4}
+\frac{d\vec{x}}{dt}=-K\vec{x}+\vec{\xi}
+\end{equation}
+
+Questo può essere generalizzato a una forza generica $\vec{F}(\vec{x})$. In questo caso passivo, il rumore $\vec{\xi}$ è un rumore bianco Gaussiano, le cui proprietà statistiche sono:
+\begin{itemize}
+    \item Media nulla: $\langle\vec{\xi}(t)\rangle = 0$
+    \item Delta-correlato nel tempo: $\langle\vec{\xi}(t)\cdot\vec{\xi}(t')\rangle = 2dD \delta(t-t')$
+\end{itemize}
+
+Nel modello attivo, l'equazione del moto mantiene una forma simile, ma le proprietà del rumore, che indichiamo con $\vec{\zeta}$, cambiano radicalmente.
+
+\begin{equation} \label{eq:ch27_5}
+\frac{d\vec{x}}{dt}=\vec{F}(\vec{x})+\vec{\zeta}(t)
+\end{equation}
+
+Il rumore attivo è correlato nel tempo. La sua funzione di correlazione è tipicamente un'esponenziale:
+
+\vspace{0.5cm}
+\noindent\fbox{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+        \begin{equation} \label{eq:ch27_6}
+        \langle\vec{\zeta}(t)\cdot\vec{\zeta}(t')\rangle = \frac{2dD}{\tau}e^{-\frac{|t-t'|}{\tau}}
+        \end{equation}
+    }%
+}
+\vspace{0.5cm}
+
+Questo significa che il rumore "ha una memoria": un impulso ricevuto a un certo istante è correlato con l'impulso all'istante successivo. Questo induce una persistenza nel moto della particella. Il parametro $\tau$ è chiamato tempo di persistenza e regola la scala temporale su cui le correlazioni del rumore decadono.
+Questo nuovo parametro $\tau$ agisce come un regolatore della velocità della particella. Per vederlo, consideriamo il caso semplice in cui non ci sono forze esterne ($\vec{F}_{ext}=0$).
+In questo caso, $\vec{v}(t) = \vec{\zeta}(t)$. La velocità quadratica media è quindi:
+
+\begin{equation} \label{eq:ch27_7}
+\langle v^2 \rangle = \langle \vec{v}(t) \cdot \vec{v}(t) \rangle = \langle \vec{\zeta}(t) \cdot \vec{\zeta}(t) \rangle = \frac{2dD}{\tau}
+\end{equation}
+
+Si osserva che la velocità quadratica media è inversamente proporzionale al tempo di persistenza: $\langle v^2 \rangle \propto \frac{1}{\tau}$.
+Modulando $\tau$ è quindi possibile regolare la velocità tipica della particella.
+È importante notare che nel limite in cui il tempo di persistenza tende a zero ($\tau \to 0$), la funzione di correlazione esponenziale tende a una delta di Dirac, recuperando così il caso del rumore bianco del sistema passivo.
+
+\begin{equation} \label{eq:ch27_8}
+\lim_{\tau \to 0} \frac{2dD}{\tau}e^{-\frac{|t-t'|}{\tau}} = 2dD \delta(t-t')
+\end{equation}
+
+
+\section{Particelle Interagenti}
+Il caso più interessante si ha quando si considerano sistemi con molte particelle attive che interagiscono tra loro. Le equazioni del moto vengono generalizzate introducendo un indice $i$ per ogni particella:
+
+\begin{equation} \label{eq:ch27_9}
+\frac{d\vec{x}_i}{dt}=\vec{v}_i
+\end{equation}
+
+\begin{equation} \label{eq:ch27_10}
+\frac{d\vec{v}_i}{dt}=\vec{F}_{i}(\vec{v}_i) + \vec{F}_{i,ext}(\vec{x}_i) + \vec{\xi}_i
+\end{equation}
+
+I termini di forza ora possono dipendere non solo dalle coordinate della particella $i$, ma anche da quelle delle altre particelle $j \neq i$. Si possono distinguere due tipi principali di interazione:
+
+\begin{itemize}
+    \item \textbf{Interazioni posizionali:} contenute in $\vec{F}_{i,ext}$. Un esempio è una forza di repulsione a corto raggio che impedisce alle particelle di sovrapporsi, più un termine di interazione a coppie.
+    \begin{equation} \label{eq:ch27_11}
+    \vec{F}_{i,ext}(\vec{x}_i) = -K\vec{x}_i + \sum_{j \neq i} \vec{f}_{ext}(|\vec{x}_i - \vec{x}_j|)
+    \end{equation}
+    Un effetto notevole che emerge da semplici interazioni repulsive in sistemi di particelle attive è la \textbf{Motility Induced Phase Separation (MIPS)}, dove le particelle, pur avendo solo repulsione, formano cluster densi separati da una fase gassosa. Questo fenomeno non si osserva nel caso passivo.
+    
+    
+    
+    \item \textbf{Interazioni sulle velocità:} contenute in $\vec{F}_{i}$. Queste forze agiscono per modificare le direzioni delle velocità, non le posizioni. Un esempio è una forza che tende ad allineare la velocità di una particella con quella delle sue vicine.
+    \begin{equation} \label{eq:ch27_12}
+    \vec{F}_{i}(\vec{v}_i)=-\frac{\partial}{\partial \vec{v}_{i}}\Phi_{sp}(\vec{v}_{i})+\sum_{j\ne i}\vec{F}_{int}(\vec{v}_{i},\vec{v}_{j})
+    \end{equation}
+\end{itemize}
+
+
+\section{Il Modello di Vicsek (1995)}
+Il modello di Vicsek si concentra sul secondo tipo di interazione, ovvero l'allineamento delle velocità, per descrivere il moto collettivo. L'idea di base è l'imitazione: un individuo (es. un uccello in uno stormo) tende ad allineare la propria direzione di moto con quella dei suoi vicini.
+
+
+
+L'equazione per la dinamica della velocità $\vec{v}_i$ assume una forma che include una forza di allineamento, un termine di rumore e un vincolo che mantiene la velocità costante, $|\vec{v}_i| = v_0$:
+
+\begin{equation} \label{eq:ch27_13}
+\frac{d\vec{v}_i}{dt} = \underbrace{J\sum_{j}m_{ij}\vec{v}_j}_{\text{Allineamento}} + \underbrace{\vec{\xi}_i}_{\text{Rumore}} + \text{vincolo}(|\vec{v}_i|=v_0)
+\end{equation}
+
+Il termine $m_{ij}$ è una matrice di interazione che è non nulla solo se la particella $j$ è "vicina" alla particella $i$.
+
+
+\section{Analogia con i Modelli di Spin}
+Esiste una forte analogia tra questo meccanismo di allineamento e i modelli ferromagnetici studiati in fisica statistica, come il modello di Heisenberg. L'Hamiltoniana del modello di Heisenberg per spin continui $\vec{S}_i$ è:
+
+\begin{equation} \label{eq:ch27_14}
+H = -\frac{J}{2}\sum_{i,j}m_{ij}\vec{S}_i \cdot \vec{S}_j, \quad |\vec{S}_i|=1
+\end{equation}
+
+La forza termodinamica che agisce sullo spin $i$ e che tende ad allinearlo con i vicini è data da $F_i = -\frac{\partial H}{\partial \vec{S}_i}$:
+
+\begin{equation} \label{eq:ch27_15}
+F_i = J\sum_{j}m_{ij}\vec{S}_j
+\end{equation}
+
+Questa "forza di allineamento" è formalmente identica al termine di interazione nel modello di Vicsek, dove le velocità $\vec{v}_i$ giocano il ruolo degli spin $\vec{S}_i$.
+
+\begin{equation} \label{eq:ch27_16}
+\frac{d\vec{S}_i}{dt} = \underbrace{J\sum_{j}m_{ij}\vec{S}_j}_{\text{Allineamento}} + \underbrace{\vec{\xi}_i}_{\text{Rumore}} + \text{vincolo}(|\vec{S}_i|=1)
+\end{equation}
+
+\vspace{0.5cm}
+\noindent\fbox{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+        La differenza cruciale è che nei modelli di spin, gli spin sono fissati su un reticolo cristallino, quindi i loro vicini sono sempre gli stessi e la matrice $m_{ij}$ è statica. Nelle particelle attive, invece, gli individui si muovono. Di conseguenza, i vicini di una particella cambiano nel tempo.
+    }%
+}
+\vspace{0.5cm}
+
+L'interazione dipende dalla distanza, $m_{ij} \neq 0$ solo se $|\vec{x}_i - \vec{x}_j| < r_c$, dove $r_c$ è un raggio di interazione. La matrice di interazione diventa una variabile dinamica: $m_{ij}(t)$. Questo accoppia l'equazione per le velocità con quella per le posizioni, rendendo il sistema non banale.
+
+
+\section{Formulazione a Tempo Discreto (Originale di Vicsek)}
+Il modello originale fu introdotto con una regola di aggiornamento a tempo discreto. Ad ogni passo temporale $dt$, la velocità della particella $i$ viene aggiornata come segue:
+
+\begin{enumerate}
+    \item Si calcola la velocità media dei vicini (inclusa la particella stessa) al tempo $t$: $\sum_{j} m_{ij}\vec{v}_{j}(t)$
+    \item Si normalizza questo vettore per ottenerne la direzione. Si usa un operatore $\mathcal{\Theta}(\vec{x}) \equiv \frac{\vec{x}}{|\vec{x}|}$
+    \item Si impone che il modulo della nuova velocità sia $v_0$.
+    \item Si aggiunge un rumore angolare. Questo è fatto tramite un operatore $\mathcal{R}_{\eta}$ che ruota il vettore di un angolo casuale estratto da una distribuzione con varianza $\eta$.
+\end{enumerate}
+
+L'equazione di aggiornamento della velocità è:
+
+\vspace{0.5cm}
+\noindent\fbox{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+        \begin{equation} \label{eq:ch27_17}
+        \vec{v}_{i}(t+dt) = v_0 \mathcal{R}_{\eta} \left[ \mathcal{\Theta} \left( \frac{J}{\mathcal{N}_i}\sum_{j} m_{ij}\vec{v}_{j}(t) \right) \right]
+        \end{equation}
+    }%
+}
+\vspace{0.5cm}
+
+Dove $\mathcal{N}_i$ è il numero di vicini (in realtà può anche non essere messo perchè tanto l'operatore $\mathcal{\Theta}$ poi restituisce solo un versore).
+Successivamente, la posizione viene aggiornata con la nuova velocità (schema forward update):
+
+\begin{equation} \label{eq:ch27_18}
+\vec{x}_{i}(t+dt) = \vec{x}_{i}(t) + \vec{v}_{i}(t+dt)dt
+\end{equation}
+
+
+\section{Semplificazione in 2D}
+In due dimensioni, lo stato di ogni particella può essere descritto dal solo angolo $\varphi_i$ della sua velocità, dato che il modulo $v_0$ è fisso:
+
+\begin{equation} \label{eq:ch27_19}
+\vec{v}_i = v_0 (\cos\varphi_i, \sin\varphi_i)
+\end{equation}
+
+L'angolo è legato alle componenti cartesiane della velocità dalla relazione:
+
+\begin{equation} \label{eq:ch27_20}
+\frac{v_{iy}}{v_{ix}} = \tan\varphi_i
+\end{equation}
+\begin{equation} \label{eq:ch27_21}
+\varphi_i = \arctan\left(\frac{v_{iy}}{v_{ix}}\right)
+\end{equation}
+
+Il primo passo della regola di aggiornamento consiste nel calcolare il vettore velocità media dei vicini, $\vec{V}_{vicini}$:
+
+\begin{equation} \label{eq:ch27_22}
+\vec{V}_{vicini} = \sum_j m_{ij}\vec{v}_j = v_0 \left(\sum_j m_{ij} \cos\varphi_j, \sum_j m_{ij} \sin\varphi_j\right)
+\end{equation}
+
+La direzione di questo vettore medio è data da un angolo $\Psi$, definito in analogia con $\varphi_i$:
+
+\begin{equation} \label{eq:ch27_23}
+\Psi = \arctan\left(\frac{V_{vic,y}}{V_{vic,x}}\right) = \arctan\left(\frac{\sum_j m_{ij} \sin\varphi_j}{\sum_j m_{ij} \cos\varphi_j}\right)
+\end{equation}
+
+La regola di aggiornamento discreta per il solo grado di libertà angolare $\varphi_i$ diventa quindi allinearsi all'angolo medio dei vicini $\Psi$, a cui si aggiunge un rumore angolare $\xi_i$:
+
+\vspace{0.5cm}
+\noindent\fbox{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+        \begin{equation} \label{eq:ch27_24}
+        \varphi_i(t+dt) = \arctan\left(\frac{\sum_j m_{ij} \sin\varphi_j(t)}{\sum_j m_{ij} \cos\varphi_j(t)}\right) + \xi_i
+        \end{equation}
+    }%
+}
+\vspace{0.5cm}
+
+\begin{equation} \label{eq:ch27_25}
+\vec{v}_{i}(t+dt) = v_0 \bigg[\cos\varphi_i(t+dt), \sin\varphi_i(t+dt)\bigg]
+\end{equation}
+
+\begin{equation} \label{eq:ch27_26}
+\vec{x}_{i}(t+dt) = \vec{x}_{i}(t) + \vec{v}_{i}(t+dt)dt
+\end{equation}
+
+
+\section{Passaggio al Limite Continuo}
+Per derivare un'equazione differenziale a tempo continuo dalla regola di aggiornamento discreta, è necessario un passaggio più formale. La regola di Vicsek originale non è immediatamente derivabile perché il peso dato a se stessi e ai vicini è lo stesso.
+Per ottenere un limite ben definito, bisogna separare il contributo della particella stessa ($j=i$) da quello dei suoi vicini ($j \neq i$) e pesarli in modo diverso.
+L'idea, che ha anche un'interpretazione fisica, è che la precisione con cui una particella conosce la velocità dei suoi vicini dipende dal "tempo di computazione" o di interazione.
+Matematicamente, questo si traduce nel dare un peso 1 al termine della particella stessa, $\vec{v}_i(t)$, e un peso proporzionale all'intervallo di tempo $dt$ alla somma sui vicini.
+La regola di aggiornamento discreta viene quindi riscritta formalmente come:
+
+\begin{equation} \label{eq:ch27_27}
+\vec{v}_i(t+dt) = \vec{v}_i(t) + J dt \sum_{j \neq i} m_{ij}\vec{v}_j(t) + (\text{noise} + \text{vincoli}) dt
+\end{equation}
+
+Riorganizzando i termini per formare un rapporto incrementale, si ottiene una forma che, nel limite $dt \to 0$, diventa una derivata:
+
+\begin{equation} \label{eq:ch27_28}
+\frac{\vec{v}_i(t+dt) - \vec{v}_i(t)}{dt}=\frac{d\vec{v}_i}{dt}  = J\sum_{j \neq i} m_{ij}\vec{v}_j(t) + (\text{noise} + \text{vincoli})
+\end{equation}
+
+
+\section{Formulazione a Tempo Continuo e Vincolo sulla Velocità}
+Per implementare il vincolo di velocità costante, $|\vec{v}_i|^2 = v_0^2$, si utilizza il metodo dei moltiplicatori di Lagrange, aggiungendo un termine $\lambda \cdot \vec{v}_i$:
+
+\begin{equation} \label{eq:ch27_29}
+\frac{d\vec{v}_i}{dt} = \vec{F}_i + \vec{\xi}_i + \lambda \vec{v}_i
+\end{equation}
+
+dove $\vec{F}_i = J\sum_{j}m_{ij}\vec{v}_j$ è la forza di allineamento. Il vincolo $|\vec{v}_i|^2 = \text{costante}$ implica che la sua derivata temporale sia nulla:
+
+\begin{equation} \label{eq:ch27_30}
+\frac{d}{dt}|\vec{v}_i|^2 = 0 \quad \Rightarrow \quad 2\vec{v}_i \cdot \frac{d\vec{v}_i}{dt} = 0
+\end{equation}
+
+Proiettando scalarmente l'equazione del moto su $\vec{v}_i$ e imponendo la condizione di cui sopra, si ottiene:
+
+\begin{equation} \label{eq:ch27_31}
+0 = \vec{v}_i \cdot \left( \frac{d\vec{v}_i}{dt} \right) = \vec{v}_i \cdot (\vec{F}_i + \vec{\xi}_i + \lambda \vec{v}_i)
+\end{equation}
+
+\begin{equation} \label{eq:ch27_32}
+0 = \vec{F}_i \cdot \vec{v}_i + \vec{\xi}_i \cdot \vec{v}_i + \lambda v_0^2
+\end{equation}
+
+Da cui si ricava il moltiplicatore di Lagrange $\lambda$. Il termine di vincolo completo è:
+
+\begin{equation} \label{eq:ch27_33}
+\lambda \vec{v}_i = \left( -\frac{\vec{F}_i \cdot \vec{v}_i}{v_0^2} - \frac{\vec{\xi}_i \cdot \vec{v}_i}{v_0^2} \right) \vec{v}_i
+\end{equation}
+
+Sostituendo $\lambda$ nell'equazione del moto, si ottiene la forma finale, che proietta la forza e il rumore sulla componente perpendicolare alla velocità:
+
+\begin{equation} \label{eq:ch27_34}
+\frac{d\vec{v}_i}{dt} = \left( \vec{F}_i - \frac{\vec{F}_i \cdot \vec{v}_i}{v_0^2}\vec{v}_i \right) + \left( \vec{\xi}_i - \frac{\vec{\xi}_i \cdot \vec{v}_i}{v_0^2}\vec{v}_i \right) = \vec{F}_{i}^{\perp} + \vec{\xi}_{i}^{\perp}
+\end{equation}
+
+Questo risultato ha un'interpretazione fisica chiara: poiché il modulo della velocità è fisso, solo le componenti delle forze perpendicolari alla velocità stessa possono cambiarne la direzione (e quindi l'angolo), mentre le componenti longitudinali vengono annullate dal vincolo.
+
+
+\section{Risultati e Transizione di Fase}
+I parametri fondamentali del modello di Vicsek sono:
+\begin{itemize}
+    \item La densità di particelle $\rho = N/V$
+    \item La velocità fissa $v_0$
+    \item L'intensità del rumore $\eta$
+\end{itemize}
+
+La densità $\rho$ (insieme al raggio di interazione $r_c$) determina il numero di vicini con cui ogni particella interagisce, influenzando quindi l'efficacia dell'allineamento. Il rumore $\eta$ tende a disordinare il sistema, opponendosi all'allineamento.
+Per quantificare l'ordine del sistema, si definisce un parametro d'ordine chiamato polarizzazione $\Phi$, analogo alla magnetizzazione nei sistemi di spin. È il modulo della velocità media normalizzata di tutte le particelle:
+
+\begin{equation} \label{eq:ch27_35}
+\Phi = \left| \vec{\Phi} \right| = \left| \frac{1}{N} \sum_{i=1}^{N} \frac{\vec{v}_i}{v_0} \right|
+\end{equation}
+
+
+
+Se tutte le particelle si muovono nella stessa direzione, $\Phi=1$ (stato ordinato). Se le direzioni sono casuali, $\Phi \approx 0$ (stato disordinato).
+Le simulazioni del modello mostrano che, al variare dell'intensità del rumore $\eta$, il sistema subisce una transizione di fase. Per rumore elevato ($\eta > \eta_c$), il sistema è disordinato.
+Diminuendo il rumore al di sotto di un valore critico $\eta_c$, emerge un moto collettivo ordinato con $\Phi > 0$.
+Questa transizione diventa sempre più netta all'aumentare delle dimensioni del sistema $L$, come si vede dal grafico di $\Phi$ vs $\eta$ e dal picco delle sue fluttuazioni $\langle \delta\Phi^2 \rangle$, che diverge nel limite termodinamico.
+
+La grande sorpresa dei risultati di Vicsek fu la scoperta di questa transizione in due dimensioni ($d=2$). Infatti, il modello di equilibrio analogo, il modello XY, non presenta una vera transizione di fase con rottura di simmetria continua in $d=2$. Il fatto che un sistema attivo fuori dall'equilibrio possa avere un comportamento qualitativamente diverso dal suo analogo in equilibrio è stato un risultato fondamentale.
+La ragione di questa differenza risiede nel fatto che l'attività stessa (il movimento) rafforza lo scambio di informazioni. In un sistema su reticolo, l'informazione si propaga diffusivamente da un vicino all'altro. In un sistema attivo, le particelle si muovono e possono trasportare l'informazione direttamente a individui lontani, creando un meccanismo di propagazione più efficace che riesce a stabilizzare la fase ordinata anche in due dimensioni.
