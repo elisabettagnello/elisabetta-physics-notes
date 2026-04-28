@@ -1,0 +1,211 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 26
+%-------------------------------------------------------------------------------
+\chapter{Lezione 26}
+\label{capitolo_26}
+\textit{03/06/2025}
+
+
+\section{Introduzione alla Materia Attiva}
+
+Si definisce \textbf{materia attiva} l'insieme di tutti quei sistemi i cui costituenti individuali sono "attivi", ovvero possiedono un qualche meccanismo (interno o esterno) che funge da motore. Un esempio classico è un batterio, che è un oggetto attivo: possiede flagelli e un meccanismo che trasforma i nutrienti in movimento (il motore molecolare). Molti altri sistemi, sia viventi che non, sono costituiti da particelle auto-propellenti.
+
+Il meccanismo di auto-propulsione è dovuto a una forza che non specificheremo in dettaglio, il cui effetto è quello di permettere alla particella di muoversi anche in assenza di forze esterne.
+
+I batteri sono particolarmente interessanti perché operano alla stessa scala di grandezza del moto Browniano. Per comprendere la novità introdotta dalla materia attiva, è utile richiamare il modello del moto Browniano passivo.
+
+\subsection{Richiamo: Moto Browniano Passivo}
+Il moto Browniano è causato dagli urti casuali delle molecole del solvente (es. acqua) su una particella. Tramite questi urti, le particelle Browniane scambiano energia e momento con il bagno termico. Il moto di una particella Browniana in un potenziale esterno $\vec{F}(\vec{x})$ è descritto dall'equazione di Langevin:
+\begin{equation}
+    m\frac{d^{2}\vec{x}}{dt^{2}} + \zeta\frac{d\vec{x}}{dt} = \vec{F}(\vec{x}) + \delta\vec{F}(t)
+\end{equation}
+
+
+Il termine $\delta\vec{F}(t)$ rappresenta una forza stocastica (rumore bianco) con le seguenti proprietà:
+\begin{equation}
+    \langle \delta F_{\alpha}(t) \rangle = 0 \quad \forall \alpha, t
+\end{equation}
+\begin{equation}
+    \langle \delta F_{\alpha}(t) \delta F_{\beta}(t') \rangle = 2k_{B}T\zeta \, \delta(t-t') \delta_{\alpha\beta} \label{eq:fluct-dissip}
+\end{equation}
+dove $\alpha, \beta \in \{x, y, z\}$. La presenza della temperatura $T$ in questa relazione (relazione di fluttuazione-dissipazione di Einstein) è fondamentale, poiché indica che il rumore è di origine termica.
+
+In un sistema del genere, all'equilibrio, valgono i principi della meccanica statistica. Ad esempio, per una particella in un potenziale armonico $V(x) = \frac{1}{2}kx^2$ (corrispondente a una forza $F(x) = -kx = -\frac{dV}{dx}$) , la distribuzione di probabilità stazionaria è quella di Gibbs-Boltzmann , e la distribuzione delle velocità segue la statistica di Maxwell-Boltzmann:
+\begin{equation}
+    P(\vec{v}) \propto e^{-\frac{\beta m v^2}{2}} \quad \text{con} \quad \beta = \frac{1}{k_B T}
+\end{equation}
+
+\subsection{Caratteristiche dei Sistemi Attivi}
+A differenza dei sistemi passivi, dove l'energia viene fornita "dall'esterno" (ad esempio, tramite uno stress applicato ai bordi di un fluido per metterlo in moto) , nei sistemi attivi l'energia viene iniettata a livello del singolo individuo. Il "motore" è un meccanismo che permette all'individuo di regolare la propria velocità , in modo diverso da come il bagno termico impone la distribuzione di Maxwell-Boltzmann alle particelle passive.
+
+Pensiamo a un'automobile: si immette carburante (energia) che permette di regolare la velocità agendo sull'acceleratore. Analogamente, un sistema attivo sfrutta una qualche forma di energia interna per regolare la sua velocità. Ad esempio, il batterio \textit{E. coli} idrolizza ATP per alimentare il suo motore flagellare, potendo così impostare una velocità diversa da quella che avrebbe a causa del solo moto Browniano.
+
+Tipicamente, la forza interna che porta il sistema fuori dall'equilibrio non è nota in dettaglio. In uno stormo di uccelli, ad esempio, è impossibile monitorare lo stato fisiologico di ogni singolo uccello per prevedere le variazioni della sua velocità.
+
+\section{Modello della Particella Attiva Browniana (ABP)}
+Per modellare questi sistemi, partiamo dall'equazione di Langevin di secondo ordine e la riscriviamo come un sistema di due equazioni del primo ordine:
+\begin{equation}
+    \begin{cases}
+        \frac{d\vec{x}}{dt} = \vec{v} \\
+        m\frac{d\vec{v}}{dt} = -\zeta\vec{v} + \vec{F}(\vec{x}) + \delta\vec{F}(t)
+    \end{cases}
+\end{equation}
+Dividendo la seconda equazione per la massa $m$ otteniamo:
+\begin{equation}
+    \frac{d\vec{v}}{dt} = -\frac{\zeta}{m}\vec{v} + \frac{\vec{F}(\vec{x})}{m} + \frac{\delta\vec{F}(t)}{m} = -\gamma\vec{v} + \vec{F}'(\vec{x}) + \vec{\xi}(t) \label{eq:langevin_vel}
+\end{equation}
+dove $\gamma = \zeta/m$ è il coefficiente di frizione, $\vec{F}' = \vec{F}/m$ è la forza per unità di massa e $\vec{\xi} = \delta\vec{F}/m$ è il rumore per unità di massa.
+
+La differenza cruciale per una particella \textbf{attiva} è che il termine di attrito non è costante, ma dipende dalla velocità della particella:
+\begin{equation}
+    \gamma \rightarrow \gamma(|\vec{v}|)
+\end{equation}
+L'equazione (\ref{eq:langevin_vel}) diventa:
+\begin{equation}
+    \frac{d\vec{v}}{dt} = -\gamma(|\vec{v}|)\vec{v} + \vec{F}'(\vec{x}) + \vec{\xi}(t)
+\end{equation}
+Questo termine dipendente dalla velocità può essere interpretato in due modi:
+\begin{itemize}
+    \item Come una \textbf{viscosità dipendente dalla velocità}.
+    \item Come una \textbf{forza attiva} $\vec{F}_{act}(\vec{v})$ che regola la velocità.
+\end{itemize}
+Per i sistemi che studieremo, la seconda interpretazione è più significativa. Riscriviamo quindi il termine come $\vec{F}_{act}(\vec{v})$. \textit{(Nota: questa forza ha le dimensioni di un'accelerazione, avendo diviso per la massa, ma è solo un cambio di unità di misura).}
+
+Il sistema di equazioni per una particella attiva diventa:
+\begin{equation}
+    \begin{cases}
+        \frac{d\vec{x}}{dt} = \vec{v} \\
+        \frac{d\vec{v}}{dt} = \vec{F}_{act}(\vec{v}) + \vec{F}(\vec{x}) + \vec{\xi}(t)
+    \end{cases}
+    \label{eq:sistema_attivo}
+\end{equation}
+\textit{(D'ora in poi, per semplicità, omettiamo l'apice sulla forza $\vec{F}(\vec{x})$ ).}
+
+Assumiamo che la forza attiva derivi da un potenziale che dipende dalla velocità:
+\begin{equation}
+    \vec{F}_{act}(\vec{v}) = -\frac{\partial}{\partial\vec{v}} \Phi_{act}(\vec{v})
+\end{equation}
+Questa assunzione è analoga a quella di avere forze conservative derivanti da un potenziale dipendente dalla posizione. Il potenziale $\Phi_{act}(\vec{v})$ modella i vincoli fisiologici o meccanici che definiscono una velocità tipica per l'individuo (es. uno storno non può volare alla velocità del suono).
+
+\section{Dall'Equazione di Langevin all'Equazione di Fokker-Planck}
+
+Se una variabile stocastica $x(t)$ obbedisce a un'equazione di Langevin, la sua distribuzione di probabilità $P(x, t)$ evolve secondo un'equazione di Fokker-Planck. Per il caso sovrasmorzato (\textit{overdamped}) in una dimensione, l'equazione di Langevin è:
+\begin{equation}
+    \frac{dx}{dt} = \frac{F(x)}{\zeta} + \xi(t)
+\end{equation}
+e la corrispondente equazione di Fokker-Planck è:
+\begin{equation}
+    \frac{\partial P}{\partial t} = D \frac{\partial^2 P}{\partial x^2} - \frac{\partial}{\partial x}\left[ \frac{F(x)P}{\zeta} \right] = -\frac{\partial J}{\partial x}
+\end{equation}
+dove $D$ è il coefficiente di diffusione e $J$ è la corrente di probabilità.
+
+Il nostro obiettivo è trovare l'equazione di Fokker-Planck per il sistema generale attivo descritto da (\ref{eq:sistema_attivo}). Per farlo, useremo una tecnica che riscrive il sistema di equazioni come una singola equazione di Langevin sovrasmorzata in uno spazio a dimensioni maggiori.
+
+\subsection{Formalismo dei Super-Vettori}
+Introduciamo dei "super-vettori" che vivono in uno spazio a $2d$ dimensioni (se la particella si muove in $d$ dimensioni):
+\begin{equation}
+    \underline{w} = \begin{pmatrix} \vec{x} \\ \vec{v} \end{pmatrix}, \quad
+    \underline{\mathcal{F}}(\underline{w}) = \begin{pmatrix} \vec{v} \\ \vec{F}(\vec{x}) + \vec{F}_{act}(\vec{v}) \end{pmatrix}, \quad
+    \underline{\eta}(t) = \begin{pmatrix} \vec{0} \\ \vec{\xi}(t) \end{pmatrix}
+\end{equation}
+
+
+Con questa notazione, il sistema (\ref{eq:sistema_attivo}) diventa una singola equazione di Langevin di tipo sovrasmorzato per il super-vettore $\underline{w}$:
+\begin{equation}
+    \frac{d\underline{w}}{dt} = \underline{\mathcal{F}}(\underline{w}) + \underline{\eta}(t) \label{eq:super_langevin}
+\end{equation}
+Scrivendo questa equazione componente per componente (dove una componente è un vettore $d$-dimensionale), si riottiene il sistema di partenza.
+
+Poiché l'equazione (\ref{eq:super_langevin}) ha la forma di un'equazione di Langevin sovrasmorzata, possiamo scrivere direttamente la corrispondente equazione di Fokker-Planck. La distribuzione di probabilità dipenderà ora dal super-vettore: $P(\underline{w}, t) = P(\vec{x}, \vec{v}, t)$.
+
+L'equazione di Fokker-Planck generale (detta "Super Fokker-Planck") è:
+\begin{equation}
+    \frac{\partial P}{\partial t} = - \frac{\partial}{\partial \underline{w}} \cdot \underline{\vec{J}} = - \frac{\partial}{\partial \underline{w}} \cdot \left[ \underline{\mathcal{F}} P - \mathbf{B} \frac{\partial P}{\partial \underline{w}} \right]
+    \label{eq:super_FP}
+\end{equation}
+Il termine $\mathbf{B}$ è una "matrice di diffusione". Le sue componenti $B_{\alpha\beta}$ sono legate al correlatore del super-rumore $\underline{\eta}$. Dato che il rumore $\vec{\xi}(t)$ agisce solo sulla velocità , la matrice $\mathbf{B}$ ha una forma a blocchi:
+\begin{equation}
+    \mathbf{B} = 
+    \begin{pmatrix}
+        \mathbf{0}_{d \times d} & \mathbf{0}_{d \times d} \\
+        \mathbf{0}_{d \times d} & B \cdot \mathbf{I}_{d \times d}
+    \end{pmatrix}
+\end{equation}
+dove $B$ è una costante di diffusione legata all'intensità del rumore: \\ $\langle \xi_\alpha(t)\xi_\beta(t') \rangle = 2B \delta_{\alpha\beta}\delta(t-t')$. 
+
+\subsection{Equazione di Fokker-Planck Esplicita per Particelle Attive}
+Esplicitando i termini nell'equazione (\ref{eq:super_FP}) e usando la forma di $\underline{w}$, $\underline{\mathcal{F}}$ e $\mathbf{B}$, si ottiene l'equazione di Fokker-Planck per particelle attive:
+\begin{equation}
+    \frac{\partial P}{\partial t} = B \frac{\partial^2 P}{\partial \vec{v}^2} - \vec{v} \cdot \frac{\partial P}{\partial \vec{x}} - \vec{F}(\vec{x}) \cdot \frac{\partial P}{\partial \vec{v}} - \frac{\partial}{\partial \vec{v}} \cdot \left( \vec{F}_{act}(\vec{v}) P \right)
+    \label{eq:FP_attiva}
+\end{equation}
+dove $P = P(\vec{x}, \vec{v}, t)$.
+
+\section{Analisi di Casi Specifici}
+
+\subsection{Caso Passivo ($F_{act} = -\gamma \vec{v}$)}
+Consideriamo una particella passiva, dove la "forza attiva" è semplicemente l'attrito viscoso lineare: $\vec{F}_{act}(\vec{v}) = -\gamma \vec{v}$. Questo corrisponde a un potenziale di velocità armonico: $\Phi_{act}(\vec{v}) = \frac{1}{2}\gamma v^2$. In questo caso, la distribuzione stazionaria ($\partial P / \partial t = 0$) è la ben nota distribuzione di Gibbs-Boltzmann per l'Hamiltoniana classica $H(\vec{x}, \vec{v}) = V(\vec{x}) + \frac{1}{2}mv^2$:
+\begin{equation}
+    P_{st}(\vec{x}, \vec{v}) = \frac{e^{-\beta H(\vec{x}, \vec{v})}}{Z}
+\end{equation}
+Questo conferma che il formalismo generale recupera i risultati noti della meccanica statistica all'equilibrio.
+
+\subsection{Caso Attivo in Assenza di Forze Esterne ($\vec{F}(\vec{x}) = \vec{0}$)}
+Consideriamo ora una particella attiva senza forze esterne , quindi senza posizioni privilegiate nello spazio. Per tempi molto lunghi, ci aspettiamo che la distribuzione di probabilità diventi uniforme nello spazio, ovvero non dipenda da $\vec{x}$:
+\begin{equation}
+    P_{st}(\vec{x}, \vec{v}) = \text{costante} \times P(\vec{v}) \implies \frac{\partial P}{\partial \vec{x}} = \vec{0}
+    \label{eq:ansatz_homog}
+\end{equation}
+Sostituendo questa forma nell'equazione di Fokker-Planck (\ref{eq:FP_attiva}) e ponendo $\vec{F}(\vec{x})=\vec{0}$ e $\partial P / \partial t = 0$, i termini dipendenti da $\vec{x}$ si annullano e otteniamo un'equazione per la sola distribuzione delle velocità $P(\vec{v})$:
+\begin{equation}
+    B \frac{\partial^2 P}{\partial \vec{v}^2} - \frac{\partial}{\partial \vec{v}} \cdot \left( \vec{F}_{act}(\vec{v}) P \right) = 0
+\end{equation}
+Questa è un'equazione di Fokker-Planck stazionaria per la variabile $\vec{v}$, la cui soluzione è una distribuzione canonica nella velocità:
+\begin{equation}
+    P_{st}(\vec{v}) = \frac{e^{-\Phi_{act}(\vec{v})/B}}{Z_v}
+    \label{eq:distr_vel_attiva}
+\end{equation}
+dove $Z_v$ è la costante di normalizzazione. Questo risultato è fondamentale: il potenziale attivo $\Phi_{act}$ permette di "ingegnerizzare" la distribuzione delle velocità, a differenza del caso passivo dove è sempre una Maxwelliana.
+
+\subsubsection{Esempio: Potenziale a "Cappello Messicano"}
+Consideriamo un potenziale attivo della forma:
+\begin{equation}
+    \Phi_{act}(\vec{v}) = -\left( \frac{a}{2}v^2 - \frac{b}{4}v^4 \right) \quad \text{con } a, b > 0
+\end{equation}
+Questa è una funzione radiale (dipende solo dal modulo $v=|\vec{v}|$). Per trovare la velocità più probabile, cerchiamo i minimi del potenziale (o i massimi dell'esponenziale in (\ref{eq:distr_vel_attiva})). La derivata rispetto a $v$ è:
+\begin{equation}
+    \frac{\partial \Phi_{act}}{\partial v} = -av + bv^3 = v(bv^2 - a)
+\end{equation}
+Annullando la derivata troviamo un massimo locale in $v=0$ e un minimo per:
+\begin{equation}
+    v_0 = \sqrt{\frac{a}{b}}
+\end{equation}
+In 2D, questo potenziale ha la forma di un "cappello messicano" (o \textit{double well} in sezione), con un anello di minimo a raggio $v_0$. La distribuzione di probabilità $P_{st}(\vec{v})$ sarà quindi massima per tutte le velocità $\vec{v}$ tali che $|\vec{v}|=v_0$.
+
+\subsection{Limite a Velocità Costante}
+Consideriamo il limite in cui la barriera di potenziale diventa infinitamente alta, ovvero $a/B \to \infty$ e $b/B \to \infty$, mantenendo il rapporto $v_0 = \sqrt{a/b}$ finito. In questo limite, l'approssimazione di discesa più ripida (\textit{steepest descent}) implica che solo gli stati sul minimo del potenziale (massimo della probabilità) contribuiscono. La distribuzione di probabilità diventa:
+\begin{equation}
+    P_{st}(\vec{v}) \propto \delta(|\vec{v}| - v_0)
+\end{equation}
+Questo descrive un sistema di particelle che si muovono tutte con \textbf{velocità di modulo costante} $v_0$, ma la cui direzione $\theta$ può fluttuare liberamente.
+
+\subsubsection{Algoritmi di Simulazione}
+Questo sistema limite può essere simulato in due modi principali:
+\begin{enumerate}
+    \item \textbf{Riorientamento continuo:} Il modulo della velocità è fisso a $v_0$. L'angolo $\theta$ della velocità evolve secondo un'equazione di Langevin per la sola variabile angolare:
+    \begin{equation}
+        \frac{d\theta}{dt} = \xi(t)
+    \end{equation}
+    dove $\xi(t)$ è un rumore bianco.
+    
+    L'algoritmo di aggiornamento (es. Eulero in avanti) è:
+    
+    Ad ogni passo temporale $dt$:
+    \begin{itemize}
+        \item  Aggiorna l'angolo: $\theta(t+dt) = \theta(t) + \xi_t dt$.
+        \item  Aggiorna il vettore velocità: $\vec{v}(t+dt) = v_0 (\cos\theta(t+dt), \sin\theta(t+dt))$.
+        \item  Aggiorna la posizione: $\vec{x}(t+dt) = \vec{x}(t) + \vec{v}(t+dt) dt$.
+    \end{itemize}
+
+    \item \textbf{Run and Tumble:} Questo algoritmo modella particelle che si muovono in linea retta (fase di "run") per un certo tempo, per poi cambiare bruscamente e istantaneamente direzione (fase di "tumble"). L'evento di tumble è un processo Poissoniano che avviene con una certa probabilità $\lambda dt$ in ogni intervallo di tempo $dt$. Quando avviene, la direzione della velocità viene estratta da una nuova distribuzione casuale (spesso uniforme).
+\end{enumerate}
