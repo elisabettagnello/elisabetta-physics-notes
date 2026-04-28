@@ -1,0 +1,134 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 25
+%-------------------------------------------------------------------------------
+\chapter{Lezione 25}
+\label{capitolo_25}
+\textit{30/05/2025}
+
+\section{Modelli Generativi per l'Evoluzione e la Progettazione delle Proteine}
+Lo studio delle proteine attraverso modelli statistici si prefigge come obiettivo primario la comprensione della loro struttura tridimensionale e della loro funzione biologica partendo dalla semplice sequenza amminoacidica. Le proteine, polimeri costituiti da amminoacidi, sono rappresentabili come stringhe di lettere, dove ogni lettera corrisponde a uno dei 20 amminoacidi naturali, a cui si può aggiungere un simbolo per eventuali "gap" negli allineamenti.
+
+Il percorso che lega la sequenza alla funzione può essere semplificato nel dogma:
+\textbf{Sequenza $\rightarrow$ Struttura $\rightarrow$ Funzione}
+
+La prima transizione, da sequenza a struttura, è oggi considerata un problema in gran parte risolto, grazie soprattutto a strumenti come AlphaFold. In questo caso, si passa da un oggetto unidimensionale (la stringa di amminoacidi) a un oggetto matematico ben definito nello spazio tridimensionale (le coordinate degli atomi). La disponibilità di vasti dataset ha giocato un ruolo cruciale in questo progresso.
+
+Tuttavia, il passaggio successivo, dalla struttura alla funzione, o direttamente dalla sequenza alla funzione, si rivela molto più arduo e costituisce un campo di ricerca ancora ampiamente aperto. Le difficoltà principali risiedono nella natura stessa della "funzione", un concetto spesso mal definito e che comprende molteplici aspetti. Inoltre, la funzione è fortemente dipendente dal contesto e dall'ambiente cellulare, e la sua misurazione sperimentale quantitativa è intrinsecamente complessa, portando a una scarsità di dati rispetto a quelli strutturali.
+
+Le applicazioni che deriverebbero da una piena comprensione di questi legami sono molteplici: la progettazione di proteine artificiali con funzionalità specifiche, la comprensione dei meccanismi dell'evoluzione naturale e l'ottimizzazione dei protocolli di evoluzione diretta condotta in laboratorio.
+
+Ci sono diverse tipologie di dati sperimentali:
+
+\begin{itemize}
+    \item \textbf{Sequenze naturali e MSA:} Una fonte primaria è costituita dalle sequenze di proteine naturali, ottenute tramite Allineamenti Multipli di Sequenze (MSA). Queste sequenze sono il frutto dell'evoluzione naturale; specie diverse spesso possiedono versioni omologhe della stessa proteina che, pur differendo nella sequenza, mantengono struttura e funzione simili. Un esempio emblematico è la beta-lattamasi, un enzima coinvolto nella resistenza agli antibiotici, di cui si conoscono circa 5000 varianti naturali che possono presentare anche solo il 20-30\% di identità di sequenza tra loro. Database pubblici come UniProt raccolgono queste informazioni. L'analisi statistica degli MSA si concentra principalmente su due aspetti: la \textit{conservazione}, ovvero la frequenza di ciascun amminoacido in ogni posizione dell'allineamento, che evidenzia siti cruciali per la struttura o la funzione; e la \textit{coevoluzione}, che studia le correlazioni tra amminoacidi in posizioni diverse, indicative di possibili contatti fisici nella struttura 3D.
+    \item \textbf{Deep Mutational Scans (DMS):} In questi esperimenti, si parte da una sequenza proteica naturale e si introducono sistematicamente tutte le possibili mutazioni puntiformi (= cambiamento di un singolo amminoacido) in ciascuna posizione. Successivamente, si misura l'effetto di ogni mutazione sulla funzione della proteina, ad esempio valutando la sopravvivenza di batteri che la esprimono in presenza di un antibiotico. I DMS forniscono quindi informazioni dettagliate sullo "spazio funzionale" locale attorno a una specifica sequenza. Il numero di esperimenti di questo tipo è in costante crescita e permette anche di confrontare l'effetto di una mutazione in contesti genetici differenti.
+    \item \textbf{Evoluzione in vitro:} Mirano a mimare il processo evolutivo naturale, ma in condizioni rigorosamente controllate. Il processo tipico prevede di partire da una sequenza wild-type, generare una libreria di mutanti (ad esempio tramite PCR), applicare una pressione selettiva (come un antibiotico), selezionare i mutanti che mostrano un fenotipo "migliore" (es. sopravvivenza) e iterare questo ciclo. Questi esperimenti producono librerie di sequenze che presentano un numero limitato di mutazioni rispetto alla sequenza iniziale (ad esempio, 20-50 mutazioni dopo centinaia di generazioni), ma il vantaggio risiede nel poter analizzare un gran numero di sequenze per ogni generazione grazie alle moderne ed economiche tecniche di sequenziamento. I principali vantaggi sono il controllo delle condizioni sperimentali e la tracciabilità del percorso evolutivo.
+    \item \textbf{Ricostruzioni filogenetiche:} Partendo dalle sequenze di proteine moderne, si possono inferire le sequenze di proteine che esistevano in organismi ancestrali. Queste proteine "ancestrali" possono poi essere sintetizzate e caratterizzate in laboratorio per studiarne le proprietà, permettendo di esplorare i cammini evolutivi che hanno mantenuto la funzione attraverso lo spazio delle sequenze. Un esempio illustrativo è lo studio di due proteine fluorescenti con la stessa struttura ma colori di emissione diversi (blu vs. rosso), separate da 13 mutazioni: testando tutti i $2^{13}$ intermedi si è potuto osservare un "collo di bottiglia" funzionale nel passaggio da una funzione all'altra.
+\end{itemize}
+
+
+\section{Dalla sequenza alla struttura}
+Un'applicazione fondamentale dell'analisi degli MSA è la predizione dei contatti tra residui amminoacidici nella struttura tridimensionale della proteina. L'input è un allineamento multiplo (es. inibitore della tripsina = una proteina di 53 siti, con circa 13600 sequenze allineate), e l'output desiderato è identificare quali coppie di siti si trovano spazialmente vicine. Convenzionalmente, due residui sono considerati in contatto se la distanza tra i loro atomi è inferiore a una certa soglia, tipicamente intorno agli $8 \text{ \AA}$.
+
+L'analisi statistica dell'MSA inizia con una rappresentazione numerica delle sequenze. Ogni sito della sequenza viene trasformato in un vettore binario di lunghezza 20 (o 21, includendo il gap), dove una singola posizione del vettore è 1 e le altre 0. Ad esempio, il gap potrebbe essere $[1,0,\dots,0]$, l'alanina (A) $[0,1,\dots,0]$, la cisteina (C) $[0,0,1,\dots,0]$, e così via, con l'ultimo amminoacido rappresentato da un vettore di tutti zeri per evitare problemi di collinearità. L'intero MSA si trasforma così in una grande matrice numerica.
+
+Da questa matrice si possono calcolare le frequenze di singolo sito, $P_i(a)$, che indicano la frequenza dell'amminoacido $a$ al sito $i$ e riflettono la conservazione di quella posizione. Queste si ottengono semplicemente sommando i vettori per ogni colonna corrispondente a un amminoacido in una data posizione e normalizzando per il numero totale di sequenze.
+Analogamente, si calcolano le frequenze di coppie di siti, $P_{ij}(a,b)$, che rappresentano la frequenza con cui l'amminoacido $a$ si trova al sito $i$ contemporaneamente all'amminoacido $b$ al sito $j$ nella stessa sequenza. Queste possono essere stimate tramite il prodotto $(X^T X) / M$, dove $X$ è la matrice binaria e $M$ il numero di sequenze. Da queste frequenze si deriva la matrice di covarianza:
+
+\begin{equation} \label{eq:ch25_1}
+C_{ij}(a,b) = P_{ij}(a,b) - P_i(a)P_j(b)
+\end{equation}
+
+che misura quanto la co-occorrenza di due amminoacidi devia dall'indipendenza statistica.
+
+Un primo approccio per identificare i contatti si basa sulla \textbf{Mutua Informazione (MI)}. Questa grandezza misura la dipendenza statistica tra due siti $i$ e $j$, mediando su tutte le possibili coppie di amminoacidi:
+
+\begin{equation} \label{eq:ch25_2}
+MI(i,j) = \sum_{a,b} P_{ij}(a,b) \log \frac{P_{ij}(a,b)}{P_i(a)P_j(b)}
+\end{equation}
+
+La MI è sempre non negativa e si annulla se e solo se i due siti sono statisticamente indipendenti.
+L'ipotesi sottostante è che coppie di siti con un'alta MI siano probabilmente a contatto nella struttura. La procedura consiste nel calcolare la MI per tutte le coppie di siti, ordinarle in base a questo valore e considerare le coppie al vertice della lista come predizioni di contatto.
+Sebbene questo metodo funzioni bene per le primissime predizioni (prime 10), la sua precisione tende a diminuire rapidamente all'aumentare del numero di contatti predetti, generando molti falsi positivi.
+Per mitigare questo problema, sono state proposte correzioni empiriche come l'APC (Average Product Correction), che tentano di ridurre l'effetto di correlazioni spurie. Questi metodi, tuttavia, portano a miglioramenti generalmente modesti.
+
+Una nota tecnica importante riguarda l'uso di \textit{pseudocounts}: si tratta di aggiungere un piccolo valore (un prior) alle frequenze osservate per evitare che il campionamento finito porti a frequenze nulle, specialmente per eventi rari, migliorando così la robustezza delle stime di probabilità.
+
+
+\section{Analisi degli Accoppiamenti Diretti}
+Il limite principale della Mutua Informazione risiede nel fatto che la correlazione non implica causalità. Se un sito A è a contatto con B, e B è a contatto con C, A e C potrebbero apparire statisticamente correlate anche in assenza di un contatto diretto tra loro.
+L'Analisi degli Accoppiamenti Diretti (DCA, Direct Coupling Analysis) si propone di superare questa limitazione, distinguendo le interazioni dirette da quelle indirette.
+
+Per formalizzare questo approccio, si considera un modello probabilistico per le variabili $y_1, \dots, y_n$ dove $y_{ia} = (\sigma_{ia} - P_{ia})/P_{ia}$. Si assume che la probabilità congiunta di osservare una particolare configurazione di queste variabili sia data da una distribuzione di tipo:
+
+\begin{equation} \label{eq:ch25_3}
+P(y_1, \dots, y_n) \propto \exp\left(-\frac{1}{2} \sum_{i,j} y_i J_{ij} y_j\right)
+\end{equation}
+
+In questo modello, i coefficienti $J_{ij}$ rappresentano le interazioni o accoppiamenti diretti tra la variabile $i$ e la variabile $j$. Se $J_{ij}=0$, allora la variabile $i$ non interagisce direttamente con la variabile $j$ (anche se potrebbero comunque risultare correlate a causa di interazioni mediate da altre variabili).
+La probabilità condizionale di $y_i$, dati i valori di tutte le altre variabili $y_{k \neq i}$, dipende solo dagli accoppiamenti $J_{ij}$ che coinvolgono $y_i$: 
+
+\begin{equation} \label{eq:ch25_4}
+P(y_i | y_{k \neq i}) \propto \exp\left(-\frac{1}{2} y_i \sum_j J_{ij} y_j\right)
+\end{equation}
+
+L'obiettivo diventa quindi dedurre i parametri di accoppiamento $J_{ij}$ a partire dalla matrice di covarianza $C$ osservata dai dati. Ciò può essere fatto con diverse approssimazioni:
+
+\begin{itemize}
+    \item \textbf{Approssimazione Gaussiana:} Se si assume che le variabili $y_i$ seguano una distribuzione Gaussiana multivariata, allora la relazione tra la matrice di covarianza $C$ e la matrice di accoppiamento $J$ è esatta:
+    \begin{equation} \label{eq:ch25_5}
+    C = J^{-1}
+    \end{equation}
+    Sebbene le nostre variabili (che rappresentano la presenza/assenza di un tipo di amminoacido in un sito, quindi binarie 0/1) non siano intrinsecamente Gaussiane, questa approssimazione può comunque essere applicata come metodo pratico.
+    
+    \item \textbf{Approssimazione di Campo Medio:} Questa approssimazione è più adatta per variabili binarie. Si assume che il valore medio di una variabile $y_i$ sia dato da una funzione non lineare $F$ (come una tangente iperbolica per spin $\pm 1$) del campo medio che agisce su di essa:
+    \begin{equation} \label{eq:ch25_6}
+    \langle y_i \rangle = \left\langle F\left[h_i + \sum_j J_{ij} y_j\right] \right\rangle \approx F\left[h_i + \sum_j J_{ij} \langle y_j \rangle\right]
+    \end{equation}
+    dove $h_i$ sono campi locali. Utilizzando il Teorema Fluttuazione-Dissipazione (FDT), che lega la matrice di covarianza $C_{ik}$ alla derivata del valor medio $\langle y_i \rangle$ rispetto a un campo locale fittizio $h_k$:
+    \begin{equation} \label{eq:ch25_7}
+    C_{ik} = \frac{\partial \langle y_i \rangle }{ \partial h_k}\bigg|_{h=0}
+    \end{equation}
+    si può derivare una relazione approssimata tra $C$ e $J$.
+\end{itemize}
+
+Questa relazione, in forma matriciale, è $C = D[I+JC]$ (dove $I$ è la matrice identità e $D$ è una matrice diagonale i cui elementi $D_{ii}$ dipendono dalla derivata $F'$ della funzione non lineare, calcolata nel punto di campo medio). Risolvendo per $J$, si ottiene:
+
+\begin{equation} \label{eq:ch25_8}
+J = D^{-1} - C^{-1}
+\end{equation}
+
+Se si è interessati solo ai termini fuori diagonale (che rappresentano le interazioni tra siti diversi), il termine diagonale $D^{-1}$ può essere ignorato, e si considera $J \approx -C^{-1}$ (il segno dipende dalle convenzioni).
+
+Una volta ricavati gli accoppiamenti diretti $J_{ij}(a,b)$, per ottenere un singolo punteggio di accoppiamento per ogni coppia di siti $(i,j)$, si aggregano questi valori calcolando la norma di Frobenius $F_{ij} = \sum_{a,b} (J_{ij}(a,b))^2$ su tutti i possibili amminoacidi $a$ e $b$.
+Infine, le coppie di siti $(i,j)$ vengono ordinate in base a questi punteggi $F_{ij}$ decrescenti. Questo approccio ha dimostrato un significativo miglioramento nella predizione dei contatti rispetto alla MI, fornendo un numero maggiore di predizioni corrette.
+La rilevanza del DCA è sottolineata dal fatto che questo metodo costituisce un componente chiave dell'algoritmo AlphaFold.
+
+\textbf{Connessione di questi metodi con il modello di Ising:}
+\begin{itemize}
+    \item La relazione tra correlazione e funzione di risposta (FDT) è usata qui in modo inverso rispetto a come si fa solitamente per il modello di Ising standard. In quel caso, si conoscono le interazioni $J_{ij}$ (es. tra primi vicini su un reticolo) e si vuole calcolare la matrice di correlazione $C_{ij}$; qui, invece, si misura $C_{ij}$ dai dati di sequenza e si vuole inferire la matrice di accoppiamento $J_{ij}$.
+    \item La distribuzione di probabilità $P(y_1, \dots, y_n) \propto \exp(-\frac{1}{2} \sum y_i J_{ij} y_j)$ che viene utilizzata in questi metodi è esattamente la distribuzione che si otterrebbe applicando un approccio di Massima Entropia, se si richiedesse al modello di riprodurre esattamente le correlazioni a uno e due punti misurate dai dati sperimentali.
+\end{itemize}
+
+
+\section{Modelli Generativi per Proteine}
+Oltre alla predizione strutturale, un obiettivo è la generazione di nuove sequenze proteiche che siano funzionali. Questo si inserisce nel campo dei modelli generativi, con analogie ai modelli per la generazione di immagini o di testo (come ChatGPT e altri).
+Tuttavia, un approccio alternativo, basato sulla fisica statistica e sul principio di Massima Entropia, offre alcuni vantaggi, specialmente quando si lavora con quantità di dati che, sebbene grandi, sono comunque inferiori a quelle usate per addestrare i grandi modelli linguistici. Questo approccio si propone di costruire modelli più semplici e interpretabili rispetto alle complesse "black box" delle reti neurali profonde.
+
+L'applicazione del principio di Massima Entropia porta naturalmente alla seguente distribuzione di probabilità:
+
+\begin{equation} \label{eq:ch25_9}
+P(a_1, \dots, a_L) = \frac{1}{Z} \exp\left(\sum_i h_i(a_i) + \sum_{i<j} J_{ij}(a_i, a_j)\right) = \frac{1}{Z} e^{-E(a_1,\dots,a_L)}
+\end{equation}
+
+In questa espressione, $h_i(a_i)$ sono responsabili di riprodurre le frequenze di conservazione $P_{ia}$ osservate. $J_{ij}(a_i, a_j)$ sono responsabili di riprodurre le frequenze di coevoluzione $P_{ia,jb}$ osservate.
+In questo caso l'approssimazione di campo medio si rivela non sufficientemente accurata, bisogna trovare i valori esatti di $h_i$ e $J_{ij}$ che meglio si adattano ai dati. L'algoritmo comunemente usato per questo scopo è il \textbf{Boltzmann Learning}.
+
+L'idea di base è la seguente:
+\begin{enumerate}
+    \item Si parte da un insieme di dati da cui si misurano le frequenze di singolo sito $P_{ia}^{data}$ e le frequenze di coppia $P_{ia,jb}^{data}$.
+    \item Si inizializzano i parametri del modello $h_i$ e $J_{ij}$.
+    \item Dal modello corrente, si calcolano le statistiche predette dal modello: $P_{ia}^{model}$ e $P_{ia,jb}^{model}$. Per calcolare queste medie nel modello, si ricorre a tecniche di campionamento Monte Carlo.
+    \item Si confrontano le statistiche del modello con quelle dei dati. Se non coincidono, si aggiornano i parametri $h_i$ e $J_{ij}$ in una direzione che riduca la discrepanza. Si itera questo processo finché le statistiche del modello non si avvicinano sufficientemente a quelle dei dati.
+\end{enumerate}
+
