@@ -1,0 +1,172 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 24
+%-------------------------------------------------------------------------------
+\chapter{Lezione 24}
+\label{capitolo_24}
+\textit{27/05/2026}
+
+\section{Sequenze Proteiche e Modelli di Folding}
+Non tutte le sequenze amminoacidiche producono la medesima struttura tridimensionale di una proteina. Ciononostante, si osserva che determinate sequenze, o famiglie di sequenze simili, ricorrono in natura. Questo fenomeno solleva interrogativi sulle proprietà che governano la selezione e la stabilità delle sequenze proteiche funzionali.
+
+
+
+Consideriamo una famiglia di proteine:
+\begin{itemize}
+    \item ciascuna proteina è rappresentata da una sequenza di amminoacidi $\{S_i\}$
+    \item una proteina tipica può avere una lunghezza $L=200$ amminoacidi $\longrightarrow i=1, \dots, L$
+    \item ci sono 20 possibili amminoacidi $\longrightarrow S_i=1, \dots, 20$
+\end{itemize}
+
+Analizziamo l'entropia di queste sequenze per capire la statistica di occorrenza degli amminoacidi.
+Il numero totale di sequenze possibili per una proteina di lunghezza $L=200$ è $N_{tot} = 20^{200}$.
+L'entropia per una distribuzione di probabilità $P(S)$ su tutte le possibili sequenze è data da:
+
+\begin{equation} \label{eq:ch24_1}
+S = -\sum_s P(s) \ln[P(s)]
+\end{equation}
+
+dove la somma è su tutte le $20^L$ sequenze.
+
+\subsection*{Assunzione più semplice: indipendenza dei siti}
+Assumiamo che la scelta dell'amminoacido in una posizione $i$ sia indipendente dalla scelta degli amminoacidi nelle altre posizioni. La probabilità di una sequenza $S = (S_1, S_2, \dots, S_L)$ è allora il prodotto delle probabilità dei singoli amminoacidi in ciascuna posizione:
+
+\begin{equation} \label{eq:ch24_2}
+P(s) = \prod_{i=1}^{L} P^{(i)}(S_i)
+\end{equation}
+
+dove $P^{(i)}(S_i)$ è la probabilità che l'amminoacido $S_i$ si trovi in posizione $i$. Questa assunzione potrebbe essere errata.
+Sotto questa ipotesi di indipendenza, l'entropia totale diventa additiva:
+
+\begin{align} 
+S &= -\sum_{\{S_j\}} \left( \prod_{k=1}^{L} P^{(k)}(S_k) \right) \ln\left[ \prod_{m=1}^{L} P^{(m)}(S_m) \right] \nonumber \\
+&= -\sum_{S_1, \dots, S_L} \left( \prod_{k=1}^{L} P^{(k)}(S_k) \right) \sum_{m=1}^{L} \ln[P^{(m)}(S_m)] \nonumber \\
+&= -\sum_{m=1}^{200} \Biggl( \sum_{S_m} P^{(m)}(S_m) \ln[P^{(m)}(S_m)] \Biggr) \nonumber \\
+&= \sum_{i=1}^{L} S^{(i)} \label{eq:ch24_3}
+\end{align}
+
+dove $S^{(i)} = -\sum_{S_i} P^{(i)}(S_i) \ln[P^{(i)}(S_i)]$ è l'entropia associata al sito $i$.
+Se non avessimo alcuna informazione, potremmo assumere una probabilità uniforme per ciascun tipo di amminoacido in ogni sito:
+
+\begin{equation} \label{eq:ch24_4}
+P^{(i)}(S_i) = \frac{1}{20} \quad \forall i, \forall S_i
+\end{equation}
+
+In questo caso, l'entropia per sito sarebbe:
+
+\begin{equation} \label{eq:ch24_5}
+S^{(i)} = -\sum_{S_i=1}^{20} \frac{1}{20} \ln\left(\frac{1}{20}\right) = \ln(20)
+\end{equation}
+
+E l'entropia totale per una proteina di lunghezza $L=200$ sarebbe:
+
+\begin{equation} \label{eq:ch24_6}
+S_{indip,unif} = 200 \ln(20)
+\end{equation}
+
+Tuttavia, analizzando un database di $M$ sequenze proteiche allineate, possiamo stimare le frequenze $P^{(i)}(S_i)$ per ogni sito $i$:
+
+\begin{equation} \label{eq:ch24_7}
+P^{(i)}(S_i=k) = \frac{n^{(i)}(k)}{M}
+\end{equation}
+
+dove $n^{(i)}(k)$ è il numero di volte che l'amminoacido di tipo $k$ appare al sito $i$ nelle $M$ sequenze.
+I dati sperimentali ci dicono che non c'è omogeneità: le distribuzioni $P^{(i)}(S_i)$ variano da sito a sito. Quindi, l'assunzione di probabilità uniforme $1/20$ per ogni sito è errata.
+
+
+\section{Assunzione oltre l'Indipendenza: Correlazioni tra Siti}
+Se l'assunzione $P(s) = \prod_i P^{(i)}(S_i)$ non è corretta, dobbiamo considerare le dipendenze tra siti. Un primo passo è introdurre statistiche a due punti (correlazioni tra coppie di siti), come $P(S_i, S_j)$, la probabilità congiunta di osservare l'amminoacido $S_i$ al sito $i$ e l'amminoacido $S_j$ al sito $j$. Questa distribuzione vive in uno spazio di $20 \times 20 = 400$ stati per ogni coppia di siti.
+
+
+
+Dai dati, possiamo stimare le correlazioni sperimentali:
+
+\begin{equation} \label{eq:ch24_8}
+C_{ij}^{exp} = \langle S_i S_j \rangle_{exp} - \langle S_i \rangle_{exp} \langle S_j \rangle_{exp} 
+\end{equation}
+
+L'idea è di costruire un modello probabilistico $P_{mod}(s)$ che riproduca non solo le frequenze dei singoli siti $P^{(i)}(S_i)$ ma anche le correlazioni osservate tra coppie di siti $P(S_i,S_j)$.
+Si può usare un algoritmo Monte Carlo per generare un insieme di sequenze artificiali i cui profili di correlazione $C_{ij}^{mod}$ minimizzino la discrepanza con quelli sperimentali $C_{ij}^{exp}$:
+
+\begin{equation} \label{eq:ch24_9}
+\chi^2 = \sum_{i,j} |C_{ij}^{mod} - C_{ij}^{exp}|^2
+\end{equation}
+
+Studi mostrano che i modelli che includono le interazioni a due punti (correlazioni) sono significativamente migliori nel predire quali sequenze si ripiegano correttamente rispetto ai modelli basati sulla sola statistica dei singoli siti. Questo suggerisce che le interazioni (o co-evoluzioni) tra coppie di amminoacidi lungo la catena sono importanti per il folding. Queste coppie non sono necessariamente adiacenti nella sequenza primaria, ma possono essere in contatto nella struttura tridimensionale ripiegata.
+
+
+\section{Modello di Massima Entropia (MEM)}
+Un approccio formale per costruire modelli probabilistici che siano consistenti con un insieme di osservabili sperimentali è il Modello di Massima Entropia (MEM). Si cerca la distribuzione di probabilità $P(s)$ che massimizza l'entropia $S = -\sum_s P(s) \ln P(s)$ sotto il vincolo che le medie di certe osservabili $O^\mu(s)$ calcolate con $P(s)$ eguaglino i valori sperimentali $\langle O^\mu \rangle_{exp}$:
+
+\begin{equation} \label{eq:ch24_10}
+\sum_s P(s) O^\mu(s) = \langle O^\mu \rangle_{exp} \quad \forall \mu
+\end{equation}
+
+e la condizione di normalizzazione $\sum_s P(s) = 1$.
+La soluzione a questo problema variazionale è una distribuzione della forma:
+
+\begin{equation} \label{eq:ch24_11}
+P_{MEM}(s) = \frac{1}{Z} \exp\left(+\sum_\mu \lambda_\mu O^\mu(s)\right)
+\end{equation}
+
+dove i $\lambda_\mu$ sono moltiplicatori di Lagrange determinati imponendo i vincoli; la funzione di partizione è data da:
+
+\begin{equation} \label{eq:ch24_12}
+Z = \sum_s \exp\left(+\sum_\mu \lambda_\mu O^\mu(s)\right)  
+\end{equation}
+
+La massimizzazione dell'entropia vincolata può essere formulata massimizzando il funzionale:
+
+\begin{equation} \label{eq:ch24_13}
+\tilde{S}[P, \{\lambda_\mu\}] = -\sum_s P(s) \ln P(s) + \sum_\mu \lambda_\mu \left( \sum_s P(s) O^\mu(s) - \langle O^\mu \rangle_{exp} \right)
+\end{equation}
+
+Sostituendo $P_{MEM}(s)$ nel funzionale dell'entropia, si ottiene:
+
+\begin{align} 
+\tilde{S}[P, \{\lambda_\mu\}] &= -\sum_s P(s) \Biggl[ -\ln(Z) + \left(\sum_\mu \lambda_\mu O^\mu(s)\right)\Biggr] \nonumber \\
+&\quad + \sum_\mu \lambda_\mu \left( \sum_s P(s) O^\mu(s) - \langle O^\mu \rangle_{exp} \right) \label{eq:ch24_14}
+\end{align}
+
+Poichè $\sum_s P(s) \ln(Z) = 1 \cdot \ln(Z)$ a causa della normalizzazione, il risultato finale è:
+
+\begin{equation} \label{eq:ch24_15}
+\tilde{S}[\{\lambda_\mu\}] = \ln Z[\{\lambda_\mu\}] - \sum_\mu \lambda_\mu \langle O^\mu \rangle_{exp}
+\end{equation}
+
+Per determinare i valori ottimali dei $\lambda_\mu$, si pongono a zero le derivate parziali di $\tilde{S}$ rispetto a ciascun $\lambda_\mu$:
+
+\begin{equation} \label{eq:ch24_16}
+\frac{\partial\tilde{S}}{\partial\lambda_\mu} = 0
+\end{equation}
+
+Consideriamo ora la probabilità di osservare una specifica sequenza sperimentale $S_{exp}$ secondo un modello parametrizzato dai $\lambda_\mu$.
+
+\begin{equation} \label{eq:ch24_17}
+P(S_{exp}) = \frac{e^{\sum_\mu \lambda_\mu O^\mu(S_{exp})}}{Z}
+\end{equation}
+
+Questa è la probabilità di una singola realizzazione sperimentale $S_{exp}$. Se abbiamo $M$ realizzazioni sperimentali indipendenti $S_{exp}^{(\alpha)}$ (con $\alpha = 1, \dots, M$), indicando l'insieme di queste osservazioni come $\{S_{exp}\}$, la probabilità è:
+
+\begin{equation} \label{eq:ch24_18}
+P(\{S_{exp}^{(\alpha)}\}) = \prod_{\alpha=1}^{M} P(S_{exp}^{(\alpha)}) = \prod_{\alpha=1}^{M} \frac{e^{\sum_\mu \lambda_\mu O^\mu(S_{exp}^{(\alpha)})}}{Z}
+\end{equation}
+
+Prendendo il logaritmo naturale, si ottiene la Log-Likelihood:
+
+\begin{equation} \label{eq:ch24_19}
+\ln P(\{S_{exp}^{(\alpha)}\}) = \sum_{\alpha=1}^{M} \left( -\ln Z + \sum_\mu \lambda_\mu O^\mu(S_{exp}^{(\alpha)}) \right)
+\end{equation}
+
+Questa espressione può essere riscritta fattorizzando $M$:
+
+\begin{equation} \label{eq:ch24_20}
+\ln P(\{S_{exp}^{(\alpha)}\}) = M \left[ -\ln Z + \frac{1}{M} \sum_{\alpha=1}^{M} \sum_\mu \lambda_\mu O^\mu(S_{exp}^{(\alpha)}) \right]
+\end{equation}
+
+Utilizzando la definizione della media sperimentale per ogni osservabile, $\langle O^\mu \rangle_{exp} = \frac{1}{M} \sum_{\alpha=1}^{M} O^\mu(S_{exp}^{(\alpha)})$, la Log-Likelihood diventa:
+
+\begin{equation} \label{eq:ch24_21}
+\ln P(\{S_{exp}^{(\alpha)}\}) = M \left( -\ln Z + \sum_\mu \lambda_\mu \langle O^\mu \rangle_{exp} \right)
+\end{equation}
+
+Massimizzare questa Log-Likelihood rispetto ai $\lambda_\mu$ è equivalente a risolvere il sistema di equazioni $\langle O^\mu \rangle_{model} = \langle O^\mu \rangle_{exp}$.
