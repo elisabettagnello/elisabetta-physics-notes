@@ -1,0 +1,302 @@
+%-------------------------------------------------------------------------------
+% CAPITOLO 22
+%-------------------------------------------------------------------------------
+\chapter{Lezione 22}
+\label{capitolo_22}
+\textit{20/05/2026}
+
+\section{Modello di Hopfield}
+Ripartiamo dal modello di Hopfield.
+Stiamo modellando l'attività di una rete neurale considerando un insieme di stati $\{S_i\}$, con $S_i = \pm 1$.
+Indichiamo un pattern di memoria con $\{\xi_i^\mu\}$, dove $\xi_i^\mu = \pm 1$ per ogni neurone $i$, e $\mu$ è un indice che etichetta i diversi pattern memorizzati.
+In analogia con il modello di Ising, possiamo definire l'Hamiltoniana:
+
+\begin{equation} \label{eq:ch22_1}
+H = -\frac{1}{2} \sum_{i, j} W_{ij}S_iS_j
+\end{equation}
+
+I pesi sinaptici $W_{ij}$ sono definiti come:
+
+\begin{equation} \label{eq:ch22_2}
+W_{ij} = W \sum_{\mu=1}^{K} \xi_i^\mu \xi_j^\mu
+\end{equation}
+
+Introducendo delle nuove variabili $S'_i = S_i \xi_i$, l'Hamiltoniana diventa:
+
+\begin{equation} \label{eq:ch22_3}
+H = -\frac{W}{2}\sum_{i,j} S'_i S'_j
+\end{equation}
+
+Da questa Hamiltoniana, possiamo derivare la probabilità di una configurazione di stati $\{S_i\}$ all'equilibrio termodinamico, data dalla distribuzione di Boltzmann:
+
+\begin{equation} \label{eq:ch22_4}
+P(\{S_i\}) = \frac{e^{-\beta H}}{Z}
+\end{equation}
+
+dove $Z$ è la funzione di partizione.
+Se consideriamo un modello all'equilibrio descritto dalla statistica di Boltzmann, l'energia libera del sistema è data da:
+
+\begin{equation} \label{eq:ch22_5}
+F = -\frac{1}{\beta} \ln Z
+\end{equation}
+
+Nel limite $\beta \rightarrow \infty$ (bassa temperatura), il sistema tende a minimizzare l'energia $H$.
+Il numero di pattern $K$ che possono essere immagazzinati e recuperati in modo affidabile deve essere inferiore al numero di neuroni $N$.
+Si definisce il rapporto $\alpha = K/N$ come la "densità" dei pattern memorizzati. Si osserva che esiste un valore critico ($\alpha_c \approx 0.138$) al di sopra del quale la capacità di recupero crolla catastroficamente e la rete diventa incapace di distinguere i pattern memorizzati.
+
+\vspace{0.5cm}
+\noindent\fbox{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+        \textbf{!!}\\
+        Un pattern di memoria è distribuito su tutta la rete. La memoria non è localizzata in un singolo neurone, ma emerge dall'interazione collettiva di tutti i neuroni. Questa caratteristica rende il sistema robusto: se un neurone collassa o viene distrutto, il comportamento generale della rete non cambia drasticamente.
+    }%
+}
+\vspace{0.5cm}
+
+Per quantificare quanto la configurazione attuale della rete $S = \{S_i\}$ assomigli a uno dei pattern memorizzati $\xi^\mu$, si introduce il concetto di overlap.
+
+\begin{equation} \label{eq:ch22_6}
+m_s = \max_{\mu} \left( \frac{1}{N} \sum_i \langle \xi_i^\mu s_i \rangle \right)
+\end{equation}
+
+Questa grandezza misura la propensione della rete a "ricordare" il pattern con cui ha la massima somiglianza all'equilibrio.
+Vogliamo capire cosa succede se si distrugge un neurone.
+Supponiamo di aver fissato un pattern $\mu = \bar{\mu}$ (quello per cui l'overlap è massimo) e che l'overlap sia vicino a 1:
+
+\begin{equation} \label{eq:ch22_7}
+m_s = \frac{1}{N} \sum_i \xi_i^{\bar{\mu}} S_i \sim 1
+\end{equation}
+
+Se il neurone $k$ viene distrutto, il nuovo overlap $m_s'$ diventa:
+
+\begin{equation} \label{eq:ch22_8}
+m_s' = \frac{1}{N} \sum_{i \neq k} \xi_i^{\bar{\mu}} S_i = m_s - \frac{1}{N} \xi_k^{\bar{\mu}} S_k
+\end{equation}
+
+La diminuzione è piccola, proporzionale a $1/N$.
+
+
+\section{Dinamica di Apprendimento: Regola Hebbiana}
+Le connessioni $W_{ij}$ possono evolvere nel tempo: $W_{ij} \equiv W_{ij}(t)$.
+Se al tempo $t+1$ la configurazione della rete $\{S_i(t+1)\}$ corrisponde a un nuovo pattern $\xi_i^{K+1}$ da memorizzare, allora le connessioni si aggiornano.
+Esiste una dinamica di apprendimento descritta dalla regola di Hebb:
+
+\vspace{0.5cm}
+\noindent\fbox{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+        \begin{equation} \label{eq:ch22_9}
+        W_{ij} \rightarrow W_{ij} + W S_i(t+1) S_j(t+1)
+        \end{equation}
+    }%
+}
+\vspace{0.5cm}
+
+Questa regola implica che la connessione tra due neuroni si rafforza se i loro stati sono correlati (entrambi attivi o entrambi inattivi). La forma base dei pesi $W_{ij}$ data precedentemente è essa stessa un risultato di una forma di apprendimento Hebbiano:
+
+\begin{equation} \label{eq:ch22_10}
+W_{ij} = W\sum_{\mu=1}^{K} \xi_i^\mu \xi_j^\mu
+\end{equation}
+
+Consideriamo due neuroni A e B. Supponiamo che le loro interazioni siano le stesse, il che non è vero in generale perché non c'è simmetria in una rete generale ($W_{BA} \neq W_{AB}$ a causa della diversa scelta di dendriti e assoni).
+Grazie alla regola Hebbiana, possiamo schematizzare il comportamento della plasticità della memoria: l'interazione (efficacia sinaptica) tra neuroni che si attivano contemporaneamente tende ad aumentare progressivamente.
+
+
+\section{Metodo della Massima Entropia}
+Consideriamo un insieme di osservabili $\{O^\mu\}$ che siamo in grado di misurare sperimentalmente.
+Sia $O_{EXP}^\mu$ il risultato delle nostre misure sperimentali.
+Vogliamo capire qual è il modello minimale consistente con i valori sperimentali $\{O_{EXP}^\mu\}$.
+Ogni possibile osservabile deve essere una funzione dello stato del sistema $S = \{S_i\}$, perciò:
+
+\begin{equation*} 
+O^\mu \equiv O^\mu(S) 
+\end{equation*}
+
+La distribuzione di probabilità dell'osservabile è tale che il valore medio teorico di ogni osservabile coincida con quello sperimentale:
+
+\begin{equation} \label{eq:ch22_11}
+\langle O^\mu(S) \rangle = O_{EXP}^\mu
+\end{equation}
+
+Il modello dovrebbe essere dedotto a partire da meno informazioni possibile, quindi dovrebbe essere quello a massima entropia. L'entropia associata alla distribuzione $P$ è:
+
+\begin{equation} \label{eq:ch22_12}
+S[P] = -\sum_S P(S) \ln P(S)
+\end{equation}
+
+\vspace{0.5cm}
+\noindent\fbox{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+        Questa formulazione proviene, ad esempio, dall'ensemble microcanonico, dove la probabilità di uno stato $S$ è uniforme sugli stati con una data energia $E$:
+        
+        $P(S) = \frac{1}{\Gamma(E)} \quad \text{se } H(S) = E, \quad 0 \text{ altrimenti}$
+        
+        $\Gamma(E) = \sum_S \delta(H(S)-E)$ è il volume nello spazio delle fasi.
+        L'entropia (con $k_B=1$) diventa:
+        \begin{equation} \label{eq:ch22_13}
+        S = -\sum_{S: H(S)=E} \frac{1}{\Gamma(E)} \ln\left(\frac{1}{\Gamma(E)}\right) = \ln \Gamma(E)
+        \end{equation}
+        
+        Nell'ensemble canonico, invece, si ha:
+        
+        $P(S) = \frac{e^{-\beta H}}{Z}$ \quad con \quad $Z = e^{-\beta F}$
+        
+        L'entropia è:
+        \begin{align} \label{eq:ch22_14}
+        S[P] &= -\sum_S \frac{e^{-\beta H(S)}}{Z} [-\beta H(S) - \ln Z] \nonumber \\ 
+        &= \beta (\langle E \rangle - F) \nonumber \\ 
+        &= \frac{1}{T} (\langle E \rangle - F)
+        \end{align}
+        
+        Questo è equivalente a dire che per una temperatura fissata si ha:
+        \begin{equation} \label{eq:ch22_15}
+        F = \langle E \rangle - TS
+        \end{equation}
+    }%
+}
+\vspace{0.5cm}
+
+Torniamo alla massimizzazione dell'entropia $S[P] = -\sum_S P(S) \ln P(S)$.
+Dobbiamo trovare $P(S)$. Massimizzando $S[P]$ senza vincoli si ha:
+
+\begin{equation} \label{eq:ch22_16}
+\frac{\delta S[P]}{\delta P(S)} = -\left[\ln P(S) + P(S) \cdot \frac{1}{P(S)}\right] = -[\ln P(S) + 1] = 0
+\end{equation}
+
+Questo implicherebbe:
+
+\begin{equation} \label{eq:ch22_17}
+\ln P(S) = -1 \rightarrow P(S) = \text{costante}  
+\end{equation}
+
+Da questo calcolo deduciamo che, se non sappiamo nulla del nostro sistema (=nessun vincolo sulle osservabili), il modello a massima entropia è quello in cui tutte le configurazioni sono equiprobabili, come nell'ensemble microcanonico.
+Eseguiamo nuovamente il calcolo imponendo dei vincoli tramite i moltiplicatori di Lagrange.
+Per il solo vincolo di normalizzazione $\sum_S P(S) = 1$:
+
+\begin{equation} \label{eq:ch22_18}
+\tilde{S}_{\lambda_0 }[P] = -\sum_S P(S) \ln P(S) - \lambda_0 \left(\sum_S P(S) - 1\right)
+\end{equation}
+
+Ponendo $\frac{\delta \tilde{S}}{\delta P(S)}= 0$ e $\frac{\partial \tilde{S}}{\partial \lambda_0} = 0$:
+
+\begin{equation} \label{eq:ch22_19}
+-[\ln P(S) + 1 + \lambda_0] = 0 \implies \ln P(S) = -1 - \lambda_0
+\end{equation}
+
+Da cui:
+
+\begin{equation} \label{eq:ch22_20}
+P(S) = \frac{1}{e^{1+\lambda_0}}
+\end{equation}
+
+Quindi:
+\begin{itemize}
+    \item Se abbiamo il minimo delle informazioni (=non imponiamo alcun vincolo), massimizzando l'entropia troviamo che c'è un'equiprobabilità costante.
+    \item Se aggiungiamo un vincolo $\lambda_0$, otteniamo $P(S) = e^{-1-\lambda_0}$. Implementando la normalizzazione, $Z = e^{1+\lambda_0}$.
+\end{itemize}
+
+Se abbiamo $M$ vincoli dati dai valori medi sperimentali $\langle O^\mu(S) \rangle = O_{EXP}^\mu$, introduciamo $M$ moltiplicatori di Lagrange $\lambda_\mu$ oltre a $\lambda_0$ per la normalizzazione.
+
+\begin{align} \label{eq:ch22_21}
+\tilde{S}[P, \{\lambda_\mu\}] = &-\sum_S P(S) \ln P(S) - \lambda_0 \left(\sum_S P(S) - 1\right) \nonumber \\
+&- \sum_{\mu=1}^M \lambda_\mu \left(\sum_S P(S) O^\mu(S) - O_{EXP}^\mu\right)
+\end{align}
+
+Derivando rispetto a $P(S)$ e ponendo a zero:
+
+\begin{equation} \label{eq:ch22_22}
+-[\ln P(S) + 1 + \lambda_0 + \sum_\mu \lambda_\mu O^\mu(S)] = 0
+\end{equation}
+
+Da cui si ottiene la distribuzione di probabilità a massima entropia:
+
+\begin{equation} \label{eq:ch22_23}
+P(S) = \frac{e^{-\sum_\mu \lambda_\mu O^\mu(S)}}{e^{1+\lambda_0}} = \frac{e^{-\sum_\mu \lambda_\mu O^\mu(S)}}{Z}
+\end{equation}
+
+Possiamo identificare il termine $\sum_\mu \lambda_\mu O^\mu(S)$ con un'Hamiltoniana generalizzata $H_{eff}(S)$.
+Quindi:
+
+\begin{equation} \label{eq:ch22_24}
+P(S) = \frac{e^{-H_{eff}}}{Z}
+\end{equation}
+
+Questo modello risulta utile solo se si conoscono i parametri $\lambda_\mu$.
+Chiaramente, il modello $P(S)$ che otteniamo dipende crucialmente dalla scelta delle osservabili $O^\mu(S)$ che misuriamo e includiamo come vincoli. È necessario scegliere il minor numero di parametri (e quindi di osservabili) sufficienti a descrivere il sistema.
+
+
+\section{Applicazione Sperimentale}
+Vediamo un esempio sperimentale: lo studio dell'attività neuronale in una porzione di cervello.
+Si discretizza il tempo e il segnale elettrico di ciascun neurone $S_i(t) \in \{+1, -1\}$.
+Sia $t_{obs}$ il tempo totale di osservazione. Per ogni istante di tempo discreto $t_k$, abbiamo una configurazione dell'attività di tutti i neuroni $S(t_k) = \{S_i(t_k)\}$.
+L'obiettivo è determinare le frequenze di occorrenza delle diverse configurazioni $S$ e costruire un istogramma per stimare $P_{exp}(S)$. Tuttavia, estrarre la distribuzione di probabilità direttamente dai dati è molto problematico. Non funziona bene perché sono necessari tempi di osservazione estremamente lunghi per campionare adeguatamente gli eventi rari.
+
+Le osservabili "buone", cioè quelle che possono essere stimate in modo affidabile da dati sperimentali limitati, sono quelle che coinvolgono momenti bassi della distribuzione. Ad esempio, la media $\langle x \rangle = \int dx P(x) x$ o il secondo momento $\langle x^2 \rangle = \int dx P(x) x^2$.
+Quando si misurano queste osservabili sperimentalmente, è preferibile utilizzare stime dirette dei momenti piuttosto che tentare di ricostruire prima $P(x)$ e poi calcolare i momenti, poiché la stima di $P(x)$, specialmente nelle code, è difficile.
+Quando l'ordine $m$ del momento $\langle x^m \rangle$ aumenta, l'approssimazione della sua stima peggiora a causa della crescente influenza delle code della distribuzione, che sono mal campionate.
+
+Impostiamo il problema per i neuroni. Le osservabili più semplici che possiamo misurare sono i valori medi dell'attività dei singoli neuroni:
+
+\begin{equation} \label{eq:ch22_25}
+O^i(S) = \langle S_i \rangle \quad \text{per } i=1, \dots, N
+\end{equation}
+
+Il valore di aspettazione sperimentale per il neurone $i$ è:
+
+\begin{equation} \label{eq:ch22_26}
+\langle S_i \rangle_{exp} = \frac{1}{T_{obs}} \sum_{t=1}^{T_{obs}} S_i(t)
+\end{equation}
+
+Applicando il metodo della massima entropia con queste osservabili, la distribuzione di probabilità risultante è (assumendo $\beta=1$ e identificando $\lambda_i = -h_i$):
+
+\begin{equation} \label{eq:ch22_27}
+P(S) = \frac{1}{Z} e^{\sum_i h_i S_i}
+\end{equation}
+
+Questo è un modello di Ising in cui non ci sono interazioni tra coppie di neuroni.
+I parametri $h_i$ sono determinati imponendo che i valori medi teorici coincidano con quelli sperimentali:
+
+\begin{equation} \label{eq:ch22_28}
+\langle S_i \rangle = \langle S_i \rangle_{exp}
+\end{equation}
+
+Per il modello di Ising senza interazioni, sappiamo che $\langle S_i \rangle = \tanh(h_i)$. Quindi:
+
+\begin{equation} \label{eq:ch22_29}
+\tanh(h_i) = \langle S_i \rangle_{exp}
+\end{equation}
+
+\begin{equation} \label{eq:ch22_30}
+h_i = \text{arctanh}(\langle S_i \rangle_{exp})
+\end{equation}
+
+Quindi, direttamente dai dati misurati (le attività medie dei singoli neuroni), possiamo costruire i parametri $h_i$ del nostro modello a massima entropia.
+Le misure del valor medio dell'attività di un singolo neurone $\langle S_i \rangle$ rappresentano la frequenza media di attività del neurone $i$.
+
+\begin{equation} \label{eq:ch22_31}
+\langle S_i \rangle = \frac{1}{T_{obs}} \sum_t S_i(t)
+\end{equation}
+
+Questa è una statistica a "un punto", cioè relativa a un singolo neurone, sommata su tutti i tempi.
+Se si vuole andare oltre e fare una statistica a "due punti", si considerano due neuroni diversi, $i$ e $j$, e si calcola la loro correlazione:
+
+\begin{equation} \label{eq:ch22_32}
+C_{ij} = \langle S_i S_j \rangle
+\end{equation}
+
+Da questa si può ottenere la correlazione connessa:
+
+\begin{equation} \label{eq:ch22_33}
+C_{ij}^{conn} = \langle S_i S_j \rangle - \langle S_i \rangle \langle S_j \rangle
+\end{equation}
+
+Quindi, le osservabili che ci interessano sono, in prima approssimazione, il valor medio dell'attività dei singoli neuroni e, successivamente, le correlazioni tra coppie di neuroni.
+Con queste informazioni (valori medi sperimentali $\langle S_i \rangle_{exp}$ e correlazioni sperimentali $\langle S_i S_j \rangle_{exp}$), vogliamo usare il metodo della massima entropia per derivare un modello che sia la più semplice distribuzione di probabilità che riproduca bene i momenti che conosciamo.
+
+Se includiamo come vincoli sia le magnetizzazioni medie $m_i = \langle S_i \rangle_{exp}$ sia le correlazioni a coppie $C_{ij}^{exp} = \langle S_i S_j \rangle_{exp}$, il modello a massima entropia risultante avrà la forma:
+
+\begin{equation} \label{eq:ch22_34}
+P(S) = \frac{1}{Z} \exp\left( \sum_i h_i S_i + \sum_{i<j} J_{ij} S_i S_j \right)
+\end{equation}
+
+Questo è un modello di Ising con interazioni a coppie $J_{ij}$. I parametri $h_i$ e $J_{ij}$ sono i moltiplicatori di Lagrange associati ai vincoli su $\langle S_i \rangle$ e $\langle S_i S_j \rangle$ rispettivamente.
+Se queste informazioni (a uno e due punti) non bastano per descrivere adeguatamente il sistema, si possono aggiungere ulteriori parametri, includendo informazioni a tre punti e così via. È cruciale che queste siano informazioni sperimentali.
