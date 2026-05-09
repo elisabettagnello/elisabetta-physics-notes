@@ -1,0 +1,641 @@
+\chapter{Lezione 10}
+
+
+\textbf{Argomenti:} Ripasso EIF e paesaggio energetico; validazione sperimentale EIF (esperimento Gerstner–Markram); estrazione del campo di forza con media condizionata; fit dei parametri EIF su neuroni corticali; predizione del timing degli spike; periodo refrattario relativo e dinamica di $V_T$; modello AdEx (EIF adattivo con recupero); modello QIF e oscillatori di Kuramoto; modello LIF ($\Delta_T \to 0$); tassonomia dei neuroni inibitori (NAC, AC, burst, delay); modello adattivo integrate-and-fire 2D; firing tonico non-adattivo; spike frequency adaptation; burst iniziale + tonico; firing a burst regolare; differenze LIF vs EIF per il burst
+\section{Ripasso: Modello EIF e Paesaggio Energetico}
+
+\subsubsection{Campo di Forza dell'EIF}
+
+Il professore apre la lezione con un ripasso della dinamica del modello \textbf{Exponential Integrate-and-Fire} (EIF) discussa nella lezione precedente. Il modello descrive l'evoluzione temporale del potenziale di membrana $V$ tramite il campo di forza monodimensionale:
+
+\begin{equation}
+C_m \frac{dV}{dt} = \mathcal{F}(V) + I_{\text{ext}}
+\end{equation}
+
+dove il campo di forza è:
+
+\begin{equation}
+\mathcal{F}(V) = -G_m(V - E_m) + G_m \Delta_T \exp\!\left(\frac{V - V_T}{\Delta_T}\right)
+\end{equation}
+
+Il primo termine è la \textbf{componente passiva lineare} (l'RC circuit che porta il potenziale verso $E_m$); il secondo termine è la \textbf{componente esponenziale} attiva soltanto quando $V$ si avvicina alla soglia $V_T$, con $\Delta_T$ (la sharpness) che determina quanto è appuntita la rampa esponenziale.
+
+\subsubsection{Funzione di Lyapunov e Metafora del Paesaggio Energetico}
+
+Per avere un'intuizione fisica dell'evoluzione del potenziale di membrana, si introduce la \textbf{funzione di Lyapunov} (energia del sistema):
+
+\begin{equation}
+U(V) = -\int \mathcal{F}(V)\, dV
+\end{equation}
+
+La condizione $dU/dt = -\mathcal{F}(V)^2 \leq 0$ garantisce che il sistema dissipa energia finché non raggiunge un attrattore. Il paesaggio energetico $U(V)$ ha la forma di una \textbf{valle profonda} centrata intorno a $E_m$ (stato di riposo preferenziale) e di una \textbf{sella} in corrispondenza di $V_T$ (l'emissione dello spike corrisponde al superamento della sella con caduta verso $+\infty$).
+
+Quando si inietta una corrente esterna $I_{\text{ext}} > 0$, il paesaggio energetico si \textbf{deforma}: la valle si sposta verso destra (avvicinandosi alla soglia) e la sella si abbassa. Più elevata è la corrente, più il potenziale di equilibrio è vicino alla soglia di emissione.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Chiarimento del docente in risposta a una domanda:} La soglia $V_T$ del modello EIF ha un significato diverso a seconda del protocollo di stimolazione. Con una corrente costante, la soglia operativa è quella che determina la corrente minima per produrre un treno di spike (corrente di reobase). Con un impulso molto breve, la soglia effettiva è $V_T$, che coincide con la base della rampa esponenziale. I due valori non coincidono nel modello EIF (a differenza del LIF, come si vedrà più avanti).
+\end{tcolorbox}
+
+\section{Validazione Sperimentale: Esperimento Gerstner–Markram}
+
+\subsubsection{Setup Sperimentale}
+
+Il professore descrive un'elegante serie di esperimenti condotti nel \textbf{laboratorio di Wulfram Gerstner} (EPFL, Losanna) in collaborazione con il \textbf{laboratorio di Henry Markram}. Il protocollo sperimentale prevedeva:
+
+\begin{enumerate}
+    \item Preparazione di una \textbf{fettina corticale} (\textit{cortical slice}) di cervello di roditore: un segmento di tessuto cerebrale mantenuto in vita in vitro.
+    \item Selezione di un \textbf{neurone piramidale} dello strato corticale e inserimento di un elettrodo intracellulare al soma.
+    \item Iniezione di una \textbf{corrente rumorosa} $I_{\text{in}}(t)$ attraverso l'elettrodo.
+    \item Registrazione simultanea del \textbf{potenziale di membrana} $V(t)$ al soma.
+\end{enumerate}
+
+\subsubsection{Perché una Corrente Rumorosa?}
+
+La scelta di usare una corrente stocastica (rumorosa) ha una motivazione fisica precisa: il \textbf{barrage di impulsi sinaptici} che raggiunge il soma attraverso le dendrite può essere efficacemente approssimato da un \textbf{processo stocastico}. Iniettando al soma una corrente rumorosa che simula questo processo stocastico sinaptico, gli sperimentatori avevano accesso contemporaneo a:
+
+\begin{itemize}
+    \item $I_{\text{in}}(t)$: l'\textbf{input} al sistema (corrente iniettata, nota).
+    \item $V(t)$: l'\textbf{output} del sistema (potenziale di membrana, registrato).
+\end{itemize}
+
+Questo permetteva di caratterizzare la relazione ingresso–uscita del neurone biologico.
+
+\subsubsection{Osservazioni Sperimentali}
+
+Dalla registrazione si osservava che:
+
+\begin{itemize}
+    \item Il neurone produceva \textbf{spike} in corrispondenza delle fluttuazioni della corrente che avvicinavano il potenziale alla soglia.
+    \item Il \textbf{potenziale di membrana trascorreva la maggior parte del tempo al di sotto della soglia}, fluttuando senza emettere spike.
+    \item I saltuari attraversamenti della soglia (grazie alle fluttuazioni stocastiche) producevano spike isolati.
+    \item Gli \textbf{intervalli interspike (ISI) erano molto variabili}, coerentemente con quanto si osserva \textit{in vivo} in neuroni che ricevono input sinaptici naturalistici.
+\end{itemize}
+
+
+
+\subsection{Estrazione del Campo di Forza dalla Registrazione}
+
+Il professore illustra la strategia ingegnosa adottata dagli sperimentatori per estrarre il \textbf{campo di forza} $\mathcal{F}(V)$ direttamente dalla registrazione. Sotto l'ipotesi che il neurone sia ben descritto da un circuito RC con un solo grado di libertà (il potenziale di membrana), il bilancio di corrente al soma è:
+
+\begin{equation}
+C_m \frac{dV}{dt} = \mathcal{F}(V) + I_{\text{in}}(t)
+\end{equation}
+
+La \textbf{corrente transmembrana} $I_m(t)$ (corrente che fluisce attraverso la membrana, escludendo la corrente iniettata) è quindi:
+
+\begin{equation}
+I_m(t) = I_{\text{in}}(t) - C_m \frac{dV}{dt}
+\end{equation}
+
+Poiché si conoscono sia $I_{\text{in}}(t)$ che $V(t)$ (e quindi $dV/dt$ numericamente), $I_m(t)$ è \textbf{direttamente misurabile}. E dalla definizione del campo di forza si ottiene:
+
+\begin{equation}
+\mathcal{F}(V) = -C_m \frac{dV}{dt} + I_{\text{in}} = -I_m(t) \cdot \frac{1}{\text{segno}}
+\end{equation}
+
+In termini operativi: $I_m(t)$ è direttamente proporzionale a $-\mathcal{F}(V)$.
+
+\subsubsection{Media Condizionata e Scatter Plot}
+
+Poiché si tratta di un processo stocastico, il campo di forza deterministico si estrae con una \textbf{media condizionata}:
+
+\begin{equation}
+\hat{\mathcal{F}}(V_0) = -\frac{1}{C_m} \langle I_m \mid V = V_0 \rangle
+\end{equation}
+
+Il procedimento sperimentale era il seguente:
+
+\begin{enumerate}
+    \item Per ogni campione temporale, si misuravano la coppia $(V(t), I_m(t))$ e si riportavano su uno \textbf{scatter plot} con $V$ sull'asse $x$ e $I_m$ sull'asse $y$.
+    \item Si suddivideva l'asse $x$ in finestre strette di potenziale di membrana.
+    \item Per ogni finestra, si calcolava la \textbf{media della distribuzione di} $I_m$ condizionata a quel valore di $V$.
+    \item Le medie risultanti (punti rossi con barre di errore = errore standard della media) delineavano la \textbf{curva del campo di forza}.
+\end{enumerate}
+
+La forma risultante mostrava:
+
+\begin{itemize}
+    \item Un \textbf{ramo lineare} (dinamica passiva sotto-soglia, coerente con il termine $-G_m(V - E_m)$).
+    \item Un \textbf{ramo esponenziale} che deviava dalla linearità in prossimità di $V_T$ (amplificazione attiva del sodio).
+\end{itemize}
+
+
+
+\subsection{Fit dei Parametri EIF su Neuroni Corticali}
+
+Una volta estratta la curva sperimentale del campo di forza, il gruppo Gerstner–Markram procedeva con un \textbf{fit non-lineare} della funzione:
+
+\begin{equation}
+\mathcal{F}(V) = -G_m(V - E_m) + G_m \Delta_T \exp\!\left(\frac{V - V_T}{\Delta_T}\right)
+\end{equation}
+
+I \textbf{quattro parametri} liberi da determinare erano:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|X|X|}
+    \hline
+    \textbf{Parametro} & \textbf{Significato} & \textbf{Valore tipico} \\
+    \hline
+    $G_m$ & Conduttanza di membrana passiva & Variabile (cfr. $\tau_m$) \\
+    \hline
+    $E_m$ & Potenziale di equilibrio & $\sim -65$ mV \\
+    \hline
+    $\Delta_T$ & Sharpness del threshold & $\sim 1$ mV \\
+    \hline
+    $V_T$ & Soglia di iniziazione dello spike & $\sim -50$ mV \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Verifica dell'Esponenziale}
+
+Per verificare che la componente esponenziale fosse davvero di forma $e^{V/\Delta_T}$ (e non, ad esempio, una potenza), si rimuoveva il contributo lineare passivo $(-G_m(V - E_m))$ dalla curva sperimentale e si riportava il residuo $\mathcal{F}(V) - \mathcal{F}_{\text{lin}}(V)$ in \textbf{scala semi-logaritmica} ($y$-axis in scala log, $x$-axis lineare). In questa rappresentazione, una vera esponenziale appare come una \textbf{retta}, con pendenza $1/\Delta_T$. I punti sperimentali in prossimità di $V_T$ seguivano effettivamente una retta, confermando la natura esponenziale dell'amplificazione.
+
+\subsubsection{Distribuzione dei Parametri tra Neuroni}
+
+L'esperimento fu ripetuto su \textbf{decine di neuroni} appartenenti agli stessi strati corticali di diversi topi, ottenendo una \textbf{distribuzione dei parametri} tra neuroni:
+
+\begin{itemize}
+    \item $\tau_m = C_m/G_m$: distribuito tra 10 e 40 ms (ampia variabilità biologica).
+    \item $E_m$: distribuzione centrata intorno a $-65$ mV.
+    \item $V_T - E_m$: variabile (distanza tra soglia ed equilibrio).
+    \item $\Delta_T$: $\sim 1$ mV, con variabilità limitata.
+\end{itemize}
+
+Il professore sottolinea che questa variabilità inter-neuronale è del tutto attesa in sistemi biologici, così come in qualsiasi sistema fisico. Ciascun neurone ha parametri biologici propri determinati dalla sua storia e dal suo contesto di sviluppo.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Domanda di uno studente:} Le distribuzioni sono rispetto a quali condizioni? I parametri sono deterministici?\\
+\textbf{Risposta del professore:} I parametri sono deterministici per ogni singolo neurone, ma variano da un neurone all'altro. Le distribuzioni mostrate rappresentano la variabilità tra i diversi neuroni campionati, tutti appartenenti agli stessi strati corticali di diversi topi.
+\end{tcolorbox}
+
+
+
+\subsubsection{Confronto Tracce: Biologica vs Modello EIF}
+
+Con i parametri estratti dal fit, si testava la \textbf{capacità predittiva} del modello EIF confrontando la \textbf{traccia nera} (potenziale registrato biologicamente) con la \textbf{traccia rossa} (dinamica del neurone EIF fittato, guidato dalla stessa realizzazione di corrente rumorosa iniettata nel neurone reale).
+
+I risultati mostravano:
+
+\begin{itemize}
+    \item \textbf{Ottima riproduzione della dinamica sotto-soglia}: le tracce rossa e nera erano spesso indistinguibili nella fase sub-threshold.
+    \item \textbf{Buona predizione del timing degli spike}: il modello riproduceva fedelmente la maggior parte degli spike della traccia biologica.
+    \item \textbf{Fallimento per doublet e triplet}: in alcune finestre temporali, il neurone reale produceva due o tre spike ravvicinati (doublet/triplet) che il modello 1D non riusciva a riprodurre.
+    \item \textbf{Falsi positivi}: in altri casi il modello produceva spike assenti nella traccia biologica.
+\end{itemize}
+
+\subsubsection{Elemento Mancante: Effetto dello Spike sul Campo di Forza}
+
+Il professore identifica la causa del fallimento: il modello 1D, per ridurre la dimensionalità da 2D a 1D, aveva \textbf{congelato} la variabile di recupero $W$. Ma la produzione di un potenziale d'azione ha un impatto reale sulla dinamica successiva (correnti di calcio, canali K$^+$ attivati da Ca$^{2+}$) che si manifesta come una \textbf{modifica temporanea del campo di forza} dopo ogni spike.
+
+
+
+\subsection{Analisi Spike-Triggered e Dinamica di $V_T$}
+
+\subsubsection{Statistica Spike-Triggered}
+
+Per identificare l'elemento mancante, il gruppo adottò un'analisi \textbf{spike-triggered}: si allineavano tutte le tracce registrate al \textbf{tempo di emissione di uno spike isolato} (non appartenente a burst), e si raccoglievano i campioni di $(V(t), I_m(t))$ in diverse \textbf{finestre temporali} dopo lo spike:
+
+\begin{itemize}
+    \item Finestra 1: 5–10 ms dopo lo spike
+    \item Finestra 2: 10–20 ms dopo lo spike
+    \item Finestra 3: 20–30 ms dopo lo spike
+    \item Finestra 4: 30–50 ms dopo lo spike
+\end{itemize}
+
+Per ciascuna finestra si ripeteva la procedura della media condizionata e si estraeva il campo di forza $\mathcal{F}(V)$ corrispondente.
+
+\subsubsection{Risultato: Spostamento Transitorio di $V_T$ ed $E_m$}
+
+Il risultato principale era che il campo di forza \textbf{cambia nelle ore successive a uno spike}:
+
+\begin{enumerate}
+    \item \textbf{Nelle finestre temporali brevi} (5–10 ms): la soglia $V_T$ era significativamente più alta (verso potenziali più depolarizzati) rispetto al valore stazionario, e anche il punto di intersezione con $\mathcal{F} = 0$ (l'equilibrio $E_m$) era spostato verso destra.
+    \item \textbf{Nelle finestre successive} (10–20 ms, 20–30 ms): la soglia $V_T$ si avvicinava progressivamente al valore asintotico $V_T(\infty)$.
+    \item \textbf{Dopo $\sim$15 ms}: il campo di forza tornava al suo profilo stazionario.
+\end{enumerate}
+
+Questo significava:
+
+\begin{itemize}
+    \item Il neurone era \textbf{più difficile da eccitare} subito dopo uno spike (soglia più alta): questo corrisponde al \textbf{periodo refrattario relativo}.
+    \item Il potenziale di membrana era \textbf{più depolarizzato} subito dopo uno spike (equilibrio spostato): il potenziale di reset aveva una dipendenza temporale.
+\end{itemize}
+
+\subsubsection{Meccanismo Fisico}
+
+L'interpretazione fisica era la seguente: durante l'emissione di uno spike, il potenziale di membrana raggiunge valori molto depolarizzati (0 mV, +50 mV), provocando l'\textbf{apertura di canali Ca$^{2+}$} e un influx di ioni calcio intracellulare. L'aumento della concentrazione di Ca$^{2+}$ attivava correnti del potassio dipendenti dal calcio (canali BK e SK), responsabili di:
+
+\begin{enumerate}
+    \item Un'\textbf{iperpolarizzazione} dopo-spike (after-hyperpolarization, AHP).
+    \item Un \textbf{innalzamento transitorio della soglia} di emissione (threshold fatigue).
+\end{enumerate}
+
+\subsubsection{Dinamica Temporale di $V_T(t)$}
+
+Il professore sintetizza il comportamento di $V_T$ nel tempo:
+
+\begin{equation}
+V_T(t) = V_T(\infty) + \sum_k \Delta V_T \cdot \delta(t - t_k^{\text{spike}})
+\end{equation}
+
+con una \textbf{dinamica di rilassamento} verso $V_T(\infty)$. In pratica:
+
+\begin{itemize}
+    \item Ad ogni spike emesso al tempo $t_k$, $V_T$ \textbf{salta} di un incremento $\Delta V_T > 0$ (soglia più alta).
+    \item Tra uno spike e il successivo, $V_T$ \textbf{decade esponenzialmente} verso $V_T(\infty)$.
+    \item Se gli spike si susseguono rapidamente (burst), la soglia si accumula progressivamente: più spike vengono emessi, più difficile è emettere il successivo.
+\end{itemize}
+
+\subsection{Modello EIF Adattivo: Riproduzione dei Burst}
+
+\subsubsection{Il Modello con Soglia Dinamica}
+
+Introducendo una \textbf{variabile di soglia dinamica} $V_T(t)$ (un grado di libertà aggiuntivo che si comporta come la variabile di recupero $W$ dei modelli bidimensionali), il modello EIF diventava capace di riprodurre le caratteristiche mancanti. La \textbf{traccia verde} nel grafico mostrava il risultato del modello EIF con questo grado di libertà aggiuntivo:
+
+\begin{itemize}
+    \item Dopo ogni spike la traccia verde non era più discontinua (il potenziale di reset evolveva gradualmente grazie alla dinamica della soglia).
+    \item I \textbf{doublet} venivano riprodotti correttamente.
+    \item I \textbf{triplet} erano anch'essi catturati dal modello.
+    \item Il potenziale di membrana negli inter-spike interval dei burst era riprodotto in modo affidabile.
+\end{itemize}
+
+\subsubsection{Conclusione: i Modelli IF non sono Modelli Giocattolo}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questo è per dirvi che siamo partiti dal modello di Hodgkin-Huxley, molto non-lineare e quadridimensionale. Ma semplicemente reintroducendo una variabile di recupero — e vedremo in che modo — in un neurone integrate-and-fire monodimensionale, siamo in grado di essere molto, molto accurati nel riprodurre il potenziale di membrana di neuroni reali. Quindi questi neuroni integrate-and-fire non sono modelli giocattolo, ma strumenti quantitativi precisi per riprodurre ciò che è registrato \textit{in vivo}.
+\end{tcolorbox}
+
+
+\section{Modelli IF come Approssimazioni dell'EIF: QIF e LIF}
+
+\subsubsection{Espansione in Serie di Taylor}
+
+Per ricavare i due modelli IF più utilizzati come approssimazioni dell'EIF, si considera un'espansione in serie di Taylor del campo di forza $\mathcal{F}(V)$ intorno al potenziale di equilibrio $E_m$, limitandosi ai termini fino al \textbf{secondo ordine}:
+
+\begin{equation}
+\mathcal{F}(V) \approx c_0 + c_1(V - E_m) + c_2(V - E_m)^2
+\end{equation}
+
+Questa forma parabolica dipendente da $V^2$ giustifica il nome \textbf{Quadratic Integrate-and-Fire} (QIF).
+
+\subsubsection{Modello QIF: Campo di Forza e Energia}
+
+Nel modello QIF il campo di forza è parabolico e il corrispondente \textbf{paesaggio energetico} è cubico: ha ancora una \textbf{sella} (che rappresenta la soglia di emissione) e una \textbf{valle} (il punto di riposo), conservando le caratteristiche qualitative essenziali del modello EIF.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Domanda di uno studente:} L'espansione è attorno a $V_T$ o attorno a $E_m$?\\
+\textbf{Risposta del professore:} In linea di principio si può espandere attorno a qualsiasi punto; l'obiettivo è minimizzare l'errore di approssimazione nell'intervallo di potenziale rilevante (il range sotto-soglia tra $E_m$ e $V_T$). In questa derivazione ho usato l'espansione attorno a $E_m$, ma se si vuole ridurre l'errore vicino alla soglia si può espandere attorno a $V_T$. È una scelta arbitraria che dipende dall'uso che si vuole fare del modello.
+\end{tcolorbox}
+
+\subsubsection{Connessione QIF $\leftrightarrow$ Oscillatori di Kuramoto (Theta Neurons)}
+
+Un risultato importante riguarda il legame tra il modello QIF e gli \textbf{oscillatori di Kuramoto}. Introducendo la variabile di fase $\theta$ tramite la trasformazione non-lineare:
+
+\begin{equation}
+V = V_T - \cot(\theta/2)
+\end{equation}
+
+l'emissione di uno spike ($V \to +\infty$) corrisponde a $\theta \to \pi$, e la fase compie un giro completo sul cerchio unitario. In questa rappresentazione, il modello QIF diventa un \textbf{theta neuron} (neurone di fase), la cui dinamica è:
+
+\begin{equation}
+\frac{d\theta}{dt} = (1 - \cos\theta) + (1 + \cos\theta) \cdot I
+\end{equation}
+
+che mappa esattamente sulla dinamica di un singolo oscillatore di Kuramoto. Di conseguenza, le \textbf{teorie di campo medio per reti di oscillatori di Kuramoto} si traducono direttamente in descrizioni analitiche per reti di neuroni QIF.
+
+\subsubsection{Modello LIF: Il Limite $\Delta_T \to 0$}
+
+Il \textbf{Leaky Integrate-and-Fire} (LIF) si ottiene dal modello EIF portando $\Delta_T \to 0$. In questo limite:
+
+\begin{itemize}
+    \item Il ramo esponenziale scompare e il campo di forza diventa puramente lineare:
+    \begin{equation}
+    \mathcal{F}_{\text{LIF}}(V) = -G_L(V - E_L)
+    \end{equation}
+    \item La soglia $V_T$ diventa una \textbf{barriera rigida}: appena $V$ supera $V_T$, viene emesso uno spike; non c'è la possibilità di rientrare sotto-soglia anche in presenza di forte corrente inibitoria.
+    \item $V_T$ e $V_{\text{reobase}}$ \textbf{coincidono}: poiché non c'è più il ramo esponenziale che li distingueva, nel modello LIF la soglia per corrente costante e la soglia per impulso breve sono la stessa quantità.
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Nel LIF, $V_T$ e $V_{\text{reobase}}$ sono lo stesso numero. Questo risponde alla domanda di prima: nel modello EIF erano diversi (la reobase è il minimo del campo di forza perturbato dalla corrente; $V_T$ è la base dell'esponenziale). Nel limite $\Delta_T \to 0$ questi due valori convergono a una singola soglia.
+\end{tcolorbox}
+
+Il LIF è importante per la sua \textbf{trattabilità analitica} nella descrizione di popolazioni di neuroni tramite l'equazione di Fokker-Planck, argomento che sarà affrontato nelle lezioni successive.
+
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Domanda:} Quando si espande attorno a $V_T$, è perché si vuole un interruttore (switch) al threshold?\\
+\textbf{Risposta del professore:} Sì. Se si espande attorno a $V_T$, e poi si inserisce una soglia rigida a $V_T$, si ha un'approssimazione dell'EIF attorno al punto di emissione. In questo caso la parabola ha il vertice a $V_T$. Nella mia derivazione ho espanso attorno a $E_m$, che è il modo più naturale se si vuole catturare bene la dinamica sottosoglia. La scelta ottimale dipende dall'applicazione: se si vuole una buona approssimazione della rampa pre-spike si espande vicino a $V_T$; se si vuole minimizzare l'errore nell'intero range sottosoglia si espande vicino a $E_m$.
+\end{tcolorbox}
+
+
+\section{Tassonomia dei Pattern di Firing Neuronale}
+
+\subsubsection{Il Paper di Markram e Collaboratori}
+
+Il professore introduce un articolo di riferimento fondamentale in neuroscienza computazionale: la \textbf{review di $\sim$20 anni fa} del laboratorio Markram e collaboratori, che ha tentato una \textbf{tassonomia sistematica} dei neuroni inibitori in base ai loro pattern di firing elettrofisiologici. Lo studio includeva neuroni non solo dalla corteccia cerebrale, ma anche da strutture sottocorticali come \textbf{gangli della base}, \textbf{tronco cerebrale} e \textbf{talamo}, dove si osservano comportamenti più peculiari.
+
+\subsubsection{Protocollo di Stimolazione Standard}
+
+Il protocollo sperimentale era standardizzato:
+
+\begin{enumerate}
+    \item Inserire un elettrodo intracellulare nel neurone in studio (nella fettina cerebrale).
+    \item Iniettare una \textbf{corrente a gradino} (stepwise current) di intensità costante, per un intervallo di tempo definito.
+    \item Ripetere con due (o più) livelli di corrente: una corrente \textbf{bassa} e una corrente \textbf{alta}.
+    \item Osservare la risposta del neurone in termini di treni di spike.
+\end{enumerate}
+
+\subsubsection{Classe 1: Neuroni NAC (Non-Accommodating)}
+
+I neuroni \textbf{NAC} (Non-Accommodating, non-accomodanti) mostrano un \textbf{firing tonico regolare}:
+
+\begin{itemize}
+    \item In risposta alla corrente a gradino, producono un treno di spike con \textbf{intervalli interspike costanti nel tempo} (ISI non cambia dalla prima alla n-esima spike).
+    \item Al crescere dell'intensità della corrente iniettata, la frequenza di firing aumenta, ma rimane regolare.
+    \item \textbf{Non c'è adattamento della frequenza} nel tempo.
+\end{itemize}
+
+\subsubsection{Classe 2: Neuroni AC (Accommodating)}
+
+I neuroni \textbf{AC} (Accommodating, accomodanti) mostrano \textbf{spike frequency adaptation}:
+
+\begin{itemize}
+    \item All'inizio della stimolazione: alta frequenza di spike.
+    \item Nel tempo: gli ISI diventano \textbf{progressivamente più lunghi} (la frequenza di firing diminuisce).
+    \item La frequenza si stabilizza a un valore asintotico (se la stimolazione è sufficientemente lunga).
+    \item Questo è il comportamento che abbiamo discusso come \textbf{adattamento della frequenza di spike} nelle lezioni precedenti.
+\end{itemize}
+
+\subsubsection{Classi con Burst Iniziale}
+
+Esistono sottoclassi di neuroni che producono un \textbf{burst iniziale} ad alta frequenza all'inizio della stimolazione, seguito da:
+
+\begin{itemize}
+    \item \textbf{Burst iniziale + tonico}: burst all'inizio, poi firing tonico regolare.
+    \item \textbf{Burst iniziale + adattante}: burst all'inizio, poi firing con spike frequency adaptation.
+\end{itemize}
+
+\subsubsection{Classi con Ritardo}
+
+Alcune classi mostrano un \textbf{ritardo} nell'emissione del primo spike:
+
+\begin{itemize}
+    \item \textbf{Delayed tonic} (ritardato + tonico): il primo spike arriva con un ritardo rispetto all'inizio della stimolazione; poi firing regolare.
+    \item \textbf{Delayed adapting} (ritardato + adattante): ritardo nel primo spike, poi firing adattante.
+\end{itemize}
+
+\subsubsection{Regular Bursting}
+
+Una classe particolarmente interessante è quella dei \textbf{neuroni a burst regolare}:
+
+\begin{itemize}
+    \item In risposta alla stimolazione, il neurone produce \textbf{burst periodici} separati da \textbf{periodi di silenzio}.
+    \item Aumentando l'intensità della corrente, non cambia la frequenza di spike all'interno del burst, ma si riduce la \textbf{distanza temporale tra burst consecutivi} (inter-burst interval).
+\end{itemize}
+
+\section{Profilo delle Classi Cellulari Principali}
+
+\subsubsection{Cellule Piramidali Eccitatorie}
+
+Le \textbf{cellule piramidali} della corteccia eccitatoria appartengono generalmente alla classe \textbf{Regular Spiking} (RS):
+
+\begin{itemize}
+    \item Mostrano \textbf{spike frequency adaptation} (accomodanti, AC).
+    \item Non producono burst.
+    \item Firing relativamente basso grazie all'adattamento.
+    \item Per questo vengono chiamate "regular spiking" (spiking regolare senza burst) anche se con il tempo la frequenza diminuisce.
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} I neuroni piramidali eccitatori sono spesso denominati "regular spiking cells" perché il loro firing è regolare, senza burst, anche se hanno spike frequency adaptation. La frequenza non è troppo alta proprio grazie al meccanismo di adattamento.
+\end{tcolorbox}
+
+\subsubsection{Interneuroni Inibitori}
+
+Gli \textbf{interneuroni inibitori} mostrano prevalentemente comportamento \textbf{NAC} o fast spiking:
+
+\begin{itemize}
+    \item Firing tonico ad \textbf{alta frequenza} (possono produrre decine o centinaia di Hz).
+    \item Necessità funzionale: devono poter controllare in modo preciso e rapido l'attività delle cellule piramidali circostanti.
+    \item In alcune classi: burst iniziali seguiti da firing tonico.
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Gli interneuroni inibitori sono lì per controllare l'attività dei neuroni piramidali in modo che non diventi troppo grande. Quindi devono essere in grado di produrre alta frequenza di spike in modo tonicamente sostenuto.
+\end{tcolorbox}
+
+\section{Il Modello Adattivo Integrate-and-Fire (AdIF / AdEx)}
+
+\subsubsection{Equazioni del Modello 2D}
+
+Per riprodurre la ricca varietà di pattern di firing osservati biologicamente, si introduce il \textbf{modello adattivo integrate-and-fire} (AdIF), equivalente al modello \textbf{AdEx} di Brette e Gerstner (2005). Il modello ha due variabili di stato: il potenziale di membrana $V$ e la \textbf{variabile di recupero} (adattamento) $W$:
+
+\begin{equation}
+C_m \frac{dV}{dt} = \mathcal{F}(V) + I - W
+\end{equation}
+
+\begin{equation}
+\tau_W \frac{dW}{dt} = a(V - E_L) - W
+\end{equation}
+
+\textbf{Condizioni di reset} ad ogni spike (quando $V$ supera la soglia $V_{\text{th}}$):
+
+\begin{equation}
+V \to V_{\text{reset}}
+\end{equation}
+\begin{equation}
+W \to W + b
+\end{equation}
+
+I \textbf{parametri chiave} del modello sono:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|X|}
+    \hline
+    \textbf{Parametro} & \textbf{Significato} \\
+    \hline
+    $a$ & Accoppiamento sotto-soglia (subthreshold adaptation) \\
+    \hline
+    $b$ & Grandezza del salto di $W$ per ogni spike (spike-triggered adaptation) \\
+    \hline
+    $\tau_W$ & Costante di tempo della variabile di adattamento \\
+    \hline
+    $V_{\text{reset}}$ & Potenziale di reset post-spike \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Meccanismo Fisico del Salto $b$}
+
+Il salto $W \to W + b$ ad ogni spike rappresenta l'\textbf{influx di Ca$^{2+}$ durante lo spike} (attraverso i canali del calcio voltaggio-dipendenti), che attiva le correnti del potassio $K^+$ dipendenti dal calcio (canali SK e BK), aumentando la corrente inibitoria. Nella dinamica del modello, un $W$ più alto corrisponde a una corrente inibitoria più forte che si oppone all'eccitazione, rendendo più difficile la produzione del successivo spike.
+
+\subsubsection{Connessione con i Modelli Molecolari}
+
+Il professore ricorda che la variabile $W$ era stata introdotta nella riduzione del modello FitzHugh-Nagumo come proporzionale alla variabile di gating $n$ (canali K$^+$ del modello HH), con dinamica del primo ordine:
+
+\begin{equation}
+\tau_W \frac{dW}{dt} = a(V - E_L) - W
+\end{equation}
+
+che rispecchia la cinetica di $n_\infty(V) - n$ (equilibrio dipendente dalla tensione meno valore attuale). Il parametro $a > 0$ introduce un accoppiamento tra $V$ e la nullcline $\dot{W} = 0$, che nel piano di fase si manifesta come una nullcline con pendenza positiva invece che orizzontale.
+
+
+\subsection{Firing tonico non-adattivo}
+
+Il professore analizza il comportamento del modello 2D nel \textbf{piano di fase} $(V, W)$ per diversi set di parametri. Il primo caso corrisponde al \textbf{firing tonico non-adattivo} (NAC):
+
+\begin{itemize}
+    \item $\tau_W = 30$ ms (variabile di recupero relativamente veloce)
+    \item $b = 60$ pA (salto grande per ogni spike)
+    \item $V_{\text{reset}} = -55$ mV
+\end{itemize}
+
+\subsubsection{Analisi della Traiettoria nel Piano di Fase}
+
+Il protocollo di stimolazione è un \textbf{gradino di corrente costante}, che nella rappresentazione del piano di fase sposta verso l'alto la nullcline $\dot{V} = 0$ (la corrente rende il neurone più eccitabile).
+
+\begin{enumerate}
+    \item \textbf{Condizione iniziale}: $W(0) = 0$, $V(0) < V_{\text{th}}$. Il sistema si trova sotto la nullcline $\dot{V} = 0$ (campo di forza positivo) e la nullcline $\dot{W} = 0$ orizzontale.
+    \item \textbf{Avvicinamento alla soglia}: il campo di forza spinge $V$ verso il threshold $V_{\text{th}}$.
+    \item \textbf{Primo spike}: quando $V = V_{\text{th}}$, lo spike viene emesso. Il sistema viene reiniettato in $(V_{\text{reset}},\, W = 0 + b = b)$.
+    \item \textbf{Dopo-iperpolarizzazione (AHP)}: partendo da $W = b > 0$, la traiettoria supera la nullcline $\dot{V} = 0$ (la corrente inibitoria $W$ è abbastanza forte da iperpolarizzare il neurone) e poi torna.
+    \item \textbf{Secondo spike}: la traiettoria si avvicina nuovamente alla soglia. Questa volta però $W$ non è tornato a 0 (poiché $\tau_W = 30$ ms non è abbastanza lungo): $W$ al momento del secondo spike è diverso da zero, e il jump porta $W$ a un valore ancora più alto.
+    \item \textbf{Convergenza a orbita stabile}: dopo alcuni spike, il sistema converge a un ciclo limite in cui l'ISI è costante.
+\end{enumerate}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Chiarimento del docente a una domanda dello studente:} Non c'è un'orbita nello spazio di fase nel senso tradizionale: c'è un salto verticale in $W$ al momento di ogni spike, che porta il sistema in punti diversi dello spazio di fase ad ogni emissione. Il "detour" visibile nel disegno è artificiale, perché la produzione dello spike non è modellata esplicitamente ma solo con il reset. Il sistema viene reiniettato in posizioni diverse dello spazio di fase per i diversi spike, fino alla convergenza.
+\end{tcolorbox}
+
+\subsubsection{ISI Costante $\rightarrow$ Firing Tonico NAC}
+
+La frequenza asintotica di firing $f_\infty = 1/\text{ISI}_\infty$ è costante nel tempo: \textbf{firing tonico non-adattivo} (NAC).
+
+\subsection{Spike Frequency Adaptation nel Piano di Fase}
+
+
+Per ottenere lo \textbf{spike frequency adaptation}, i parametri chiave da modificare sono:
+
+\begin{itemize}
+    \item $\tau_W = 100$ ms (variabile di recupero più lenta, nel precedente $\tau_W = 30$ ms)
+    \item $b = 10$ pA (salto più piccolo per ogni spike, nel precedente $b = 60$ pA)
+\end{itemize}
+
+\subsubsection{Flusso Quasi-Orizzontale}
+
+Poiché il campo di forza della variabile di recupero è:
+
+\begin{equation}
+\frac{dW}{dt} = \frac{a(V - E_L) - W}{\tau_W}
+\end{equation}
+
+un $\tau_W$ grande implica che il \textbf{flusso è quasi-orizzontale} nel piano di fase. Le frecce verticali sono molto piccole, e la traiettoria si muove quasi parallelamente all'asse $V$.
+
+\subsubsection{Accumulo di $W$ e Rallentamento del Firing}
+
+In questa configurazione:
+
+\begin{itemize}
+    \item Il primo spike produce un salto piccolo in $W$ ($b = 10$ pA).
+    \item Nell'interspike interval, $W$ decade molto lentamente (essendo $\tau_W = 100$ ms, paragonabile alla durata dell'ISI).
+    \item Al secondo spike, $W$ non è tornato a zero: il salto $b$ porta $W$ a un valore ancora più alto.
+    \item Progressivamente, $W$ si accumula verso un valore asintotico $W_\infty$.
+\end{itemize}
+
+Il valore asintotico $W_\infty$ determina la \textbf{corrente effettiva netta} percepita dal neurone:
+
+\begin{equation}
+I_{\text{netto}} = I - W_\infty < I
+\end{equation}
+
+La frequenza di firing asintotica è quindi inferiore a quella iniziale:
+
+\begin{equation}
+f_\infty = \frac{1}{\text{ISI}_\infty} \propto I - W_\infty < f(t=0)
+\end{equation}
+
+\subsubsection{Interpretazione come Corrente Inibitoria Stazionaria}
+
+Da un punto di vista fisico, $W_\infty$ può essere interpretata come una \textbf{corrente inibitoria equivalente stazionaria} (proporzionale all'attività totale dei canali K$^+$ attivati dallo storico degli spike). Più spike vengono emessi, più forte è questa corrente inibitoria, il che rallenta il firing. Il sistema raggiunge l'equilibrio quando la corrente inibitoria compensa parzialmente la corrente eccitatoria iniettata.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} La pendenza delle traiettorie nel piano di fase nell'interspike interval diventa più e più piccola avvicinandosi alla nullcline $\dot{V} = 0$. Questo spiega fisicamente perché il tempo per raggiungere la soglia (l'ISI) aumenta: la corrente di guida $\mathcal{F}(V)$ si riduce perché il termine $-W$ diventa sempre più grande.
+\end{tcolorbox}
+
+
+\subsection{Burst Iniziale + Tonico nel Piano di Fase}
+
+
+Per ottenere un \textbf{burst iniziale seguito da firing tonico}, si modificano diversi parametri rispetto ai casi precedenti:
+
+\begin{itemize}
+    \item La nullcline $\dot{W} = 0$ diventa \textbf{dipendente da $V$} (slope positivo, $a > 0$), come nel modello FitzHugh-Nagumo.
+    \item La \textbf{costante di tempo di membrana} $\tau_m$ viene ridotta (neurone più veloce, più eccitabile).
+    \item $V_{\text{reset}}$ viene avvicinato alla soglia $V_{\text{th}}$ (il neurone parte già vicino alla soglia dopo ogni spike).
+    \item Corrente iniettata più alta per compensare la maggiore eccitabilità.
+    \item $\tau_W$ lungo e $b$ piccolo.
+\end{itemize}
+
+\subsubsection{Dinamica del Burst Iniziale}
+
+Nella fase iniziale della stimolazione:
+
+\begin{enumerate}
+    \item Il neurone riceve la corrente e, avendo $V_{\text{reset}}$ vicino a $V_{\text{th}}$, emette il \textbf{primo spike} molto rapidamente.
+    \item Il salto $b$ è piccolo ($b = 7$ pA): il sistema rientra in una posizione con $W$ quasi nullo.
+    \item Il campo di forza per $V$ è forte (il neurone è veloce), quindi il secondo spike viene emesso rapidamente.
+    \item Questo produce un \textbf{burst} (ISI brevi) nella fase iniziale.
+\end{enumerate}
+
+\subsubsection{Transizione al Firing Tonico}
+
+Man mano che il burst procede, $W$ si accumula. Quando le traiettorie si avvicinano alla nullcline $\dot{V} = 0$, la pendenza del potenziale di membrana nelle fasi di avvicinamento alla soglia diventa \textbf{più lenta}. Dopo il 4$^\circ$–5$^\circ$ spike, l'ISI inizia ad allungarsi e si stabilizza sul valore asintotico (firing tonico).
+
+Il campo di forza $G = \dot{W} \approx 0$ nella regione di lavoro (perché $a(V-E_L) \approx W$, grazie alla nullcline con slope positivo) significa che il flusso nella direzione di $W$ è quasi nullo: le frecce verticali sono quasi assenti, e il sistema scivola quasi orizzontalmente verso la soglia nelle fasi inter-spike.
+
+\subsection{Regular Burst Firing}
+
+
+Per il \textbf{regular burst firing}, la modifica fondamentale rispetto al caso precedente è la posizione di $V_{\text{reset}}$:
+
+\begin{equation}
+V_{\text{reset}} > V_T
+\end{equation}
+
+Questo significa che, dopo ogni spike, il potenziale di membrana viene reiniettato \textbf{sul lato destro della nullcline} $\dot{V} = 0$ (dove $\mathcal{F}(V) < 0$, quindi il campo di forza iperpolarizza il neurone).
+
+\subsubsection{Meccanismo del Burst Regolare nel Piano di Fase}
+
+Con questo parametro:
+
+\begin{enumerate}
+    \item \textbf{Fase di burst}: il neurone emette spike rapidamente (ISI brevi) perché $V_{\text{reset}}$ è già vicino (o superiore) alla soglia. Le traiettorie sono veloci e producono tanti spike consecutivi.
+    \item \textbf{Crossing della nullcline}: ad un certo punto, il salto $b$ porta il sistema sul lato destro della nullcline $\dot{V} = 0$, dove $\mathcal{F}(V) < 0$.
+    \item \textbf{Forte iperpolarizzazione}: il campo di forza ora iperpolarizza il neurone. Si ha una discesa lenta del potenziale verso valori iperpolarizzati.
+    \item \textbf{Recupero lento}: grazie al lento decadimento di $W$ (con $\tau_W$ lungo), il sistema si avvicina nuovamente alla soglia descrivendo una traiettoria lenta verso il basso.
+    \item \textbf{Nuovo burst}: quando il potenziale risale fino alla soglia, comincia un nuovo burst.
+\end{enumerate}
+
+Questo ciclo si ripete periodicamente, producendo il \textbf{regular bursting}: burst separati da periodi di silenzio (AHP lenta), con frequenza inter-burst che dipende dall'intensità della corrente iniettata.
+
+\subsubsection{Impossibilità del Regular Bursting nel Modello LIF}
+
+Questo è il punto cruciale che giustifica l'utilizzo del modello EIF rispetto al LIF per descrivere il regular bursting:
+
+\begin{itemize}
+    \item \textbf{Condizione necessaria} per il regular bursting: la linea $V = V_{\text{reset}}$ interseca la nullcline $\dot{V} = 0$ alla sua destra ($V_{\text{reset}} > V_T$).
+    \item \textbf{Nel modello LIF}, con $\Delta_T = 0$, la nullcline $\dot{V} = 0$ è una retta verticale a $V = E_L$ (il campo di forza è sempre negativo per $V > E_L$). Non esiste una posizione $V_{\text{reset}} > V_T$ che interseca questa nullcline a destra della soglia.
+\end{itemize}
+
+In altre parole: \textbf{il modello LIF non può produrre regular bursting}. Se si crede che il LIF sia un modello sufficiente, si deve accettare il fatto che i pattern di regular bursting non possono essere descritti da esso. Al contrario, il modello EIF (con il suo ramo esponenziale e la struttura del piano di fase che ammette $V_{\text{reset}} > V_T$) è necessario per catturare questo comportamento.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota finale del docente:} Il modello leaky integrate-and-fire ha una nullcline verticale (perché $\Delta_T = 0$), e questa non si interseca mai con la linea $V_{\text{reset}}$ a destra di $V_T$. Quindi se credete che il LIF sia un modello sufficiente, dovete sapere che non sarà mai in grado di descrivere il regular burst firing. Ed è tutto per oggi. Arrivederci alla prossima lezione.
+\end{tcolorbox}
+
