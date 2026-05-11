@@ -1,0 +1,660 @@
+\chapter{Lezione 11}
+
+
+\section{Riepilogo: Neuroni 2D con Focus Stabile e Risonanza}
+
+\subsubsection{Chiusura del Capitolo sui Modelli Neuronali Bidimensionali}
+
+La lezione inizia con la conclusione del percorso dedicato ai \textbf{modelli neuronali bidimensionali}, in particolare al modello integrate-and-fire adattativo esponenziale con variabile di recupero $w$. Il professore fa riferimento alle simulazioni numeriche discusse nelle lezioni precedenti e riepilogo brevemente i due fenomeni fondamentali che questo tipo di neuroni può riprodurre: il \textbf{focus stabile} e la \textbf{risonanza sub-soglia}.
+
+Nella versione del modello con variabile di recupero, il sistema è governato da:
+
+\begin{equation}
+C \frac{dV}{dt} = F(V) - w + I_{\text{ext}}
+\end{equation}
+
+\begin{equation}
+\tau_w \frac{dw}{dt} = a(V - E_L) - w
+\end{equation}
+
+dove $F(V)$ contiene il termine esponenziale del modello EIF e $\tau_w$ è la costante di tempo della variabile di recupero. La nullcline $\dot{V} = 0$ presenta la sua caratteristica forma non monotona, mentre la nullcline $\dot{w} = 0$ è una retta di pendenza positiva nel piano di fase $(V, w)$.
+
+\subsubsection{Il Focus Stabile e le Oscillazioni Smorzate Sub-Soglia}
+
+Il caso di interesse è quello in cui il \textbf{punto fisso è un focus stabile}: l'intersezione delle due nullcline cade in una regione in cui la pendenza della nullcline $\dot{V} = 0$ è negativa. Come discusso nelle lezioni precedenti, la condizione necessaria affinché gli autovalori del Jacobiano siano complessi coniugati con parte reale negativa è che il punto fisso si trovi sul ramo decrescente della nullcline del potenziale di membrana. Questa condizione garantisce la presenza di oscillazioni smorzate sub-soglia.
+
+Il profilo di rilassamento da una condizione iniziale è a \textbf{spirale convergente} nel piano di fase: la traiettoria avvolge il punto fisso descrivendo oscillazioni ammortizzate con frequenza di oscillazione $\omega \approx 2\pi / \tau_w$. In termini temporali, si osserva una sequenza di oscillazioni smorzate nel potenziale di membrana, la cui ampiezza decresce esponenzialmente nel tempo con costante di tempo data dalla parte reale degli autovalori.
+
+\subsubsection{Neurone Risonante: Sensibilità alla Frequenza dell'Input}
+
+Il \textbf{neurone risonante} è definito come un neurone che risponde in modo selettivo agli input oscillatori con frequenza prossima alla frequenza di risonanza naturale $\nu_{\text{res}} = 1/(2\pi\tau_w)$. Il professore spiega che se si somministra a questo tipo di neurone una corrente sinusoidale:
+
+\begin{equation}
+I_{\text{ext}}(t) = I_0 \sin(2\pi \nu t)
+\end{equation}
+
+la risposta del neurone è fortemente amplificata soltanto quando $\nu \approx \nu_{\text{res}}$: a questa frequenza l'energia fornita dall'esterno è in grado di far divergere le oscillazioni sub-soglia e — se l'ampiezza è sufficiente — di portare la traiettoria nel piano di fase oltre la separatrice, inducendo l'emissione di spike.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questo è il motivo per cui si parla di neuroni risonanti: si comportano come oscillatori forzati con una frequenza naturale. La risonanza è anche il meccanismo ipotizzato alla base della \textbf{sincronizzazione di rete}: se molti neuroni hanno la stessa frequenza di risonanza, essi risponderanno in modo coerente a stimoli oscillatori del network, e questa coerenza è alla base delle \textbf{oscillazioni cerebrali} (gamma, beta, theta, ecc.) che si ritiene medino la comunicazione tra aree distinte della corteccia.
+\end{tcolorbox}
+
+\subsubsection{Il Caso Eccitabile con Punto Fisso Stabile e Singolo Spike}
+
+Il secondo scenario discusso è quello in cui il punto fisso rimane un focus stabile, ma la nullcline $\dot{V} = 0$ è stata spostata verso l'alto da una corrente iniettata di intensità maggiore. In questo caso il punto fisso è ancora stabile, ma esiste una \textbf{separatrice} che separa il bacino di attrazione del punto fisso dal cammino che conduce all'emissione di uno spike.
+
+Partendo da una condizione iniziale che si trova al di là della separatrice — ad esempio, imponendo come condizione iniziale un potenziale di membrana appena sotto la soglia con la variabile di recupero a zero — il campo di forza trasporta il sistema verso il ramo superiore della nullcline $\dot{V} = 0$, producendo \textbf{un singolo spike}. Dopo l'emissione dello spike, il sistema viene resettato al potenziale di reset $V_{\text{res}} = -51 \; \text{mV}$, e da questo punto la traiettoria percorre una spirale smorzata che converge al focus stabile. Il sistema non emetterà altri spike a meno di ulteriori perturbazioni.
+
+Questo comportamento è la firma tipica del \textbf{sistema eccitabile} di tipo II (Hodgkin): la risposta è un singolo grande detour nel piano di fase seguito da un ritorno all'equilibrio.
+
+\newpage
+
+\section{Dinamica Stocastica dei Neuroni}
+
+\subsubsection{Il Problema dell'Input Realistico}
+
+Il professore introduce una \textbf{transizione concettuale fondamentale}: fino a questo punto del corso, i neuroni modello sono stati studiati con correnti iniettate deterministiche (gradini, rampe, sinusoidi). Questa è una semplificazione utile per lo studio delle proprietà intrinseche, ma \textbf{non riflette ciò che accade nel cervello reale}, dove ogni neurone è immerso in una rete e riceve input attraverso migliaia di sinapsi.
+
+Il passo successivo è chiedersi: qual è la natura dell'input che un neurone riceve quando è \textbf{embedded} in una rete reale di neuroni? La risposta, come il professore anticipa subito, è che questo input è di natura \textbf{stocastica}. Il neuroni non solo sono intrinsecamente stocastici per le proprietà dei canali ionici che li compongono, ma sono esposti a un ambiente — la rete — che produce fluttuazioni intrinseche e imprevedibili dell'input.
+
+
+\subsubsection{L'Esperimento di Shadlen e Newsome: il Paradigma Sperimentale}
+
+Per motivare l'approccio stocastico con dati reali, il professore descrive in dettaglio un esperimento diventato un paradigma delle neuroscienze: l'esperimento di \textbf{Shadlen e Newsome} (Newsome Laboratory, Baylor College of Medicine).
+
+Il soggetto sperimentale è un macaco (\textit{macaca mulatta}) addestrato a eseguire un \textbf{compito di decisione percettiva}. L'animale è posizionato davanti a uno schermo su cui vengono presentati stimoli visivi. Lo stimolo è costituito da un campo di punti in movimento, all'interno di una regione circolare del campo visivo che corrisponde al campo recettivo dei neuroni registrati. Ogni punto si muove in una direzione casuale e, dopo pochi fotogrammi, scompare e viene sostituito da un nuovo punto. La \textbf{coerenza del moto} è il parametro sperimentale chiave: esso indica quale frazione dei punti si muove in una direzione prestabilita (destra o sinistra), mentre i rimanenti si muovono in direzioni casuali.
+
+I compiti sperimentali sono i seguenti:
+\begin{enumerate}
+    \item L'animale fissa il proprio sguardo su un punto centrale (croce bianca) e non può muovere gli occhi.
+    \item L'animale osserva con la visione periferica il campo di punti.
+    \item Quando ha accumulato sufficiente evidenza, l'animale sposta la fissazione verso un bersaglio rosso (se percepisce moto verso destra) o verso un bersaglio verde (se percepisce moto verso sinistra).
+\end{enumerate}
+
+Questo è un \textbf{compito di decisione percettiva ocuomotoria} (\textit{perceptual decision task}), in cui la percezione di un segnale sensoriale debole deve essere integrata nel tempo per produrre una decisione binaria.
+
+\subsubsection{L'Area MT: Registrazione Elettrofisiologica}
+
+L'area corticale da cui si registra è la \textbf{MT} (area MT, \textit{Middle Temporal}), anche nota come V5. Essa si trova lungo la via visiva dorsale ("dove") che si estende dalla corteccia visiva primaria (V1) verso il lobo parietale. L'area MT è specializzata nel processamento del \textbf{moto visivo}: i suoi neuroni rispondono selettivamente alla direzione e alla velocità del moto degli stimoli visivi nel loro campo recettivo.
+
+Il professore descrive la topografia cerebrale del macaco:
+\begin{itemize}
+    \item Il \textbf{solco centrale} separa lobo frontale e parietale.
+    \item La via visiva dorsale sale dal lobo occipitale verso il parietale, passando per le aree V2, V3, MT (quinta stazione della via visiva dorsale).
+    \item Gli elettrodi di tungsteno vengono impiantati nell'area MT per registrare l'attività neuronale \textit{in vivo}.
+\end{itemize}
+
+L'esperimento non registra il potenziale di membrana del singolo neurone — operazione impossibile in un animale sveglio e in comportamento. Ciò che viene registrato è il \textbf{segnale extracellulare locale}: il potenziale di campo locale (\textit{local field potential}, LFP) non filtrato, dal quale si identificano gli \textbf{spike} come eventi brevi e di grande ampiezza che superano la soglia di discriminazione. Il registratore memorizza la \textbf{sequenza temporale degli spike}: per ciascun trial $i$ e per ciascun evento $k$, viene registrata la coppia $(i, t_{ik})$, dove $t_{ik}$ è l'istante di emissione del $k$-esimo spike durante il trial $i$.
+
+
+\subsection{Il Treno di Spike come Processo Stocastico}
+
+\subsubsection{Il Raster Plot e la Variabilità Trial-to-Trial}
+
+La visualizzazione standard della variabilità neuronale è il \textbf{raster plot} (o "dot raster"): ogni riga corrisponde a un trial, ogni punto nero nella riga indica l'istante di emissione di uno spike. Formalmente, se il neurone emette $K$ spike nel trial $j$, la riga $j$ del raster plot contiene $K$ punti alle coordinate temporali $t_{j1}, t_{j2}, \ldots, t_{jK}$.
+
+Il professore mostra e discute in dettaglio la visualizzazione del raster plot dell'esperimento di Shadlen e Newsome. In una finestra temporale ristretta di 100 millisecondi, ingrandita dall'originale, è evidente che:
+\begin{enumerate}
+    \item Il numero di spike prodotti in quella finestra \textbf{varia da trial a trial}.
+    \item Il \textbf{timing} degli spike non è riproducibile: lo spike prodotto al trial $j$ al tempo $t_{jk}$ non compare necessariamente al tempo $t_{(j+1)k}$ nel trial successivo.
+    \item Non esiste alcun pattern regolare riconoscibile a occhio nudo.
+\end{enumerate}
+
+Questa variabilità è nominata \textbf{variabilità trial-to-trial} (\textit{trial-to-trial variability}). Essa è la firma sperimentale del carattere stocastico dell'attività neuronale.
+
+Il treno di spike per un singolo trial $j$ può essere rappresentato matematicamente come una somma di \textbf{funzioni delta di Dirac}:
+
+\begin{equation}
+S_j(t) = \sum_{k} \delta(t - t_{jk})
+\end{equation}
+
+Questa rappresentazione cattura in modo completo il contenuto informativo del treno di spike: ogni spike è un evento puntuale che avviene all'istante $t_{jk}$, e la somma di delta descrive la sequenza temporale di tutti gli eventi.
+
+\subsubsection{Il Peristimulus Time Histogram (PSTH)}
+
+Per estrarre l'informazione sistematica dalla variabilità, si calcola il \textbf{PSTH} (\textit{Peristimulus Time Histogram}): si divide l'asse temporale in bin di durata $\Delta t$ (tipicamente 5 ms) e per ciascun bin si conta il numero di spike prodotti attraverso tutti i trial $N$, dividendo poi per $N \cdot \Delta t$ per ottenere una stima della \textbf{frequenza di firing istantanea} $\nu(t)$.
+
+Formalmente, la frequenza di firing istantanea come media sul numero di trial $N$ è:
+
+\begin{equation}
+\nu(t) = \frac{1}{N} \sum_{j=1}^{N} \int_t^{t+\Delta t} S_j(t') \, dt' \cdot \frac{1}{\Delta t}
+\end{equation}
+
+oppure, in forma compatta:
+
+\begin{equation}
+\nu(t) \, \Delta t \approx \frac{1}{N} \sum_{j=1}^{N} \int_t^{t+\Delta t} S_j(t') \, dt'
+\end{equation}
+
+Il professore sottolinea un punto cruciale: la frequenza di firing istantanea così calcolata ha una \textbf{doppia interpretazione} che sarà di fondamentale importanza per tutta la lezione:
+
+\begin{enumerate}
+    \item \textbf{Interpretazione temporale:} è la frequenza media con cui un singolo neurone emette spike, mediata su molti trial identici.
+    \item \textbf{Interpretazione spaziale (di popolazione):} è equivalente alla frequenza di firing di una \textbf{popolazione} di $N$ neuroni identici esposti allo stesso stimolo — ciascun trial è una realizzazione stocastica indipendente dello stesso processo. Se i $N$ neuroni sono statisticamente equivalenti e indipendenti, la media sull'ensemble di trial corrisponde alla media sull'ensemble di neuroni.
+\end{enumerate}
+
+
+
+\subsection{Frequenza di Firing Istantanea e Stima dal Raster Plot}
+
+\subsubsection{Numero di Spike in una Finestra Temporale}
+
+Il professore formalizza la costruzione del PSTH in modo rigoroso. Si definisce la variabile aleatoria:
+
+\begin{equation}
+n_j(t, \Delta t) = \int_t^{t+\Delta t} S_j(t') \, dt'
+\end{equation}
+
+ovvero il numero di spike prodotti dal neurone nel trial $j$ durante la finestra $[t, t+\Delta t]$. Questa è una variabile intera non negativa, tipicamente 0 o 1 per $\Delta t$ molto piccolo.
+
+La stima empirica del tasso di firing istantaneo è:
+
+\begin{equation}
+\hat{\nu}(t) = \frac{1}{N \cdot \Delta t} \sum_{j=1}^{N} n_j(t, \Delta t)
+\end{equation}
+
+Il valore atteso di $n_j(t, \Delta t)$ su $N$ trial equivalenti (ipotesi di ergodicity o stazionarietà dello stato sperimentale) è:
+
+\begin{equation}
+\langle n(t, \Delta t) \rangle = \nu(t) \cdot \Delta t
+\end{equation}
+
+Il professore introduce la notazione $\nu(t)$ per il tasso di firing che può essere dipendente dal tempo — una scelta che anticipa il concetto di \textbf{processo di Poisson inomogeneo}.
+
+\subsubsection{Varianza del Numero di Spike e Fluttuazioni di Dimensione Finita}
+
+Una questione importante, con implicazioni dirette per le reti di neuroni, è la \textbf{varianza} di $\hat{\nu}(t)$. Il professore la calcola esplicitamente:
+
+\begin{equation}
+\text{Var}\left[\hat{\nu}(t)\right] = \text{Var}\left[\frac{1}{N\Delta t}\sum_{j=1}^N n_j\right] = \frac{1}{N^2 \Delta t^2} \sum_{j=1}^N \text{Var}[n_j]
+\end{equation}
+
+Assumendo che la produzione degli spike in trial diversi sia \textbf{statisticamente indipendente} (ipotesi di processi indipendenti), si può portare l'operatore varianza dentro la somma. Per una variabile binaria (0 o 1 nella finestra $\Delta t$), la varianza di $n_j$ è:
+
+\begin{equation}
+\text{Var}[n_j] = p(1-p) \approx p = \nu \cdot \Delta t
+\end{equation}
+
+dove $p = \nu \cdot \Delta t$ è la probabilità di emettere uno spike nella finestra e si usa l'approssimazione valida per $\Delta t$ piccolo (probabilità bassa). Quindi:
+
+\begin{equation}
+\text{Var}\left[\hat{\nu}(t)\right] \approx \frac{1}{N^2 \Delta t^2} \cdot N \cdot \nu \cdot \Delta t = \frac{\nu}{N \cdot \Delta t}
+\end{equation}
+
+e la deviazione standard del tasso stimato scala come:
+
+\begin{equation}
+\sigma_{\hat{\nu}} \sim \sqrt{\frac{\nu}{N \cdot \Delta t}}
+\end{equation}
+
+Questo risultato ha una conseguenza importante: le \textbf{fluttuazioni di dimensione finita} nel tasso di firing sono dell'ordine di $\sqrt{\nu / N}$ e decrescono come $1/\sqrt{N}$ all'aumentare del numero di neuroni (o di trial) considerati. In una rete di dimensione finita, queste fluttuazioni costituiscono una \textbf{sorgente intrinseca di rumore} che il neurone postsinaptico riceve come segnale di input.
+
+
+
+\subsection{Tasso di Firing come Probabilità di Emissione dello Spike}
+
+\subsubsection{Interpretazione Probabilistica del Tasso di Firing}
+
+Il professore dimostra con rigore che il tasso di firing istantaneo $\nu(t)$ può essere interpretato come la \textbf{probabilità di emettere uno spike per unità di tempo}. Formalmente:
+
+\begin{equation}
+\langle n(t, \Delta t) \rangle = \nu(t) \cdot \Delta t = P(\text{uno spike in } [t, t+\Delta t])
+\end{equation}
+
+per $\Delta t \to 0$ (nell'approssimazione in cui la probabilità di due o più spike nella finestra è trascurabile, $P(n \geq 2) = O(\Delta t^2)$).
+
+Questa interpretazione è fondamentale perché connette la grandezza osservabile sperimentalmente (il conteggio degli spike nel raster plot) con la struttura probabilistica sottostante del processo stocastico. Non si sta facendo un'assunzione ad hoc: si sta semplicemente riconoscendo che la media empirica su $N$ ripetizioni di un esperimento identico è un estimatore della probabilità dell'evento contato.
+
+La probabilità $P(\text{spike in } \Delta t) = \nu(t) \Delta t$ è la \textbf{definizione operativa} del tasso di Poisson locale: il processo puntuale è completamente caratterizzato dal suo tasso istantaneo $\nu(t)$.
+
+\subsubsection{Il Treno di Spike come Processo Puntuale Stocastico}
+
+Il professore introduce la nozione formale di \textbf{processo puntuale stocastico} (\textit{stochastic point process}). Un processo puntuale è una sequenza di eventi (i tempi degli spike $\{t_k\}$) che occorrono su una linea temporale, caratterizzata statisticamente dalla distribuzione delle distanze tra eventi consecutivi (la \textbf{distribuzione degli intervalli inter-spike}) e dalla distribuzione del numero di eventi in intervalli temporali finiti.
+
+La proprietà chiave richiesta per un processo di Poisson omogeneo è la \textbf{proprietà di Markov locale}: la probabilità di emettere uno spike nell'intervallo $[t, t+\Delta t]$ dipende soltanto dal tasso corrente $\nu$ e non dalla storia passata del neurone (assenza di memoria). Questa proprietà, denominata \textbf{proprietà di assenza di memoria} o \textbf{proprietà di rinnovamento}, è equivalente alla condizione che gli \textbf{intervalli inter-spike} siano \textbf{variabili aleatorie indipendenti e identicamente distribuite} (\textit{i.i.d.}).
+
+Il processo che ha questa proprietà e tasso costante nel tempo è il \textbf{processo di Poisson omogeneo}, che sarà trattato in dettaglio nella sezione successiva.
+
+
+\subsection{Il Processo di Poisson Omogeneo: Definizione e Proprietà}
+
+\subsubsection{Definizione Assiomatica}
+
+Il professore introduce il \textbf{processo di Poisson omogeneo} (o stazionario) con tasso $\nu$ tramite le seguenti proprietà fondamentali:
+
+\begin{enumerate}
+    \item \textbf{Stazionarietà:} la probabilità di osservare $n$ spike nell'intervallo $[t, t+T]$ dipende soltanto da $T$, non da $t$.
+    \item \textbf{Indipendenza degli incrementi:} il numero di spike in intervalli temporali disgiunti è statisticamente indipendente.
+    \item \textbf{Rarità degli eventi:} nell'approssimazione $\Delta t \to 0$, la probabilità di due o più spike in $[t, t+\Delta t]$ è trascurabile: $P(n \geq 2 \text{ in } \Delta t) = O(\Delta t^2)$.
+    \item \textbf{Linearità del tasso:} $P(\text{esattamente uno spike in } [t, t+\Delta t]) = \nu \Delta t + O(\Delta t^2)$.
+\end{enumerate}
+
+Queste quattro proprietà sono le condizioni che definiscono univocamente il processo di Poisson. Dal punto di vista neuroscientistico, l'ipotesi che il treno di spike sia un processo di Poisson corrisponde al dire che il neurone \textbf{non ha memoria}: la probabilità di emettere il prossimo spike non dipende da quando è stato emesso l'ultimo spike.
+
+\subsubsection{Il Contatore del Processo: $N(t)$}
+
+Si definisce il processo di conteggio:
+
+\begin{equation}
+N(t) = \int_0^t S(t') \, dt'
+\end{equation}
+
+che conta il numero cumulativo di spike prodotti dall'istante $t=0$ fino al tempo $t$. Il processo $N(t)$ è un processo stocastico a valori interi non decrescenti, che aumenta di 1 ogni volta che si verifica uno spike. Il suo grafico — una funzione a gradini — è la rappresentazione temporale del processo puntuale.
+
+Per un processo di Poisson omogeneo, il valor medio di $N(t)$ cresce linearmente nel tempo:
+
+\begin{equation}
+\langle N(t) \rangle = \nu \cdot t
+\end{equation}
+
+Il professore sottolinea che $N(t)$ è dipendente dal tempo, mentre il tasso $\nu$ è costante: la confusione tra queste due quantità è una possibile fonte di errore, come emerge da un'interazione con uno studente durante la lezione.
+
+
+\subsubsection{Derivazione della Distribuzione}
+
+Il professore deriva la probabilità di osservare esattamente $n$ spike nell'intervallo temporale $[0, T]$ per un processo di Poisson di tasso $\nu$.
+
+Si divide l'intervallo $[0, T]$ in $M$ sottofinestre di durata $\Delta t = T/M$. Per $M \to \infty$ (e quindi $\Delta t \to 0$), ciascuna sottofinestra contiene al più uno spike con probabilità $p = \nu \Delta t$, oppure nessuno con probabilità $1-p$. Grazie all'indipendenza degli incrementi, il numero totale di spike in $[0, T]$ ha distribuzione \textbf{binomiale} $B(M, p)$, che nel limite $M \to \infty$ con $Mp = \nu T$ costante converge alla \textbf{distribuzione di Poisson}:
+
+\begin{equation}
+P(N(T) = n) = \frac{(\nu T)^n}{n!} e^{-\nu T}, \qquad n = 0, 1, 2, \ldots
+\end{equation}
+
+Si introduce la notazione $\lambda = \nu T$ (il numero medio di spike nell'intervallo $T$), cosicché:
+
+\begin{equation}
+P_\lambda(n) = \frac{\lambda^n}{n!} e^{-\lambda}
+\end{equation}
+
+Questa è la \textbf{distribuzione di Poisson} con parametro $\lambda$.
+
+\subsubsection{Valore Atteso della Distribuzione di Poisson}
+
+Il professore calcola il \textbf{valor medio} della distribuzione di Poisson:
+
+\begin{equation}
+\langle n \rangle = \sum_{n=0}^{\infty} n \cdot \frac{\lambda^n}{n!} e^{-\lambda}
+\end{equation}
+
+Si osserva che il termine $n=0$ non contribuisce. Per $n \geq 1$:
+
+\begin{equation}
+\langle n \rangle = e^{-\lambda} \sum_{n=1}^{\infty} \frac{\lambda^n}{(n-1)!} = e^{-\lambda} \cdot \lambda \sum_{n=1}^{\infty} \frac{\lambda^{n-1}}{(n-1)!}
+\end{equation}
+
+Eseguendo il cambio di indice $m = n-1$:
+
+\begin{equation}
+\langle n \rangle = e^{-\lambda} \cdot \lambda \sum_{m=0}^{\infty} \frac{\lambda^m}{m!} = e^{-\lambda} \cdot \lambda \cdot e^{\lambda} = \lambda = \nu T
+\end{equation}
+
+Il valore atteso del numero di spike nell'intervallo $T$ è quindi $\langle n \rangle = \nu T$, come atteso.
+
+\subsubsection{Varianza della Distribuzione di Poisson e il Fano Factor}
+
+Per calcolare la \textbf{varianza}, si usa la relazione $\text{Var}[n] = \langle n^2 \rangle - \langle n \rangle^2$. Il calcolo di $\langle n^2 \rangle$ (omesso nella derivazione completa ma ricavabile con gli stessi metodi) fornisce:
+
+\begin{equation}
+\langle n^2 \rangle = \lambda^2 + \lambda
+\end{equation}
+
+Quindi:
+
+\begin{equation}
+\text{Var}[n] = \langle n^2 \rangle - \langle n \rangle^2 = (\lambda^2 + \lambda) - \lambda^2 = \lambda
+\end{equation}
+
+Il risultato fondamentale è che \textbf{varianza e media coincidono} per la distribuzione di Poisson:
+
+\begin{equation}
+\text{Var}[n] = \langle n \rangle = \lambda = \nu T
+\end{equation}
+
+Questa proprietà è la firma caratteristica del processo di Poisson e permette di definire il \textbf{Fano factor} (o \textit{fattore di Fano}):
+
+\begin{equation}
+F = \frac{\text{Var}[N(T)]}{\langle N(T) \rangle} = \frac{\lambda}{\lambda} = 1
+\end{equation}
+
+Il Fano factor è \textbf{uguale a 1} per il processo di Poisson omogeneo, indipendentemente da $\nu$ e $T$. Questo costituisce un test empirico per verificare se un treno di spike reale è approssimabile da un processo di Poisson: si misura la coppia $(\langle n \rangle, \text{Var}[n])$ su molti trial/finestre temporali e si verifica se i punti si distribuiscono lungo la bisettrice del piano $\text{Var}[n]$ vs $\langle n \rangle$ (retta con pendenza 1 passante per l'origine).
+
+
+
+\subsection{Intervallo Inter-Spike (ISI): Distribuzione Esponenziale}
+
+\subsubsection{Definizione dell'ISI e il Processo di Rinnovamento}
+
+L'\textbf{intervallo inter-spike} (\textit{Inter-Spike Interval}, ISI) è definito come la durata temporale tra due spike consecutivi:
+
+\begin{equation}
+\tau_k = t_{k+1} - t_k
+\end{equation}
+
+dove $t_k$ è il tempo del $k$-esimo spike. Per il processo di Poisson omogeneo, gli ISI sono variabili aleatorie \textbf{i.i.d.} (indipendenti e identicamente distribuite), il che definisce una classe di processi chiamati \textbf{processi di rinnovamento} (\textit{renewal processes}).
+
+La condizione di rinnovamento ha un significato fisico preciso: il neurone "dimentica" tutto ciò che è accaduto prima dell'ultimo spike. In altre parole, il momento in cui avverrà il prossimo spike dipende soltanto dal tasso $\nu$ corrente e non dall'intera storia del neurone. Questo è esattamente la condizione di assenza di memoria (\textit{memoryless}) che caratterizza il processo di Poisson.
+
+\subsubsection{Derivazione della Distribuzione Esponenziale}
+
+Il professore mostra come derivare la distribuzione degli ISI a partire dalla definizione del processo di Poisson. La probabilità di \textbf{non} osservare spike nell'intervallo $[0, t]$ — ovvero che $\tau_k > t$ — corrisponde a $N(t) = 0$:
+
+\begin{equation}
+P(\tau > t) = P(N(t) = 0) = \frac{(\nu t)^0}{0!} e^{-\nu t} = e^{-\nu t}
+\end{equation}
+
+Quindi la \textbf{funzione di sopravvivenza} (complemento della CDF) degli ISI è:
+
+\begin{equation}
+P(\tau > t) = e^{-\nu t}
+\end{equation}
+
+La distribuzione di probabilità degli ISI è la \textbf{distribuzione esponenziale}. La densità di probabilità (PDF) si ottiene derivando rispetto a $t$:
+
+\begin{equation}
+\rho(\tau) = -\frac{d}{dt} P(\tau > t) = \nu \, e^{-\nu \tau}, \qquad \tau \geq 0
+\end{equation}
+
+Questa derivazione è chiara nel ragionamento fisico: se $\tau > t$ è la probabilità di non aver visto spike in $[0,t]$ — che sappiamo essere $e^{-\nu t}$ — allora la probabilità che il primo spike cada nell'intervallino $[t, t+d\tau]$ è:
+
+\begin{equation}
+P(\tau \in [t, t+d\tau]) = \underbrace{e^{-\nu t}}_{\text{nessuno spike in }[0,t]} \cdot \underbrace{\nu \, d\tau}_{\text{spike in }[t, t+d\tau]}
+\end{equation}
+
+Il professore illustra questa derivazione passo per passo sulla lavagna, ricollegandola alla formula:
+
+\begin{equation}
+P(\tau > t) = 1 - \int_0^t \rho(\tau') \, d\tau'
+\end{equation}
+
+da cui, derivando, si ottiene $\rho(t) = \nu e^{-\nu t}$.
+
+\subsubsection{Momenti della Distribuzione Esponenziale}
+
+Dalla distribuzione esponenziale $\rho(\tau) = \nu e^{-\nu \tau}$ si ricavano i momenti:
+
+\textbf{Valore atteso (ISI medio):}
+
+\begin{equation}
+\langle \tau \rangle = \int_0^\infty \tau \, \nu e^{-\nu \tau} \, d\tau = \frac{1}{\nu}
+\end{equation}
+
+Il risultato $\langle \tau \rangle = 1/\nu$ è il \textbf{reciproco del tasso di firing} e non sorprende: se il neurone spara $\nu$ spike al secondo, l'intervallo medio tra spike consecutivi è $1/\nu$ secondi. Questo era già stato introdotto nella lezione sulla curva di risposta ingresso-uscita, dove si era definito il tasso di firing come l'inverso dell'ISI medio.
+
+\textbf{Secondo momento:}
+
+\begin{equation}
+\langle \tau^2 \rangle = \int_0^\infty \tau^2 \, \nu e^{-\nu \tau} \, d\tau = \frac{2}{\nu^2}
+\end{equation}
+
+\textbf{Varianza:}
+
+\begin{equation}
+\text{Var}[\tau] = \langle \tau^2 \rangle - \langle \tau \rangle^2 = \frac{2}{\nu^2} - \frac{1}{\nu^2} = \frac{1}{\nu^2}
+\end{equation}
+
+\textbf{Deviazione standard:}
+
+\begin{equation}
+\sigma_\tau = \sqrt{\text{Var}[\tau]} = \frac{1}{\nu} = \langle \tau \rangle
+\end{equation}
+
+Il risultato notevole è che la \textbf{deviazione standard coincide con la media}: $\sigma_\tau = \langle \tau \rangle = 1/\nu$. Questo è una proprietà esclusiva della distribuzione esponenziale.
+
+
+
+\subsubsection{Definizione del CV e Confronto con il Fano Factor}
+
+Il professore introduce il \textbf{coefficiente di variazione} (\textit{coefficient of variation}, CV) degli ISI, definito come:
+
+\begin{equation}
+\text{CV} = \frac{\sigma_\tau}{\langle \tau \rangle} = \frac{\sqrt{\text{Var}[\tau]}}{\langle \tau \rangle}
+\end{equation}
+
+Il CV misura la \textbf{variabilità relativa} degli ISI rispetto alla loro media. Esso è adimensionale e permette di confrontare la regolarità del treno di spike tra neuroni con tassi di firing diversi.
+
+Il professore sottolinea la differenza tra CV e Fano factor:
+\begin{itemize}
+    \item Il \textbf{Fano factor} $F = \text{Var}[N(T)] / \langle N(T) \rangle$ misura la variabilità del numero di spike \textbf{in una finestra temporale} $T$ (spazio di conteggio).
+    \item Il \textbf{CV} misura la variabilità degli ISI nel \textbf{dominio temporale} (durate tra eventi consecutivi).
+\end{itemize}
+
+Per un processo di Poisson omogeneo, usando $\sigma_\tau = 1/\nu$ e $\langle \tau \rangle = 1/\nu$:
+
+\begin{equation}
+\text{CV}_{\text{Poisson}} = \frac{1/\nu}{1/\nu} = 1
+\end{equation}
+
+Il processo di Poisson ha dunque $\text{CV} = 1$. Questo è il \textbf{test del CV}: se un neurone reale ha $\text{CV} = 1$, il suo treno di spike è compatibile con un processo di Poisson omogeneo.
+
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|c|c|X|}
+    \hline
+    \textbf{Valore del CV} & \textbf{Tipo di processo} & \textbf{Significato fisico} \\
+    \hline
+    $\text{CV} \ll 1$ & Molto regolare & Gli spike sono quasi periodici (es. pacemaker) \\
+    \hline
+    $\text{CV} = 1$ & Poisson & Indipendenza totale tra ISI successivi \\
+    \hline
+    $\text{CV} > 1$ & Super-Poisson & Bursting, clustering temporale degli spike \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+
+Il valore $\text{CV} = 1$ separa i regimi regolare e irregolare ed è la firma del processo di Poisson.
+
+
+\subsubsection{Limite del Processo Omogeneo}
+
+Il processo di Poisson omogeneo è inadeguato per descrivere l'attività di neuroni reali in risposta a stimoli che variano nel tempo. La risposta di un neurone visivo a una barra in movimento, ad esempio, ha un tasso di firing che cambia dinamicamente con la posizione e la velocità dello stimolo. Allo stesso modo, nel paradigma di Shadlen e Newsome, il tasso di firing del neurone MT varia durante il corso del trial.
+
+Per gestire questa non-stazionarietà, si introduce il \textbf{processo di Poisson inomogeneo} (o non-stazionario), in cui il tasso $\nu(t)$ è una funzione deterministica del tempo.
+
+
+Il Fano factor rimane $F = 1$ anche per il processo inomogeneo, a condizione di considerare finestre temporali sufficientemente piccole da poter approssimare $\nu(t) \approx \text{const}$ all'interno della finestra.
+
+
+\section{Il Test Empirico}
+
+\subsubsection{L'Esperimento di Tolhurst}
+
+Il professore descrive l'esperimento di \textbf{Tolhurst et al.} sulla corteccia visiva primaria (V1), uno dei lavori fondativi nello studio della variabilità neuronale corticale. In questo esperimento si misurava la risposta di neuroni V1 del gatto a barre in movimento, calcolando il Fano factor della distribuzione dei conteggi degli spike su molte ripetizioni dello stesso stimolo.
+
+Il risultato fu che il Fano factor era tipicamente compreso tra 1 e 2, quindi \textbf{maggiore di 1}, indicando una variabilità superiore a quella attesa per un processo di Poisson. Questo suggeriva che il processo stocastico sottostante fosse più complesso di un semplice Poisson omogeneo.
+
+\subsubsection{L'Esperimento di Softky e Koch: Il Test del CV}
+
+Un contributo fondamentale fu quello di \textbf{Softky e Koch} (1993), che analizzarono i dati raccolti da Shadlen e Newsome sull'area MT del macaco e da Van Essen e collaboratori sulla corteccia visiva, per testare l'ipotesi del processo di Poisson usando il \textbf{coefficiente di variazione degli ISI}.
+
+Il problema metodologico principale che Softky e Koch dovettero affrontare è la \textbf{non-stazionarietà del processo}: il PSTH mostra chiaramente che $\nu(t)$ varia nel corso del trial, e questo da solo può gonfiare il CV anche se il processo locale è Poisson. Per eliminare questo artefatto, la procedura adottata fu la seguente:
+
+\begin{enumerate}
+    \item Si calcola il PSTH (il profilo temporale del tasso di firing) con bin di durata $\Delta t_{\text{bin}}$.
+    \item Si classificano i bin in \textbf{classi di frequenza}: per esempio, tutti i bin in cui il tasso stimato ricade nell'intervallo $[20, 30]$ Hz formano una classe, quelli nell'intervallo $[30, 40]$ Hz un'altra classe, ecc.
+    \item Per \textbf{ciascuna classe}, si raccolgono gli ISI degli spike prodotti in quei bin e si costruisce l'istogramma degli ISI per quella classe.
+    \item Da questo istogramma si calcolano $\langle \tau \rangle$ e $\sigma_\tau$, e quindi il CV.
+\end{enumerate}
+
+In questo modo, all'interno di ciascuna classe, il tasso è approssimativamente costante, e il CV stimato non è inflazionato dalla non-stazionarietà del processo.
+
+\subsubsection{Risultati: Scatter Plot CV vs. ISI Medio}
+
+Il professore descrive in dettaglio i risultati dello scatter plot di Softky e Koch, in cui sull'asse $x$ si pone $\langle \tau \rangle$ (l'ISI medio per quella classe) e sull'asse $y$ il CV. Ogni punto rappresenta una classe di frequenza per un determinato neurone.
+
+I risultati mostrano:
+
+\begin{enumerate}
+    \item \textbf{Per ISI brevi (alto tasso di firing, $\langle \tau \rangle$ piccolo):} il CV è significativamente \textbf{inferiore a 1}. Questo indica che quando il neurone spara a frequenza elevata, gli ISI sono più regolari di quanto atteso per un Poisson. La spiegazione è il \textbf{periodo refrattario assoluto} $\tau_0$: non è fisicamente possibile produrre spike con ISI inferiore a $\tau_0 \approx 2-5$ ms. Per tassi elevati, l'ISI medio si avvicina a $\tau_0$, la distribuzione degli ISI è compressa e stretta intorno alla media, e il CV scende. In formula: quando $\langle \tau \rangle \approx \tau_0$, la distribuzione degli ISI è quasi unimodale con varianza piccola, e $\text{CV} \ll 1$.
+    \item \textbf{Per ISI lunghi (basso tasso di firing, $\langle \tau \rangle$ grande):} il CV si avvicina a \textbf{1}, cioè al valore atteso per un Poisson. Questo è coerente con l'idea che per tassi bassi il periodo refrattario è ininfluente ($\langle \tau \rangle \gg \tau_0$) e la distribuzione degli ISI si avvicina alla esponenziale.
+    \item \textbf{Differenza tra aree:} I neuroni dell'area MT (Shadlen-Newsome) mostrano un andamento con CV vicino a 1 per ISI lunghi, più coerente con il Poisson. I neuroni di V1 (Van Essen) mostrano maggiore variabilità.
+\end{enumerate}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questo risultato è fondamentale. Ci dice che a basso tasso di firing il processo di Poisson è una buona approssimazione, ma ad alto tasso di firing il periodo refrattario introduce regolarità nel treno di spike. Questo non è un fallimento della modellistica Poisson: è semplicemente il segnale che dobbiamo aggiungere al modello la nozione di periodo refrattario.
+\end{tcolorbox}
+
+
+
+
+\subsubsection{La Distribuzione ISI dei Neuroni Corticali}
+
+Tornando all'esperimento di Shadlen e Newsome, il professore discute la distribuzione degli ISI misurata per i neuroni dell'area MT. Contrariamente a quanto osservato per la giunzione neuromuscolare di Kuffler-Katz, la distribuzione degli ISI dei neuroni corticali \textbf{non è esponenziale}: ha invece una forma a campana con:
+\begin{itemize}
+    \item Un \textbf{dip} vicino a $\tau = 0$ (rarità degli ISI brevissimi, dovuta al periodo refrattario assoluto).
+    \item Un picco a un valore positivo di $\tau$.
+    \item Una coda lunga (decadimento lento per ISI grandi).
+\end{itemize}
+
+Questa forma è incompatibile con la distribuzione esponenziale di Poisson. La presenza del dip per $\tau \to 0$ indica che il neurone \textbf{non può fisicamente} produrre spike consecutivi separati di meno del periodo refrattario assoluto $\tau_0$.
+
+\subsubsection{Il Fano Factor nei Neuroni Corticali}
+
+Il professore mostra il grafico dello scatter plot varianza vs. media (test del Fano factor) per i neuroni di Shadlen e Newsome. I punti sono distribuiti intorno alla retta di Poisson (pendenza 1, Fano factor = 1) per bassi tassi di firing, ma si discostano sistematicamente sopra questa retta per alti tassi di firing.
+
+Questo comportamento è interpretato come segue:
+\begin{itemize}
+    \item A \textbf{basso tasso di firing:} i neuroni sono ben approssimati da un processo di Poisson.
+    \item Ad \textbf{alto tasso di firing:} la variabilità è maggiore del Poisson. Questo è dovuto alla non-stazionarietà del processo: le finestre temporali ad alto tasso corrispondono a periodi di forte eccitazione dove il tasso stesso varia rapidamente, gonfiando la varianza del conteggio.
+\end{itemize}
+
+La deviazione dal Poisson è quindi in larga misura un \textbf{artefatto di non-stazionarietà}, e non una proprietà intrinseca del generatore di spike.
+
+
+\section{Sorgenti di Stocasticità: Canali, Sinapsi, Stato della Rete}
+
+\subsubsection{Le Tre Sorgenti Principali}
+
+Il professore enumera e discute in modo sistematico le \textbf{sorgenti di stocasticità} che operano a diversi livelli biologici di organizzazione:
+
+\textbf{1. Stocasticità dei canali ionici (\textit{channel noise}):} Per un singolo canale, il processo di apertura e chiusura è un processo di Markov a due stati.
+
+\textbf{2. Stocasticità della trasmissione sinaptica:} il rilascio di neurotrasmettitore dalla terminazione presinaptica è intrinsecamente stocastico. 
+
+\textbf{3. Stocasticità dello stato della rete (\textit{network state noise}):}
+Anche se i canali e le sinapsi fossero completamente deterministici, i neuroni in una rete riceverebbero un input fluttuante a causa della variabilità nell'attività degli altri neuroni della rete. 
+
+\subsubsection{Il Rumore come Risorsa Computazionale}
+
+Il professore introduce il concetto controintuitivo ma fondamentale che il \textbf{rumore non è soltanto un disturbo da minimizzare}, ma può avere un \textbf{ruolo costruttivo nella computazione neuronale}. Questo verrà approfondito nelle lezioni successive, ma il professore ne anticipa l'intuizione.
+
+Il meccanismo fondamentale è il \textbf{risonanza stocastica} (\textit{stochastic resonance}): in alcuni regimi, l'aggiunta di rumore a un sistema non lineare può \textbf{aumentare} la capacità del sistema di rilevare segnali deboli. Questo fenomeno, originariamente studiato per spiegare la sensibilità straordinaria di certi animali a stimoli periodici deboli (come il ritmo delle ere glaciali nel caso dell'asteroide mammifero), è stato successivamente identificato anche nei sistemi neurali.
+
+Il professore anticipa la serie di esperimenti di Segundo, Mainen e Sejnowski che dimostrano questo principio in modo diretto.
+
+
+\subsubsection{L'Esperimento di Mainen e Sejnowski}
+
+Il professore descrive l'esperimento cruciale di \textbf{Mainen e Sejnowski} (1995, \textit{Science}), che ha definitivamente mostrato il ruolo costruttivo del rumore nella precisione temporale degli spike.
+
+Il protocollo:
+\begin{enumerate}
+    \item \textbf{Stimolo deterministico (corrente costante):} si inietta una corrente costante $I_0$ per circa 1 secondo. Il raster plot mostra spike molto irregolari da trial a trial, con jitter crescente nel tempo.
+    \item \textbf{Stimolo stocastico (corrente fluttuante):} si inietta una corrente fluttuante $I(t) = \mu + \sigma \xi(t)$, dove $\xi(t)$ è rumore colorato (filtrato passa-basso), con la stessa realizzazione ripetuta identicamente da trial a trial. Il raster plot mostra spike con \textbf{alta precisione temporale}: gli spike tendono a occorrere agli stessi istanti da trial a trial, con jitter di pochi millisecondi.
+\end{enumerate}
+
+Il risultato è paradossale ma robusto: \textbf{l'input rumoroso produce spike più precisi} dell'input deterministico. La spiegazione fisica è la seguente:
+\begin{itemize}
+    \item Con input costante, il neurone vive in una condizione di \textbf{firing tonicamente regolare} in cui si accumulano le fluttuazioni intrinseche del sistema (da canali ionici, etc.), che amplificano il jitter nel tempo.
+    \item Con input fluttuante, le grandi escursioni positive di $I(t)$ forniscono \textbf{impulsi forti} che resettano il sistema a ogni spike, eliminando l'accumulo di jitter. Ogni spike è "ancorato" a un picco del segnale di input, il che produce alta affidabilità temporale.
+\end{itemize}
+
+Il professore quantifica la \textbf{reliability} come il rapporto segnale-rumore del PSTH:
+
+\begin{equation}
+\text{Reliability} = \frac{\nu_{\text{peak}}}{\sigma_{\nu}}
+\end{equation}
+
+dove $\nu_{\text{peak}}$ è il valore di picco del PSTH e $\sigma_{\nu}$ è la sua variabilità standard. Mainen e Sejnowski trovarono che:
+\begin{itemize}
+    \item Per $\sigma_I = 0$ (corrente costante): la reliability è bassa.
+    \item La reliability aumenta \textbf{monotonicamente} con la deviazione standard $\sigma_I$ dell'input.
+\end{itemize}
+
+Questo risultato suggerisce che i neuroni corticali siano \textbf{progettati evolutivamente} per operare con input fluttuanti naturalistici, e che la presenza di rumore ne aumenti l'efficacia nel trasdurre segnali.
+
+
+
+\subsubsection{L'Esperimento di Shadlen e Newsome con Diversa Coerenza}
+
+Il professore ritorna all'esperimento di Shadlen e Newsome per illustrare la \textbf{dipendenza dall'attività della rete}. Nei dati di questo esperimento, il professore separa le prove (trials) in base alla \textbf{coerenza} del moto dei punti:
+
+\begin{itemize}
+    \item \textbf{Coerenza 0\% (rumore puro):} i punti si muovono tutti in direzioni casuali. La risposta dell'area MT è irregolare ma con variabilità relativamente bassa del tasso di firing — simile al caso dell'input costante nell'esperimento di Mainen-Sejnowski.
+    \item \textbf{Coerenza 50\%:} metà dei punti si muovono in una direzione definita. Intuitivamente ci si aspetterebbe una risposta più deterministica. Invece, il raster plot mostra una \textbf{maggiore irregolarità} del treno di spike.
+    \item \textbf{Coerenza 100\% (segnale deterministico):} tutti i punti si muovono nella stessa direzione. Il compito è facilissimo — l'animale sa già dove muovere gli occhi. Eppure il treno di spike dei neuroni MT è \textbf{molto irregolare}, con CV vicino a 1.
+\end{itemize}
+
+\subsubsection{La Spiegazione: Input Top-Down dalla Corteccia Frontale}
+
+Il professore spiega questa contraddizione apparente con la nozione di \textbf{input top-down}: il cervello non è un sistema feedforward a una via, ma una rete di reti. L'area MT non riceve solo input dalla corteccia visiva (via sensoriale ascendente), ma anche da aree frontali (corteccia prefrontale, area FEF, corteccia motoria oculare) attraverso proiezioni \textbf{discendenti} (\textit{top-down}).
+
+Il ragionamento è il seguente:
+\begin{itemize}
+    \item A \textbf{coerenza 0\%}, il segnale sensoriale è ambiguo. La corteccia frontale non ha ancora preso una decisione e non invia input top-down a MT. La risposta di MT è guidata solo dal segnale sensoriale ascendente e ha variabilità moderata.
+    \item A \textbf{coerenza 100\%}, la decisione è già stata presa quasi istantaneamente. I neuroni della corteccia prefrontale che codificano la decisione "vai a destra" si attivano e inviano una \textbf{scarica irregolare sostenuta} verso MT. Questo input top-down aggiuntivo, irregolare e ad alta conduttanza, rende il regime operativo di MT più simile al regime di alta conduttanza, aumentando la variabilità del treno di spike.
+\end{itemize}
+
+Questa interpretazione è coerente con il modello di \textbf{active inference} e con la visione del cervello come sistema generativo: le aree superiori non aspettano passivamente l'input sensoriale, ma inviano proiezioni discendenti che modulano attivamente l'elaborazione nelle aree sensoriali.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questo risultato è anche una splendida dimostrazione di come la variabilità neuronale non sia un semplice "rumore" da studiare in isolamento, ma dipenda dallo stato globale del network. Un neurone in isolamento e lo stesso neurone in un network in comportamento sono sistemi radicalmente diversi.
+\end{tcolorbox}
+
+
+\subsubsection{L'Esperimento di Greenwald: Optical Imaging e LFP}
+
+Il professore conclude la lezione con un esperimento di grande impatto visivo, svolto nel laboratorio di \textbf{Greenwald} alla fine degli anni '90 e pubblicato su \textit{Science}. Questo esperimento utilizza contemporaneamente l'\textbf{imaging a voltaggio-sensibile} (\textit{voltage-sensitive dye imaging}, VSDI) e la registrazione del \textbf{potenziale di campo locale} (LFP) per caratterizzare la variabilità trial-to-trial nella corteccia visiva del macaco.
+
+Il paradigma sperimentale: un macaco osserva una barra in movimento (stimolo per V1), e ogni trial viene presentato nelle stesse condizioni fisiche (stessa barra, stessa direzione, stessa velocità). Nonostante la ripetibilità dello stimolo, la risposta corticale è \textbf{drasticamente diversa tra trial diversi}.
+
+Il VSDI mostra la depolarizzazione media dei dendriti dei neuroni in una regione della corteccia visiva. In due trial consecutivi del tutto identici (trial A e trial B), la risposta VSD è completamente diversa:
+\begin{itemize}
+    \item Nel trial A: ampia attivazione corticale, sostenuta nel tempo.
+    \item Nel trial B: attivazione minima, che si estingue rapidamente.
+\end{itemize}
+
+\subsubsection{Correlazione tra LFP, VSD e Treno di Spike}
+
+Nella stessa area corticale studiata con VSDI, viene inserito un elettrodo di tungsteno che registra simultaneamente:
+\begin{itemize}
+    \item Il \textbf{LFP} (potenziale di campo locale, componente a bassa frequenza): riflette l'attività sinaptica media dei neuroni intorno all'elettrodo.
+    \item Il \textbf{treno di spike} (\textit{multi-unit activity}): il segnale LFP filtrato a alta frequenza permette di identificare gli spike delle unità neurali adiacenti.
+\end{itemize}
+
+Il confronto tra trial A e trial B mostra:
+\begin{itemize}
+    \item LFP trial A: oscillazioni ampie e prolungate.
+    \item LFP trial B: oscillazioni molto più deboli.
+    \item Spike trial A: attività sostenuta con tasso elevato.
+    \item Spike trial B: attività sporadica con tasso basso.
+\end{itemize}
+
+Questo nonostante lo stimolo sia identico!
+
+\subsubsection{La Media Non Cattura la Variabilità Trial-to-Trial}
+
+Il punto cruciale che il professore enfatizza è che la \textbf{media} dei trial (il PSTH e il potenziale LFP medio) può mascherare la variabilità:
+
+\begin{equation}
+\langle S(t) \rangle = \frac{1}{N} \sum_{j=1}^N S_j(t)
+\end{equation}
+
+In media, il segnale può sembrare modulato in modo coerente dallo stimolo. Ma questa media nasconde il fatto che trial diversi sono in stati radicalmente diversi: alcuni sono altamente reattivi, altri praticamente silenti. La media non cattura questa \textbf{variabilità dello stato globale} del cervello.
+
+Il professore illustra questo punto mostrando che la media del VSD e del LFP su molti trial produce una curva "media" che è reminiscente del segnale di un singolo trial attivo, ma che non riflette affatto la risposta del singolo trial inattivo.
+
+\subsubsection{La Quarta Sorgente di Stocasticità: Lo Stato del Network}
+
+Questo esperimento introduce quella che il professore chiama la \textbf{quarta sorgente di stocasticità}: non i canali, non le sinapsi, non le fluttuazioni di dimensione finita, ma lo \textbf{stato globale della rete}. Il cervello in ogni momento si trova in uno stato complesso determinato da:
+\begin{itemize}
+    \item Il livello di arousal (sonno, veglia, attenzione).
+    \item Le aspettative dell'animale rispetto allo stimolo.
+    \item L'engagement nel compito ("voglio la ricompensa" vs. "sono annoiato").
+    \item Lo stato delle proiezioni top-down da corteccia frontale, parietale, ecc.
+\end{itemize}
+
+In condizioni di alta attenzione e alta motivazione, le proiezioni top-down sono attive e il regime di alta conduttanza è più marcato, producendo una risposta più variabile. In condizioni di disattenzione, le proiezioni top-down sono silenti e il regime è più simile al firing regolare.
+
