@@ -1,0 +1,253 @@
+\chapter{Lezione 21}
+
+
+
+
+\section{Introduzione alle Funzioni Cognitive: Memoria di Lavoro}
+
+\subsubsection{Definizione di Memoria di Lavoro}
+
+La \textbf{memoria di lavoro} (\textit{working memory}, WM) è una funzione cognitiva che consente di mantenere attiva un'informazione rilevante per un breve periodo di tempo, necessario per risolvere un problema imminente. È distinta dalla memoria a lungo termine per:
+\begin{itemize}
+    \item \textbf{Durata}: secondi o frazioni di minuto (non ore o anni).
+    \item \textbf{Capacità}: limitata (circa $7\pm2$ elementi, secondo Miller).
+    \item \textbf{Goal-directed}: si mantiene solo l'informazione rilevante al compito corrente.
+\end{itemize}
+
+La WM è espressa da tutti i mammiferi (e da molti altri animali, compresi insetti e rettili), suggerendo che sia un meccanismo evolutivamente conservato.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} L'analogia quotidiana: un amico chiama e dice "arrivo in cinque minuti". Nei cinque minuti seguenti si mantiene attiva questa informazione, e quando il campanello suona si sa che è l'amico. Questo è un esempio di WM \textit{goal-directed}: non si tiene a mente tutto ciò che accade (la televisione in sottofondo, la finestra aperta), ma solo l'informazione rilevante per rispondere all'amico.
+\end{tcolorbox}
+
+
+\subsection{Il Task Delayed Match-to-Sample Spaziale}
+
+\subsubsection{Struttura del Task}
+
+Il professore descrive il task sperimentale classico usato per studiare la WM nei primati: il \textbf{delayed match-to-sample} (DMS) con cue spaziale, introdotto da \textbf{Patricia Goldman-Rakic} alla fine degli anni '80 con esperimenti sul macaco.
+
+Il protocollo è il seguente (per il singolo trial):
+\begin{enumerate}
+    \item \textbf{Punto di fissazione}: lo schermo mostra solo un punto centrale. L'animale deve fissarlo per tutta la durata del trial.
+    \item \textbf{Presentazione del cue} ($\sim$500 ms): appare brevemente un \textbf{secondo punto} (cue periferico) in una delle 8 posizioni angolari (es. 0$^\circ$, 45$^\circ$, 90$^\circ$, \dots, 315$^\circ$).
+    \item \textbf{Periodo di delay} (2–8 secondi): lo schermo mostra solo il punto di fissazione. La posizione del cue \textit{non è più visibile}.
+    \item \textbf{Segnale "go"}: il punto di fissazione sparisce. L'animale deve spostare lo sguardo verso la posizione \textit{ricordata} del cue periferico.
+\end{enumerate}
+
+Se risponde correttamente riceve ricompensa (succo di frutta). Il task richiede che l'animale mantenga in mente la posizione del cue per l'intera durata del delay.
+
+\subsubsection{Attività dei Neuroni Prefrontali durante il Delay}
+
+I ricercatori, usando elettrodi impiantati nella \textbf{corteccia prefrontale dorsolaterale} (dlPFC) del macaco, registrano l'attività di singoli neuroni durante il task. La dlPFC è situata nella parte anteriore del cervello, nel lobo frontale.
+
+Risultato principale: esiste una classe di neuroni che \textbf{aumenta il firing rate durante il delay} in modo selettivo per una specifica posizione del cue. Questi neuroni:
+\begin{itemize}
+    \item Hanno bassa attività basale (in assenza di cue).
+    \item Si attivano fortemente durante la \textbf{presentazione} del cue e mantengono un'elevata attività durante tutto il \textbf{delay}.
+    \item La selettività è \textbf{spaziale}: un neurone risponde fortemente solo quando il cue è in una certa direzione angolare ("posizione preferita"), e ha risposta bassa per le altre direzioni.
+\end{itemize}
+
+
+
+\subsubsection{Raster Plot e Spike Density}
+
+Il professore mostra i dati sperimentali per un neurone registrato nel dlPFC durante il task DMS. La visualizzazione usa:
+\begin{itemize}
+    \item \textbf{Raster plot}: ogni riga è un trial; ogni barretta è uno spike. I trial sono raggruppati per posizione del cue (8 direzioni).
+    \item \textbf{Spike density} (firing rate istantaneo): integrazione del raster in piccole finestre temporali.
+\end{itemize}
+
+Osservazioni per questo neurone:
+\begin{itemize}
+    \item \textbf{Cue a 45$^\circ$} (non preferita): bassa attività durante tutta la prova, incluso il delay.
+    \item \textbf{Cue a 135$^\circ$} (intermedia): attività moderata durante la presentazione, ma silence durante il delay.
+    \item \textbf{Cue a 270$^\circ$} (posizione preferita): forte attivazione durante il cue E \textbf{mantenimento dell'attività durante tutto il delay}. Il firing rate sale da $\sim$5 Hz basale a $\sim$30–40 Hz durante il delay, per una durata di diversi secondi.
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questo neurone è un classico \textbf{WM neuron}: mantiene un'attività elevata e persistente durante l'assenza dello stimolo, "tenendo in mente" la posizione del cue. Questa attività persistente è il correlato neurale della memoria di lavoro.
+\end{tcolorbox}
+
+
+
+\subsubsection{WM per Oggetti, non solo per Posizioni}
+
+Goldman-Rakic mostrò la selettività spaziale. Ma la WM non è limitata alla posizione: si può ricordare un oggetto, un suono, un odore. \textbf{Earl Miller} e \textbf{Jonathan Reinert} eseguirono un esperimento con un task DMS per \textbf{oggetti}:
+
+\begin{enumerate}
+    \item L'animale vede un \textbf{sample object} (es. una campana).
+    \item Dopo un delay di qualche secondo, vengono presentati due oggetti: il sample e un distrattore (es. una cassetta delle lettere).
+    \item L'animale deve scegliere (con lo sguardo o con una leva) l'oggetto uguale al sample.
+\end{enumerate}
+
+Risultati: esistono neuroni nella PFC che mantengono un'attività elevata durante il delay \textbf{selettivamente per l'oggetto da ricordare}. Un neurone può rispondere fortemente quando l'animale ricorda la "campana" e debolmente quando ricorda la "cassetta delle lettere".
+
+\subsubsection{Codifica Distribuita: Non Un Singolo Neurone}
+
+Osservazione cruciale: lo \textbf{stesso} neurone può avere un'attività durante il delay superiore alla basale anche per l'oggetto \textit{non preferito}, sebbene più bassa che per l'oggetto preferito. Questo suggerisce che la rappresentazione della WM non è affidata a un singolo neurone ma è \textbf{distribuita} su una popolazione di neuroni, ciascuno con diversi livelli di selettività.
+
+Questo è un \textbf{fenomeno di rete}: non è la proprietà di un singolo neurone, ma l'orchestrazione concertata di molti neuroni. Implica che per modellare correttamente la WM è necessario considerare \textbf{reti di neuroni} con interazioni.
+
+
+\subsection{Robustezza della WM}
+
+\subsubsection{Il Task Multi-Oggetto con Distrattori}
+
+Per studiare la \textbf{resilienza} della WM, il professore descrive un esperimento in cui il task DMS è reso più complesso: durante il delay vengono presentati \textbf{oggetti distrattori} che l'animale deve ignorare. La sequenza è:
+\begin{itemize}
+    \item Sample: farfalla.
+    \item Delay 1 $\rightarrow$ Distrattore: ombrello $\rightarrow$ Delay 2 $\rightarrow$ Distrattore: leone $\rightarrow$ Delay 3 $\rightarrow$ Distrattore: lampada $\rightarrow$ Delay 4 $\rightarrow$ Distrattore: occhiali $\rightarrow$ Delay 5 $\rightarrow$ Test: farfalla (e un altro oggetto).
+\end{itemize}
+
+L'animale deve ricordare la farfalla per tutto il periodo, nonostante i distrattori.
+
+\subsubsection{Resilienza del Segnale di WM}
+
+I neuroni nella PFC che codificano la farfalla:
+\begin{itemize}
+    \item Mostrano alta attività durante il primo delay (ricordando la farfalla).
+    \item Quando arriva l'ombrello: l'attività si modifica (risposta al distrattore), ma poi \textbf{ritorna} al livello precedente durante il delay successivo.
+    \item Stesso comportamento per leone, lampada, occhiali.
+    \item Alla presentazione della farfalla (matching): forte risposta $\rightarrow$ l'animale risponde correttamente.
+\end{itemize}
+
+Questo dimostra che il segnale di WM è \textbf{robusto alle perturbazioni}: la rete è capace di mantenere l'informazione nonostante l'irruzione di distrattori. Il professore sottolinea che questo è un fenomeno di rete: la resilienza emerge dalle proprietà dinamiche dei circuiti prefrontali, che verranno studiate nella prossima lezione.
+
+
+\subsection{Schizofrenia e Deficit di Memoria di Lavoro}
+
+\subsubsection{Il Deficit Comportamentale}
+
+I pazienti affetti da \textbf{schizofrenia} mostrano deficit marcati nella WM: tendono a "perdere il filo", a cambiare frequentemente l'oggetto della loro attenzione, e a fallire nei task DMS con delay più lunghi. Le loro prestazioni sono significativamente inferiori ai soggetti normali nell'esecuzione di questi task.
+
+\subsubsection{Differenze nell'Attività Cerebrale (fMRI BOLD)}
+
+Confrontando pazienti schizofrenici e soggetti normali tramite \textbf{fMRI} (imaging a risonanza magnetica funzionale, segnale BOLD), durante l'esecuzione di un task DMS:
+\begin{itemize}
+    \item In entrambi i gruppi, la \textbf{corteccia prefrontale dorsolaterale} (DLPFC) si attiva durante il delay.
+    \item Nei soggetti \textbf{normali}: forte attivazione della DLPFC bilaterale, ben visibile come blob giallo nell'immagine fMRI.
+    \item Nei pazienti \textbf{schizofrenici}: l'attivazione è presente ma \textbf{meno intensa} e meno estesa (globo giallo più piccolo, significativo solo in un emisfero).
+\end{itemize}
+
+Quando si normalizza l'attività per il delay corto (task facile) e si confronta con il delay lungo (task difficile):
+\begin{itemize}
+    \item Soggetti normali: \textbf{incremento} dell'attività BOLD con il delay lungo.
+    \item Pazienti schizofrenici: incremento \textbf{inferiore}, compatibile con un'incapacità di reclutare efficacemente il circuito prefrontale per mantenere la WM per periodi più lunghi.
+\end{itemize}
+
+
+
+
+\subsubsection{Riduzione delle Sinapsi nelle Dendriti della PFC}
+
+Studi post-mortem sui cervelli di pazienti schizofrenici rivelano una \textbf{riduzione del numero di spine dendritiche} (bottoni sinaptici) sui neuroni della corteccia prefrontale. Le spine sono le strutture morfologiche su cui si formano le sinapsi eccitatorie; una riduzione delle spine implica una riduzione della \textbf{connettività eccitatoria} della rete prefrontale.
+
+\subsubsection{Gerarchia Corticale delle Sinapsi Glutammatergiche e GABAergiche}
+
+Un'analisi statistica recente ha misurato l'\textbf{efficacia sinaptica} (il parametro $J$ nel nostro modello) sia delle sinapsi \textbf{glutammatergiche} (eccitatorie) che \textbf{GABAergiche} (inibitorie) lungo la \textbf{gerarchia corticale}: da V1/V2 (corteccia visiva primaria, back del cervello) fino alla PFC (top della gerarchia).
+
+Risultati nei \textbf{soggetti normali}:
+\begin{itemize}
+    \item \textbf{Glutammatergiche (eccitatorie)}: $J_E$ \textbf{aumenta} dal basso verso l'alto della gerarchia. Le sinapsi eccitatorie sono più forti nella PFC che in V1.
+    \item \textbf{GABAergiche (inibitorie)}: $J_I$ \textbf{diminuisce} spostandosi verso la PFC. Meno inibizione in PFC, più in V1.
+\end{itemize}
+
+La PFC è quindi caratterizzata da \textbf{forte eccitazione e debole inibizione} relativa, rendendola un circuito altamente \textbf{eccitabile} e capace di generare e mantenere stati di alta attività (necessari per la WM). Al contrario, V1 ha forte inibizione per seguire fedelmente gli input sensoriali senza amplificazione.
+
+\subsubsection{La Schizofrenia come Rottura del Bilancio E/I}
+
+Nei pazienti \textbf{schizofrenici}, questa modulazione gerarchica è \textbf{assente o ridotta}: i $J_E$ non mostrano il graduale aumento verso la PFC. Il bilancio eccitazione-inibizione nella DLPFC è sbilanciato verso l'inibizione (o insufficientemente eccitatorio), impedendo alla rete di sostenere gli stati di alta attività necessari per la WM.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questo ci dice qualcosa di fondamentale: per avere WM robusta, serve un eccesso di eccitazione ricorrente nella PFC rispetto all'inibizione locale. Quando questo balance si rompe (schizofrenia), la WM fallisce. Questo sarà il punto di partenza per i modelli computazionali della WM nella prossima lezione.
+\end{tcolorbox}
+
+
+\subsection{Plasticità Sinaptica a Lungo Termine}
+
+Per esprimere la WM, il cervello deve non solo mantenere un'attività persistente (problema dinamico), ma anche \textbf{scegliere} quale informazione mantenere (apprendimento selettivo). Questo richiede che le sinapsi siano \textbf{modificabili dall'esperienza}, ovvero che la rete possa "imparare" quali pattern di attività sono rilevanti da mantenere.
+
+Il meccanismo biologico che permette questo è la \textbf{plasticità sinaptica a lungo termine} (\textit{long-term synaptic plasticity}): l'efficacia di una sinapsi (il parametro $J$ del nostro modello) può cambiare in modo permanente (su scale di ore, giorni, anni) in risposta a pattern specifici di attività neuronale.
+
+\subsubsection{L'Ippocampo come Sito di Studio}
+
+La plasticità sinaptica è stata storicamente studiata nell'\textbf{ippocampo}, struttura sottocorticale a forma di cavalluccio marino, responsabile della codifica della \textbf{memoria episodica} (la memoria degli eventi della vita quotidiana). L'ippocampo funge da interfaccia tra la memoria a breve termine (WM) e la memoria a lungo termine (corticale): gli episodi memorizzati nell'ippocampo vengono progressivamente consolidati nella corteccia.
+
+L'ippocampo è organizzato in subregioni distinte: \textbf{CA1}, \textbf{CA2}, \textbf{CA3} e il \textbf{giro dentato} (DG). Queste aree sono interconnesse in modo specifico, con proiezioni denominate \textbf{collaterali di Schaffer}: gli assoni dei neuroni di CA3 proiettano verso le cellule piramidali di CA1.
+
+
+\subsubsection{Protocollo Sperimentale}
+
+I neurofisiologi hanno compiuto il seguente esperimento:
+\begin{enumerate}
+    \item Posizionano un \textbf{elettrodo di stimolazione} sulle \textbf{collaterali di Schaffer} (gli assoni CA3 $\rightarrow$ CA1).
+    \item Registrano con una \textbf{pipetta} il potenziale di membrana di un neurone postsinaptico di CA1.
+    \item Prima della stimolazione ("pre-tetanica"), misurano l'\textbf{EPSP} (\textit{Excitatory Post-Synaptic Potential}): la forma d'onda del potenziale postsinaptico eccitatorio in risposta a uno spike presinaptico.
+    \item Applicano la \textbf{stimolazione tetanica}: quattro treni di spike a \textbf{100 Hz}, ciascuno della durata di $\sim$1 s. Questa stimolazione ad alta frequenza mima l'attività neuronale intensa durante un evento di apprendimento.
+    \item Misurano l'EPSP nuovamente a vari istanti dopo la stimolazione: 10 min, 30 min, 1 ora, 2 ore, 24 ore, \dots
+\end{enumerate}
+
+\subsubsection{Il Risultato: Long-Term Potentiation (LTP)}
+
+Il risultato è sorprendente: l'EPSP registrato dopo la stimolazione tetanica è \textbf{significativamente più grande} di quello pre-tetanico. E questa differenza:
+\begin{itemize}
+    \item \textbf{Non decade} nel tempo: rimane stabile per ore e ore dopo la stimolazione.
+    \item Rappresenta quindi un \textbf{cambiamento permanente} dell'efficacia sinaptica: la sinapsi è stata \textbf{potenziata}.
+\end{itemize}
+
+Formalmente: l'efficacia sinaptica dopo la stimolazione è $J' = J + \Delta J$, con $\Delta J > 0$. Questo fenomeno è chiamato \textbf{Long-Term Potentiation} (LTP), termine introdotto da Bliss e Lømo nel 1973.
+
+La condizione necessaria per indurre LTP: la stimolazione tetanica deve essere \textbf{prolungata} (quattro treni, non uno solo). Una singola stimolazione tetanica non è sufficiente: si osserva solo un transitorio che poi decade. Sono necessarie più sessioni di stimolazione intensa per un cambiamento duraturo.
+
+
+\subsubsection{Long-Term Depression (LTD)}
+
+Complementare all'LTP esiste anche un fenomeno opposto: la \textbf{Long-Term Depression} (LTD). Se la stimolazione consiste in una frequenza bassa (es. 1 Hz per molti minuti, invece di 100 Hz per 1 s), la sinapsi si \textbf{deprime}: l'EPSP post-stimolazione è più piccolo di quello pre-stimolazione, e il cambiamento è duraturo ($J' = J - \Delta J$, con $\Delta J > 0$).
+
+LTD rappresenta quindi il meccanismo di \textbf{indebolimento} sinaptico a lungo termine, in complemento all'LTP che potenzia le sinapsi.
+
+\subsection{La Regola di Hebb}
+
+\textbf{Donald Hebb} nel 1949, nel suo libro "The Organization of Behavior", postulò il principio oggi noto come \textbf{regola di Hebb} (o \textit{hebbiana}):
+
+\begin{tcolorbox}[colback=white, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textit{"When an axon of cell A is near enough to excite cell B, and repeatedly or persistently takes part in firing it, some growth process or metabolic change takes place in one or both cells such that A's efficiency, as one of the cells firing B, is increased."}
+\end{tcolorbox}
+
+In termini moderni: \textbf{se il neurone presinaptico e quello postsinaptico sono entrambi attivi nello stesso momento, la sinapsi tra loro si rinforza} (LTP). Se uno è attivo e l'altro no (attività anticorrelata), la sinapsi si indebolisce (LTD).
+
+\subsubsection{La Matrice di Hebb: Regola $\Delta J$}
+
+Il professore formalizza la regola di Hebb in forma di matrice $\Delta J$, considerando quattro scenari per una sinapsi tra neurone presinaptico e neurone postsinaptico:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|X|X|c|X|}
+    \hline
+    \textbf{Presinaptico $\nu_{\rm pre}$} & \textbf{Postsinaptico $\nu_{\rm post}$} & \textbf{$\Delta J$} & \textbf{Tipo} \\
+    \hline
+    Basso & Basso & $0$ & Nessun cambiamento \\
+    \hline
+    Basso & Alto & $< 0$ & LTD (depressione) \\
+    \hline
+    Alto & Basso & $< 0$ & LTD (depressione) \\
+    \hline
+    Alto & Alto & $> 0$ & \textbf{LTP (potenziamento)} \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+La regola può essere espressa come:
+
+\begin{equation}
+\Delta J \propto (\nu_{\rm pre} - \bar{\nu})(\nu_{\rm post} - \bar{\nu})
+\end{equation}
+
+dove $\bar{\nu}$ è un firing rate di riferimento (soglia). Quando entrambi i neuroni sono correlati positivamente nella loro attività (entrambi sopra soglia), si ha LTP. Quando le loro attività sono anticorrelate (uno sopra e l'altro sotto soglia), si ha LTD.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questo è il principio "neurons that fire together, wire together" (Hebb, 1949). La regola di Hebb è alla base di tutti i modelli di apprendimento nella rete neurale artificiale e biologica. Nella prossima lezione vedremo come questa regola, applicata a una rete LIF, determina la struttura delle connessioni sinaptiche necessaria per esprimere la WM.
+\end{tcolorbox}
+
