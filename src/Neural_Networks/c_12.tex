@@ -1,0 +1,614 @@
+\chapter{Lezione 12}
+
+\section{Dal Modello a Conduttanza al Modello a Corrente}
+
+\subsubsection{Il Problema della Non-Linearità}
+
+In questa lezione il professore presenta una \textbf{semplificazione fondamentale} che sarà alla base di tutte le analisi delle lezioni successive: il passaggio dal \textbf{modello sinaptico a conduttanza} (\textit{conductance-based}) al \textbf{modello sinaptico a corrente} (\textit{current-based}). L'obiettivo è eliminare una non-linearità moltiplicativa che renderebbe l'analisi analitica della dinamica di rete notevolmente più complessa, senza perdere le proprietà qualitative essenziali del sistema.
+
+Il punto di partenza è il modello \textbf{leaky integrate-and-fire a conduttanza}, in cui la corrente sinaptica che fluisce attraverso la membrana del neurone post-sinaptico non è semplicemente proporzionale ai neurotrasmettitori rilasciati, ma dipende in modo moltiplicativo dalla differenza tra il \textbf{potenziale di membrana} $V$ e il \textbf{potenziale di inversione} (o reversal potential) $E_\alpha$ della sinapsi:
+
+\begin{equation}
+I_{\text{syn}} = \sum_\alpha \sum_j g_{\alpha j}(t)\,(V - E_\alpha)
+\end{equation}
+
+Questa dipendenza da $V$ rende l'input \textbf{dipendente dallo stato} (\textit{state-dependent}): l'efficacia della sinapsi nel depolarizzare o iperpolarizzare il neurone post-sinaptico cambia istante per istante con il potenziale di membrana. In termini dinamici, il sistema ha almeno tre gradi di libertà ($V$, $G_E$, $G_I$) e i termini $G_E \cdot V$ e $G_I \cdot V$ sono \textbf{termini non-lineari} (prodotto di due variabili di stato). Questa non-linearità complica enormemente sia la simulazione numerica su larga scala sia, soprattutto, qualsiasi trattamento analitico delle popolazioni neurali.
+
+
+
+\subsubsection{Il Neurone Post-Sinaptico e il suo Albero Dendritico}
+
+Si considera un neurone corticale immerso in una rete. Il neurone è rappresentato con il suo \textbf{soma} (in azzurro nel disegno del professore), il suo \textbf{assone} che si prolunga verso destra e il suo \textbf{albero dendritico} con numerosi rami che si estendono dal soma. Lungo l'albero dendritico sono distribuite molte sinapsi: alcune di tipo \textbf{glutamatergico} (eccitatorie, indicate in rosso) e alcune di tipo \textbf{GABAergico} (inibitorie, indicate in verde).
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "In questo schema uso il colore verde per le sinapsi inibitorie e il rosso per le eccitatorie. Attenzione: questa è una scelta di rappresentazione, non c'è nulla di 'buono' o 'cattivo' nei due tipi di sinapsi. Entrambe sono fondamentali per il funzionamento della rete."
+\end{tcolorbox}
+
+\subsubsection{L'Etichetta $\alpha$: Classe di Appartenenza del Neurone Pre-Sinaptico}
+
+Ogni neurone pre-sinaptico è identificato da \textbf{due etichette}. La prima è $\alpha$, che indica a quale \textbf{classe di popolazione} appartiene il neurone pre-sinaptico:
+
+\begin{equation}
+\alpha \in \{E,\, I\}
+\end{equation}
+
+\begin{itemize}
+    \item $\alpha = E$: il neurone pre-sinaptico è \textbf{eccitatorio} (glutamatergico, indicato in rosso).
+    \item $\alpha = I$: il neurone pre-sinaptico è \textbf{inibitorio} (GABAergico, indicato in verde).
+\end{itemize}
+
+\subsubsection{L'Etichetta $j$: Indice all'Interno della Classe}
+
+La seconda etichetta è $j$, un \textbf{indice intero} che identifica il singolo neurone all'interno della classe $\alpha$:
+
+\begin{equation}
+j \in \{1, 2, \ldots, K_\alpha\}
+\end{equation}
+
+Il numero di neuroni pre-sinaptici in ciascuna classe, $K_\alpha$, dipende dalla classe: si usa $K_E$ per i pre-sinaptici eccitatori e $K_I$ per quelli inibitori. Il numero totale di contatti pre-sinaptici sul neurone studiato è:
+
+\begin{equation}
+K = K_E + K_I
+\end{equation}
+
+\subsubsection{I Numeri Biologici: Connettività Corticale}
+
+I numeri tipici per un neurone corticale di mammifero sono fondamentali per giustificare le approssimazioni successive. Il professore li presenta sistematicamente:
+
+% Ricordati di includere questi pacchetti nel preambolo del tuo documento:
+% \usepackage{amsmath}
+% \usepackage{nicefrac} 
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    % Ho rimosso \textwidth e impostato l'allineamento a sinistra (l) e centrato (c)
+    \begin{tabular}{|l|c|}
+    \hline
+    \textbf{Quantità} & \textbf{Valore tipico} \\
+    \hline
+    Numero totale di contatti pre-sinaptici $K$ & $\approx 20\,000 - 30\,000$ \\
+    \hline
+    Frazione di sinapsi eccitatorie & $\approx 80\%$  \\
+    \hline
+    Frazione di sinapsi inibitorie & $\approx 20\%$  \\
+    \hline
+    Tasso di firing medio (background) & $\approx 1\text{ Hz}$ \\
+    \hline
+    Tasso di firing di background totale & $\approx 20\text{ kHz}$ \\
+    \hline
+    \end{tabular}
+    \caption{Caratteristiche tipiche dell'input di background per un neurone corticale.}
+    \label{tab:neurone_background}
+\end{table}
+
+La \textbf{asimmetria 80/20} tra sinapsi eccitatorie e inibitorie è biologicamente fondamentale: siccome i neuroni inibitori sono in numero inferiore ma devono controllare efficacemente l'eccitazione, ciascuna sinapsi inibitoria deve avere una \textbf{forza 5 volte maggiore} rispetto alle eccitatorie. Questa compensazione garantisce il bilanciamento eccitatório/inibitório (\textit{E/I balance}) che caratterizza lo stato fisiologico della corteccia.
+
+
+\subsubsection{Definizione Formale del Treno di Spike}
+
+Il \textbf{treno di spike} prodotto dal neurone pre-sinaptico $(\alpha, j)$ è definito come una somma di \textbf{funzioni delta di Dirac} centrate sugli istanti di emissione degli spike:
+
+\begin{equation}
+S_{\alpha j}(t) = \sum_k \delta\!\left(t - t_{\alpha j}^{(k)}\right)
+\end{equation}
+
+dove $t_{\alpha j}^{(k)}$ è il tempo del $k$-esimo spike emesso dal neurone $(\alpha, j)$. Questo è lo stesso formalismo introdotto nella lezione precedente per descrivere i processi di Poisson.
+
+\subsubsection{Il Ritardo Assonale}
+
+Il professore precisa che nel contesto di rete, il tempo $t_{\alpha j}^{(k)}$ che compare nel treno di spike include già il \textbf{ritardo assonale} (\textit{axonal delay}) nella trasmissione del segnale dal neurone pre-sinaptico al neurone post-sinaptico. Formalmente:
+
+\begin{equation}
+t_{\alpha j}^{(k)} = t_{\alpha j}^{(k),\text{emissione}} + \Delta_{\alpha j}
+\end{equation}
+
+dove $t_{\alpha j}^{(k),\text{emissione}}$ è il vero istante di emissione dello spike nel soma del neurone $(\alpha, j)$ e $\Delta_{\alpha j}$ è il ritardo assonale, che dipende sia dal neurone pre-sinaptico sia (in generale) dal neurone post-sinaptico. In questa trattazione, poiché ci concentriamo su un unico neurone post-sinaptico, l'indice post-sinaptico non viene esplicitato, ma la sua esistenza è implicita.
+
+
+\subsubsection{Definizione del Tasso di Firing Medio}
+
+Il \textbf{tasso di firing medio} (o frequenza di firing media) del neurone $(\alpha, j)$ è definito come la media temporale del numero di spike prodotti per unità di tempo:
+
+\begin{equation}
+\bar{\nu}_{\alpha j} = \frac{1}{T} \int_0^T S_{\alpha j}(t)\, dt
+\end{equation}
+
+dove $T$ è un intervallo di osservazione sufficientemente lungo. La condizione su $T$ richiede che sia:
+\begin{itemize}
+    \item Molto più grande dei tempi caratteristici del sistema: il \textbf{periodo refrattario assoluto} $\tau_{\text{ref}} \approx 1-2\,\text{ms}$, la \textbf{costante di tempo di membrana} $\tau_m \approx 10-20\,\text{ms}$.
+    \item Molto più grande dell'\textbf{intervallo inter-spike medio} $\langle \text{ISI} \rangle \approx 1/\bar{\nu}_{\alpha j}$.
+\end{itemize}
+
+Quest'ultima condizione implica $T \gg 100\,\text{ms}$ (poiché $\bar{\nu} \approx 1\,\text{Hz}$). In pratica, le stime sperimentali del tasso di firing vengono eseguite su finestre temporali dell'ordine di \textbf{minuti o decine di secondi}, ovvero dello stesso ordine della durata di un determinato stato cerebrale.
+
+\subsubsection{Il Tasso di Background: $\sim$1 Hz}
+
+Dai dati sperimentali emerge un risultato sorprendente e molto robusto: \textbf{in condizioni di riposo}, i neuroni corticali producono spike a un tasso medio di circa:
+
+\begin{equation}
+\bar{\nu}_{\text{bg}} \approx 1\,\text{Hz}
+\end{equation}
+
+Questo valore è notevolmente conservato tra diverse specie, diverse aree corticali e diversi stati cerebrali. Il professore menziona in particolare un \textbf{esperimento chiave}: un gruppo dello \textbf{NYU} (New York University) ha registrato l'attività di un grande numero di neuroni corticali in topi sia durante il sonno sia durante la veglia. Sorprendentemente, il tasso di firing medio temporale era quasi identico nelle due condizioni (circa 1 Hz), nonostante i pattern di attività fossero dramaticamente diversi:
+\begin{itemize}
+    \item \textbf{Durante il sonno} (onde lente): alternanza quasi-periodica tra stati di quiescenza e stati attivi (\textbf{slow wave activity}).
+    \item \textbf{Durante la veglia}: attività \textbf{asincrona} e irregolare.
+\end{itemize}
+
+\subsubsection{Il Bombardamento Sinaptico: $\sim$20 kHz}
+
+Avendo stabilito che $\bar{\nu}_{\alpha j} \approx 1\,\text{Hz}$ per ogni neurone pre-sinaptico, si può calcolare il \textbf{tasso totale di spike ricevuti} dal neurone post-sinaptico:
+
+\begin{equation}
+\nu_{\text{tot}} = \sum_\alpha \sum_{j=1}^{K_\alpha} \bar{\nu}_{\alpha j} \approx \bar{\nu}_{\text{bg}} \cdot K
+\end{equation}
+
+Con $\bar{\nu}_{\text{bg}} = 1\,\text{Hz}$ e $K = 20\,000$:
+
+\begin{equation}
+\nu_{\text{tot}} \approx 1\,\text{Hz} \times 20\,000 = 20\,\text{kHz}
+\end{equation}
+
+Questo è un numero \textbf{enorme}: il neurone riceve mediamente uno spike ogni:
+
+\begin{equation}
+\langle \Delta t_{\text{input}} \rangle = \frac{1}{\nu_{\text{tot}}} = \frac{1}{20\,000\,\text{Hz}} = 0.05\,\text{ms}
+\end{equation}
+
+Questo intervallo medio di $0.05\,\text{ms}$ è \textbf{molto più piccolo} sia del periodo refrattario ($\tau_{\text{ref}} \approx 1-2\,\text{ms}$) sia della costante di tempo di membrana ($\tau_m \approx 20\,\text{ms}$). Questo fatto è cruciale: il neurone, agendo come un \textbf{filtro passa-basso} con costante di tempo $\tau_m$, media su moltissimi eventi in ogni finestra temporale di ampiezza $\tau_m$. In una finestra di durata $\tau_m \approx 20\,\text{ms}$, il numero atteso di spike ricevuti è:
+
+\begin{equation}
+N_{\text{spikes}} \approx \nu_{\text{tot}} \cdot \tau_m \approx 20\,000\,\text{Hz} \times 0.02\,\text{s} = 400\,\text{spike}
+\end{equation}
+
+Il neurone media dunque circa \textbf{400 eventi sinaptic} in ogni costante di tempo di membrana.
+
+
+\subsubsection{Separazione tra Input di Background e Input Selettivo}
+
+Il tasso di firing totale ricevuto dal neurone non è sempre costante a $20\,\text{kHz}$. Il professore introduce una distinzione fondamentale tra due componenti dell'input:
+
+\begin{enumerate}
+    \item \textbf{Input di background}: l'attività spontanea della rete, che rimane circa costante a $\approx 20\,\text{kHz}$.
+    \item \textbf{Input selettivo} (o perturbazione): una componente aggiuntiva prodotta da un sottoinsieme di neuroni pre-sinaptici che, in risposta a uno stimolo o a un compito cognitivo, aumentano il loro tasso di firing al di sopra del background.
+\end{enumerate}
+
+Formalmente, il tasso di firing istantaneo ricevuto è scritto come:
+
+\begin{equation}
+\nu_{\text{tot}}(t) = \nu_{\text{bg}} + \delta\nu(t)
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $\nu_{\text{bg}} \approx 20\,\text{kHz}$ è il \textbf{tasso di background} (fisso, determinato da $K \cdot \bar{\nu}_\text{bg}$).
+    \item $\delta\nu(t)$ è la \textbf{perturbazione temporale} dovuta all'attività selettiva.
+\end{itemize}
+
+\subsubsection{Stima della Perturbazione Selettiva}
+
+Il professore stima la perturbazione con un calcolo esplicito. Siano:
+\begin{itemize}
+    \item $f \approx 1\% = 0.01$: la \textbf{frazione di codifica} (\textit{coding fraction}) — la frazione dei neuroni pre-sinaptici che sono selettivamente attivi.
+    \item $\bar{\nu}_{\text{sel}} \approx 10\,\text{Hz}$: il tasso di firing dei neuroni selettivi (al di sopra del background; il massimo fisiologico è $\bar{\nu}_{\text{max}} \approx 1/\tau_{\text{ref}} \approx 100-200\,\text{Hz}$).
+\end{itemize}
+
+Il contributo selettivo al tasso di input è:
+
+\begin{equation}
+\delta\nu_{\text{sel}} = f \cdot K \cdot \bar{\nu}_{\text{sel}} = 0.01 \times 20\,000 \times 10\,\text{Hz} = 2\,\text{kHz}
+\end{equation}
+
+La perturbazione relativa rispetto al background è:
+
+\begin{equation}
+\frac{\delta\nu_{\text{sel}}}{\nu_{\text{bg}}} = \frac{2\,\text{kHz}}{20\,\text{kHz}} = 10\%
+\end{equation}
+
+Questo è un \textbf{numero piccolo}: la perturbazione selettiva rappresenta circa il 10\% del background. Questo fatto giustifica un \textbf{approccio perturbativo}: si può linearizzare la dinamica attorno al punto di lavoro determinato dal background, trattando la perturbazione selettiva come un piccolo disturbo.
+
+
+\subsection{Il Modello Conduttanza-Based: Equazione del Potenziale di Membrana}
+
+\subsubsection{Scelta del Riferimento di Potenziale}
+
+Prima di scrivere le equazioni, si sceglie come \textbf{riferimento di potenziale} il potenziale di equilibrio della membrana passiva $E_m = -65\,\text{mV}$ (il valore tipico del modello di Hodgkin-Huxley). Ponendo $E_m = 0$ per semplificare la notazione, i potenziali di inversione si ridefiniscono come:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|X|c|c|}
+    \hline
+    \textbf{Sinapsi} & \textbf{$E_\alpha$ originale} & \textbf{$E_\alpha$ nel nuovo riferimento} \\
+    \hline
+    Eccitatoria (AMPA/NMDA) & $0\,\text{mV}$ & $+65\,\text{mV}$ \\
+    \hline
+    Inibitoria (GABA) & $-75\,\text{mV}$ & $-10\,\text{mV}$ \\
+    \hline
+    Membrana passiva & $-65\,\text{mV}$ & $0\,\text{mV}$ \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+Con questo riferimento, $V$ rappresenta il potenziale di membrana misurato rispetto all'equilibrio passivo.
+
+\subsubsection{L'Equazione del Potenziale di Membrana Conduttanza-Based}
+
+L'equazione che governa la dinamica sub-soglia del potenziale di membrana del neurone post-sinaptico nel modello conduttanza-based leaky integrate-and-fire è:
+
+\begin{equation}
+C_m \frac{dV}{dt} = -g_m V - \sum_{\alpha \in \{E,I\}} \sum_{j=1}^{K_\alpha} g_{\alpha j}(t)\,(V - E_\alpha)
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $C_m$: \textbf{capacità di membrana} (in $\text{F}$ o $\text{nF}$).
+    \item $g_m$: \textbf{conduttanza di fuga} (leak conductance), responsabile del ritorno al potenziale di riposo.
+    \item $g_{\alpha j}(t)$: \textbf{conduttanza sinaptica} del contatto $(\alpha, j)$ al tempo $t$ (in Siemens o nS).
+    \item $E_\alpha$: potenziale di inversione della sinapsi di tipo $\alpha$ (nel riferimento scelto sopra).
+\end{itemize}
+
+Il termine $-g_m V$ è il termine di rilassamento passivo che riporta $V \to 0$ in assenza di input. Il termine $-g_{\alpha j}(t)\,(V - E_\alpha)$ rappresenta la corrente sinaptica di tipo $\alpha$ generata dalla sinapsi $j$-esima: essa è positiva (corrente depolarizzante) per le sinapsi eccitatorie (poiché $V < E_E = +65\,\text{mV}$ quasi sempre) e negativa (corrente iperpolarizzante) per le sinapsi inibitorie (poiché $V > E_I = -10\,\text{mV}$ quasi sempre in condizioni normali).
+
+
+
+\subsubsection{La Dinamica del Primo Ordine per la Conduttanza}
+
+Come stabilito nelle lezioni precedenti (in particolare nella lezione dedicata alla trasmissione sinaptica chimica), la conduttanza sinaptica $g_{\alpha j}(t)$ evolve secondo una \textbf{cinetica del primo ordine} guidata dall'arrivo degli spike pre-sinaptici. La semplificazione standard (che approssima la più realistica "funzione alpha" con un'esponenziale semplice) dà:
+
+\begin{equation}
+\frac{d g_{\alpha j}}{dt} = -\frac{g_{\alpha j}}{\tau_\alpha} + G_{\alpha j} \cdot S_{\alpha j}(t)
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $\tau_\alpha$: \textbf{costante di tempo sinaptica} per le sinapsi di tipo $\alpha$ (in ms).
+    \item $G_{\alpha j}$: \textbf{conduttanza massima} (o "jump") associata all'arrivo di un singolo spike pre-sinaptico al contatto $(\alpha, j)$.
+    \item $S_{\alpha j}(t) = \sum_k \delta(t - t_{\alpha j}^{(k)})$: il treno di spike pre-sinaptico.
+\end{itemize}
+
+I valori tipici delle costanti di tempo sinaptiche sono:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|X|l|l|}
+    \hline
+    \textbf{Tipo di sinapsi} & \textbf{Recettore} & \textbf{$\tau_\alpha$} \\
+    \hline
+    Eccitatoria rapida & AMPA & $2-5\,\text{ms}$ \\
+    \hline
+    Eccitatoria lenta & NMDA & $50-100\,\text{ms}$ \\
+    \hline
+    Inibitoria rapida & GABA$_A$ & $5-10\,\text{ms}$ \\
+    \hline
+    Inibitoria lenta & GABA$_B$ & $60-100\,\text{ms}$ \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Soluzione in Assenza di Spike: Rilassamento Esponenziale}
+
+In assenza di spike pre-sinaptici ($S_{\alpha j} = 0$), l'equazione si riduce a:
+
+\begin{equation}
+\frac{d g_{\alpha j}}{dt} = -\frac{g_{\alpha j}}{\tau_\alpha}
+\end{equation}
+
+con soluzione $g_{\alpha j}(t) = g_{\alpha j}(0)\,e^{-t/\tau_\alpha}$. La conduttanza rilassa esponenzialmente a zero con costante di tempo $\tau_\alpha$.
+
+\subsubsection{L'Effetto di un Singolo Spike Pre-Sinaptico}
+
+All'arrivo di un singolo spike pre-sinaptico all'istante $t^{(k)}$, la conduttanza riceve un \textbf{salto istantaneo} di ampiezza $G_{\alpha j}$:
+
+\begin{equation}
+g_{\alpha j}(t^{(k)+}) = g_{\alpha j}(t^{(k)-}) + G_{\alpha j}
+\end{equation}
+
+Seguito da un rilassamento esponenziale fino all'eventuale spike successivo. Questa è la ragione per cui questa cinetica è talvolta chiamata il "modello di conduttanza a funzione alpha": la risposta a uno spike singolo è un'esponenziale decrescente. La risposta in termine di \textbf{potenziale post-sinaptico eccitatorio} (EPSP) avrà una forma a campana asimmetrica (rapida salita, lenta discesa) determinata dalla convoluzione della risposta di conduttanza con il kernel RC della membrana.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "Il modello vero dovrebbe avere una funzione alpha — rapida salita, lenta discesa — come forma della conduttanza. Qui stiamo semplificando ulteriormente usando un'esponenziale. L'importante è che la costante di tempo $\tau_\alpha$ e la quantità di carica trasmessa siano corretti."
+\end{tcolorbox}
+
+\subsubsection{Definizione della Conduttanza Totale per Popolazione}
+
+Poiché l'equazione del potenziale di membrana dipende dalla \textbf{somma} sulle conduttanze sinaptiche di tutti i neuroni pre-sinaptici della stessa classe, è conveniente definire la \textbf{conduttanza sinaptica totale} per ciascuna classe:
+
+\begin{equation}
+G_\alpha(t) = \sum_{j=1}^{K_\alpha} g_{\alpha j}(t)
+\end{equation}
+
+Questa operazione è legittima perché l'equazione per la corrente sinaptica è \textbf{lineare} nelle conduttanze. La corrente sinaptica totale si riscrive come:
+
+\begin{equation}
+I_{\text{syn}} = -\sum_{\alpha \in \{E,I\}} G_\alpha(t)\,(V - E_\alpha)
+\end{equation}
+
+\subsubsection{Equazione per la Conduttanza Totale}
+
+Poiché ogni singola conduttanza $g_{\alpha j}$ soddisfa l'equazione del primo ordine, per linearità la conduttanza totale $G_\alpha(t)$ soddisfa:
+
+\begin{equation}
+\frac{d G_\alpha}{dt} = -\frac{G_\alpha}{\tau_\alpha} + \sum_{j=1}^{K_\alpha} G_{\alpha j} \cdot S_{\alpha j}(t)
+\end{equation}
+
+Il sistema è ora ridotto a \textbf{tre gradi di libertà}: $V$, $G_E$, $G_I$. Il termine sorgente è la sovrapposizione di tutti i treni di spike pre-sinaptici, pesati per le rispettive conduttanze massime $G_{\alpha j}$.
+
+
+\subsection{Decomposizione Media + Fluttuazione}
+
+\subsubsection{La Decomposizione Perturbativa}
+
+Il passo cruciale verso la linearizzazione è decomporre ogni variabile dinamica in una \textbf{componente media} (di stato stazionario) e una \textbf{fluttuazione temporale}:
+
+\begin{equation}
+G_\alpha(t) = \bar{G}_\alpha + \delta G_\alpha(t), \qquad \langle \delta G_\alpha \rangle_t = 0
+\end{equation}
+
+\begin{equation}
+V(t) = \bar{V} + \delta V(t), \qquad \langle \delta V \rangle_t = 0
+\end{equation}
+
+dove la media temporale $\langle \cdot \rangle_t = \frac{1}{T}\int_0^T \cdot\, dt$ è presa su un intervallo $T$ sufficientemente lungo.
+
+Analogamente, il treno di spike di ogni neurone pre-sinaptico viene decomposto:
+
+\begin{equation}
+S_{\alpha j}(t) = \bar{\nu}_{\alpha j} + \delta S_{\alpha j}(t), \qquad \langle \delta S_{\alpha j} \rangle_t = 0
+\end{equation}
+
+dove $\bar{\nu}_{\alpha j}$ è il tasso di firing medio e $\delta S_{\alpha j}$ è la componente fluttuante (media nulla).
+
+La decomposizione è consistente se valgono le seguenti relazioni:
+
+\begin{equation}
+\frac{1}{T}\int_0^T G_\alpha(t)\, dt = \bar{G}_\alpha, \qquad \frac{1}{T}\int_0^T \delta G_\alpha(t)\, dt = 0
+\end{equation}
+
+Queste condizioni sono soddisfatte per definizione.
+
+
+\subsubsection{Applicazione dell'Operatore di Media Temporale}
+
+Per calcolare $\bar{G}_\alpha$, si applica la media temporale a entrambi i membri dell'equazione della conduttanza totale. Allo stato stazionario, la derivata temporale della media è nulla ($\langle \dot{G}_\alpha \rangle_t = 0$). L'equazione diventa:
+
+\begin{equation}
+0 = -\frac{\bar{G}_\alpha}{\tau_\alpha} + \sum_{j=1}^{K_\alpha} G_{\alpha j}\,\bar{\nu}_{\alpha j}
+\end{equation}
+
+\subsubsection{Il Risultato: Conduttanza di Stato Stazionario}
+
+Risolvendo per $\bar{G}_\alpha$:
+
+\begin{equation}
+\boxed{\bar{G}_\alpha = \tau_\alpha \sum_{j=1}^{K_\alpha} G_{\alpha j}\,\bar{\nu}_{\alpha j}}
+\end{equation}
+
+Questo risultato ha una interpretazione fisica immediata: la conduttanza media è il prodotto della \textbf{costante di tempo sinaptica} per la \textbf{somma di tutti i contributi alla conduttanza prodotti da spike per unità di tempo}. Ogni neurone pre-sinaptico $j$ contribuisce con $G_{\alpha j} \cdot \bar{\nu}_{\alpha j}$ (conduttanza massima per salto moltiplicata per il numero di salti per secondo). La costante di tempo $\tau_\alpha$ appare perché ogni salto "vive" per un tempo $\tau_\alpha$ prima di rilassare.
+
+Poiché $G_{\alpha j} > 0$ e $\bar{\nu}_{\alpha j} > 0$, si ha sempre $\bar{G}_\alpha > 0$: la conduttanza media è sempre positiva, come atteso fisicamente.
+
+\subsubsection{Il Ruolo delle Fluttuazioni}
+
+La componente fluttuante $\delta G_\alpha(t)$ è associata all'\textbf{attività selettiva} della rete: i neuroni che aumentano il loro tasso di firing in risposta a uno stimolo producono fluttuazioni di $G_\alpha$ attorno alla media. Come stimato nella sezione precedente, queste fluttuazioni sono di ordine \textbf{10\%} rispetto alla media, ovvero $|\delta G_\alpha| \approx 0.1\,\bar{G}_\alpha$.
+
+\subsection{Linearizzazione del Potenziale di Membrana}
+
+\subsubsection{Sostituzione della Decomposizione nell'Equazione del Moto}
+
+Si sostituisce $G_\alpha = \bar{G}_\alpha + \delta G_\alpha$ e $V = \bar{V} + \delta V$ nell'equazione del moto per il potenziale di membrana:
+
+\begin{equation}
+C_m \frac{d(\bar{V} + \delta V)}{dt} = -g_m(\bar{V} + \delta V) - \sum_\alpha (\bar{G}_\alpha + \delta G_\alpha)\bigl((\bar{V} + \delta V) - E_\alpha\bigr)
+\end{equation}
+
+Espandendo il prodotto e raccogliendo per ordine perturbativo:
+
+\begin{equation}
+C_m \frac{d \delta V}{dt} = -g_m(\bar{V} + \delta V) - \sum_\alpha \bar{G}_\alpha(\bar{V} + \delta V - E_\alpha) - \sum_\alpha \delta G_\alpha(\bar{V} + \delta V - E_\alpha)
+\end{equation}
+
+\subsubsection{Identificazione dei Termini}
+
+I termini dell'espansione si classificano come:
+\begin{itemize}
+    \item \textbf{Ordine zero} (solo quantità medie): $-g_m \bar{V} - \sum_\alpha \bar{G}_\alpha(\bar{V} - E_\alpha)$
+    \item \textbf{Ordine lineare} in $\delta V$: $-g_m \delta V - \sum_\alpha \bar{G}_\alpha \delta V$
+    \item \textbf{Ordine lineare} in $\delta G_\alpha$: $-\sum_\alpha \delta G_\alpha(\bar{V} - E_\alpha)$
+    \item \textbf{Ordine quadratico} in $\delta G_\alpha \cdot \delta V$: questo termine viene \textbf{trascurato} nell'approssimazione perturbativa.
+\end{itemize}
+
+L'ordine quadratico $\delta G_\alpha \cdot \delta V$ è il prodotto di due quantità dell'ordine del 10\%: il suo contributo relativo è dell'ordine dell'\textbf{1\%} e può essere trascurato nell'approssimazione lineare.
+
+\subsubsection{Equazione per il Valore Medio $\bar{V}$}
+
+Applicando la media temporale all'equazione (dove $\langle d\delta V/dt \rangle = 0$ allo stato stazionario), si ottiene un'equazione per il potenziale medio $\bar{V}$:
+
+\begin{equation}
+0 = -g_m \bar{V} - \sum_\alpha \bar{G}_\alpha(\bar{V} - E_\alpha)
+\end{equation}
+
+Raccogliendo i termini proporzionali a $\bar{V}$:
+
+\begin{equation}
+0 = -\bar{V}\left(g_m + \sum_\alpha \bar{G}_\alpha\right) + \sum_\alpha \bar{G}_\alpha E_\alpha
+\end{equation}
+
+Si definisce la \textbf{conduttanza effettiva totale}:
+
+\begin{equation}
+\boxed{g_m' \equiv g_m + \sum_\alpha \bar{G}_\alpha = g_m + \bar{G}_E + \bar{G}_I}
+\end{equation}
+
+Con questa definizione, il potenziale medio di stato stazionario è:
+
+\begin{equation}
+\bar{V} = \frac{\sum_\alpha \bar{G}_\alpha E_\alpha}{g_m'} = \frac{\bar{G}_E E_E + \bar{G}_I E_I}{g_m'}
+\end{equation}
+
+Questo è un potenziale di equilibrio \textbf{effettivo}, che dipende dal bilanciamento tra eccitazione e inibizione: $\bar{G}_E E_E = \bar{G}_E \times (+65\,\text{mV})$ (positivo) vs. $\bar{G}_I E_I = \bar{G}_I \times (-10\,\text{mV})$ (negativo). L'equilibrio $\bar{V}$ può essere sopra o sotto il potenziale di riposo $V = 0$ a seconda della prevalenza relativa di eccitazione o inibizione. Si può definire un \textbf{potenziale di equilibrio effettivo}:
+
+\begin{equation}
+\boxed{E_m' = V \frac{\sum_\alpha \bar{G}_\alpha }{g_m'}}
+\end{equation}
+
+
+\subsection{Passaggio al Modello a Corrente}
+
+\subsubsection{Equazione Linearizzata per la Fluttuazione del Potenziale}
+
+Dopo aver separato il termine di ordine zero (che determina $\bar{V}$), l'equazione per la fluttuazione del potenziale $\delta V$ diventa:
+
+\begin{equation}
+C_m \frac{d\delta V}{dt} = -g_m' \,\delta V - \sum_\alpha \delta G_\alpha (\bar{V} - E_\alpha)
+\end{equation}
+
+Questa equazione ha una struttura fondamentale: la fluttuazione del potenziale di membrana è guidata da due termini:
+\begin{enumerate}
+    \item Un termine di rilassamento con conduttanza effettiva $g_m'$.
+    \item Un termine sorgente proporzionale alle \textbf{fluttuazioni di conduttanza} $\delta G_\alpha$ pesate dalla \textbf{driving force di stato stazionario} $(\bar{V} - E_\alpha)$.
+\end{enumerate}
+
+In questa equazione la \textbf{non-linearità è scomparsa}: il potenziale $\delta V$ compare solo linearmente, senza più termini del tipo $G_\alpha \cdot V$.
+
+\subsubsection{Riscrittura in Termini di V Totale}
+
+Sommando l'equazione per $\bar{V}$ (ordine zero) e l'equazione per $\delta V$ (ordine lineare), e ricordando che $V = \bar{V} + \delta V$, si ottiene l'equazione per il potenziale totale:
+
+\begin{equation}
+C_m \frac{dV}{dt} = -g_m'(V - E_m') - \sum_\alpha \delta G_\alpha(\bar{V} - E_\alpha)
+\end{equation}
+
+Questa si può riscrivere in modo più compatto. Si noti che:
+\begin{equation}
+\delta G_\alpha (\bar{V} - E_\alpha) = (G_\alpha - \bar{G}_\alpha)(\bar{V} - E_\alpha)
+\end{equation}
+
+Quindi l'input sinaptico è proporzionale a $(G_\alpha - \bar{G}_\alpha)$ moltiplicato per una costante $(\bar{V} - E_\alpha)$. Questo è equivalente a un \textbf{modello a corrente} in cui l'efficacia sinaptica è riscalata.
+
+\subsubsection{La Costante di Tempo Effettiva}
+
+La costante di tempo di rilassamento del potenziale è ora:
+
+\begin{equation}
+\tau_m' = \frac{C_m}{g_m'}
+\end{equation}
+
+Sostituendo la definizione di $g_m'$:
+
+\begin{equation}
+\tau_m' = \frac{C_m}{g_m + \bar{G}_E + \bar{G}_I}
+\end{equation}
+
+Dividendo numeratore e denominatore per $g_m$:
+
+\begin{equation}
+\boxed{\tau_m' = \frac{\tau_m}{1 + \tau_m \dfrac{\bar{G}_E + \bar{G}_I}{C_m}}}
+\end{equation}
+
+dove $\tau_m = C_m/g_m$ è la costante di tempo passiva originale. Poiché tutte le conduttanze sono positive, si ha sempre $g_m' > g_m$, da cui:
+
+\begin{equation}
+\tau_m' < \tau_m
+\end{equation}
+
+\textbf{Risultato cruciale}: il bombardamento sinaptico \textbf{accorcia la costante di tempo di membrana}. Maggiore è l'attività della rete (maggiori sono $\bar{G}_E$ e $\bar{G}_I$), più piccola è $\tau_m'$ e più veloce è la risposta del neurone. Questo fenomeno è noto come \textbf{regime di alta conduttanza} (\textit{high-conductance state}) ed è una caratteristica fondamentale dei neuroni corticali in vivo.
+
+
+
+\subsubsection{Introduzione della Corrente Sinaptica Linearizzata}
+
+Il passo finale è introdurre come nuova variabile di stato la \textbf{corrente sinaptica linearizzata} per ciascuna classe $\alpha$:
+
+\begin{equation}
+I_\alpha(t) \equiv -G_\alpha(t)\,(\bar{V} - E_\alpha)
+\end{equation}
+
+Con questa definizione, l'equazione del potenziale di membrana assume la forma:
+
+\begin{equation}
+C_m \frac{dV}{dt} = -g_m' V + g_m' E_m' + \sum_\alpha I_\alpha(t)
+\end{equation}
+
+o, equivalentemente:
+
+\begin{equation}
+\tau_m' \frac{dV}{dt} = -(V - E_m') + \frac{\tau_m'}{C_m}\sum_\alpha I_\alpha(t)
+\end{equation}
+
+Questa è la forma standard del \textbf{leaky integrate-and-fire a corrente} (\textit{current-based LIF}).
+
+\subsubsection{Equazione per la Corrente Sinaptica}
+
+L'equazione del moto per la corrente sinaptica $I_\alpha(t)$ si ottiene moltiplicando l'equazione di $G_\alpha$ per $(\bar{V} - E_\alpha)$:
+
+\begin{equation}
+\frac{d I_\alpha}{dt} = -\frac{I_\alpha}{\tau_\alpha} + \sum_{j=1}^{K_\alpha} J_{\alpha j}\, S_{\alpha j}(t)
+\end{equation}
+
+dove si è definita l'\textbf{efficacia sinaptica} (synaptic efficacy):
+
+\begin{equation}
+\boxed{J_{\alpha j} = -G_{\alpha j}\,(\bar{V} - E_\alpha) = G_{\alpha j}\,(E_\alpha - \bar{V})}
+\end{equation}
+
+Il sistema completo di equazioni del modello current-based LIF è dunque:
+
+\begin{equation}
+\begin{cases}
+\tau_m' \dfrac{dV}{dt} = -(V - E_m') + \dfrac{\tau_m'}{C_m}(I_E + I_I) \\[8pt]
+\dfrac{d I_E}{dt} = -\dfrac{I_E}{\tau_E} + \displaystyle\sum_{j=1}^{K_E} J_{Ej}\, S_{Ej}(t) \\[8pt]
+\dfrac{d I_I}{dt} = -\dfrac{I_I}{\tau_I} + \displaystyle\sum_{j=1}^{K_I} J_{Ij}\, S_{Ij}(t)
+\end{cases}
+\end{equation}
+
+Le variabili di stato sono ora \textbf{tre}: $V$, $I_E$, $I_I$ — e il sistema è \textbf{lineare} nella dinamica di $I_E$ e $I_I$.
+
+\subsubsection{Segno dell'Efficacia Sinaptica}
+
+Il segno di $J_{\alpha j}$ determina se la sinapsi è \textbf{eccitatoria} o \textbf{inibitoria}:
+
+\begin{itemize}
+    \item \textbf{Sinapsi eccitatoria} ($\alpha = E$): $E_E = +65\,\text{mV}$, $\bar{V} \in [-10, 20]\,\text{mV}$ tipicamente, quindi $E_E - \bar{V} > 0$, e $G_{Ej} > 0$. Dunque $J_{Ej} > 0$: la corrente eccita il neurone post-sinaptico.
+    \item \textbf{Sinapsi inibitoria} ($\alpha = I$): $E_I = -10\,\text{mV}$, e il potenziale medio $\bar{V}$ è in genere vicino o superiore a $E_I$, quindi $E_I - \bar{V} \leq 0$, e $G_{Ij} > 0$. Dunque $J_{Ij} \leq 0$: la corrente inibisce il neurone post-sinaptico.
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "La linearizzazione ci ha portato a una riscalatura dell'efficacia sinaptica: $J_{\alpha j} = G_{\alpha j} (E_\alpha - \bar{V})$. Il fattore $(\bar{V} - E_\alpha)$ è una costante che assorbe la 'driving force' media. Questo numero è misurabile sperimentalmente: è semplicemente l'ampiezza del salto di potenziale post-sinaptico quando arriva uno spike isolato (EPSP o IPSP)."
+\end{tcolorbox}
+
+
+\section{Riepilogo}
+
+La lezione ha sviluppato una \textbf{gerarchia di semplificazioni} successive, ciascuna con le proprie ipotesi e limiti di validità:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|l|l|X|X|}
+    \hline
+    \textbf{Livello} & \textbf{Modello} & \textbf{Variabili di stato} & \textbf{Non-linearità} \\
+    \hline
+    1 & Conduttanza-based completo & $V, g_{\alpha j}$ (una per sinapsi, $\sim$20 000) & $g_{\alpha j} \cdot V$ \\
+    \hline
+    2 & Conduttanza totale & $V, G_E, G_I$ & $G_\alpha \cdot V$ \\
+    \hline
+    3 & Current-based linearizzato & $V, I_E, I_I$ & nessuna (lineare) \\
+    \hline
+    4 & White-noise LIF & $V$ & nessuna (lineare stocastico) \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+Un neurone corticale è immerso in un bombardamento sinaptico massiccio ($\sim 20\,\text{kHz}$) proveniente da migliaia di neuroni pre-sinaptici. In questo contesto:
+
+\begin{enumerate}
+    \item La \textbf{conduttanza sinaptica media} modifica le proprietà passive del neurone: la costante di tempo si riduce ($\tau_m' < \tau_m$) e il potenziale di equilibrio si sposta ($E_m' \neq 0$).
+    \item La \textbf{non-linearità} del modello conduttanza-based scompare nella linearizzazione perturbativa: il sistema si riduce a un \textbf{current-based LIF} con parametri dipendenti dall'attività di rete.
+    \item Le \textbf{fluttuazioni dell'input} sono ben descritte da un \textbf{processo di Ornstein-Uhlenbeck}: un processo stazionario gaussiano di Markov con media $\mu_\alpha \tau_\alpha$ e varianza $\sigma_\alpha^2 \tau_\alpha/2$.
+    \item Nel regime bilanciato della corteccia, la media netta dell'input è quasi zero (bilancio E/I) e le fluttuazioni dominano, producendo un potenziale di membrana irregolare con CV $\approx 1$.
+\end{enumerate}
+
+Queste sono le fondamenta su cui si costruirà la \textbf{teoria di campo medio} (\textit{mean-field theory}) per le reti neurali nelle lezioni successive.
