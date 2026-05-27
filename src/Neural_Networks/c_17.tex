@@ -1,0 +1,556 @@
+\chapter{Lezione 17}
+
+
+\section{Organizzazione Strutturale e Funzionale delle Reti Cerebrali}
+
+\subsubsection{Obiettivi della Lezione}
+
+Uno degli obiettivi fondamentali delle neuroscienze computazionali è definire in modo rigoroso che cosa si intende per \textbf{rete neurale}, partendo da un punto di vista biologico e identificando le approssimazioni che permettono di costruire modelli matematici trattabili pur rimanendo fedeli alla realtà sperimentale. A tale scopo è necessario prima comprendere come le reti neurali siano organizzate nella corteccia cerebrale.
+
+Come introdotto nelle prime lezioni del corso, esistono diversi approcci sperimentali per investigare l'organizzazione di una rete cerebrale. Questi approcci si suddividono tradizionalmente in due grandi categorie:
+
+\begin{itemize}
+    \item \textbf{Connettività strutturale}: descrive l'esistenza di connessioni fisiche (fibre assonali) tra aree cerebrali.
+    \item \textbf{Connettività funzionale}: descrive le correlazioni statistiche nell'attività di regioni diverse del cervello.
+\end{itemize}
+
+È importante tenere presente che la presenza di una connessione strutturale non implica necessariamente un'interazione funzionale rilevante in ogni istante. Viceversa, due aree possono mostrare attività correlata anche in assenza di una connessione diretta, grazie a percorsi polisinaptici che connettono indirettamente ogni area corticale a ogni altra.
+
+\subsubsection{La Corteccia come Oggetto di Studio}
+
+La trattazione si concentra sulle \textbf{reti corticali}, ovvero le reti formate dai neuroni della corteccia cerebrale. La corteccia è la struttura laminare che riveste la superficie dei due emisferi cerebrali ed è responsabile delle funzioni cognitive superiori: percezione, movimento volontario, linguaggio, memoria, pianificazione.
+
+
+\subsection{Diffusion Tensor Imaging (DTI)}
+
+\subsubsection{Il Problema della Connettività a Lunga Distanza}
+
+Per investigare l'esistenza di connessioni a lunga distanza tra aree corticali distinte si ricorre a tecniche di risonanza magnetica. In particolare, il \textbf{Diffusion Tensor Imaging (DTI)} sfrutta le proprietà di diffusione delle molecole d'acqua nei tessuti cerebrali per rivelare la presenza e l'orientamento dei fasci di fibre assonali.
+
+Il \textbf{globo bianco} (white matter) è la porzione più interna del cervello, dove sono concentrate le fibre mielinizzate. La \textbf{mielina} — prodotta dalle cellule di Schwann nel sistema nervoso periferico e dagli oligodendrociti nel sistema nervoso centrale — funge da guaina isolante attorno agli assoni, permettendo la propagazione rapida dei potenziali d'azione su lunghe distanze. Le fibre assonali all'interno del white matter sono organizzate in \textbf{fasci} (bundles) orientati coerentemente.
+
+\subsubsection{Principio Fisico del DTI}
+
+Il DTI misura l'\textbf{anisotropia della diffusione} dei protoni dell'acqua. In un'area priva di strutture orientate, l'acqua diffonde isotropicamente in tutte le direzioni. All'interno di un assone mielinizzato, invece, l'acqua è confinata a diffondere lungo la direzione del fascio (il termine "pipe" è usato dal docente come analogia): si ottiene quindi un \textbf{tensore di diffusione} $\sigma$ con un'eigenvalue dominante corrispondente alla direzione del fascio.
+
+Il volume cerebrale viene suddiviso in \textbf{voxel} tridimensionali. Per ciascun voxel attraversato da una fibra mielinizzata, il tensore di diffusione risulta anisotropico. Procedendo da un voxel sorgente e seguendo la direzione preferenziale del tensore voxel per voxel, si ricostruisce il percorso del fascio: questa procedura prende il nome di \textbf{trattografia} (tractography).
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} L'analogia corretta è quella di una serie di tubi contenenti acqua: i protoni dell'acqua non possono muoversi liberamente in ogni direzione, ma sono vincolati all'interno del "tubo" assonale, quindi il loro moto preferenziale è parallelo all'asse del fascio.
+\end{tcolorbox}
+
+\subsubsection{Limitazioni della Trattografia DTI}
+
+La trattografia presenta alcune limitazioni intrinseche:
+
+\begin{enumerate}
+    \item \textbf{Risoluzione spaziale}: la dimensione del voxel limita la capacità di risolvere fasci sottili.
+    \item \textbf{Fibre incrociate}: quando due fasci di fibre si incrociano nello stesso voxel, il tensore di diffusione risultante è la sovrapposizione di due contributi, rendendo difficile disambiguare le due direzioni.
+    \item \textbf{Directionality}: il DTI non fornisce informazioni sulla direzione di propagazione del segnale (da pre- a post-sinaptico), né sull'intensità funzionale della connessione.
+\end{enumerate}
+
+
+\subsubsection{Dal Voxel al Grafo di Connettività}
+
+Partendo da un voxel sorgente posizionato sulla superficie corticale (o prossimo ad essa), la trattografia permette di identificare tutti i voxel destinazione raggiunti dalle fibre originate da quella sorgente. Campionando casualmente molti voxel sorgente sulla superficie corticale, si costruisce una \textbf{matrice di connettività strutturale} (o \textbf{connettoma strutturale}). Questa matrice può essere rappresentata come un \textbf{grafo} orientato i cui nodi sono le aree corticali macroscopiche e i cui archi sono i fasci di fibre.
+
+\subsubsection{Limitazioni del Connettoma Strutturale}
+
+Il connettoma strutturale ottenuto tramite DTI fornisce informazioni qualitative: è possibile distinguere la presenza di un fascio numeroso (molte fibre) da uno esiguo (poche fibre), ma con risoluzione limitata. Soprattutto, non è possibile ricavare:
+
+\begin{itemize}
+    \item Il \textbf{numero di sinapsi} stabilite tra le fibre della connessione
+    \item La \textbf{direzione funzionale} della comunicazione (il DTI ricostruisce traiettorie geometriche, non circuiti orientati)
+    \item La \textbf{forza sinaptica} della connessione
+\end{itemize}
+
+Queste limitazioni rendono necessario integrare il connettoma strutturale con misure funzionali.
+
+\subsubsection{La Matrice di Adiacenza del Connettoma}
+
+La rappresentazione matematica del connettoma strutturale è una \textbf{matrice di adiacenza binaria} (o pesata) $A_{ij}$ di dimensione $M \times M$, dove $M$ è il numero di aree corticali macroscopiche considerate:
+
+\begin{equation}
+A_{ij} = \begin{cases} 1 & \text{se esiste almeno un fascio di fibre da area } j \text{ ad area } i \\ 0 & \text{altrimenti} \end{cases}
+\end{equation}
+
+Nel caso pesato, $A_{ij}$ rappresenta il numero di fibre o l'indice di anisotropia frazionale (FA) medio lungo il tratto. La matrice $A$ è tipicamente:
+
+\begin{itemize}
+    \item \textbf{Sparsa}: la maggior parte delle coppie di aree non è direttamente connessa
+    \item \textbf{Non simmetrica in senso stretto}: la direzione nel DTI non è determinabile, ma si può fare un'assunzione di simmetria come prima approssimazione
+    \item \textbf{Gerarchica}: esistono hubs corticali (aree molto connesse) e nodi periferici poco connessi, in accordo con una struttura "small-world"
+\end{itemize}
+
+
+
+\subsection{Connettività Funzionale}
+
+\subsubsection{Il Segnale BOLD}
+
+La \textbf{risonanza magnetica funzionale} (fMRI) misura l'attività neurale indirettamente attraverso il \textbf{segnale BOLD} (Blood-Oxygen-Level-Dependent). Il segnale BOLD riflette il consumo metabolico di un volume corticale: in risposta a un aumento dell'attività neurale, il flusso sanguigno locale aumenta (risposta emodinamica), e questo modifica il rapporto tra emoglobina ossigenata e deossigenata, che hanno proprietà magnetiche differenti.
+
+
+
+\subsubsection{Misura della Connettività Funzionale}
+
+Dividendo la corteccia cerebrale in voxel, si registrano le serie temporali del segnale BOLD da ciascun voxel. La \textbf{connettività funzionale} viene tipicamente quantificata tramite la \textbf{correlazione incrociata} (cross-correlation)  tra le serie temporali di coppie di voxel:
+
+\begin{equation}
+C_{ij} = \frac{\langle R_i(t)\, R_j(t) \rangle_t}{\sigma_i \sigma_j}
+\end{equation}
+
+dove $R_i(t)$ è il segnale BOLD del voxel $i$ e $\langle \cdot \rangle_t$ denota la media temporale.
+
+\subsubsection{Misurazioni a Riposo e Non-Stazionarietà}
+
+Le misure di connettività funzionale vengono tipicamente eseguite su soggetti in \textbf{stato di riposo} (resting state), in sessioni della durata di diversi minuti. In questo stato, il cervello non è garantito di trovarsi sempre nello stesso stato funzionale: può vagare tra diversi stati di attività (non-stazionarietà), il che influenza le misure di correlazione.
+
+\subsection{Confronto tra Connettività Strutturale e Funzionale}
+
+\subsubsection{Il Repository CoCoMac}
+
+Un caso di studio standard nella letteratura di neuroscienze sistemiche è il \textbf{connettoma del macaco}, disponibile nel repository pubblico \textbf{CoCoMac} (Collation of Connectivity data on the Macaque brain). Questo dataset fornisce sia la matrice di connettività strutturale (da DTI e tracing anatomico) sia misure di connettività funzionale (da fMRI a riposo).
+
+\subsubsection{Rappresentazione Inflata della Corteccia del Macaco}
+
+La corteccia del macaco viene spesso rappresentata in forma \textbf{inflata}: la superficie corticale viene "sgonfiata" per rendere visibili le aree nascoste nelle fessure (sulci). In questa rappresentazione, le diverse \textbf{aree di Brodmann} (aree citoarchitettoniche) sono contrassegnate da colori diversi:
+
+\begin{itemize}
+    \item Polo occipitale (lobo occipitale): aree visive primarie e secondarie
+    \item Lobo parietale: integrazione sensorimotoria
+    \item Lobo temporale: processamento uditivo e del linguaggio
+    \item Lobo frontale: pianificazione motoria e funzioni cognitive superiori; in particolare, la \textbf{corteccia premotoria} (area di Brodmann 6) gestisce la pianificazione del movimento
+\end{itemize}
+
+\subsubsection{Confronto tra le Due Matrici}
+
+Il confronto tra la matrice strutturale e quella funzionale rivela un risultato fondamentale:
+
+\begin{enumerate}
+    \item \textbf{Corrispondenza parziale}: le coppie di aree con forte connettività strutturale tendono a mostrare elevata correlazione funzionale.
+    \item \textbf{Connettività funzionale senza connessione strutturale diretta}: è possibile osservare correlazione (anche anti-correlazione) tra aree non direttamente connesse strutturalmente, a causa di percorsi polisinaptici.
+    \item \textbf{Anti-correlazione}: alcune coppie di aree mostrano attività anti-correlata, fenomeno interpretabile come inibizione indiretta o competizione tra sottoreti funzionali.
+\end{enumerate}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Il cervello è un sistema integrato: a uno o due passi sinaptici, tutte le popolazioni corticali risultano indirettamente connesse l'una all'altra. Questo spiega perché possano emergere correlazioni funzionali anche in assenza di connessione strutturale diretta.
+\end{tcolorbox}
+
+\subsection{Microscala: Organizzazione in Strati della Colonna Corticale}
+
+\subsubsection{Dalla Macroscala alla Microscala}
+
+Dopo aver caratterizzato la rete corticale alla macroscala (aree corticali intere), è possibile scendere alla \textbf{microscala} di una singola colonna corticale. La colonna corticale è l'unità funzionale verticale della corteccia: un cilindro di tessuto corticale di circa 0.5 mm di diametro e spessore pari all'intera corteccia (circa 2–4 mm), organizzato in sei strati orizzontali (layers 1–6) con caratteristiche citoarchitettoniche distinte.
+
+\subsubsection{Preparazione Istologica: Sezioni Corticali}
+
+In neurofisiologia, un approccio classico consiste nel sacrificare l'animale, estrarre il cervello e ottenere sezioni istologiche dello spessore di circa 0.5 mm. Le sezioni vengono colorate con metodi specifici (ad esempio il \textbf{metodo Golgi} con inchiostro di osmio-bicromato di potassio) che impregnano selettivamente alcuni neuroni, rendendoli visibili come strutture nere su fondo chiaro.
+
+Questa procedura permette di:
+\begin{itemize}
+    \item Ricostruire la \textbf{morfologia dettagliata} dei neuroni (soma, dendriti, assone)
+    \item Identificare la \textbf{posizione laminare} dei neuroni
+    \item Visualizzare la \textbf{distribuzione spaziale} delle diverse classi cellulari
+\end{itemize}
+
+\subsubsection{I Neuroni Piramidali dello Strato 5}
+
+I \textbf{neuroni piramidali} sono i neuroni eccitatori principali della corteccia. Il loro soma ha una caratteristica forma piramidale, con un lungo apice dendritico che risale verso gli strati superficiali e ramificazioni basali estese orizzontalmente. I neuroni piramidali dello \textbf{strato 5} sono spesso descritti come il "motore" della colonna corticale: inviano proiezioni a lunga distanza verso il tronco encefalico, il midollo spinale e altre aree corticali.
+
+
+\subsection{Mappatura della Connettività Intra-Colonnare}
+
+\subsubsection{L'Esperimento Multi-Patch del Laboratorio Petersen}
+
+Un esperimento seminale per caratterizzare la connettività intra-colonnare è stato condotto presso il \textbf{laboratorio Petersen} (EPFL, Losanna). In questo esperimento, vengono patchati simultaneamente i soma di \textbf{sei neuroni piramidali} identificati visivamente in una sezione corticale, ciascuno con una pipetta di patch-clamp indipendente. La tecnica di \textbf{patch-clamp whole-cell} consente di misurare il potenziale di membrana $V_i(t)$ di ciascuno dei sei neuroni in modo simultaneo e continuo.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} L'esperimento viene eseguito mantenendo il tessuto in silenzio (senza attività di background), per massimizzare il rapporto segnale-rumore nella misura dei potenziali post-sinaptici.
+\end{tcolorbox}
+
+\subsubsection{Protocollo di Stimolazione e Registrazione}
+
+Il protocollo sperimentale è il seguente:
+
+\begin{enumerate}
+    \item Si inietta un \textbf{impulso di corrente} nel neurone pre-sinaptico $i$ (il "sender"), sufficiente a evocare un singolo potenziale d'azione.
+    \item Si osservano i potenziali di membrana dei cinque neuroni rimanenti ($j = 1, \ldots, 5$, $j \neq i$) per rilevare eventuali \textbf{potenziali post-sinaptici eccitatori} (EPSP) con il ritardo atteso dalla trasmissione sinaptica.
+    \item Se in un neurone $j$ si osserva una deflessione depolarizzante dopo il picco di $i$, si conclude che esiste una sinapsi eccitatoria da $i$ a $j$.
+\end{enumerate}
+
+Ripetendo questa procedura per ogni coppia ordinata di neuroni, si ricostruisce la \textbf{matrice di connettività sinaptica} del piccolo circuito.
+
+Poiché si lavora con neuroni piramidali (neuroni eccitatori), tutti gli EPSP osservati sono depolarizzanti (positivi). La mappa di connettività prodotta permette di quantificare, per ogni coppia di strati corticali, la \textbf{probabilità di connessione} e la \textbf{dimensione dell'EPSP}.
+
+\subsubsection{Scala dei Potenziali Post-Sinaptici}
+
+Un punto tecnico importante riguarda la scala di misura: un \textbf{potenziale d'azione} ha ampiezza di circa 100 mV e durata di 1–2 ms. Un \textbf{EPSP} prodotto da una singola sinapsi ha ampiezza tipica di 0.1–1 mV e durata di 10–50 ms. Queste scale temporali e di ampiezza differiscono di due ordini di grandezza, il che richiede un amplificatore patch-clamp con elevata risoluzione in tensione.
+
+Il ritardo sinaptico tipico tra il picco del potenziale d'azione pre-sinaptico e l'inizio dell'EPSP post-sinaptico è di circa \textbf{1–3 ms}, composto da:
+\begin{itemize}
+    \item \textbf{Ritardo di conduzione} lungo l'assone
+    \item \textbf{Ritardo di trasmissione sinaptica} (esocitosi delle vescicole, diffusione del neurotrasmettitore, apertura dei recettori)
+\end{itemize}
+
+La presenza di questo ritardo con il timing corretto rispetto alla stimolazione è uno dei criteri per identificare un EPSP monosinaptico genuino.
+
+
+
+\subsubsection{Matrice della Probabilità di Connessione}
+
+Raggruppando i dati di connettività per strato di appartenenza del neurone pre- e post-sinaptico, si ottiene una \textbf{matrice di probabilità di connessione} $P(l_{\rm pre} \to l_{\rm post})$, dove gli indici $l_{\rm pre}$ e $l_{\rm post}$ identificano lo strato di origine e destinazione.
+
+Questa matrice è \textbf{non uniforme}: alcuni strati sono preferenzialmente connessi tra loro, mentre altre combinazioni sono quasi assenti. In particolare, si osservano connessioni significative tra:
+
+\begin{itemize}
+    \item Strato 4 $\to$ Strato 5 (via di processamento principale)
+    \item Strato 2/3 $\to$ Strato 5 (input superficiali allo "strato motore")
+    \item Strato 2/3 $\to$ Strato 2/3 (ricorrenza all'interno degli strati superficiali)
+    \item Strato 5 $\to$ Strato 6 (proiezione verso gli strati profondi)
+\end{itemize}
+
+Le aree \textbf{grigie} nella matrice corrispondono a combinazioni per le quali non sono stati trovati neuroni pre-sinaptici nell'esperimento; le aree \textbf{nere} indicano assenza di connessione.
+
+\subsubsection{Matrice dell'Efficacia Sinaptica Media}
+
+In aggiunta alla matrice delle probabilità, l'esperimento misura la \textbf{dimensione media dell'EPSP} per ciascuna combinazione di strati, fornendo una matrice dell'efficacia sinaptica $\langle J(l_{\rm pre} \to l_{\rm post}) \rangle$. Questa matrice è più sparsa: la colorazione rossa indica un valore medio di circa \textbf{0.5 mV}.
+
+\subsubsection{Matrice della Forza di Connessione}
+
+La \textbf{forza di connessione} tra due strati è determinata dal prodotto tra probabilità di connessione ed efficacia sinaptica media, moltiplicato per il numero di sinapsi:
+
+\begin{equation}
+W(l_{\rm pre} \to l_{\rm post}) = P_{\rm conn} \cdot \langle J \rangle \cdot K
+\end{equation}
+
+Questa quantità rappresenta la vera misura della capacità di uno strato di influenzare un altro. La matrice risultante mostra chiaramente che:
+
+\begin{itemize}
+    \item Lo \textbf{strato 5} integra input da tutti gli strati (soprattutto 2/3 e 4)
+    \item Esiste una forte \textbf{ricorrenza} all'interno di ogni strato
+    \item Lo strato 5b riceve input aspecifici da strati multipli, coerentemente con il suo ruolo integrativo
+\end{itemize}
+
+\subsubsection{Confronto tra Valore Teorico e Valore Sperimentale}
+
+Il valore teorico dell'\textbf{EPSP} (potenziale post-sinaptico eccitatorio) atteso dal modello integra-e-spara è:
+
+\begin{equation}
+J_{\rm teorico} \approx \frac{V_{\rm thr}}{100} \approx \frac{20\,\text{mV}}{100} = 0.2\,\text{mV}
+\end{equation}
+
+dove il fattore 100 rappresenta il numero approssimativo di spike pre-sinaptici necessari a portare la membrana da $V_{\rm rest}$ a $V_{\rm thr}$.
+
+Il valore \textbf{sperimentale} misurato nell'esperimento multi-patch è di circa \textbf{0.5 mV}, leggermente superiore.
+
+
+La discrepanza è spiegabile considerando la \textbf{forza motrice della sinapsi eccitatoria} (driving force):
+
+\begin{equation}
+\Delta V_{\rm EPSP} = g_{\rm syn} \cdot (V - E_{\rm syn})
+\end{equation}
+
+dove $E_{\rm syn} \approx 0$ mV è il \textbf{potenziale di inversione} per le sinapsi eccitatorie (canali AMPA/NMDA, con corrente cationica mista).
+
+\textbf{A riposo:} $V \approx -76$ mV, quindi la forza motrice è $(-76 - 0) = -76$ mV (grande valore assoluto), che produce un EPSP ampio.
+
+\textbf{Durante l'attività normale:} Il bombardamento sinaptico da neuroni di background porta il potenziale di membrana più vicino alla soglia, $V \approx -55$ mV, riducendo la forza motrice a $(-55 - 0) = -55$ mV. Il valore $J = 0.2$ mV del modello teorico si riferisce a questa condizione.
+
+Il rapporto di scala è quindi:
+
+\begin{equation}
+\frac{J_{\rm sperimentale}}{J_{\rm teorico}} \approx \frac{76}{55} \approx 1.4
+\end{equation}
+
+consistente con il rapporto osservato $0.5/0.35 \approx 1.4$.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questa non è una contraddizione, ma una conferma: il valore $J \approx V_{\rm thr}/100$ è valido per neuroni bombardati da input presinaptici (condizione fisiologica), non per neuroni quiescenti come in questo esperimento.
+\end{tcolorbox}
+
+\begin{equation}
+\boxed{J_{\rm sperimentale} \approx 0.5\,\text{mV} \quad \text{vs.} \quad J_{\rm modello} \approx 0.2\,\text{mV}}
+\end{equation}
+
+
+\subsection{Mesoscala: Connettività Inter-Colonnare e Approccio Optogenetico}
+
+Dopo aver caratterizzato la microscala (colonna singola), si passa alla \textbf{mesoscala}: la connettività tra colonne corticali adiacenti. Le colonne corticali possono essere immaginate come esagoni che pavimentano la superficie corticale; ognuno di questi esagoni si estende verticalmente attraverso tutti e sei gli strati.
+
+L'obiettivo è descrivere come colonne adiacenti comunicano tra loro attraverso la \textbf{sostanza grigia} (gray matter), a distanza corta, distinta dalle connessioni a lunga distanza attraverso il white matter.
+
+\subsubsection{Esperimento Optogenetico su Sezione di Topo}
+
+L'approccio sperimentale per mappare la connettività inter-colonnare sfrutta la \textbf{optogenetica}. Un virus viene utilizzato per infettare i neuroni corticali di un topo e indurli a esprimere la \textbf{channelrhodopsina-2 (ChR2)}, un canale ionico fotosensibile (opsina). La ChR2 si apre in risposta alla luce blu (lunghezza d'onda $\sim$470 nm), iniettando corrente depolarizzante e inducendo la scarica del neurone.
+
+Il protocollo sperimentale è:
+
+\begin{enumerate}
+    \item Si prepara una sezione corticale sottile dallo stesso topo
+    \item I bordi tra i diversi strati sono visualizzati con linee tratteggiate (istologia)
+    \item Si punta un \textbf{laser} in modo sistematico su diversi punti della sezione
+    \item Si registra il potenziale di membrana di un \textbf{singolo neurone piramidale di strato 5b} con una pipetta di patch-clamp
+\end{enumerate}
+
+Ogni volta che il laser illumina un pixel della sezione, i neuroni presenti in quel pixel sparano. Se il neurone di strato 5b registrato riceve un EPSP in risposta a quella stimolazione, si conclude che esiste una connessione sinaptica tra i neuroni del pixel illuminato e il neurone bersaglio.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Il neurone di strato 5b funge da "antenna": misurando le variazioni del suo potenziale di membrana in risposta alla stimolazione sistematica di tutti i punti della sezione, si mappa l'intera distribuzione spaziale dei neuroni pre-sinaptici.
+\end{tcolorbox}
+
+
+\subsubsection{Mappa della Probabilità di Connessione in Funzione della Distanza}
+
+Il risultato dell'esperimento optogenetico è una mappa bidimensionale della probabilità di connessione: per ogni pixel della sezione, si conosce sia la distanza orizzontale dal neurone bersaglio, sia lo strato di appartenenza dei neuroni stimolati.
+
+Tracciando la probabilità di connessione in funzione della distanza $d$ per ciascun strato, si ottiene un andamento che decade monotonicamente:
+
+\begin{equation}
+P_{\rm conn}(d) \propto e^{-d/\lambda_l}
+\end{equation}
+
+dove $\lambda_l$ è la \textbf{costante di decadimento spaziale} per lo strato $l$.
+
+\subsubsection{Scale Spaziali $\lambda$ per i Diversi Strati}
+
+I valori sperimentali delle costanti di decadimento spaziale sono:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|c|X|}
+    \hline
+    \textbf{Strato} & \textbf{Costante $\lambda$} \\
+    \hline
+    Strato 2/3 & $\lambda_{2/3} \approx 350\,\mu\text{m}$ \\
+    \hline
+    Strato 4 & $\lambda_4 \approx 260\,\mu\text{m}$ \\
+    \hline
+    Strato 5 & $\lambda_5 \lesssim \lambda_4$ (valore più basso) \\
+    \hline
+    Strato 6 & $\lambda_6 \gtrsim \lambda_{2/3}$ (valore elevato) \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+Il pattern che emerge è:
+
+\begin{itemize}
+    \item Gli \textbf{strati superficiali} (2/3) e gli \textbf{strati profondi} (6) hanno la maggiore portata spaziale nel gray matter
+    \item Lo \textbf{strato 4} e in particolare lo \textbf{strato 5} hanno portata spaziale più ridotta
+    \item Questo significa che i neuroni di strato 5 sono relativamente \textbf{isolati} rispetto alle colonne adiacenti nel gray matter
+\end{itemize}
+
+\subsubsection{Interpretazione Funzionale}
+
+I neuroni di strato 5 ricevono input dalle colonne adiacenti \textbf{indirettamente}, attraverso gli strati 2/3 e 6, che fungono da \textbf{strati di input} per l'integrazione mesoscalare. Lo strato 5, essendo il "motore" della colonna, integra segnali provenienti da un vasto territorio corticale senza essere direttamente accoppiato a breve distanza con le colonne vicine.
+
+\subsection{Due Vie di Comunicazione Corticale}
+
+Un risultato recente e importante nella neuroscienze sistemiche riguarda l'\textbf{asimmetria direzionale} nella comunicazione tra aree corticali distanti. Le due direzioni principali di comunicazione — dal polo posteriore (aree sensoriali) al polo anteriore (aree frontali) e viceversa — utilizzano preferenzialmente \textbf{vie laminari diverse}.
+
+\subsubsection{Via Ascendente (Bottom-Up): Informazioni Sensoriali}
+
+La via ascendente trasporta informazioni sensoriali dalle aree posteriori (occipitale, parietale, temporale) verso la corteccia frontale. Questa via è preferenzialmente mediata dagli \textbf{strati intra-granulari} e profondi (strati 4, 5, 6). L'informazione risale attraverso:
+
+\begin{equation}
+\text{Area sensoriale} \xrightarrow{\text{strati 4–6}} \text{Aree associative} \xrightarrow{} \text{Corteccia frontale}
+\end{equation}
+
+\subsubsection{Via Discendente (Top-Down): Controllo Frontale}
+
+La via discendente trasporta segnali di controllo dalla corteccia frontale verso le aree posteriori, implementando funzioni di \textbf{attenzione selettiva}, \textbf{previsione} (predictive coding) e modulazione top-down. Questa via è preferenzialmente mediata dagli \textbf{strati superficiali} (strati 2/3):
+
+\begin{equation}
+\text{Corteccia frontale} \xrightarrow{\text{strati 2/3}} \text{Aree associative} \xrightarrow{} \text{Aree sensoriali}
+\end{equation}
+
+\newpage
+\section{Reti di Reti e Popolazioni Omogenee}
+
+\subsubsection{Il Problema della Scala}
+
+Le osservazioni sperimentali descritte nelle sezioni precedenti forniscono una descrizione dettagliata e multi-scala dell'organizzazione corticale. Tuttavia, costruire un modello computazionale che includa tutti questi dettagli è proibitivo dal punto di vista computazionale. È necessario identificare le \textbf{approssimazioni biologicamente plausibili} che permettono di ridurre la complessità mantenendo i meccanismi essenziali.
+
+L'approccio proposto è quello delle \textbf{reti di reti}: si considera la corteccia non come un insieme di neuroni individuali, ma come un insieme di \textbf{popolazioni} di neuroni. Ogni popolazione corrisponde a un gruppo di neuroni omogenei (stesso tipo, stesso strato, stessa area corticale) connessi tra loro secondo statistiche precise.
+
+A livello della microscala (singola colonna corticale, singolo strato), i neuroni che si trovano nella stessa posizione laminare condividono:
+
+\begin{itemize}
+    \item La stessa morfologia
+    \item Gli stessi parametri biofisici
+    \item La stessa organizzazione di connettività
+    \item Le stesse sorgenti di input
+\end{itemize}
+
+Questo giustifica l'introduzione del concetto di \textbf{popolazione omogenea di neuroni}.
+
+
+
+\subsection{Definizione di Popolazione Omogenea}
+
+Una \textbf{popolazione omogenea di neuroni} è un insieme di $N$ neuroni che condividono:
+
+\begin{enumerate}
+    \item Gli stessi parametri microscopici neuronali:
+    \begin{itemize}
+        \item $\tau_m$: costante di tempo della membrana
+        \item $V_{\rm thr}$: potenziale di soglia
+        \item $V_{\rm reset}$: potenziale di reset post-spike
+        \item $V_{\rm rest}$: potenziale di riposo (o potenziale di equilibrio in assenza di input)
+    \end{itemize}
+    \item Lo stesso input statistico esterno:
+    \begin{itemize}
+        \item $\mu_{\rm ext}$: media della corrente di input proveniente da aree esterne alla popolazione
+        \item $\sigma_{\rm ext}$: deviazione standard della corrente di input esterna
+    \end{itemize}
+    \item La stessa probabilità di connessione interna:
+    \begin{itemize}
+        \item $\varepsilon$: probabilità che esista una sinapsi da qualsiasi neurone $j$ al neurone $i$ all'interno della stessa popolazione ($\varepsilon \approx 20\%$)
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Input Esterno come Variabile Statistica}
+
+L'input esterno alla popolazione proviene da:
+\begin{itemize}
+    \item Colonne corticali distanti (via white matter)
+    \item Strati diversi della stessa colonna
+    \item Input talamici e subcorticali
+\end{itemize}
+
+Tutti questi contributi vengono parametrizzati in modo sintetico dalla coppia $(\mu_{\rm ext}, \sigma_{\rm ext})$, ovvero come \textbf{media e varianza di un processo stocastico} che rappresenta l'input aggregato. Questo è giustificato dal fatto che, trattandosi di molte sorgenti indipendenti, il teorema centrale del limite garantisce la gaussianità dell'input totale.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} L'assunzione di popolazione omogenea è un'approssimazione: neuroni dello stesso strato non sono identici in natura. Tuttavia, i parametri biofisici variano entro un range relativamente stretto, e questa variabilità può essere incorporata come rumore aggiuntivo nel modello.
+\end{tcolorbox}
+
+
+\subsection{Distribuzione Binomiale del Numero di Contatti Sinaptici}
+
+
+All'interno di una popolazione omogenea di $N$ neuroni con probabilità di connessione $\varepsilon$, il \textbf{numero di contatti sinaptici} $K$ che il neurone $i$ riceve da tutti gli altri $N-1$ neuroni della popolazione segue una \textbf{distribuzione binomiale}:
+
+\begin{equation}
+\boxed{P(K = k) = \binom{N}{k}\,\varepsilon^k\,(1-\varepsilon)^{N-k}}
+\end{equation}
+
+
+Il valore atteso è:
+
+\begin{equation}
+\langle K \rangle = \varepsilon\, N \approx 10^4
+\end{equation}
+
+Considerando $\varepsilon \approx 0.20$ e $N \approx 5 \times 10^4$ neuroni nella colonna (ordine di grandezza), si ottiene un numero di sinapsi per neurone dell'ordine di $10^4$, in accordo con i dati sperimentali.
+
+
+La varianza della distribuzione binomiale è:
+
+\begin{equation}
+\text{Var}(K) = N\,\varepsilon\,(1-\varepsilon) = \langle K \rangle\,(1-\varepsilon)
+\end{equation}
+
+Il \textbf{coefficiente di variazione} (CV) del numero di sinapsi è:
+
+\begin{equation}
+\text{CV}(K) = \frac{\sqrt{\text{Var}(K)}}{\langle K \rangle} = \frac{\sqrt{N\,\varepsilon\,(1-\varepsilon)}}{N\,\varepsilon} = \sqrt{\frac{1-\varepsilon}{\varepsilon\,N}} = \sqrt{\frac{1-\varepsilon}{\langle K \rangle}}
+\end{equation}
+
+Sostituendo $\varepsilon \approx 0.20$ e $\langle K \rangle \approx 10^4$:
+
+\begin{equation}
+\text{CV}(K) = \sqrt{\frac{0.8}{10^4}} = \sqrt{8 \times 10^{-5}} \approx \frac{0.894}{100} \approx 0.9\%
+\end{equation}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Sebbene la probabilità di connessione sia solo del 20\%, grazie al gran numero di neuroni presenti nella popolazione il numero di sinapsi per neurone è quasi costante: la variabilità è solo dell'1\%. Questo è una manifestazione del \textbf{teorema centrale del limite} applicato alla distribuzione binomiale: con $N$ grande e $\varepsilon$ non troppo piccolo, la distribuzione binomiale si approssima a una gaussiana con piccola varianza relativa.
+\end{tcolorbox}
+
+\subsection{Distribuzione Statistica dell'Efficacia Sinaptica}
+
+La forza della connessione tra due neuroni è determinata dall'\textbf{efficacia sinaptica} $w_{ij}$. Ci sono due fonti di variabilità:
+
+\begin{enumerate}
+    \item \textbf{Presenza/assenza della sinapsi}: con probabilità $1-\varepsilon$ non esiste alcuna sinapsi ($w_{ij} = 0$), con probabilità $\varepsilon$ esiste una sinapsi con efficacia non nulla.
+    \item \textbf{Variabilità dell'efficacia tra sinapsi}: quando la sinapsi esiste, la sua efficacia segue una distribuzione gaussiana con media $J$ e deviazione standard $\Delta J$.
+\end{enumerate}
+
+
+La distribuzione di probabilità è data da:
+
+\begin{equation}
+\boxed{P(J_{ij} \in [w;w+dw]) = \left[ (1-\varepsilon)\,\delta(w) + \frac{\varepsilon}{\sqrt{2\pi}\,\Delta J}\,\exp\!\left(-\frac{(w - J)^2}{2\Delta J^2}\right)\right]dw}
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $(1-\varepsilon)\,\delta(w)$: contributo delle sinapsi assenti 
+    \item Il termine gaussiano: distribuzione dell'efficacia delle sinapsi presenti, con media $J$ e varianza $\Delta J^2$
+    \item La gaussiana è normalizzata a $\varepsilon$: $\int_{-\infty}^{+\infty} \frac{\varepsilon}{\sqrt{2\pi}\Delta J} e^{-(w-J)^2/2\Delta J^2} dw = \varepsilon$
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Il dominio dell'integrazione si estende da $-\infty$ a $+\infty$ per includere sia sinapsi eccitatorie ($J > 0$) sia inibitorie ($J < 0$). 
+\end{tcolorbox}
+
+La densità di probabilità è:
+\begin{equation}
+    \rho(w)=(1-\varepsilon)\,\delta(w) + \frac{\varepsilon}{\sqrt{2\pi}\,\Delta J}\,\exp\!\left(-\frac{(w - J)^2}{2\Delta J^2}\right)
+\end{equation}
+
+\subsection{Momenti della Distribuzione di w}
+
+\subsubsection{Calcolo della Media $\langle w \rangle$}
+
+Il \textbf{valore atteso} dell'efficacia sinaptica si calcola integrando $w\,\rho_j(w)$:
+
+\begin{equation}
+\langle w \rangle = \int_{-\infty}^{+\infty} w\,\rho_j(w)\,dw
+\end{equation}
+
+Il contributo del termine $\delta(w)$ è nullo (poiché $w\,\delta(w) = 0$ per $w \to 0$). Il contributo del termine gaussiano è:
+
+\begin{equation}
+\langle w \rangle = \int_{-\infty}^{+\infty} w \cdot \frac{\varepsilon}{\sqrt{2\pi}\,\Delta J}\,e^{-(w-J)^2/2\Delta J^2}\,dw = \varepsilon\,J
+\end{equation}
+
+poiché il valore atteso di una gaussiana con media $J$ normalizzata a $\varepsilon$ è $\varepsilon \cdot J$.
+
+\begin{equation}
+\boxed{\langle w \rangle = \varepsilon\, J}
+\end{equation}
+
+\subsubsection{Calcolo del Secondo Momento $\langle w^2 \rangle$}
+
+Il \textbf{secondo momento} si calcola analogamente:
+
+\begin{equation}
+\langle w^2 \rangle = \int_{-\infty}^{+\infty} w^2\,\rho_j(w)\,dw = \int_{-\infty}^{+\infty} w^2 \cdot \frac{\varepsilon}{\sqrt{2\pi}\,\Delta J}\,e^{-(w-J)^2/2\Delta J^2}\,dw
+\end{equation}
+
+Usando la relazione tra momento secondo, varianza e quadrato della media per una distribuzione gaussiana:
+
+\begin{equation}
+\text{Var}(w) = \langle w^2 \rangle_{\rm gauss} - \langle w \rangle_{\rm gauss}^2 = \Delta J^2
+\end{equation}
+
+quindi $\langle w^2 \rangle_{\rm gauss} = \Delta J^2 + J^2$, e tenendo conto della normalizzazione a $\varepsilon$:
+
+\begin{equation}
+\boxed{\langle w^2 \rangle = \varepsilon\left(\Delta J^2 + J^2\right)}
+\end{equation}
+
+\subsubsection{Significato dei Due Momenti}
+
+I due momenti $\langle w \rangle $ e $\langle w^2 \rangle$ sono le quantità fondamentali che caratterizzano la distribuzione statistica della connettività. Nella teoria di campo medio, questi momenti determinano rispettivamente:
+
+\begin{itemize}
+    \item La \textbf{corrente media} (drift) ricevuta da un neurone dalla popolazione
+    \item La \textbf{varianza della corrente} (diffusione) ricevuta da un neurone dalla popolazione
+\end{itemize}
+
+Questi due parametri sono i coefficienti $\mu$ e $\sigma^2$ dell'equazione di Langevin che governa la dinamica del potenziale di membrana.
+
+    
