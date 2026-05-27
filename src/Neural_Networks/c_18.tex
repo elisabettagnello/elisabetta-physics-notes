@@ -1,0 +1,412 @@
+\chapter{Lezione 18}
+
+
+
+\section{Verso l’Approssimazione di Campo Medio}
+
+\subsubsection{Contesto}
+Il punto di partenza è la considerazione che i neuroni non operano in isolamento, ma sono immersi in una rete in cui ogni neurone $i$ riceve una \textbf{corrente sinaptica} $I_i(t)$ generata dall'attività collettiva dei neuroni presinaptici che lo raggiungono.
+
+Come discusso nelle lezioni precedenti, quando il numero di contatti presinaptici è sufficientemente elevato (dell'ordine di migliaia), la corrente sinaptica può essere descritta in maniera eccellente come un \textbf{processo di diffusione}, caratterizzato dai suoi momenti infinitesimali. Si considera una rete \textbf{omogenea}, ovvero una rete in cui tutti i neuroni condividono gli stessi parametri biofisici e in cui la statistica delle connessioni sinaptiche è identica per ogni coppia di neuroni. Questa assunzione di omogeneità è il punto di partenza per costruire una teoria di campo medio della rete.
+
+\subsubsection{Momenti Infinitesimali della Corrente Sinaptica}
+Per un processo di diffusione, i momenti infinitesimali si definiscono come i limiti per $dt \to 0$ dei cumulanti dell'incremento del processo. Per il neurone $i$:
+
+\begin{equation}
+\mu_i(t) = \lim_{dt \to 0} \frac{\mathbb{E}[dI_i]}{dt}
+\end{equation}
+
+\begin{equation}
+\sigma_i^2(t) = \lim_{dt \to 0} \frac{\mathbb{V}[dI_i]}{dt}
+\end{equation}
+
+dove $dI_i$ è l'incremento della corrente sinaptica in un intervallo infinitesimo $dt$. Il parametro $\mu_i$ rappresenta la \textbf{media infinitesimale} (o drift) e $\sigma_i^2$ la \textbf{varianza infinitesimale} (o coefficiente di diffusione) della corrente sinaptica ricevuta dal neurone $i$.
+
+\subsection{ Assunzione di Campo Medio}
+La media infinitesimale si calcola come somma dei contributi di tutti i neuroni presinaptici $j$:
+
+\begin{equation}
+\mu_i(t) = \sum_{j=1}^{N} J_{ij} \, \nu_j(t)
+\end{equation}
+
+dove $J_{ij}$ è l'\textbf{efficacia sinaptica} (o peso sinaptico) dalla connessione $j \to i$, e $\nu_j(t)$ è la probabilità di emissione di uno spike da parte del neurone $j$ per unità di tempo, ovvero la sua \textbf{frequenza di scarica istantanea}. I treni di spike presinaptici sono trattati come processi di Poisson, il che è giustificato dal \textbf{teorema di Grigelionis} quando si sovrappongono contributi di un numero elevato di neuroni, anche se i singoli neuroni non emettono secondo un processo strettamente poissoniano.
+
+L'\textbf{assunzione di campo medio} (mean field approximation) consiste nel considerare che le proprietà statistiche della scarica del neurone presinaptico $j$ siano solo debolmente influenzate dall'identità dello specifico contatto sinaptico $J_{ij}$. Sotto questa assunzione, l'emissione di uno spike da parte del neurone $i$ dovuta al neurone $j$ è trascurabile. Questo permette di considerare i pesi sinaptici $J_{ij}$ e gli incrementi degli spike $dN_j(t)$ come variabili aleatorie effettivamente indipendenti.
+
+Questa approssimazione è giustificata da due argomenti:
+
+\begin{enumerate}
+    \item \textbf{Argomento di scala}: l'efficacia sinaptica di una singola sinapsi è:
+    \begin{equation}
+    J \approx \frac{V_{\rm thr}}{100} \approx \frac{20\,\text{mV}}{100} = 0.2\,\text{mV}
+    \end{equation}
+    Questo è un contributo trascurabile rispetto alla soglia: ogni singola sinapsi contribuisce per circa 1\% a un singolo spike.
+    \item \textbf{Argomento di frequenza}: i neuroni corticali sparano a circa 1–10 Hz. La probabilità che il singolo spike prodotto dal neurone $j$ in un secondo sia la causa determinante dello spike del neurone $i$ è infinitesimale.
+\end{enumerate}
+
+Combinando i due argomenti: il contributo di una singola connessione alla decisione di sparare del neurone $i$ è dell'ordine di $J/V_{\rm thr} \cdot \nu_j \cdot \Delta t \ll 1$, rendendo trascurabili le correlazioni indotte dalla connettività.
+
+
+\subsubsection{Perdita dell'Identità del Singolo Neurone in MFA}
+
+Un'implicazione concettuale profonda dell'approssimazione di campo medio è la \textbf{perdita dell'identità} del singolo neurone presinaptivo. Nella descrizione esatta, il neurone $i$ riceve spike specificamente dal neurone $j$ tramite una sinapsi con efficacia $w_{ij}$ ben definita: la storia passata di $j$ influenza direttamente $i$.
+
+Nell'approssimazione di campo medio, questa correlazione viene negletta: si assume che ogni spike ricevuto provenga da un neurone "tipico" della popolazione, estratto casualmente dalla distribuzione $\rho_j(w)$. I contributi di spike successivi sono trattati come \textbf{eventi indipendenti} (processo di Poisson).
+
+Il risultato è che la corrente sinaptica totale diventa un processo stocastico caratterizzato solo dai suoi due momenti ($\mu$ e $\sigma^2$), e non dalla struttura di correlazione tra spike di neuroni distinti. Questo è un'approssimazione \textbf{valida nel limite di grande $N$ e piccolo $J/V_{\rm thr}$}, ma diventa meno accurata quando:
+\begin{itemize}
+    \item La rete è piccola ($N \lesssim 10^3$)
+    \item Le sinapsi sono forti ($J \gtrsim V_{\rm thr}/10$)
+    \item Esistono strutture di correlazione significative (es. oscillazioni sincrone)
+\end{itemize}
+
+
+
+\section{Distribuzione dei Coefficienti Sinaptici }
+
+Per procedere nel calcolo del valor medio di $\mu_i$ sull'intera popolazione neuronale (ovvero al variare dell'indice $i$), è necessario conoscere la distribuzione statistica dei pesi sinaptici $J_{ij}$. 
+
+\begin{equation}
+Pr\{J_{ij} \in (w, w+dw)\} = \rho(w)dw = \left[ (1 - \epsilon)\delta(w) + \frac{\epsilon}{\sqrt{2\pi}\Delta J}e^{-(w-J)^2/(2\Delta J^2)} \right] dw
+\end{equation}
+
+ovvero:
+\begin{equation}
+\rho(w) = (1 - \epsilon)\delta(w) + \epsilon \mathcal{N}_{J, \Delta J}(w)
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $\epsilon = K/N$ è la \textbf{probabilità di connessione} tra due neuroni arbitrari della rete; $K$ è il numero medio di contatti presinaptici per neurone e $N$ è la dimensione totale della popolazione. Un valore tipico è $\epsilon \sim 0.2$, ovvero circa il $20\%$ dei neuroni della rete è presinapticamente connesso a un dato neurone postsinaptico.
+    \item Con probabilità $1 - \epsilon$ i due neuroni non sono connessi, e il contributo sinaptico è nullo: $J_{ij} = 0$ (termine $\delta(w)$).
+    \item Con probabilità $\epsilon$ i due neuroni sono connessi, e in tal caso l'efficacia sinaptica non nulla è estratta da una \textbf{gaussiana} di media $J$ e deviazione standard $\Delta J$: $\mathcal{N}_{J, \Delta J}(w)$.
+\end{itemize}
+
+
+
+\subsubsection{Momenti di $J_{ij}$}
+
+Il calcolo del primo momento di $J_{ij}$ rispetto alla distribuzione introdotta è diretto. Il contributo del termine $\delta(w)$ è nullo, e quello del termine gaussiano fornisce:
+
+\begin{equation}
+\mathbb{E}[J_{ij}] = \int_{-\infty}^{+\infty} w \, \rho(w) \, dw = \epsilon \int_{-\infty}^{+\infty} w \mathcal{N}_{J, \Delta J}(w) dw = \epsilon J
+\end{equation}
+
+Il secondo momento si calcola analogamente, ricordando che per la variabile aleatoria associata all'efficacia sinaptica $w \sim \mathcal{N}(J, \Delta J^2)$:
+
+\begin{equation}
+\mathbb{E}[w^2] = \mathbb{V}[w] + (\mathbb{E}[w])^2 = \Delta J^2 + J^2 = J^2 \left( 1 + \left(\frac{\Delta J}{J}\right)^2 \right)
+\end{equation}
+
+Si ottiene quindi per l'intera distribuzione $\rho(w)$:
+
+\begin{equation}
+\mathbb{E}[J_{ij}^2] = \int_{-\infty}^{+\infty} w^2 \rho(w) dw = \epsilon \mathbb{E}[w^2] = \epsilon \left( \Delta J^2 + J^2 \right) = \epsilon J^2 \left( 1 + \left(\frac{\Delta J}{J}\right)^2 \right)
+\end{equation}
+
+dove si è evidenziata la varianza relativa dell'efficacia sinaptica $\left(\frac{\Delta J}{J}\right)^2$. Il docente osserva che in fisiologia è ragionevole assumere $\Delta J \sim \frac{1}{4}J \Rightarrow \left(\frac{\Delta J}{J}\right)^2 \approx 0.0625 \ll 1$.
+
+La varianza si ricava dalla definizione standard:
+
+\begin{equation}
+\mathbb{V}[J_{ij}] = \mathbb{E}[J_{ij}^2] - (\mathbb{E}[J_{ij}])^2 = \epsilon J^2 \left( 1 + \left(\frac{\Delta J}{J}\right)^2 \right) - \epsilon^2 J^2 = \epsilon J^2 \left[ 1 - \epsilon + \left(\frac{\Delta J}{J}\right)^2 \right]
+\end{equation}
+
+\section{Media Infinitesimale}
+\subsection{Valore Atteso di $\mu_i$ nella Popolazione}
+
+Si calcola ora il valor medio di $\mu_i$ al variare dell'indice postsinaptico $i$, ovvero mediando sulla statistica (spaziale) della popolazione:
+
+\begin{equation}
+\mathbb{E}_i[\mu_i] = \mathbb{E}_i\left[ \sum_{j=1}^{N} J_{ij} \nu_j(t) \right]
+\end{equation}
+
+Trattando $J_{ij}$ come variabile aleatoria indipendente dalle frequenze $\nu_j$, l'operatore di media si applica solo ai pesi:
+
+\begin{equation}
+\mathbb{E}_i[\mu_i] = \sum_{j=1}^{N} \mathbb{E}_i[J_{ij}] \nu_j(t) = \epsilon J \sum_{j=1}^{N} \nu_j(t)
+\end{equation}
+
+Definendo la \textbf{frequenza di scarica media della popolazione}:
+
+\begin{equation}
+\nu(t) := \frac{1}{N} \sum_{j=1}^{N} \nu_j(t)
+\end{equation}
+
+Riconoscendo che $\epsilon N = K$ (numero medio di contatti presinaptici), si ottiene:
+
+\begin{equation}
+\mathbb{E}_i[\mu_i] = \epsilon N J \nu(t) = K J \nu(t)
+\end{equation}
+
+Questo risultato è coerente con l'approssimazione diffusiva: la corrente media ricevuta da ogni neurone dipende solo dall'attività media della popolazione. Questo è il \textbf{campo medio} (mean field) della rete.
+
+\subsection{Varianza di $\mu_i$}
+
+Per quantificare quanto bene l'approssimazione $\mu_i \approx \mathbb{E}_i[\mu_i] = \mu$ rappresenti ogni singolo neurone, calcoliamo la varianza di $\mu_i$ (utilizzando il teorema della varianza di combinazioni lineari di variabili aleatorie indipendenti $J_{ij}$):
+
+\begin{equation}
+\mathbb{V}_i[\mu_i] = \mathbb{V}_i\left[ \sum_{j=1}^{N} J_{ij} \nu_j(t) \right] = \sum_{j=1}^{N} \nu_j^2(t) \cdot \mathbb{V}_i[J_{ij}]
+\end{equation}
+
+Analizzando la somma dei quadrati delle frequenze e riscrivendola come valore atteso sulla popolazione:
+
+\begin{equation}
+\sum_{j=1}^{N} \nu_j^2(t) = N \frac{1}{N} \sum_{j=1}^{N} \nu_j^2(t) = N \mathbb{E}_j[\nu_j^2] = N \left( \mathbb{V}_j[\nu_j] + \mathbb{E}_j[\nu_j]^2 \right) = N(\Delta \nu^2 + \nu^2) = N \nu^2 \left( 1 + \left(\frac{\Delta \nu}{\nu}\right)^2 \right)
+\end{equation}
+
+Sostituendo l'espressione della varianza dei pesi e la sommatoria, otteniamo:
+
+\begin{equation}
+\mathbb{V}_i[\mu_i] = \epsilon J^2 \left[ 1 - \epsilon + \left(\frac{\Delta J}{J}\right)^2 \right] N \nu^2 \left( 1 + \left(\frac{\Delta \nu}{\nu}\right)^2 \right)
+\end{equation}
+
+Sapendo che $1 - \epsilon \approx 1$ e riordinando i termini con $\epsilon N = K$:
+
+\begin{equation}
+\mathbb{V}_i[\mu_i] \simeq K J^2 \nu^2 \left[ 1 + \left(\frac{\Delta J}{J}\right)^2 \right] \left[ 1 + \left(\frac{\Delta \nu}{\nu}\right)^2 \right]
+\end{equation}
+
+\subsection{Rapporto Segnale-Rumore}
+Il \textbf{rapporto segnale-rumore} (SNR) delle fluttuazioni di $\mu_i$ tra i vari neuroni è:
+
+\begin{equation}
+\text{SNR}^{-1} = \frac{\sqrt{\mathbb{V}_i[\mu_i]}}{|\mathbb{E}_i[\mu_i]|} = \frac{J \sqrt{K} \nu \sqrt{1 + \left(\frac{\Delta J}{J}\right)^2} \sqrt{1 + \left(\frac{\Delta \nu}{\nu}\right)^2}}{K J \nu} \sim \frac{1}{\sqrt{K}}
+\end{equation}
+
+Essendo il numero di connessioni $K \sim 10^4$ nella corteccia, la variabilità relativa tra neuroni è estremamente piccola ($\sim 1/\sqrt{10000} = 1\%$). Di conseguenza, è un'eccellente approssimazione sostituire i vari $\mu_i$ con un singolo valor medio condiviso: $\mu_i \simeq \mathbb{E}_i[\mu_i] = \mu$.
+
+\section{Varianza Infinitesimale}
+
+
+Procedendo analogamente per la varianza infinitesimale (il coefficiente di diffusione del singolo neurone):
+
+\begin{equation}
+\sigma_i^2 = \lim_{dt \to 0} \frac{\mathbb{V}[dI_i]}{dt} = \sum_{j=1}^{N} J_{ij}^2 \nu_j(t)
+\end{equation}
+
+Il suo valore atteso sulla popolazione è:
+
+\begin{equation}
+\mathbb{E}_i[\sigma_i^2] = \sum_{j=1}^{N} \mathbb{E}_i[J_{ij}^2] \nu_j(t) = \epsilon J^2 \left( 1 + \left(\frac{\Delta J}{J}\right)^2 \right) \sum_{j=1}^{N} \nu_j(t)
+\end{equation}
+
+Riconoscendo che $\sum \nu_j(t) = N \nu(t)$ e $\epsilon N = K$:
+
+\begin{equation}
+\mathbb{E}_i[\sigma_i^2] = K J^2 \left( 1 + \left(\frac{\Delta J}{J}\right)^2 \right) \nu(t) = \sigma^2(t)
+\end{equation}
+
+Questa formula generalizza quella derivata nell'approssimazione diffusiva pura; ponendo $\Delta J = 0$ si riottiene l'espressione esatta del caso omogeneo assoluto.
+
+\subsection{Rete Bilanciata e Finitezza della Varianza}
+La condizione che $\sigma^2$ sia finita nel limite $N \to \infty$ a $K$ costante è garantita dall'ipotesi di \textbf{rete bilanciata} (balanced network). In una rete bilanciata, il contributo eccitatorio e quello inibitorio al drift medio tendono a cancellarsi parzialmente, garantendo che le fluttuazioni (la varianza infinitesimale) rimangano finite e che il regime della rete sia asincrono e irregolare. Come per $\mu_i$, anche le fluttuazioni relative $\mathbb{V}_i[\sigma_i^2]$ scalano come $1/K$, giustificando l'impiego del valore $\sigma^2$ per tutti i neuroni.
+
+\section{Approssimazione di Campo Medio Estesa (Extended MFA)}
+
+Avendo stabilito che $\mu_i \sim \mu$ e $\sigma_i \sim \sigma$, la dinamica del potenziale di membrana per ciascun neurone $i$ può essere descritta dall'equazione stocastica differenziale sotto l'\textbf{approssimazione di campo medio estesa}:
+
+\begin{equation}
+dV_i \simeq \left( -\frac{V_i}{\tau_m} + \mu \right)dt + \sigma dW_i(t)
+\end{equation}
+
+
+Tutti i neuroni seguono la stessa dinamica integrata e di decadimento guidata dal drift comune $\mu$ e dal termine di rumore $\sigma$. I processi stocastici di Wiener $W_i$ presentano la seguente statistica:
+
+\begin{equation}
+\mathbb{E}[dW_i(t) dW_j(t')] = \delta_{ij} \delta(t - t') dt
+\end{equation}
+
+Da questa relazione si evince che:
+\begin{itemize}
+    \item Non c'è correlazione nel rumore tra neuroni differenti ($\delta_{ij}$).
+    \item Non c'è correlazione temporale nel rumore per lo stesso neurone (rumore bianco gaussiano standard, $\delta(t-t')$).
+\end{itemize}
+
+
+Nell'MFA estesa, ogni neurone del network è visto come una \textbf{realizzazione indipendente dello stesso processo stocastico}. La dipendenza da $t$ dei termini $\mu$ e $\sigma^2$ è puramente \textbf{parametrica} attraverso l'attività media collettiva $\nu(t)$. Questo fornisce una cornice teorica formidabile per studiare il sistema anche in condizioni non stazionarie.
+
+\subsection{Rete di Reti}
+
+Una rete neuronale corticale (es. un layer) non è un sistema isolato. Interagisce con altri layer o riceve afferenze dall'esterno. I momenti infinitesimali ricevono così componenti addizionali non derivanti dall'attività ricorrente:
+
+\begin{equation}
+\mu(\nu, t) = K J \nu(t) + \mu_{ext}(t)
+\end{equation}
+
+\begin{equation}
+\sigma^2(\nu, t) = K J^2 \left( 1 + \left(\frac{\Delta J}{J}\right)^2 \right) \nu(t) + \sigma_{ext}^2(t)
+\end{equation}
+
+Il termine $\mu_{ext}(t)$ include influenze come la \textbf{stimolazione transcranica a corrente continua} (tDCS). Un campo elettrico applicato polarizza l'eccitabilità neuronale dipendente dalla morfologia dendritica rispetto alle linee di campo. Mentre correnti estreme causano shock, campi moderati sono usati in clinica per aumentare la plasticità, modulando $\mu_{ext}(t)$. Negli scenari comuni, queste variazioni esterne vengono assunte come costanti a tratti (stepwise changes).
+
+\section{Equazione di Auto-Consistenza per la Frequenza di Scarica}
+
+Il comportamento stazionario collettivo si trova chiudendo il loop: input dipendente dall'output e viceversa. Definiamo la funzione di guadagno $\Phi(\mu, \sigma)$ del processo stocastico:
+
+\begin{equation}
+\nu = \frac{1}{\text{ISI}} = \Phi(\mu(\nu), \sigma(\nu))
+\end{equation}
+
+dove l'equazione di \textbf{auto-consistenza} $\nu^* = \Phi(\nu^*)$ determina i punti fissi della rete.
+
+
+Per il modello LIF con rumore gaussiano e frequenza asintotica, il rate (inverso del tempo di primo passaggio) è dato dall'equazione di Ricciardi-Siegert:
+
+\begin{equation}
+\Phi(\mu, \sigma) = \left[ \tau_0 + \tau \sqrt{\pi} \int_{\frac{V_{res} - \mu\tau}{\sigma\sqrt{\tau}}}^{\frac{V_{thr} - \mu\tau}{\sigma\sqrt{\tau}}} e^{z^2} (1 + \text{erf}(z)) dz \right]^{-1}
+\end{equation}
+
+dove $\tau_0$ è il periodo refrattario, che impone la frequenza limite massima del network.
+
+
+La funzione di trasferimento esibisce un comportamento \textbf{sigmoidale} dipendente dalla varianza:
+\begin{itemize}
+    \item \textbf{Regime Supra-Soglia:} Dominato dal parametro $\mu$, dove $V_{THR} \approx 20\text{mV} < \mu\tau$. La frequenza cresce in base al drift medio.
+    \item \textbf{Regime Sotto-Soglia:} L'elemento trainante è la varianza $\sigma^2$. Il sistema spara solo grazie al rumore stocastico superando la barriera. Aumentando $\sigma$, gli spike persistono anche con $\mu\tau \ll V_{THR}$.
+\end{itemize}
+
+\subsection{Analisi Geometrica dell'Equazione di Auto-Consistenza}
+
+Esplicitando $\nu$ dall'equazione della corrente:
+
+\begin{equation}
+\mu = K J \nu + \mu_{ext} \implies K J \nu = \mu - \mu_{ext}
+\end{equation}
+
+Portando al piano $\mu\tau$ come variabile indipendente $x$:
+
+\begin{equation}
+\nu(x=\mu\tau) = \frac{1}{K J \tau} x - \frac{\mu_{ext}}{K J \tau}
+\end{equation}
+
+Quest'equazione di retta descrive l'input richiesto. L'intersezione tra questa linea retta (la cui pendenza è $\propto 1/J$) e la curva sigmoidale $\Phi(\mu, \sigma)$ produce i punti fissi stazionari.
+
+Modificando i pesi $J$, l'inclinazione della retta varia, aprendo scenari di rottura di simmetria (simili ai sistemi ferromagnetici) in cui emergono molteplici punti fissi (tipicamente fino a tre incroci): due nodi stabili e un punto a sella instabile.
+La condizione matematica per la stabilità locale del punto fisso all'intersezione $\nu^*$ è data dalla pendenza del guadagno rispetto all'input:
+
+\begin{equation}
+\left. \frac{d\Phi}{d\nu} \right|_{\nu^*} < 1
+\end{equation}
+
+Questa bistabilità dinamica (attività alta vs. silente) è centrale per modellare stati mentali discreti come la memoria di lavoro.
+
+\section{Sinapsi Lente: NMDA e GABA-B}
+
+Rispetto al paradigma esposto:
+\begin{itemize}
+    \item \textbf{Sinapsi Veloci:} AMPA e $\text{GABA}_A$, con costanti $\tau_F \sim 3\text{ ms}$. Possono essere trattate come spike $\delta$-Dirac impulsivi.
+    \item \textbf{Sinapsi Lente:} NMDA e $\text{GABA}_B$, con $\tau_S \sim 70-100\text{ ms}$. La cinetica prolungata funge da memoria e inerzia temporale per il sistema.
+\end{itemize}
+
+
+Il contributo lento si modella aggiungendo una corrente $\mathcal{I}$ regolata dal processo di Ornstein-Uhlenbeck guidata dal network:
+
+\begin{equation}
+d\mathcal{I} = \left(-\frac{\mathcal{I}}{\tau_S} + J_S K \nu\right)dt + \sqrt{J_S^2 K \nu} dW
+\end{equation}
+
+I valori asintotici di media e deviazione standard sono:
+
+\begin{equation}
+\mathbb{E}[\mathcal{I}_{ss}] = K J_S \nu \tau_S, \quad \sigma_{\mathcal{I}} = \sqrt{\frac{K J_S^2 \nu \tau_S}{2}}
+\end{equation}
+
+\subsection{Rapporto SNR: Sinapsi Veloci vs. Lente}
+
+Valutando il rapporto segnale-rumore (fluttuazioni relative) per le correnti lente:
+
+\begin{equation}
+\text{SNR}_{S}^{-1} = \frac{\sigma_{\mathcal{I}}}{\mathbb{E}[\mathcal{I}_{ss}]} = \frac{\sqrt{K J_S^2 \nu \tau_S / 2}}{K J_S \nu \tau_S} \propto \frac{1}{\sqrt{K \nu \tau_S}}
+\end{equation}
+
+Il confronto con le fluttuazioni derivate dalle sinapsi veloci restituisce:
+
+\begin{equation}
+\frac{\text{SNR}_{S}^{-1}}{\text{SNR}_{F}^{-1}} = \frac{\sqrt{K \nu \tau_F}}{\sqrt{K \nu \tau_S}} = \sqrt{\frac{\tau_F}{\tau_S}} \sim \sqrt{\frac{3}{100}} \approx \frac{1}{5.8}
+\end{equation}
+
+Le correnti lente possiedono fluttuazioni quasi 6 volte minori, fornendo una giustificazione rigorosa per l'\textbf{approssimazione quasi-adiabatica}: all'interno del limitato orizzonte dell'ISI, le sinapsi lente forniscono un offset quasi interamente deterministico.
+
+\subsection{Dinamica della Rete con la Corrente Sinaptica Lenta}
+
+Esplicitando l'apporto lento come dinamica addizionale ma approssimata deterministica:
+
+\begin{equation}
+\tau_m dV_i = \left(-V_i + \mu_{\text{fast}} + \mathcal{I}\right)dt + \sigma_{\text{fast}} dW_i
+\end{equation}
+
+Sotto condizioni di quasi equilibrio l'evoluzione di network forma il sistema:
+
+\begin{equation}
+\begin{cases}
+\nu(\mathcal{I}) = \Phi(\mu_{\text{fast}} + \mathcal{I}, \sigma_{\text{fast}}^2) = \Phi(K J \nu(\mathcal{I}) + \mathcal{I}, J^2 K \nu(\mathcal{I})) \\
+\tau_S \dot{\mathcal{I}} = -\mathcal{I} + \tau_S K J_S \nu(\mathcal{I})
+\end{cases}
+\end{equation}
+
+L'equazione di stazionarietà per il punto fisso $\mathcal{I}^*$ risulta essere:
+
+\begin{equation}
+\mathcal{I}^* = \tau_S K J_S \nu(\mathcal{I}^*)
+\end{equation}
+
+\subsubsection{Analisi dei Punti Fissi e Linearizzazione}
+
+Sottoponendo il sistema a una perturbazione locale:
+
+\begin{equation}
+\mathcal{I}(t) = \mathcal{I}^* + \delta\mathcal{I}(t)
+\end{equation}
+
+Sviluppiamo la linearizzazione dell'equazione dinamica:
+
+\begin{equation}
+\tau_S \delta\dot{\mathcal{I}} = -\delta\mathcal{I} + \tau_S K J_S \nu'(\mathcal{I}^*) \delta\mathcal{I} \implies \delta\dot{\mathcal{I}} = \frac{1}{\tau_S} \left( -1 + \tau_S K J_S \nu'(\mathcal{I}^*) \right) \delta\mathcal{I}
+\end{equation}
+
+Per l'estinzione asintotica delle perturbazioni ($\delta\dot{\mathcal{I}} / \delta\mathcal{I} < 0$), si ha:
+
+\begin{equation}
+-1 + \tau_S K J_S \nu'(\mathcal{I}^*) < 0 \implies \tau_S K J_S \nu'(\mathcal{I}^*) < 1
+\end{equation}
+
+\subsubsection{Condizione di Stabilità e Funzione Guadagno Effettiva}
+
+La derivata totale $\frac{d\nu}{d\mathcal{I}}$ all'equilibrio si disaccoppia secondo la regola della catena nelle derivate parziali di media e inviluppo di varianza:
+
+\begin{equation}
+\frac{d\nu}{d\mathcal{I}}\bigg|_{\mathcal{I}^*} = \frac{\partial \Phi}{\partial \mu}\bigg|_{\mathcal{I}^*} \left[ K J \nu'(\mathcal{I}^*) + 1 \right] + \frac{\partial \Phi}{\partial \sigma^2}\bigg|_{\mathcal{I}^*} \left[ J^2 K \nu'(\mathcal{I}^*) \right]
+\end{equation}
+
+Per facilitare l'analisi si definisce la \textbf{Funzione Guadagno Effettiva}:
+
+\begin{equation}
+\tilde{\Phi}(\nu) = \Phi(K J \nu + \tau_S J_S K \nu, J^2 K \nu)
+\end{equation}
+
+la cui differenziazione totale rispetto a $\nu$ all'equilibrio fornisce:
+
+\begin{equation}
+\frac{d\tilde{\Phi}}{d\nu}\bigg|_{\nu^*} = \frac{\partial \Phi}{\partial \mu}\bigg|_{\nu^*} (K J + \tau_S J_S K) + \frac{\partial \Phi}{\partial \sigma^2}\bigg|_{\nu^*} (J^2 K)
+\end{equation}
+
+Con passaggi elementari, si dimostra che la precedente restrizione sulla sensibilità $\tau_S K J_S \nu'(\mathcal{I}^*) < 1$ è rigorosamente \textbf{equivalente a}:
+
+\begin{equation}
+\tilde{\Phi}'(\nu^*) < 1
+\end{equation}
+
+Questa versione ricattura il postulato geometrico espresso precedentemente (la retta tangente alla funzione di guadagno deve avere pendenza minore della bisettrice), integrando formalmente la dicotomia tra feedback veloci e inerzia stocastica lenta.
+
+
+
+Il risultato stabilisce che lo stato di un network (bistabile o meno) riposa essenzialmente sulla forma di $\tilde{\Phi}$. Sapendo che la frequenza incrementa sia all'aumentare dell'input deterministico ($\frac{\partial\Phi}{\partial\mu} > 0$) sia della varianza ($\frac{\partial\Phi}{\partial\sigma^2} > 0$), la condizione:
+
+\begin{equation}
+\tilde{\Phi}'(\nu^*) < 1
+\end{equation}
+è costantemente minacciata dall'auto-amplificazione dell'eccitazione. 
+
+Per questo l'\textbf{inibizione} è vitale: operando sottrattivamente nel dominio dei tassi, riduce le pendenze effettive e permette alla rete di sostenere tassi attivi moderati anziché collassare sul silenzio totale o scivolare patologicamente in saturazione neurodinamica.
+
