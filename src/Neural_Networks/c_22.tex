@@ -1,0 +1,624 @@
+\chapter{Lezione 22}
+
+
+\section{La Regola di Hebb}
+
+\subsubsection{Contesto e Motivazione}
+
+Nella lezione precedente il docente ha introdotto il concetto di \textbf{plasticità sinaptica} (\textit{synaptic plasticity}) e di \textbf{apprendimento ambientale} (\textit{ambient learning}), in vista della costruzione di un modello di \textbf{memoria di lavoro} (\textit{working memory}). La memoria di lavoro è definita come una memoria a breve termine orientata all'obiettivo (\textit{goal-directed short-term memory}): essa consente al soggetto di mantenere attivamente un'informazione sensoriale durante il periodo in cui questa non è più disponibile nell'ambiente, per poi utilizzarla a scopo comportamentale.
+
+L'obiettivo è comprendere se una rete composta da neuroni eccitatori e inibitori possa — attraverso la plasticità — apprendere come risolvere un task di memoria di lavoro, introducendo dinamicamente una macchina capace di codificare un'informazione attiva.
+
+\subsubsection{La Regola di Hebb (1949)}
+
+Considerando una coppia di neuroni — uno \textbf{pre-sinaptico} e uno \textbf{post-sinaptico} connessi da una sinapsi — la \textbf{regola di Hebb}, formulata da Donald Hebb negli anni '50 del Novecento, stabilisce come l'efficacia sinaptica $J$ si modifichi in funzione dell'attività correlata delle due cellule. In questa formulazione binaria si distinguono quattro scenari in base al firing rate (alto $\uparrow$, o basso $\downarrow$):
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|X|X|X|}
+    \hline
+    \textbf{Pre-sinaptico} & \textbf{Post-sinaptico} & \textbf{Variazione di $J$} \\
+    \hline
+    $\uparrow$ (alto) & $\uparrow$ (alto) & \textbf{LTP}: $\Delta J > 0$ — potenziamento sinaptico \\
+    \hline
+    $\uparrow$ (alto) & $\downarrow$ (basso) & \textbf{LTD}: $\Delta J < 0$ — depressione sinaptica \\
+    \hline
+    $\downarrow$ (basso) & $\uparrow$ (alto) & \textbf{LTD}: $\Delta J < 0$ — depressione sinaptica \\
+    \hline
+    $\downarrow$ (basso) & $\downarrow$ (basso) & Nessuna variazione: $\Delta J = 0$ \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+In sintesi: quando l'attività dei due neuroni è \textbf{positivamente correlata} (entrambi attivi) si ha \textbf{potenziamento a lungo termine} (LTP, \textit{Long-Term Potentiation}); quando essa è \textbf{anti-correlata} (uno attivo, l'altro inattivo — indipendentemente da quale sia il pre- e quale il post-sinaptico), si ha \textbf{depressione a lungo termine} (LTD, \textit{Long-Term Depression}); quando entrambi sono inattivi, l'efficacia sinaptica rimane invariata.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} La regola di Hebb costituisce la base microscopica per capire come una rete di neuroni eccitatori e inibitori possa apprendere a risolvere un task di memoria di lavoro, inducendo dinamicamente una macchina che codifica un'informazione attiva durante il periodo di delay. 
+\end{tcolorbox}
+
+\section{Il Task di Memoria di Lavoro}
+
+\subsubsection{Il Compito Oculomotorio a Risposta Differita}
+
+Il paradigma sperimentale di riferimento è il \textbf{compito oculomotorio a risposta differita} (\textit{oculomotor delayed-response task}). L'animale è posizionato davanti a uno schermo su cui compare un punto centrale di fissazione (\textit{central cue}). Ad un certo istante compare brevemente un \textbf{bersaglio periferico} (\textit{peripheral target}) in una di otto possibili posizioni sullo schermo. Il bersaglio scompare, inizia il \textbf{periodo di delay} (\textit{delay period}), al termine del quale l'animale deve orientare lo sguardo verso la posizione del bersaglio presentato, anche se questo non è più visibile. L'informazione deve dunque essere mantenuta attivamente in memoria durante tutto il delay.
+
+La struttura temporale del trial è:
+\begin{enumerate}
+    \item \textbf{Onset del cue centrale} — l'animale si fissa sul centro dello schermo
+    \item \textbf{Comparsa del bersaglio periferico} — stimolo sensoriale in una delle 8 posizioni
+    \item \textbf{Scomparsa del bersaglio} — inizio del periodo di delay
+    \item \textbf{Go signal} (scomparsa del cue centrale) — l'animale deve rispondere saccadando verso la posizione ricordata
+\end{enumerate}
+
+L'animale deve essere \textbf{istruito} a svolgere questo task: inizialmente non conosce la regola, e i neuroni selettivi per una data posizione non mantengono l'attività durante il delay. È questo processo di istruzione che corrisponde all'apprendimento modellato con la plasticità sinaptica.
+
+\subsubsection{Neuroni Foreground e Background}
+
+All'interno della rete corticale, solo una piccola \textbf{frazione $F$ dei neuroni eccitatori} mostra selettività per il bersaglio presentato: questi sono i \textbf{neuroni foreground} (o neuroni selettivi). La rimanente maggioranza costituisce i \textbf{neuroni background} (o neuroni non selettivi).
+
+Le evidenze neurofisiologiche indicano che tipicamente:
+\begin{equation}
+F \approx 1\% \quad \text{(frazione di neuroni eccitatori selettivi per un dato stimolo)}
+\end{equation}
+
+Per una rete di $N \approx 10\,000$ neuroni totali — che rappresenta una piccola patch della corteccia cerebrale — la struttura demografica è:
+\begin{itemize}
+    \item \textbf{Neuroni eccitatori totali:} $N_E \approx 0.8 N = 8\,000$
+    \item \textbf{Neuroni inibitori totali:} $N_I \approx 0.2 N = 2\,000$
+    \item \textbf{Neuroni foreground:} $F \cdot N_E \approx 80$
+    \item \textbf{Neuroni background:} $(1-F) \cdot N_E \approx 7\,920$
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Il valore $F \approx 1\%$ riflette la sparsa selettività osservata nelle registrazioni elettrofisiologiche della corteccia prefrontale di primati durante task di working memory. È importante sottolineare che questa è una semplificazione: in generale, durante l'apprendimento la composizione delle popolazioni può cambiare (alcuni neuroni inizialmente attivi vengono "silenziati" perché non appartengono alla rete deputata a rispondere a quello specifico stimolo). Qui si assume per semplicità che la stessa famiglia di neuroni rimanga selettiva per tutta la durata dell'esperimento.
+\end{tcolorbox}
+
+
+
+\subsubsection{Attività Prima del Training}
+
+Prima che l'animale sia addestrato a risolvere il task, i neuroni foreground presentano il seguente comportamento durante un trial:
+
+\begin{itemize}
+    \item \textbf{Stato spontaneo} (prima dello stimolo): firing rate di fondo, $\nu_{\rm sp} \approx 1\ \mathrm{Hz}$
+    \item \textbf{Risposta allo stimolo}: quando il bersaglio preferito appare, i neuroni foreground sparano a $\nu_F \approx 10\ \mathrm{Hz}$ (\textit{selectivity firing rate})
+    \item \textbf{Dopo lo stimolo}: ritorno immediato allo stato spontaneo — \textbf{nessuna attività persistente durante il delay}
+\end{itemize}
+
+I neuroni background e inibitori rimangono sempre alla frequenza basale di $\approx 1\ \mathrm{Hz}$.
+
+\subsubsection{La Matrice Sinaptica Prima del Training}
+
+La matrice sinaptica $N \times N$ può essere partizionata in blocchi in base al tipo (eccitatorio/inibitorio) del neurone pre-sinaptico e post-sinaptico. I quattro blocchi fondamentali sono:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|X|c|c|c|}
+    \hline
+    \textbf{Connessione} & \textbf{Simbolo} & \textbf{Tipo} & \textbf{Segno} \\
+    \hline
+    Eccitatorio $\rightarrow$ Eccitatorio & $J_{EE}$ & Eccitatoria & $+$ \\
+    \hline
+    Eccitatorio $\rightarrow$ Inibitorio & $J_{EI}$ & Eccitatoria verso I & $+$ (ma $J_{EI} < 0$ in corrente) \\
+    \hline
+    Inibitorio $\rightarrow$ Eccitatorio & $J_{IE}$ & Inibitoria verso E & $-$ \\
+    \hline
+    Inibitorio $\rightarrow$ Inibitorio & $J_{II}$ & Inibitoria & $-$ \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+
+Prima dell'apprendimento la matrice è omogenea: tutti i neuroni eccitatori ricevono lo stesso $J_{EE}$ da tutti gli altri neuroni eccitatori, indipendentemente dalla loro selettività.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Per convenzione, le sinapsi inibitorie vengono indicate con un cerchio sull'assonema (anziché la freccia utilizzata per le eccitatorie). Questa distinzione morfologica ha un corrispettivo funzionale nel segno negativo di $J_{IE}$ e $J_{II}$.
+\end{tcolorbox}
+
+
+\subsection{Modifiche Hebbiane della Matrice Sinaptica}
+
+\subsubsection{Analisi Delle Correlazioni Durante il Trial}
+
+Durante i trial di training, si analizza l'attività di coppie di neuroni nelle diverse sottopopolazioni per ricavare il segno della modifica hebbiana:
+
+\textbf{Connessioni Foreground $\rightarrow$ Foreground (F$\rightarrow$F):}\\
+Il pre-sinaptico foreground è attivo $\uparrow$ (risponde allo stimolo) e il post-sinaptico foreground è attivo $\uparrow$ (è anch'esso selettivo per quello stimolo) $\rightarrow$ attività \textbf{positivamente correlata} $\rightarrow$ \textbf{LTP} $\rightarrow$ l'efficacia sinaptica aumenta:
+\begin{equation}
+J_+ > J_{EE}
+\end{equation}
+
+\textbf{Connessioni Foreground $\rightarrow$ Background (F$\rightarrow$B):}\\
+Il pre-sinaptico foreground è attivo $\uparrow$ (risponde allo stimolo) e il post-sinaptico background è inattivo $\downarrow$ (non selettivo, rimane a $\nu_{\rm sp}$) $\rightarrow$ attività \textbf{anti-correlata} $\rightarrow$ \textbf{LTD} $\rightarrow$ l'efficacia sinaptica si riduce:
+\begin{equation}
+J_- < J_{EE}
+\end{equation}
+
+\textbf{Connessioni Background $\rightarrow$ Foreground (B$\rightarrow$F):}\\
+Il pre-sinaptico background è inattivo $\downarrow$ e il post-sinaptico foreground è attivo $\uparrow$ $\rightarrow$ attività \textbf{anti-correlata} $\rightarrow$ \textbf{LTD} $\rightarrow$ l'efficacia sinaptica si riduce allo stesso $J_-$.
+
+\textbf{Connessioni Background $\rightarrow$ Background (B$\rightarrow$B):}\\
+Entrambi inattivi $\downarrow$ durante la presentazione dello stimolo $\rightarrow$ \textbf{nessuna variazione}:
+\begin{equation}
+J_{BB} = J_{EE}
+\end{equation}
+
+\subsubsection{Struttura della Matrice Sinaptica Post-Apprendimento}
+
+Dopo l'addestramento, la parte eccitatoria della matrice sinaptica acquisisce una struttura a blocchi con tre regioni distinte:
+
+\begin{itemize}
+    \item \textbf{Blocco F$\rightarrow$F:} efficacia $J_+$ (potenziato — LTP)
+    \item \textbf{Blocco F$\rightarrow$B e B$\rightarrow$F:} efficacia $J_-$ (depresso — LTD)
+    \item \textbf{Blocco B$\rightarrow$B:} efficacia $J_{EE}$ (invariato)
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} In questo schema le sinapsi inibitorie ($J_{EI}, J_{IE}, J_{II}$) sono mantenute costanti. Questa è una semplificazione: in generale esiste plasticità anche nelle sinapsi inibitorie, ma per rendere il modello analiticamente trattabile si assume invarianza delle connessioni che coinvolgono interneuroni.
+\end{tcolorbox}
+
+La matrice con questa struttura a blocchi definisce tre \textbf{popolazioni omogenee}: all'interno di ciascuna popolazione, ogni neurone riceve statisticamente lo stesso insieme di input sinaptici (albero dendritico statisticamente equivalente). Questo è il prerequisito per l'applicazione dell'\textbf{approssimazione di campo medio} (\textit{mean-field approximation}).
+
+\section{Equazioni di Campo Medio per le Tre Popolazioni}
+
+\subsubsection{Corrente Media e Varianza per i Neuroni Foreground}
+
+La corrente sinaptica media $\mu_F$ ricevuta da un neurone foreground è la somma lineare dei contributi di tutte le popolazioni pre-sinaptiche, ciascuno ponderato per l'efficacia sinaptica media e per la frequenza di arrivo degli spike:
+
+\begin{equation}
+\mu_F = J_+ K_E F \,\nu_F + J_- K_E (1-F)\,\nu_B + J_{EI} K_I \,\nu_I
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $K_E$ = numero medio di contatti sinaptici eccitatorio$\rightarrow$eccitatorio per neurone
+    \item $K_I$ = numero medio di contatti sinaptici inibitorio$\rightarrow$eccitatorio per neurone
+    \item $\nu_F, \nu_B, \nu_I$ = firing rate medi delle tre popolazioni
+    \item Il primo termine: auto-eccitazione potenziata ($J_+$) dai $K_E F$ neuroni foreground pre-sinaptici
+    \item Il secondo termine: eccitazione depressa ($J_-$) dai $K_E(1-F)$ neuroni background
+    \item Il terzo termine: inibizione ($J_{EI} < 0$) dai $K_I$ neuroni inibitori
+\end{itemize}
+
+La \textbf{varianza infinitesimale} della corrente (proveniente dal rumore di shot degli input di Poisson) è:
+
+\begin{equation}
+\sigma_F^2 = J_+^2 (1+\delta_+^2)\, K_E F\, \nu_F + J_-^2 (1+\delta_-^2)\, K_E (1-F)\, \nu_B + J_{EI}^2 (1+\delta_{EI}^2)\, K_I\, \nu_I
+\end{equation}
+
+dove $\delta_+^2, \delta_-^2, \delta_{EI}^2$ sono le varianze relative delle distribuzioni delle efficacie sinaptiche nei rispettivi blocchi. La varianza è sempre proporzionale al quadrato dell'efficacia sinaptica e al numero di spike ricevuti per unità di tempo.
+
+\subsubsection{Corrente Media e Varianza per i Neuroni Background}
+
+Analogamente, la corrente media per un neurone background è:
+
+\begin{equation}
+\mu_B = J_- \, K_E \, F \, \nu_F + J_{EE} \, K_E \, (1-F) \, \nu_B + J_{EI} \, K_I \, \nu_I
+\end{equation}
+
+Il confronto chiave con $\mu_F$ è nel primo termine: i neuroni foreground contribuiscono con $J_-$ (depresso) ai background, anziché con $J_+$ (potenziato) come per i foreground stessi. Il secondo termine è $J_{EE}$ (non modificato), anziché $J_-$.
+
+La varianza $\sigma_B^2$ ha la stessa struttura formale di $\sigma_F^2$, con $J_+$ sostituito da $J_-$ nel primo termine e $J_{EE}$ nel secondo:
+
+\begin{equation}
+\sigma_B^2 = J_-^2 (1+\delta_-^2)\, K_E F\, \nu_F + J_{EE}^2 (1+\delta_{EE}^2)\, K_E (1-F)\, \nu_B + J_{EI}^2 (1+\delta_{EI}^2)\, K_I\, \nu_I
+\end{equation}
+
+\subsubsection{Corrente Media per i Neuroni Inibitori}
+
+I neuroni inibitori ricevono input eccitatorio da tutti i neuroni eccitatori (foreground e background) attraverso le sinapsi $J_{EI}$ e si auto-inibiscono tramite $J_{II}$:
+
+\begin{equation}
+\mu_I = J_{EI} \, K_E \left[ F \, \nu_F + (1-F) \, \nu_B \right] + J_{II} \, K_I \, \nu_I
+\end{equation}
+
+Il termine tra parentesi quadre è il \textbf{firing rate medio pesato} dell'intera popolazione eccitatoria. Poiché $F \approx 1\%$, anche un grande aumento di $\nu_F$ produce una variazione minima di questo termine: \textbf{l'inibizione è approssimativamente invariata}. Questo è un punto fondamentale che il docente sottolinea esplicitamente: grazie alla piccola dimensione della popolazione foreground rispetto alla rete totale, i neuroni inibitori non riescono a "distinguere" se il segnale eccitatorio proviene da neuroni selettivi o meno.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} L'inibizione è simile alla media pesata del firing rate sull'intera rete eccitatoria. Poiché $F$ è piccolo, l'inibizione varia poco — e questa variazione si scarica uniformemente su foreground e background. Questo meccanismo non distrugge la selettività; al contrario, la rende possibile attraverso la differenza di input eccitatorio tra le due popolazioni.
+\end{tcolorbox}
+
+
+
+
+\subsubsection{Corrente Media come Funzione Lineare del Firing Rate}
+
+Tutte le correnti medie $\mu_\alpha$ e le varianze $\sigma^2_\alpha$ (con $\alpha \in \{F, B, I\}$) sono funzioni lineari dei tre firing rate:
+
+\begin{equation}
+\mu_\alpha = \mu_\alpha(\nu_F, \nu_B, \nu_I), \qquad \sigma^2_\alpha = \sigma^2_\alpha(\nu_F, \nu_B, \nu_I)
+\end{equation}
+
+\subsubsection{Differenza Cruciale tra Corrente Foreground e Background}
+
+Il confronto diretto tra $\mu_F$ e $\mu_B$ rivela la \textbf{differenza fondamentale} che genera la selettività:
+
+\begin{itemize}
+    \item $\mu_F$ contiene $J_+ K_E F \nu_F$ (auto-eccitazione \textbf{potenziata})
+    \item $\mu_B$ contiene $J_- K_E F \nu_F$ (eccitazione \textbf{depressa} dai foreground)
+\end{itemize}
+
+Poiché $J_+ > J_{EE} > J_-$, a parità di $\nu_F$ i neuroni foreground ricevono un input eccitatorio molto maggiore rispetto ai background. Il termine dal background verso i foreground ($J_- K_E(1-F)\nu_B$) è depresso rispetto al termine omologa nei background ($J_{EE}K_E(1-F)\nu_B$).
+
+\subsubsection{Invarianza Approssimata dell'Inibizione}
+
+Poiché $F \approx 1\%$, la corrente inibitoria:
+
+\begin{equation}
+\mu_I \propto F\,\nu_F + (1-F)\,\nu_B \approx \nu_B \quad \text{(per } F \ll 1\text{)}
+\end{equation}
+
+varia pochissimo al variare di $\nu_F$. Di conseguenza, anche l'inibizione che si riversa sui foreground e sui background è \textbf{praticamente uguale} nelle due popolazioni. Il vantaggio dei foreground rispetto ai background è quindi esclusivamente di natura eccitatoria ($J_+$ vs $J_-$), non inibitoria.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Ricapitolando: se si aumenta l'input ai foreground tramite uno stimolo esterno, i foreground aumentano la loro attività grazie a $J_+$, mentre i background ricevono da questi un input depresso ($J_-$). L'inibizione aumenta leggermente per tutti, ma in egual misura. Il risultato netto è che i foreground salgono e i background scendono — esattamente il pattern di attività osservato sperimentalmente.
+\end{tcolorbox}
+
+
+\subsection{Equazioni di Auto-Consistenza}
+
+
+Le \textbf{equazioni di auto-consistenza del campo medio} sono tre equazioni accoppiate, una per ciascuna popolazione:
+
+\begin{equation}
+\nu_\alpha = \Phi\!\left(\mu_\alpha(\nu_F, \nu_B, \nu_I),\; \sigma^2_\alpha(\nu_F, \nu_B, \nu_I)\right), \qquad \alpha \in \{F, B, I\}
+\end{equation}
+
+dove $\Phi(\mu, \sigma^2)$ è la \textbf{funzione di trasferimento} (\textit{transfer function} o \textit{gain function}) del neurone LIF — la stessa già derivata nelle lezioni precedenti tramite l'equazione di Fokker-Planck e il problema del tempo di primo passaggio. Essa fornisce il firing rate stazionario di un neurone LIF in funzione della media $\mu$ e della varianza $\sigma^2$ dell'input corrente.
+
+La soluzione del sistema fornisce i \textbf{punti fissi} della rete, cioè gli stati stazionari di attività collettiva.
+
+\subsubsection{La Dinamica di Rilassamento al Punto Fisso}
+
+La dinamica che porta il sistema al punto fisso è descritta dalle equazioni del firing rate:
+
+\begin{equation}
+\tau_\alpha \frac{d\nu_\alpha}{dt} = \Phi(\mu_\alpha, \sigma^2_\alpha) - \nu_\alpha
+\end{equation}
+
+dove $\tau_\alpha$ è la costante di rilassamento del firing rate per la popolazione $\alpha$. Allo stato stazionario si ha $d\nu_\alpha/dt = 0$, che fornisce l'equazione di auto-consistenza.
+
+\subsubsection{Riduzione a Equazione Scalare in $\nu_F$}
+
+Il sistema di tre equazioni accoppiate può essere ridotto a una \textbf{singola equazione scalare} per $\nu_F$. A partire dalle equazioni per background e inibitori, fissato $\nu_F$, si possono trovare le soluzioni stazionarie:
+
+\begin{equation}
+\nu_B^* = \nu_B^*(\nu_F), \qquad \nu_I^* = \nu_I^*(\nu_F)
+\end{equation}
+
+che esprimono il firing rate delle due popolazioni "passive" come funzione della variabile di interesse $\nu_F$. Sostituendo nella prima equazione si ottiene la \textbf{funzione di guadagno effettiva}:
+
+\begin{equation}
+\nu_F = \Phi_{\rm eff}(\nu_F) \equiv \Phi\!\left(\mu_F\bigl(\nu_F,\, \nu_B^*(\nu_F),\, \nu_I^*(\nu_F)\bigr),\; \sigma_F^2\bigl(\nu_F,\, \nu_B^*(\nu_F),\, \nu_I^*(\nu_F)\bigr)\right)
+\end{equation}
+
+Le soluzioni di questa equazione scalare (intersezioni tra la curva $\Phi_{\rm eff}(\nu_F)$ e la retta identità $\nu_F$) sono i punti fissi del sistema.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questa riduzione dimensionale è possibile perché, nella fase stazionaria, i firing rate di background e inibitori si adattano "adiabaticamente" al valore di $\nu_F$, che è la variabile lenta — quella che porta la memoria selettiva. Si può in tal modo costruire un'\textbf{equazione efficace monodimensionale} che cattura tutta la fisica essenziale del sistema.
+\end{tcolorbox}
+
+
+\subsection{Analisi Grafica dei Punti Fissi con Stimolo Esterno}
+
+\subsubsection{La Funzione di Guadagno Effettiva}
+
+Nel grafico $(\nu_F, \Phi_{\rm eff}(\nu_F))$, la funzione di guadagno è una curva monotonicamente crescente e concava (a forma di funzione di risposta sigmoidale). I punti fissi si trovano alle intersezioni con la bisettrice $\nu_F = \nu_F$.
+
+Prima dell'apprendimento (o con $J_+ \approx J_{EE}$), la curva interseca la bisettrice in un \textbf{unico punto}: il punto fisso spontaneo.
+
+\subsubsection{Effetto dell'Input Sensoriale Esterno}
+
+In presenza del bersaglio periferico sullo schermo, i neuroni foreground ricevono un \textbf{input eccitatorio aggiuntivo} $\nu_{\rm stim} > 0$ — assente per i neuroni background. Questo termina si aggiunge alla corrente media:
+
+\begin{equation}
+\mu_F \to \mu_F + \nu_{\rm stim}
+\end{equation}
+
+Graficamente, aggiungere $\nu_{\rm stim}$ equivale a traslare la funzione di guadagno effettiva verso \textbf{sinistra} sull'asse $\nu_F$ (il punto in cui la corrente netta è zero si sposta a sinistra). L'intersezione si sposta a un valore maggiore di $\nu_F$: i foreground aumentano il loro firing rate.
+
+\subsubsection{Risposta delle Tre Popolazioni}
+
+Quando $\nu_{\rm stim} \neq 0$:
+
+\begin{enumerate}
+    \item \textbf{Neuroni foreground:} $\nu_F$ aumenta perché ricevono $\nu_{\rm stim}$ amplificato da $J_+$
+    \item \textbf{Neuroni inibitori:} $\nu_I^*(\nu_F)$ aumenta lievemente, perché la media $F\nu_F + (1-F)\nu_B$ cresce leggermente
+    \item \textbf{Neuroni background:} $\nu_B^*(\nu_F)$ \textbf{diminuisce}, perché l'aumento dell'inibizione si riversa su di loro senza che abbiano il vantaggio dell'auto-eccitazione potenziata $J_+$
+\end{enumerate}
+
+Questo realizza il pattern osservato sperimentalmente: i neuroni selettivi aumentano, i non selettivi vengono soppressi, l'inibizione globale sale lievemente.
+
+\subsection{Evoluzione Temporale dell'Apprendimento e Vincolo Omeostatico}
+
+\subsubsection{Dinamica di $J_+$ e $J_-$ Durante il Training}
+
+Sull'asse del tempo dell'apprendimento (scala temporale dei trial, molto più lenta della dinamica neuronale), le efficacie sinaptiche evolvono monotonicamente:
+\begin{itemize}
+    \item $J_+$ cresce progressivamente (LTP cumulativo F$\rightarrow$F ad ogni trial)
+    \item $J_-$ decresce progressivamente (LTD cumulativo F$\rightarrow$B e B$\rightarrow$F ad ogni trial)
+\end{itemize}
+
+Il docente menziona che esistono processi omeostatici che regolano questa evoluzione. Il vincolo imposto è che il \textbf{firing rate medio dell'intera popolazione eccitatoria} rimanga costante:
+
+\begin{equation}
+\langle \nu_E \rangle = F \, \nu_F + (1-F) \, \nu_B = \nu_{E0} = \text{const}
+\end{equation}
+
+\subsubsection{Derivazione Analitica del Vincolo su $J_\pm$}
+
+Linearizzando intorno alla soluzione omogenea (pre-apprendimento) $\nu_F = \nu_B = \nu_{E0}$, si scrive:
+\begin{equation}
+\nu_F = \nu_{E0} + \delta\nu_F, \qquad \nu_B = \nu_{E0} + \delta\nu_B
+\end{equation}
+
+Imponendo il vincolo al primo ordine in $\delta\nu_F, \delta\nu_B$:
+\begin{equation}
+F \, \delta\nu_F + (1-F) \, \delta\nu_B = 0 \implies \delta\nu_B = -\frac{F}{1-F}\,\delta\nu_F
+\end{equation}
+
+Il calcolo di Taylor delle equazioni di campo medio esprime $\delta\nu_F$ e $\delta\nu_B$ in funzione di $\delta J_+$ e $\delta J_-$. Sostituendo si ottiene un'equazione lineare che lega i cambiamenti delle efficacie sinaptiche, definendo il \textbf{percorso di apprendimento} nel piano $(J_+, J_-)$.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Ci sono due scale temporali distinte che coesistono nel sistema: la scala temporale della dinamica del firing rate (millisecondi) e la scala temporale dell'apprendimento sinaptico (secondi–minuti per trial). Questa separazione di scale è ciò che rende valida l'analisi adiabatica: per ogni valore di $J_+$ e $J_-$, il firing rate raggiunge il suo punto fisso prima che le sinapsi cambino apprezzabilmente.
+\end{tcolorbox}
+
+
+\section{Deformazione della Funzione di Guadagno con l'Apprendimento}
+
+\subsubsection{La Pendenza della Funzione di Guadagno È Proporzionale a $J_+$}
+
+Espandendo al primo ordine intorno al punto fisso $\nu_F^*$, la derivata della funzione di guadagno effettiva è:
+
+\begin{equation}
+\left.\frac{\partial \Phi_{\rm eff}}{\partial \nu_F}\right|_{\nu_F^*} = \frac{\partial \Phi}{\partial \mu}\cdot \frac{\partial \mu_F}{\partial \nu_F} + \frac{\partial \Phi}{\partial \sigma^2}\cdot \frac{\partial \sigma^2_F}{\partial \nu_F}
+\end{equation}
+
+Sostituendo le espressioni di $\mu_F$ e $\sigma^2_F$:
+\begin{equation}
+\frac{\partial \mu_F}{\partial \nu_F} \approx J_+ K_E F, \qquad \frac{\partial \sigma^2_F}{\partial \nu_F} \approx J_+^2 (1+\delta_+^2) K_E F
+\end{equation}
+
+si ottiene che la pendenza è \textbf{proporzionale a $J_+$}:
+
+\begin{equation}
+\left.\frac{\partial \Phi_{\rm eff}}{\partial \nu_F}\right|_{\nu_F^*} \propto J_+
+\end{equation}
+
+(più precisamente, contiene un termine lineare in $J_+$ che proviene da $\partial_\mu\Phi$ e un termine in $J_+$ che proviene da $\partial_{\sigma^2}\Phi \cdot J_+^2$, dove $\partial_{\sigma^2}\Phi$ è sempre positivo per neuroni con rumore).
+
+\subsubsection{Compressione dell'Asse e Aumento della Non-Linearità}
+
+Poiché la funzione di guadagno effettiva può essere scritta nella forma:
+\begin{equation}
+\Phi_{\rm eff}(\nu_F) \approx f(J_+ \cdot \nu_F + C)
+\end{equation}
+
+dove $f$ è la funzione di risposta LIF e $C$ è una costante, aumentare $J_+$ equivale a \textbf{comprimere l'asse} $\nu_F$. Graficamente: la stessa variazione di $\nu_F$ produce una variazione maggiore nella curva $\Phi_{\rm eff}$. La curva diventa via via più ripida e più non-lineare.
+
+Partendo da una curva quasi lineare (pre-apprendimento, $J_+ \approx J_{EE}$), all'aumentare di $J_+$ la curva si deforma progressivamente verso una \textbf{forma a S} (\textit{sigmoid}) sempre più pronunciata.
+
+\subsubsection{Comparsa di Tre Punti Fissi}
+
+Quando $J_+$ supera il valore critico $J_+^c$, la curva $\Phi_{\rm eff}(\nu_F)$ diventa abbastanza ripida da intersecare la retta identità $\nu_F$ in \textbf{tre punti distinti}:
+
+\begin{itemize}
+    \item \textbf{Punto fisso inferiore} ($\nu_F = \nu_{\rm sp}$): \textbf{stabile} — corrisponde allo stato spontaneo
+    \item \textbf{Punto fisso intermedio} ($\nu_F = \nu_{\rm saddle}$): \textbf{instabile} — è il punto sella (o punto di separatrice)
+    \item \textbf{Punto fisso superiore} ($\nu_F = \nu_{\rm sel}$): \textbf{stabile} — corrisponde al nuovo stato selettivo
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} La stabilità dei punti fissi si determina dalla condizione sulla pendenza: un punto fisso è stabile se in quel punto la pendenza di $\Phi_{\rm eff}(\nu_F)$ è inferiore a 1 (pendenza della bisettrice); è instabile se la pendenza è superiore a 1. Questo è il criterio classico per la stabilità lineare di un punto fisso in una mappa scalare.
+\end{tcolorbox}
+
+
+\section{Funzione di Lyapunov e Paesaggio Energetico}
+
+\subsubsection{L'Equazione del Firing Rate come Sistema Dissipativo}
+
+La dinamica del firing rate della popolazione foreground è un sistema dissipativo governato dall'equazione:
+
+\begin{equation}
+\tau_F \frac{d\nu_F}{dt} = \Phi_{\rm eff}(\nu_F) - \nu_F \equiv \mathcal{F}(\nu_F)
+\end{equation}
+
+Il termine a destra, $\mathcal{F}(\nu_F) = \Phi_{\rm eff}(\nu_F) - \nu_F$, è il \textbf{campo di forza} (\textit{force field}): determina il verso e l'intensità della deriva del firing rate. I punti fissi si trovano dove $\mathcal{F}(\nu_F^*) = 0$.
+
+\begin{itemize}
+    \item Dove $\mathcal{F} > 0$ (cioè $\Phi_{\rm eff} > \nu_F$): il firing rate cresce
+    \item Dove $\mathcal{F} < 0$ (cioè $\Phi_{\rm eff} < \nu_F$): il firing rate decresce
+\end{itemize}
+
+\subsubsection{Costruzione della Funzione di Lyapunov}
+
+Si cerca una \textbf{funzione di Lyapunov} $E(\nu_F)$ che soddisfi:
+
+\begin{equation}
+\frac{dE}{dt} \leq 0 \quad \forall t \quad (\text{non-crescente lungo le traiettorie})
+\end{equation}
+
+Poiché:
+\begin{equation}
+\frac{dE}{dt} = \frac{\partial E}{\partial \nu_F} \cdot \frac{d\nu_F}{dt} = \frac{\partial E}{\partial \nu_F} \cdot \frac{\mathcal{F}(\nu_F)}{\tau_F}
+\end{equation}
+
+per garantire $dE/dt \leq 0$, si impone:
+
+\begin{equation}
+\frac{\partial E}{\partial \nu_F} = -\mathcal{F}(\nu_F) = \nu_F - \Phi_{\rm eff}(\nu_F)
+\end{equation}
+
+In questo modo:
+\begin{equation}
+\frac{dE}{dt} = \left(\nu_F - \Phi_{\rm eff}(\nu_F)\right) \cdot \frac{\Phi_{\rm eff}(\nu_F) - \nu_F}{\tau_F} = -\frac{\left[\Phi_{\rm eff}(\nu_F) - \nu_F\right]^2}{\tau_F} \leq 0
+\end{equation}
+
+La funzione di Lyapunov è quindi l'integrale del campo di forza cambiato di segno:
+
+\begin{equation}
+\boxed{E(\nu_F) = -\int_0^{\nu_F} \left[\Phi_{\rm eff}(x) - x\right] dx}
+\end{equation}
+
+\subsubsection{Interpretazione come Paesaggio Energetico}
+
+$E(\nu_F)$ si comporta come un \textbf{paesaggio energetico} (\textit{energy landscape}): il sistema evolve come una pallina che rotola seguendo il gradiente discendente di questo paesaggio. I \textbf{minimi locali} corrispondono agli stati stazionari stabili (attrattori); i \textbf{massimi locali} corrispondono agli stati instabili (selle).
+
+\textbf{Caso pre-apprendimento (un solo punto fisso):}\\
+$\mathcal{F}(\nu_F)$ ha un solo zero: il campo di forza è negativo a destra e positivo a sinistra del punto fisso. $E(\nu_F)$ ha una \textbf{singola buca} — un unico attrattore. Qualunque condizione iniziale porta il sistema verso $\nu_{\rm sp}$.
+
+\textbf{Caso post-apprendimento (tre punti fissi):}\\
+$\mathcal{F}(\nu_F)$ ha tre zeri. $E(\nu_F)$ ha \textbf{due buche separate da una barriera} — il sistema è \textbf{bistabile}: la pallina può trovarsi nel minimo sinistro ($\nu_{\rm sp}$, stato spontaneo) o nel minimo destro ($\nu_{\rm sel}$, stato selettivo), a seconda delle condizioni iniziali.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Il sistema è dissipativo: l'energia $E$ può solo decrescere o rimanere costante (nei punti fissi). Questo significa che in assenza di perturbazioni esterne, il sistema "rotola verso il basso" nel paesaggio energetico. Non può mai aumentare la propria energia spontaneamente — è un sistema termodinamicamente ben definito.
+\end{tcolorbox}
+
+
+\subsection{Diagramma di Biforcazione}
+
+\subsubsection{Struttura del Diagramma}
+
+Al variare di $J_+$ (parametro d'ordine dell'apprendimento), il sistema attraversa una \textbf{biforcazione sella-nodo} (\textit{saddle-node} o \textit{fold bifurcation}): il numero di punti fissi stazionari cambia discontinuamente.
+
+Il diagramma di biforcazione mostra il firing rate stazionario $\nu_F^*$ in funzione di $J_+$:
+
+\begin{itemize}
+    \item \textbf{Per $J_+ < J_+^c$:} esiste un \textbf{unico punto fisso stabile} a basso firing rate: lo stato spontaneo $\nu_{\rm sp}$
+    \item \textbf{Per $J_+ = J_+^c$:} \textbf{punto critico di biforcazione} — il secondo e terzo punto fisso emergono simultaneamente (saddle-node)
+    \item \textbf{Per $J_+ > J_+^c$:} esistono \textbf{tre punti fissi}: due stabili ($\nu_{\rm sp}$ e $\nu_{\rm sel}$) e uno instabile ($\nu_{\rm saddle}$) — regime bistabile
+    \item \textbf{Per $J_+$ molto grande:} lo stato spontaneo e il punto sella si avvicinano e si annullano (seconda biforcazione); rimane solo $\nu_{\rm sel}$
+\end{itemize}
+
+Il \textbf{regime di interesse biologico} è quello bistabile ($J_+ > J_+^c$ ma non troppo grande), in cui i due attrattori coesistono.
+
+\subsubsection{Comportamento delle Altre Popolazioni}
+
+Il diagramma di biforcazione completo mostra anche:
+\begin{itemize}
+    \item $\nu_B^*(J_+)$: il background si abbassa nel regime bistabile quando il foreground è nello stato selettivo
+    \item $\nu_I^*(J_+)$: l'inibitore sale leggermente nello stato selettivo
+    \item Al crescere di $J_+$, il breaking of symmetry tra foreground e background diventa sempre più pronunciato
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} È importante mantenere il bilanciamento delle risorse sinaptiche: l'aumento di $J_+$ è accoppiato alla diminuzione di $J_-$ in modo tale da preservare il firing rate medio eccitatorie. Il parametro d'ordine "fisico" del sistema è dunque la differenza $J_+ - J_-$, che cresce monotonicamente con l'apprendimento fino alla biforcazione.
+\end{tcolorbox}
+
+
+
+\subsection{Dinamica del Task: Stimolazione, Delay e Memoria}
+
+\subsubsection{Le Fasi del Trial nel Regime Bistabile}
+
+Con la rete nel regime bistabile ($J_+ > J_+^c$), si può analizzare la dinamica di $\nu_F(t)$ durante il trial di working memory interpretandola come moto di una pallina nel paesaggio energetico $E(\nu_F)$:
+
+\textbf{Fase 1 — Stato spontaneo pre-stimolo:}\\
+La rete è nell'attrattore spontaneo: $\nu_F = \nu_{\rm sp}$ (pallina nel minimo sinistro). Il paesaggio ha due buche separate da una barriera.
+
+\textbf{Fase 2 — Presentazione del bersaglio preferito ($\nu_{\rm stim} \neq 0$):}\\
+L'input sensoriale aggiuntivo modifica la corrente dei foreground:
+\begin{equation}
+\mu_F \to \mu_F + \nu_{\rm stim}
+\end{equation}
+
+Questo equivale a uno spostamento della funzione di guadagno verso sinistra, che trasforma il paesaggio energetico: la buca sinistra si innalza, la barriera si abbassa, e per un $\nu_{\rm stim}$ sufficientemente forte \textbf{la buca sinistra scompare}. Non esiste più un attrattore spontaneo: rimane solo la buca destra. La pallina, che si trovava nella buca sinistra, ora segue il gradiente discendente verso la buca destra, raggiungendo $\nu_F = \nu_{\rm sel}$ (firing rate selettivo elevato).
+
+\textbf{Fase 3 — Rimozione dello stimolo (inizio del delay):}\\
+Quando il bersaglio scompare dallo schermo: $\nu_{\rm stim} \to 0$. Il paesaggio energetico torna alla configurazione bistabile con due buche. La pallina si trova ora nella buca destra — \textbf{l'attrattore selettivo} — con $\nu_F = \nu_{\rm sel}$. \textbf{In assenza di stimolo, il sistema rimane nell'attrattore selettivo.} Questo è il substrato neuronale della \textbf{memoria di lavoro}: l'informazione "quale bersaglio è stato presentato" è codificata nell'elevato firing rate persistente dei neuroni foreground durante il delay.
+
+\subsubsection{Meccanismo di Encoding e Mantenimento}
+
+Il passaggio dalla buca spontanea a quella selettiva realizza la fase di \textbf{encoding} della memoria. Il mantenimento nella buca selettiva durante il delay realizza la fase di \textbf{retention}. Non sono necessari ulteriori meccanismi o input esterni per mantenere la memoria: la rete è autonomamente stabile nell'attrattore selettivo grazie alla struttura ricorrente $J_+$.
+
+\begin{equation}
+\nu_F(t) = \nu_{\rm sel} \gg \nu_{\rm sp} \quad \text{durante il delay}
+\end{equation}
+
+\begin{equation}
+\nu_B(t) = \nu_B^*(\nu_{\rm sel}) < \nu_{\rm sp} \quad \text{(background silenziato durante il delay)}
+\end{equation}
+
+
+
+\section{Lettura della Memoria, Stimoli Non-Preferiti e Selettività}
+
+\subsubsection{Stato Selettivo: Firma di Attività delle Tre Popolazioni}
+
+Nello stato selettivo (durante il delay), il pattern di attività della rete è:
+
+\begin{itemize}
+    \item \textbf{Neuroni foreground:} $\nu_F = \nu_{\rm sel} \gg \nu_{\rm sp}$ — firing rate elevato e persistente (stato "selettivo" o "up state")
+    \item \textbf{Neuroni inibitori:} $\nu_I$ leggermente aumentato rispetto allo spontaneo (per il lieve aumento di $\bar{\nu}_E$)
+    \item \textbf{Neuroni background:} $\nu_B < \nu_{\rm sp}$ — \textbf{silenziati} dalla maggiore inibizione globale (soppressione del background)
+\end{itemize}
+
+Questa firma di attività può essere \textbf{letta da altre aree corticali} per decodificare quale stimolo è stato presentato e mantenuto in working memory.
+
+\subsubsection{Stimolo Non-Preferito: Assenza di Memoria}
+
+Quando viene presentato un bersaglio in una posizione non preferita dalla popolazione foreground in esame, l'input sensoriale che i foreground ricevono è assente o insufficiente. Lo shift della funzione di guadagno è troppo piccolo per eliminare la buca sinistra: il paesaggio energetico rimane bistabile anche durante la stimolazione. La pallina risale verso la barriera ma \textbf{non la supera}. Quando lo stimolo viene rimosso, la rete torna allo stato spontaneo:
+
+\begin{equation}
+\nu_F \to \nu_{\rm sp} \quad \text{(nessuna memoria)}
+\end{equation}
+
+Questo garantisce che la working memory sia \textbf{selettiva per il contenuto}: solo lo stimolo "preferito" dalla popolazione foreground è capace di spingere il sistema nell'attrattore selettivo.
+
+\subsubsection{Molteplici Popolazioni e Capacità di Memoria}
+
+In una rete corticale realistica esistono \textbf{molte popolazioni foreground distinte}, ciascuna selettiva per uno dei possibili bersagli (es. le 8 posizioni del task oculomotorio). Ciascuna popolazione ha il proprio attrattore selettivo. Quando viene presentato un bersaglio:
+
+\begin{itemize}
+    \item Solo la popolazione foreground selettiva per quel bersaglio viene spinta nel proprio attrattore selettivo
+    \item Tutte le altre popolazioni rimangono nell'attrattore spontaneo
+\end{itemize}
+
+La working memory è dunque implementata come un \textbf{codice di popolazione}: la posizione del bersaglio ricordato è codificata nell'identità della popolazione foreground attiva.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questo tipo di attrattore, che viene implementato davvero nel cervello, è stato introdotto per la prima volta da \textbf{Daniel Amit} e \textbf{Nicola Brunel} negli anni '90 del secolo scorso. Il paper è stato caricato sulla piattaforma del corso. Qui ne viene descritta la dinamica qualitativa; grazie alla conoscenza della funzione di guadagno e dei punti fissi, è possibile risolvere numericamente le equazioni di auto-consistenza e ottenere tutti i risultati quantitativi.
+\end{tcolorbox}
+
+
+\section{Il Modello Amit–Brunel e il Rumore Neuronale}
+
+\subsubsection{Il Diagramma di Biforcazione Numerico}
+
+La soluzione numerica delle equazioni di auto-consistenza per il modello Amit–Brunel produce il diagramma di biforcazione completo, con i parametri realistici dei neuroni LIF. Il docente mostra questo diagramma e descrive le sue caratteristiche:
+
+\begin{itemize}
+    \item La curva rossa mostra il firing rate dei foreground ($\nu_F^*$) in funzione di $J_+$: si vede chiaramente il regime monostabile iniziale, la comparsa del secondo ramo (stato selettivo) alla biforcazione, e la coesistenza dei due rami stabili nel regime bistabile
+    \item La curva del background ($\nu_B^*$, blu) decresce nello stato selettivo: i background sono inibiti
+    \item La curva degli inibitori ($\nu_I^*$) sale leggermente nello stato selettivo
+\end{itemize}
+
+Questi risultati confermano quantitativamente tutte le previsioni qualitative del modello analitico discusso in questa lezione.
+
+\subsubsection{Effetti del Rumore in Reti a $N$ Finito}
+
+In una rete di dimensione \textbf{finita} $N$, il firing rate non è deterministico ma \textbf{fluttua stocasticamente} attorno al valore medio previsto dal campo medio. Queste fluttuazioni hanno un'ampiezza che scala come $1/\sqrt{N}$ e agiscono come una \textbf{temperatura efficace} nel paesaggio energetico.
+
+L'analogia con i sistemi fisici ferromagnetici è puntuale: come la temperatura termica permette a un magnete di perdere l'ordine passando dalla fase ferromagnetica a quella paramagnetica, il \textbf{rumore neuronale} consente transizioni spontanee da un attrattore all'altro. Il rate di tali transizioni (di tipo Kramers) è proporzionale a:
+
+\begin{equation}
+r_{\rm escape} \propto e^{-\Delta E / T_{\rm eff}}
+\end{equation}
+
+dove $\Delta E$ è l'altezza della barriera energetica e $T_{\rm eff} \propto 1/N$ è la "temperatura" efficace della rete.
+
+\subsubsection{Implicazioni per la Robustezza della Memoria}
+
+Quando $J_+$ è appena al di sopra di $J_+^c$, la buca selettiva è poco profonda e la barriera è bassa. In questo caso:
+
+\begin{itemize}
+    \item Il sistema, spinto nello stato selettivo dallo stimolo, può \textbf{uscire spontaneamente} dall'attrattore selettivo per effetto delle fluttuazioni
+    \item Il firing rate ritorna verso $\nu_{\rm sp}$ anche senza la presentazione di un nuovo stimolo
+\end{itemize}
+
+Questo fenomeno modella il \textbf{decadimento della memoria di lavoro} osservato sperimentalmente: la memoria non è indefinitamente stabile ma decade su una scala temporale determinata dalla profondità della buca (cioè da $J_+$) e dall'intensità del rumore (cioè da $N$). Reti con $J_+$ più grande (apprendimento più consolidato) hanno barriere più alte e memorie più robuste; reti con $N$ più grande hanno meno rumore e memorie più durature.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questa analogia con i sistemi ferromagnetici è profonda e non accidentale: la matematica dei sistemi di spin con interazioni, sviluppata da Hopfield, Amit e collaboratori, è alla base di tutta la teoria delle reti neurali attrattorali. Il rumore termico nei magneti e il rumore di Poisson nel firing rate dei neuroni giocano lo stesso ruolo formale. Un file matematico con la derivazione esatta della funzione di guadagno e il codice numerico verrà caricato sulla piattaforma del corso.
+\end{tcolorbox}
