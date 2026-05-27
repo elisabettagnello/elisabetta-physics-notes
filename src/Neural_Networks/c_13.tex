@@ -1,0 +1,1080 @@
+\chapter{Lezione 13}
+
+
+\section{Riepilogo}
+
+\subsubsection{Il Punto di Partenza: Dinamica Sub-Soglia del Neurone LIF}
+
+Questa lezione è la continuazione diretta della lezione precedente e costituisce il nucleo tecnico della derivazione dell'approssimazione diffusiva, che trasforma il modello discreto di salti sinaptici in un'equazione stocastica continua (l'equazione di Langevin), e introduce successivamente l'equazione di Fokker-Planck come strumento per descrivere la densità di probabilità del potenziale di membrana a livello di popolazione.
+
+Il professore inizia richiamando il risultato principale della lezione 12. Il punto di partenza è un \textbf{neurone integrate-and-fire current-based} (LIF), il cui potenziale di membrana $V(t)$ evolve, al di sotto della soglia, secondo la dinamica di rilassamento:
+
+\begin{equation}
+\tau_m \frac{dV}{dt} = -V + I_E(t) + I_I(t)
+\end{equation}
+
+dove $\tau_m \approx 10$–$20\,\text{ms}$ è la \textbf{costante di tempo di membrana}. Le variabili $I_E(t)$ e $I_I(t)$ sono le correnti sinaptiche eccitatoria e inibitoria che confluiscono nel soma del neurone attraverso l'albero dendritico.
+
+Le correnti sinaptiche, a loro volta, soddisfano ciascuna un'equazione del primo ordine guidata dall'arrivo degli spike pre-sinaptici:
+
+\begin{equation}
+\tau_\alpha \frac{dI_\alpha}{dt} = -I_\alpha + \tau_\alpha \sum_{j=1}^{K_\alpha} J_{\alpha j}\, S_{\alpha j}(t)
+\end{equation}
+
+dove $\alpha \in \{E, I\}$ identifica la classe (eccitatoria o inibitoria), $K_\alpha$ è il numero di contatti pre-sinaptici della classe $\alpha$, $J_{\alpha j}$ è l'\textbf{efficacia sinaptica} del contatto $j$-esimo della classe $\alpha$, e $S_{\alpha j}(t) = \sum_k \delta(t - t_{\alpha j}^{(k)})$ è il \textbf{treno di spike} del neurone pre-sinaptico $(\alpha, j)$.
+
+Il sistema completo $(V, I_E, I_I)$ è dunque \textbf{tridimensionale}. La struttura accoppiata si traduce in una gerarchia: $V$ è forzato dalle correnti, le correnti a loro volta sono forzate dai treni di spike pre-sinaptici.
+
+\subsubsection{Classificazione delle Sinapsi: Veloci e Lente}
+
+Il professore ricorda che le sinapsi eccitatorie e inibitorie si dividono in due grandi categorie in base alle loro costanti di tempo di decadimento:
+
+\begin{itemize}
+    \item $\tau_\alpha^{\text{fast}} \approx 3\,\text{ms}$ (AMPA, GABA$_A$): \textbf{molto più piccolo} di $\tau_m \approx 10$–$20\,\text{ms}$.
+    \item $\tau_\alpha^{\text{slow}} \approx 70$–$150\,\text{ms}$ (NMDA, GABA$_B$): \textbf{molto più grande} di $\tau_m$.
+\end{itemize}
+
+Questa separazione di scale temporali è fondamentale per giustificare la semplificazione successiva.
+
+\section{Il Modello LIF a Salti:}
+
+\subsubsection{Il Trattamento delle Sinapsi Lente: Quasi-Adiabaticità}
+
+Le sinapsi \textbf{lente} (NMDA e GABA$_B$), avendo $\tau_\alpha \gg \tau_m$, filtrano completamente le fluttuazioni rapide del treno di spike. Il professore argomenta che in questo regime si può adottare una \textbf{approssimazione quasi-adiabatica}: la corrente lenta $I_\alpha^{\text{slow}}$ varia così lentamente rispetto alla dinamica di $V$ che può essere trattata come una corrente esterna lentamente variante, $I_{\alpha 0}(t)$, senza alcuna struttura di fluttuazioni su scale temporali $\sim \tau_m$. Questa componente viene quindi inclusa come un input esterno aggiuntivo ma, per la trattazione principale di questa lezione, viene messa da parte. La complessità aggiuntiva delle sinapsi lente sarà reintrodotta successivamente, quando si discuterà il limite di campo medio esteso.
+
+
+\subsubsection{Il Limite Rapido: $\tau_\alpha \to 0$ e l'Approssimazione Delta}
+
+Per le sinapsi \textbf{veloci} ($\tau_\alpha \ll \tau_m$), il professore mostra come si ottiene una drastica semplificazione. Si parte dall'equazione della corrente sinaptica veloce:
+
+\begin{equation}
+\tau_\alpha \frac{dI_\alpha}{dt} = -I_\alpha + \tau_\alpha \sum_{j=1}^{K_\alpha} J_{\alpha j}\, S_{\alpha j}(t)
+\end{equation}
+
+In questo regime, la corrente $I_\alpha$ raggiunge istantaneamente (su scale $\ll \tau_m$) il suo valore di stato stazionario forzato dal treno di spike. Matematicamente, si impone:
+
+\begin{equation}
+\tau_\alpha \frac{dI_\alpha}{dt} \approx 0
+\end{equation}
+
+che restituisce:
+
+\begin{equation}
+I_\alpha(t) \approx \tau_\alpha \sum_{j=1}^{K_\alpha} J_{\alpha j}\, S_{\alpha j}(t)
+\end{equation}
+
+Questa espressione mostra che la corrente diventa \textbf{proporzionale al treno di spike} in tempo reale. Sostituendo nella dinamica di $V$, si ottiene un modello \textbf{unidimensionale} in cui il potenziale di membrana è direttamente forzato dai treni di spike:
+
+\begin{equation}
+\tau_m \frac{dV}{dt} = -V + \sum_{\alpha \in \{E,I\}} \tau_\alpha \sum_{j=1}^{K_\alpha} J_{\alpha j}\, S_{\alpha j}(t)
+\end{equation}
+
+L'effetto fisico di questa approssimazione è il seguente. Quando arriva uno spike pre-sinaptico al tempo $t^{(k)}$, la corrente sinaptica produce un \textbf{salto istantaneo} nella corrente, seguito da un rilassamento esponenziale con scala $\tau_\alpha$. Nell'approssimazione $\tau_\alpha \to 0$ a \textbf{carica costante trasmessa}, questo diventa un \textbf{impulso di Dirac} $\delta(t - t^{(k)})$ moltiplicato per $\tau_\alpha J_{\alpha j}$, ovvero l'impulso trasferisce una quantità di carica $q_{\alpha j} = \tau_\alpha J_{\alpha j}$ in modo istantaneo. Il potenziale di membrana riceve quindi un \textbf{salto discontinuo} di ampiezza:
+
+\begin{equation}
+\Delta V = \frac{q_{\alpha j}}{C_m} \equiv J_{\alpha j}^{(V)}
+\end{equation}
+
+dove $J_{\alpha j}^{(V)}$ è l'\textbf{efficacia sinaptica ridefinita a livello di potenziale di membrana} (con dimensioni di Volt). Il professore chiarisce:
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "Quello che stiamo facendo è spostare il 'salto' dal livello della corrente al livello del potenziale di membrana. Nella corrente, il salto era $J_{\alpha j}$ e aveva dimensioni di corrente; ora il salto è $J_{\alpha j}^{(V)}$ e ha dimensioni di volt. Questo è il prezzo dell'approssimazione $\tau_\alpha \to 0$: i salti si spostano verso 'a monte'."
+\end{tcolorbox}
+
+\subsubsection{ l'Equazione Ridotta}
+
+Con questa approssimazione, la dinamica diventa la seguente equazione scalare:
+
+\begin{equation}
+\tau_m \frac{dV}{dt} = -V + \sum_{\alpha \in \{E,I\}} J_\alpha \sum_{j=1}^{K_\alpha} S_{\alpha j}(t)
+\end{equation}
+
+dove si è introdotta l'efficacia sinaptica \textbf{media} (sotto l'assunzione di omogeneità della popolazione):
+
+\begin{equation}
+J_\alpha = \frac{1}{K_\alpha} \sum_{j=1}^{K_\alpha} J_{\alpha j}^{(V)}
+\end{equation}
+
+con la convenzione che $J_E > 0$ (sinapsi eccitatorie) e $J_I < 0$ (sinapsi inibitorie, poiché il GABA iperpolarizza).
+
+Questo modello è noto nella letteratura come \textbf{modello di Stein} (introdotto negli anni '60 del XX secolo). Esso include esplicitamente i salti discontinui del potenziale di membrana ad ogni arrivo di spike, con l'ampiezza del salto determinata dall'efficacia sinaptica.
+
+\section{Il Processo di Conteggio: Spike Presinaptici come Processo a Gradini}
+
+\subsubsection{Definizione del Processo di Conteggio}
+
+Per caratterizzare statisticamente l'input al neurone, il professore introduce formalmente il \textbf{processo di conteggio} $N_\alpha(t)$. Questo è il numero cumulativo di spike ricevuti dalla popolazione $\alpha$ nell'intervallo temporale $[0, t]$:
+
+\begin{equation}
+N_\alpha(t) = \sum_{j=1}^{K_\alpha} \sum_k \Theta(t - t_{\alpha j}^{(k)})
+\end{equation}
+
+dove $\Theta$ è la funzione di Heaviside. Il suo \textbf{incremento infinitesimale} è:
+
+\begin{equation}
+dN_\alpha(t) = N_\alpha(t + dt) - N_\alpha(t) = \sum_{j=1}^{K_\alpha} \int_t^{t+dt} S_{\alpha j}(t')\, dt'
+\end{equation}
+
+Questo incremento conta il numero di spike ricevuti dall'intera popolazione $\alpha$ nella finestra $[t, t+dt]$. È un processo a \textbf{valori interi non negativi}: $dN_\alpha \in \{0, 1, 2, \ldots\}$.
+
+\subsubsection{Struttura a Gradini del Processo di Conteggio}
+
+La realizzazione tipica di $N_\alpha(t)$ è un \textbf{processo a gradini}: piatto per lunghi tratti, con salti unitari in corrispondenza di ogni spike ricevuto. Ciascun salto si verifica in un istante che dipende dalla storia dell'attività di tutta la rete. Il professore descrive due esempi:
+
+\begin{itemize}
+    \item Il processo $N_E(t)$, associato agli spike eccitatori, ha salti verso l'alto (contributi positivi a $V$).
+    \item Il processo $N_I(t)$, associato agli spike inibitori, ha salti verso il basso (contributi negativi a $V$).
+\end{itemize}
+
+L'equazione del modello di Stein può ora essere riscritta in forma integrale come:
+
+\begin{equation}
+V(t + dt) - V(t) = -\frac{V(t)}{\tau_m}\, dt + J_E\, dN_E(t) + J_I\, dN_I(t)
+\end{equation}
+
+
+\section{Regime di Sparsità: Condizioni per l'Approssimazione Diffusiva}
+
+\subsubsection{I Numeri Biologici Cruciali}
+
+Il professore introduce ora i numeri biologici che giustificano l'approssimazione che seguirà. I dati fondamentali sono:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|X|c|}
+    \hline
+    \textbf{Quantità} & \textbf{Valore tipico} \\
+    \hline
+    Numero totale di contatti pre-sinaptici $K = K_E + K_I$ & $\approx 20\,000$–$30\,000$ \\
+    \hline
+    Frazione eccitatoria ($K_E / K$) & $\approx 80\%$ \\
+    \hline
+    Frazione inibitoria ($K_I / K$) & $\approx 20\%$ \\
+    \hline
+    Tasso di firing medio di background $\bar{\nu}_\alpha$ & $\approx 1\,\text{Hz}$ \\
+    \hline
+    Input totale: $K \cdot \bar{\nu}$ & $\approx 20\,\text{kHz}$ \\
+    \hline
+    Finestra temporale di integrazione $\tau_m$ & $\approx 20\,\text{ms}$ \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Sparsità del Singolo Neurone Pre-Sinaptico}
+
+La probabilità che un singolo neurone pre-sinaptico emetta uno spike nella finestra $[t, t + \tau_m]$ è:
+
+\begin{equation}
+p_{\text{spike}} = \bar{\nu}_\alpha \cdot \tau_m \approx 1\,\text{Hz} \times 0.02\,\text{s} = 0.02
+\end{equation}
+
+Questo numero è \textbf{piccolo}: ciascun neurone pre-sinaptico emette, in media, uno spike ogni $1/\bar{\nu} = 1\,\text{s}$, che è molto maggiore di $\tau_m = 20\,\text{ms}$. Il treno di spike del singolo neurone è quindi \textbf{sparso} nella finestra di integrazione del neurone post-sinaptico. Il professore formalizza questa condizione:
+
+\begin{equation}
+\bar{\nu}_{\alpha j} \cdot \tau_m \ll 1 \qquad \forall\, (\alpha, j)
+\end{equation}
+
+\subsubsection{La Somma di Molti Processi Sparsi e Indipendenti}
+
+Il processo $N_\alpha(t)$ è la somma di $K_\alpha \approx 10\,000$–$20\,000$ processi di punto individuali, ciascuno sparso. Il professore evidenzia che siamo in presenza di \textbf{due condizioni simultanee}:
+
+\begin{enumerate}
+    \item \textbf{Numero grande}: $K_\alpha \to \infty$ (limite termodinamico della connettività).
+    \item \textbf{Sparsità}: il singolo processo di punto ha probabilità di emissione $\to 0$ in ogni finestra infinitesima.
+\end{enumerate}
+
+Questo è esattamente il regime in cui si applica un \textbf{teorema limite per processi di punto}, analogo al Teorema del Limite Centrale per variabili casuali. Nella letteratura matematica della teoria dei processi stocastici, questo risultato è il \textbf{Teorema di Griglioni} (Griglioni limit theorem) per la superposizione di processi di punto.
+
+
+
+\subsection{Il Teorema di Griglioni: Convergenza a un Processo di Poisson}
+
+Il professore descrive il \textbf{Teorema di Griglioni} (o Griglioni's limit theorem), che è il teorema di convergenza per la superposizione di processi di punto. Il teorema afferma quanto segue:
+
+\textbf{Teorema (Griglioni):} Consideriamo una famiglia di $n$ processi di punto, con $n \to \infty$. Ciascun processo è un \textbf{processo di rinnovamento} (renewal process) — ovvero gli interspike interval sono indipendenti e identicamente distribuiti, ma con distribuzione arbitraria (non necessariamente esponenziale). I processi sono tra loro \textbf{indipendenti}. Si richiede che siano \textbf{infinitesimali} nel seguente senso: la probabilità che un singolo processo emetta almeno uno spike nell'intervallo $[0, t]$ tende a zero quando $n \to \infty$, mentre la somma di queste probabilità rimane finita e pari a $\Lambda(0, t)$. Allora la superposizione dei $n$ processi converge \textbf{in distribuzione} a un \textbf{processo di Poisson non omogeneo} con funzione di intensità $\lambda(t)$.
+
+La funzione di intensità $\lambda(t)$ è semplicemente la somma dei tassi di firing istantanei:
+
+\begin{equation}
+\lambda(t) = \sum_{j=1}^{K_\alpha} \nu_{\alpha j}(t)
+\end{equation}
+
+Per i treni di spike delle popolazioni eccitatoria e inibitoria, sotto l'assunzione di stazionarietà $\nu_{\alpha j}(t) = \bar{\nu}_\alpha$ per ogni $j$, si ottiene:
+
+\begin{equation}
+\lambda_\alpha = K_\alpha \bar{\nu}_\alpha
+\end{equation}
+
+\subsubsection{Il Processo di Poisson Non Omogeneo}
+
+Per trattare il caso generale (treni di spike non stazionari), il professore introduce formalmente il \textbf{processo di Poisson non omogeneo} con intensità $\lambda(t)$.
+
+La \textbf{funzione di intensità cumulata} (o leading function) è:
+
+\begin{equation}
+\Lambda(s, t) = \int_s^t \lambda(u)\, du
+\end{equation}
+
+La probabilità di osservare esattamente $k$ spike nell'intervallo $[s, t]$ è data dalla distribuzione di Poisson con parametro $\Lambda(s, t)$:
+
+\begin{equation}
+P(N(s,t) = k) = \frac{[\Lambda(s,t)]^k}{k!}\, e^{-\Lambda(s,t)}
+\end{equation}
+
+Il significato di $\Lambda(s, t)$ è intuitivo: è il \textbf{numero medio atteso di spike} prodotti dall'intera popolazione nell'intervallo $[s, t]$, tenendo conto di una possibile variazione temporale del tasso di firing.
+
+\subsubsection{La Convergenza al Processo di Poisson: Argomento Fisico}
+
+Il professore presenta anche una lettura fisica della convergenza. Immaginiamo di passare da una famiglia di $n_1$ neuroni a una famiglia di $n_2 > n_1$ neuroni. Vogliamo mantenere costante il numero totale di spike prodotti per unità di tempo ($K_\alpha \bar{\nu}_\alpha = \text{cost}$). Per farlo, mentre aumentiamo il numero di neuroni, dobbiamo \textbf{scalare in basso} il loro tasso di firing individuale:
+
+\begin{equation}
+\nu_{\alpha j}(n) = \frac{K_\alpha \bar{\nu}_\alpha}{n}
+\end{equation}
+
+Così, nel limite $n \to \infty$, ogni singolo neurone diventa infinitamente sparso ($\nu_{\alpha j} \to 0$), ma la loro somma produce un flusso costante di spike. Il professore mostra che in questo limite la statistica dell'interspike interval individuale \textbf{non conta}: qualunque sia la distribuzione degli ISI del singolo neurone (esponenziale, log-normale, gamma, \dots), la superposizione converge sempre a un processo di Poisson. Questo è esattamente l'analogo, per i processi di punto, del Teorema del Limite Centrale per variabili casuali.
+
+
+\section{Momenti Infinitesimali}
+
+\subsubsection{I Momenti del Processo di Conteggio di Poisson}
+
+Stabilito che $N_\alpha(t)$ è (con buona approssimazione) un processo di Poisson con intensità $\lambda_\alpha(t) = K_\alpha \nu_\alpha(t)$, il professore vuole ora caratterizzare statisticamente i momenti del processo di conteggio nell'intervallo infinitesimale $[t, t + dt]$.
+
+Si definisce:
+
+\begin{equation}
+\mathbb{E}[dN_\alpha(t)^n]
+\end{equation}
+
+come l'$n$-esimo momento del numero di spike ricevuti in $[t, t+dt]$. Per un processo di Poisson con parametro $\Lambda = \lambda_\alpha(t)\, dt$, si ha:
+
+\begin{equation}
+\mathbb{E}[dN_\alpha^n] = \sum_{k=0}^{\infty} k^n \frac{\Lambda^k}{k!} e^{-\Lambda}
+\end{equation}
+
+Per calcolare i momenti a questo livello infinitesimale, è fondamentale considerare solo i termini \textbf{al primo ordine in $dt$}, poiché i termini $O(dt^2)$ vanno a zero nel limite $dt \to 0$ più rapidamente del necessario. Il professore calcola esplicitamente:
+
+\begin{itemize}
+    \item Termine $k=0$: contribuisce $0$ a qualsiasi momento.
+    \item Termine $k=1$: contribuisce $1^n \cdot \Lambda \cdot e^{-\Lambda} \approx \Lambda = \lambda_\alpha(t)\, dt$ per $\Lambda \to 0$.
+    \item Termine $k=2$: contribuisce $2^n \cdot \frac{\Lambda^2}{2} \cdot e^{-\Lambda} \approx O(dt^2)$.
+\end{itemize}
+
+Il risultato fondamentale è:
+
+\begin{equation}
+\mathbb{E}[dN_\alpha^n] = \lambda_\alpha(t)\, dt + O(dt^2) = K_\alpha \nu_\alpha(t)\, dt + O(dt^2)
+\end{equation}
+
+\textbf{Tutti i momenti dell'incremento di Poisson, a leading order in $dt$, sono uguali al primo momento.} Questa è la proprietà caratteristica del processo di Poisson.
+
+\subsubsection{La Carica Sinaptica Consegnata in dt}
+
+L'incremento del potenziale di membrana dovuto agli spike della classe $\alpha$ nella finestra $[t, t+dt]$ è:
+
+\begin{equation}
+dV_\alpha = J_\alpha\, dN_\alpha(t)
+\end{equation}
+
+La \textbf{carica sinaptica totale} consegnata in $[t, t+dt]$ è $Q_\alpha = J_E\, dN_E + J_I\, dN_I$. Per caratterizzare la distribuzione di $Q$, il professore calcola i momenti:
+
+\begin{equation}
+\mathbb{E}[Q^n] = \mathbb{E}[(J_E\, dN_E + J_I\, dN_I)^n]
+\end{equation}
+
+Poiché $N_E$ e $N_I$ sono \textbf{indipendenti} (spike eccitatori e inibitori sono processi distinti), si ha:
+
+\begin{equation}
+\mathbb{E}[Q^n] = \sum_{\alpha} J_\alpha^n \cdot \mathbb{E}[dN_\alpha^n] + \text{termini misti} = \sum_\alpha J_\alpha^n K_\alpha \nu_\alpha\, dt + O(dt^2)
+\end{equation}
+
+I termini misti coinvolgono prodotti del tipo $dN_E \cdot dN_I$, che sono $O(dt^2)$ e spariscono nel limite $dt \to 0$.
+
+
+
+\subsection{Derivazione della Media Infinitesimale}
+
+Il professore definisce il \textbf{momento infinitesimale di primo ordine} (o \textbf{drift infinitesimale}) come il limite del rapporto tra il valor medio dell'incremento di $V$ e l'ampiezza temporale $dt$:
+
+\begin{equation}
+\mu(V, t) \equiv \lim_{dt \to 0} \frac{\mathbb{E}[dV \mid V(t) = V]}{dt}
+\end{equation}
+
+L'incremento del potenziale di membrana in $dt$ è:
+
+\begin{equation}
+dV = -\frac{V}{\tau_m}\, dt + J_E\, dN_E + J_I\, dN_I
+\end{equation}
+
+Prendendo il valor medio e usando $\mathbb{E}[dN_\alpha] = K_\alpha \nu_\alpha\, dt$:
+
+\begin{equation}
+\mathbb{E}[dV] = -\frac{V}{\tau_m}\, dt + J_E\, K_E \nu_E\, dt + J_I\, K_I \nu_I\, dt
+\end{equation}
+
+Dividendo per $dt$ e passando al limite:
+
+\begin{equation}
+\mu(V, t) = -\frac{V}{\tau_m} + J_E K_E \nu_E(t) + J_I K_I \nu_I(t)
+\end{equation}
+
+Il termine $\mu$ è la somma di tre contributi:
+\begin{enumerate}
+    \item \textbf{Termine di rilassamento}: $-V/\tau_m$ che riporta il potenziale verso zero.
+    \item \textbf{Input eccitatorio medio}: $J_E K_E \nu_E$, sempre positivo.
+    \item \textbf{Input inibitorio medio}: $J_I K_I \nu_I$, sempre negativo (poiché $J_I < 0$).
+\end{enumerate}
+
+Definendo la \textbf{corrente di drift media} $\mu_0$:
+
+\begin{equation}
+\mu_0(t) \equiv J_E K_E \nu_E(t) + J_I K_I \nu_I(t)
+\end{equation}
+
+si può riscrivere in forma compatta:
+
+\begin{equation}
+\mu(V, t) = -\frac{V}{\tau_m} + \mu_0(t)
+\end{equation}
+
+In regime stazionario ($\nu_\alpha = \text{cost}$), la media infinitesimale $\mu$ è una funzione lineare di $V$ con una componente costante $\mu_0$. Il \textbf{punto fisso} del drift (dove $\mu = 0$) è il potenziale di equilibrio effettivo:
+
+\begin{equation}
+V^* = \tau_m \mu_0 = \tau_m (J_E K_E \nu_E + J_I K_I \nu_I)
+\end{equation}
+
+Questo è il potenziale medio attorno al quale il sistema fluttua sotto l'azione del rumore sinaptico.
+
+\subsubsection{Interpretazione Fisica della Media}
+
+Il professore si sofferma sull'interpretazione fisica. Il termine $\mu_0$ è l'\textbf{input sinaptico medio}: è la corrente che un neurone "vedrebbe" se ricevesse spike a un tasso costante pari alla media, senza fluttuazioni. In assenza di fluttuazioni, il potenziale si stabilizzerebbe in $V^* = \tau_m \mu_0$.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "Se non ci fosse rumore, il potenziale di membrana si stabilizzerebbe al potenziale effettivo $V^*$ e il neurone emetterebbe uno spike solo se $V^*$ superasse la soglia $V_{\text{thr}}$. La presenza del rumore è ciò che rende la dinamica ricca: anche se $V^* < V_{\text{thr}}$, il neurone può comunque sparare grazie alle fluttuazioni. Ed è questo il punto centrale del modello che stiamo costruendo."
+\end{tcolorbox}
+
+
+\subsection{Derivazione della Varianza Infinitesimale}
+
+
+
+Il \textbf{momento infinitesimale di secondo ordine} (o \textbf{coefficiente di diffusione infinitesimale}) è definito come:
+
+\begin{equation}
+\sigma^2(V, t) \equiv \lim_{dt \to 0} \frac{\mathbb{E}[(dV)^2 \mid V(t) = V]}{dt}
+\end{equation}
+
+Per calcolarlo, si scrive:
+
+\begin{equation}
+(dV)^2 = \left(-\frac{V}{\tau_m}\, dt + J_E\, dN_E + J_I\, dN_I\right)^2
+\end{equation}
+
+Espandendo il quadrato e tenendo solo i termini $O(dt)$ (poiché il termine $(-V/\tau_m\, dt)^2 = O(dt^2)$ e i termini incrociati tra il drift e $dN_\alpha$ sono $O(dt^{3/2})$ in senso stocastico, e i termini $dN_E \cdot dN_I$ sono $O(dt^2)$ per l'indipendenza), si ottiene:
+
+\begin{equation}
+\mathbb{E}[(dV)^2] \approx J_E^2\, \mathbb{E}[dN_E^2] + J_I^2\, \mathbb{E}[dN_I^2]
+\end{equation}
+
+Usando il risultato fondamentale $\mathbb{E}[dN_\alpha^2] = K_\alpha \nu_\alpha\, dt + O(dt^2)$:
+
+\begin{equation}
+\mathbb{E}[(dV)^2] = J_E^2 K_E \nu_E\, dt + J_I^2 K_I \nu_I\, dt + O(dt^2)
+\end{equation}
+
+Dividendo per $dt$ e passando al limite:
+
+\begin{equation}
+\sigma^2(t) = J_E^2 K_E \nu_E(t) + J_I^2 K_I \nu_I(t)
+\end{equation}
+
+Poiché $J_I^2 = J_I^2 > 0$ (il quadrato è sempre positivo), entrambi i termini contribuiscono positivamente alla varianza. La varianza infinitesimale $\sigma^2$ è \textbf{indipendente da $V$}: la diffusione è \textbf{omogenea} nello spazio del potenziale di membrana. Questo è una conseguenza del fatto che l'ampiezza dei salti sinaptici ($J_E$, $J_I$) non dipende dal valore corrente di $V$.
+
+\subsubsection{Il Significato dei Momenti Centrali di Ordine Superiore}
+
+Il professore mostra anche che i \textbf{momenti centrali di ordine superiore} ($n \geq 3$) sono anch'essi proporzionali a $dt$:
+
+\begin{equation}
+m_\alpha^{(n)} \equiv \mathbb{E}[(dN_\alpha - \mathbb{E}[dN_\alpha])^n] = J_\alpha^n K_\alpha \nu_\alpha\, dt + O(dt^2)
+\end{equation}
+
+Tuttavia, il punto cruciale è che nel \textbf{limite diffusivo} (che verrà introdotto formalmente nella sezione successiva), $J_\alpha \to 0$ con $K_\alpha \to \infty$. I momenti di ordine $n \geq 3$ scalano come $J_\alpha^n \cdot K_\alpha \propto J_\alpha^{n-2} \cdot J_\alpha^2 K_\alpha \to 0$ per $n \geq 3$ (poiché $J_\alpha \to 0$ più velocemente di quanto $J_\alpha^2 K_\alpha$ cresca). Di conseguenza, nel limite diffusivo, \textbf{solo i primi due momenti infinitesimali sopravvivono}: la media $\mu$ e la varianza $\sigma^2$. Questa è la condizione che caratterizza i \textbf{processi di diffusione gaussiana}.
+
+
+\section{Il Limite Diffusivo: Condizioni di Scaling}
+
+\subsubsection{La Tensione tra Media e Varianza}
+
+Il professore affronta un problema sottile. Nel limite biologico, $J_\alpha \to 0$ (i singoli salti sinaptici sono piccoli) e $K_\alpha \to \infty$ (il numero di contatti è grande). In questo doppio limite, la varianza infinitesimale scala come:
+
+\begin{equation}
+\sigma^2 \propto J_\alpha^2 \cdot K_\alpha \nu_\alpha
+\end{equation}
+
+affinché $\sigma^2$ rimanga \textbf{finita}, occorre che:
+
+\begin{equation}
+J_\alpha^2 K_\alpha \nu_\alpha = \text{cost} \qquad \Rightarrow \qquad J_\alpha \sim \frac{1}{\sqrt{K_\alpha}}
+\end{equation}
+
+Questo è il \textbf{limite diffusivo} (o \textbf{limite idrodinamico}): $J_\alpha$ deve scalare come $1/\sqrt{K_\alpha}$.
+
+\subsubsection{Il Problema della Media nel Limite Diffusivo}
+
+Tuttavia, se si inserisce questo scaling nella media infinitesimale:
+
+\begin{equation}
+\mu_0 = J_E K_E \nu_E + J_I K_I \nu_I \propto \frac{1}{\sqrt{K_\alpha}} \cdot K_\alpha \propto \sqrt{K_\alpha} \to \infty
+\end{equation}
+
+La media diverge! Questo è un problema: nel limite $K_\alpha \to \infty$, se si mantiene solo lo scaling $J_\alpha \sim 1/\sqrt{K_\alpha}$, la media diventa infinita mentre la varianza rimane finita. Il potenziale di membrana verrebbe immediatamente spinto a valori enormi (o enormemente negativi), e il neurone non potrebbe funzionare in modo biologicamente plausibile.
+
+\subsubsection{Il Bilanciamento E/I come Soluzione}
+
+Il professore mostra che la \textbf{soluzione biologica} a questo problema è il \textbf{bilanciamento eccitatorio/inibitorio} (\textit{E/I balance}). Se il contributo eccitatorio e quello inibitorio alla media quasi si cancellano, si può avere una media finita anche nel limite $K_\alpha \to \infty$.
+
+Formalmente, si richiede che la media infinitesimale rimanga $O(1)$ anche quando $K_\alpha \to \infty$. Questo richiede:
+
+\begin{equation}
+J_E K_E \nu_E + J_I K_I \nu_I = O(1)
+\end{equation}
+
+con $J_\alpha \sim 1/\sqrt{K_\alpha}$. Questo significa che i due termini, ciascuno $O(\sqrt{K_\alpha})$, devono cancellarsi quasi perfettamente. Il residuo finito è la media effettiva $\mu_0$.
+
+Il professore dimostra che questa condizione di cancellazione è equivalente a richiedere il seguente \textbf{rapporto tra efficacie sinaptiche}:
+
+\begin{equation}
+\frac{|J_I|}{J_E} \approx \frac{K_E}{K_I} \approx \frac{80\%}{20\%} = 4
+\end{equation}
+
+ovvero, le sinapsi inibitorie devono essere circa \textbf{4 volte più forti} delle eccitatorie per compensare la loro minore numerosità. Questo è esattamente il \textbf{bilanciamento E/I} documentato dalla biologia: i neuroni inibitori, pur essendo il 20\% dei neuroni totali, controllano efficacemente l'eccitazione grazie a sinapsi più potenti.
+
+\section{L'Equazione di Langevin per il Potenziale di Membrana}
+
+\subsubsection{Dalla Dinamica a Salti all'Equazione di Langevin}
+
+Una volta stabilito il limite diffusivo, il professore mostra che la dinamica del potenziale di membrana converge a una \textbf{equazione differenziale stocastica} (SDE) della forma di \textbf{Langevin}. Questa equazione descrive l'evoluzione di $V$ come la somma di un termine deterministico (il drift) e un termine stocastico gaussiano (il rumore):
+
+\begin{equation}
+\tau_m \frac{dV}{dt} = -V + \mu_0 + \sigma_V \tau_m\, \xi(t)
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $\mu_0 = \tau_m(J_E K_E \nu_E + J_I K_I \nu_I)$ è il \textbf{potenziale di deriva effettivo} (il contributo medio dell'input sinaptico, già moltiplicato per $\tau_m$);
+    \item $\sigma_V^2 = \tau_m (J_E^2 K_E \nu_E + J_I^2 K_I \nu_I)$ è la \textbf{varianza del potenziale} (varianza del rumore sinaptico, moltiplicata per $\tau_m$);
+    \item $\xi(t)$ è un \textbf{rumore bianco gaussiano} con proprietà:
+\end{itemize}
+
+\begin{equation}
+\langle \xi(t) \rangle = 0, \qquad \langle \xi(t)\, \xi(t') \rangle = \delta(t - t')
+\end{equation}
+
+L'equazione di Langevin può anche essere riscritta in forma più compatta come:
+
+\begin{equation}
+\tau_m \frac{dV}{dt} = -(V - \mu_0) + \sigma_V \sqrt{2\tau_m}\, \eta(t)
+\end{equation}
+
+dove si è ridefinito il rumore per rendere esplicita la convenzione di normalizzazione.
+
+\subsubsection{Origine Fisica del Rumore Bianco}
+
+Il professore spiega perché il rumore è \textbf{bianco} (ovvero, la funzione di correlazione è una delta di Dirac). Questo è la conseguenza diretta del Teorema di Griglioni: la superposizione di $K_\alpha \to \infty$ processi di Poisson sparsi e indipendenti ha correlazioni temporali che vanno a zero nell'intervallo temporale elementare. In altre parole, i singoli incrementi $dN_\alpha(t)$ e $dN_\alpha(t')$ per $t \neq t'$ sono \textbf{stocasticamente indipendenti}, e questa indipendenza si traduce nella struttura $\delta$-correlata del rumore bianco.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "Il rumore bianco è un'idealizzazione. Nella realtà, se le sinapsi non sono istantanee, il rumore ha una correlazione temporale finita, dell'ordine di $\tau_\alpha$. Ma poiché $\tau_\alpha \ll \tau_m$, questa correlazione è trascurabile sulla scala temporale che ci interessa. L'approssimazione di rumore bianco è dunque ottima per le sinapsi veloci."
+\end{tcolorbox}
+
+
+
+\subsection{Il Processo di Wiener come Limite del Rumore di Spike}
+
+\subsubsection{Definizione del Processo di Wiener}
+
+Il professore introduce formalmente il \textbf{processo di Wiener} $W(t)$ (o moto browniano standard), che è il processo stocastico di riferimento nell'equazione di Langevin. Esso è definito dalle proprietà:
+
+\begin{enumerate}
+    \item $W(0) = 0$ quasi certamente.
+    \item $W(t) - W(s) \sim \mathcal{N}(0, t-s)$ per ogni $t > s \geq 0$ (gli incrementi sono gaussiani con varianza $t-s$).
+    \item Gli incrementi su intervalli disgiunti sono \textbf{indipendenti}: $W(t_2) - W(t_1)$ e $W(t_4) - W(t_3)$ sono indipendenti se $[t_1, t_2]$ e $[t_3, t_4]$ non si sovrappongono.
+    \item Le traiettorie sono continue quasi certamente, ma non differenziabili in nessun punto.
+\end{enumerate}
+
+L'equazione di Langevin, scritta in termini del processo di Wiener, diventa:
+
+\begin{equation}
+dV = \left(-\frac{V - \mu_0}{\tau_m}\right) dt + \frac{\sigma_V}{\sqrt{\tau_m}}\, dW(t)
+\end{equation}
+
+dove $dW(t) = W(t + dt) - W(t) \sim \mathcal{N}(0, dt)$ è l'\textbf{incremento di Wiener}.
+
+\subsubsection{Perché le Traiettorie non sono Differenziabili}
+
+Il professore menziona una proprietà importante: le traiettorie del processo di Wiener sono \textbf{continue ma non differenziabili} in nessun punto. Questo spiega perché il "rumore bianco" $\xi(t) = dW/dt$ non esiste come funzione ordinaria, ma solo come \textbf{distribuzione}. L'equazione di Langevin è dunque un'equazione differenziale stocastica nel senso di Ito o Stratonovich, non un'equazione differenziale ordinaria.
+
+
+\subsection{Il Processo di Ornstein-Uhlenbeck: LIF Stocastico}
+
+\subsubsection{L'Equazione di Langevin come Processo OU}
+
+L'equazione di Langevin del potenziale di membrana:
+
+\begin{equation}
+\tau_m \frac{dV}{dt} = -(V - \mu_0) + \sigma_V \sqrt{2\tau_m}\, \xi(t)
+\end{equation}
+
+è l'equazione del celebre \textbf{processo di Ornstein-Uhlenbeck} (OU). Questo processo, introdotto nel 1930 da Ornstein e Uhlenbeck per descrivere la velocità di una particella browniana nel fluido, ha proprietà analitiche molto ricche che lo rendono il modello stocastico di riferimento in molti campi della fisica, dell'ingegneria e delle neuroscienze.
+
+Le proprietà principali del processo OU sono:
+
+\begin{enumerate}
+    \item \textbf{Mean-reverting}: il processo tende a tornare verso la media $\mu_0$ con una velocità proporzionale alla distanza $V - \mu_0$. La costante di tempo del ritorno è $\tau_m$.
+    \item \textbf{Stazionarietà}: a tempi lunghi ($t \gg \tau_m$), il processo raggiunge una \textbf{distribuzione stazionaria} che è \textbf{gaussiana} con media $\mu_0$ e varianza $\sigma_V^2/2$.
+    \item \textbf{Continuità}: le traiettorie sono continue ma non differenziabili.
+    \item \textbf{Correlazione temporale}: la funzione di autocorrelazione è:
+\end{enumerate}
+
+\begin{equation}
+\langle (V(t) - \mu_0)(V(t') - \mu_0) \rangle = \frac{\sigma_V^2}{2}\, e^{-|t-t'|/\tau_m}
+\end{equation}
+
+un decadimento esponenziale con costante di tempo $\tau_m$.
+
+\subsubsection{Il LIF Stocastico come Processo OU con Reset}
+
+Il \textbf{neurone LIF stocastico} non è un puro processo OU, perché presenta le condizioni di \textbf{soglia} e \textbf{reset}:
+\begin{itemize}
+    \item \textbf{Condizione di soglia}: quando $V(t)$ raggiunge $V_{\text{thr}}$, il neurone emette uno spike.
+    \item \textbf{Condizione di reset}: immediatamente dopo l'emissione, il potenziale viene riportato al valore di reset $V_r$, ovvero $V(t^+) = V_r$.
+\end{itemize}
+
+Il processo OU con soglia e reset è tecnicamente un \textbf{processo OU assorbente-e-rigenerante} (\textit{killing-and-regeneration}): all'assorbimento alla soglia (corrispondente all'emissione dello spike), il processo viene rigenerato nel punto di reset.
+
+\vspace{0.5cm}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.5cm}
+
+\section{Densità di Probabilità del Potenziale di Membrana: Equazione di Fokker-Planck}
+
+\subsubsection{Dal Singolo Neurone alla Distribuzione di Popolazione}
+
+Fino ad ora si è studiata la dinamica di un \textbf{singolo neurone stocastico}. Il professore introduce ora una prospettiva completamente diversa: la descrizione della \textbf{distribuzione di probabilità} del potenziale di membrana $p(V, t)$. Questa è la probabilità di trovare il potenziale di membrana nel valore $V$ all'istante $t$.
+
+Questa distribuzione ha due interpretazioni equivalenti:
+\begin{enumerate}
+    \item \textbf{Interpretazione singolo neurone}: $p(V, t)\, dV$ è la probabilità che, al tempo $t$, il potenziale del singolo neurone si trovi nell'intervallo $[V, V + dV]$.
+    \item \textbf{Interpretazione di popolazione}: se si considera un insieme di $N \to \infty$ neuroni identici ma soggetti a realizzazioni indipendenti del rumore, $p(V, t)$ è la \textbf{densità di frequenza} del potenziale nell'insieme (ensemble).
+\end{enumerate}
+
+\subsubsection{Derivazione dell'Equazione di Fokker-Planck}
+
+L'equazione di evoluzione per $p(V, t)$, associata all'equazione di Langevin, è la \textbf{equazione di Fokker-Planck} (FP). Essa è un'equazione alle derivate parziali di tipo parabolico. Per il processo OU del modello LIF, l'equazione di Fokker-Planck ha la forma:
+
+\begin{equation}
+\frac{\partial p(V, t)}{\partial t} = -\frac{\partial}{\partial V}\left[A(V)\, p(V, t)\right] + \frac{1}{2}\frac{\partial^2}{\partial V^2}\left[B(V)\, p(V, t)\right]
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $A(V) = \mu(V)$ è il \textbf{coefficiente di drift} (momento infinitesimale di primo ordine): $A(V) = (-V + \mu_0)/\tau_m$.
+    \item $B(V) = \sigma^2$ è il \textbf{coefficiente di diffusione} (momento infinitesimale di secondo ordine): $B(V) = \sigma_V^2/\tau_m$.
+\end{itemize}
+
+Sostituendo esplicitamente:
+
+\begin{equation}
+\frac{\partial p}{\partial t} = \frac{\partial}{\partial V}\left[\frac{V - \mu_0}{\tau_m}\, p\right] + \frac{\sigma_V^2}{2\tau_m}\frac{\partial^2 p}{\partial V^2}
+\end{equation}
+
+\subsubsection{Forma della Corrente di Probabilità}
+
+È conveniente riscrivere l'equazione di Fokker-Planck in forma di \textbf{equazione di continuità}:
+
+\begin{equation}
+\frac{\partial p}{\partial t} = -\frac{\partial J(V, t)}{\partial V}
+\end{equation}
+
+dove $J(V, t)$ è la \textbf{corrente di probabilità} (o flusso di probabilità):
+
+\begin{equation}
+J(V, t) = -\frac{V - \mu_0}{\tau_m}\, p(V, t) - \frac{\sigma_V^2}{2\tau_m}\frac{\partial p}{\partial V}
+\end{equation}
+
+Il primo termine è la \textbf{corrente di drift} (o corrente di avvezione), che trasporta la probabilità nella direzione del campo di forza deterministico. Il secondo termine è la \textbf{corrente di diffusione}, che tende a uniformare la distribuzione di probabilità (dispersione gaussiana). L'equazione di continuità esprime la \textbf{conservazione della probabilità}: la variazione di $p$ in un punto è uguale all'opposto della divergenza del flusso di probabilità in quel punto.
+
+
+
+\section{Condizioni al Contorno: Soglia e Reset nel Modello LIF}
+
+\subsubsection{Il Dominio di Definizione della Distribuzione}
+
+Nel modello LIF, il potenziale di membrana $V$ è confinato nell'intervallo:
+
+\begin{equation}
+V \in (-\infty, V_{\text{thr}})
+\end{equation}
+
+con $V_{\text{thr}}$ la \textbf{soglia di emissione} (tipicamente $V_{\text{thr}} \approx 20\,\text{mV}$ sopra il potenziale di riposo). Al di sotto del potenziale di reset $V_r$, il potenziale può tecnicamente scendere per effetto dell'inibizione, ma in pratica si considera un limite inferiore $V_r \ll V_{\text{thr}}$.
+
+\subsubsection{Condizione alla Soglia: Assorbimento}
+
+Alla soglia $V = V_{\text{thr}}$, il potenziale viene assorbito e lo spike viene emesso. Questo si traduce nella condizione al contorno:
+
+\begin{equation}
+p(V_{\text{thr}}, t) = 0
+\end{equation}
+
+Questa è una \textbf{condizione di Dirichlet}: la densità di probabilità si annulla alla soglia. Il significato fisico è che ogni volta che una traiettoria tocca $V_{\text{thr}}$, viene immediatamente rimossa dal dominio (emissione dello spike) e riapparirà al reset.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "Questa è la condizione al contorno \textbf{assorbente} alla soglia. La probabilità di trovare il neurone esattamente in $V_{\text{thr}}$ è zero, perché ogni volta che $V$ raggiunge $V_{\text{thr}}$, il neurone spara e $V$ viene riportato a $V_r$."
+\end{tcolorbox}
+
+\subsubsection{Condizione al Reset: Iniezione di Probabilità}
+
+Al reset $V = V_r$, ogni volta che uno spike viene emesso, il potenziale viene riportato a $V_r$. Questo equivale a un'\textbf{iniezione di densità di probabilità} in $V = V_r$ al tasso di firing $\nu_{\text{out}}$. La condizione al contorno al reset si scrive come una \textbf{condizione di flusso}:
+
+\begin{equation}
+J(V_r^+, t) - J(V_r^-, t) = \nu_{\text{out}}(t)
+\end{equation}
+
+ovvero, il flusso di probabilità ha un salto in $V_r$ pari al tasso di firing: ogni traiettoria che arriva a $V_{\text{thr}}$ (e genera un flusso $J(V_{\text{thr}}, t)$) viene reinserita a $V_r$ con lo stesso flusso.
+
+\subsubsection{Condizione alle Grandi Distanze}
+
+Per $V \to -\infty$, si richiede che la distribuzione vada a zero:
+
+\begin{equation}
+p(V, t) \to 0 \quad \text{per } V \to -\infty
+\end{equation}
+
+e che il flusso di probabilità si annulli:
+
+\begin{equation}
+J(V, t) \to 0 \quad \text{per } V \to -\infty
+\end{equation}
+
+Queste condizioni garantiscono la normalizzazione: $\int_{-\infty}^{V_{\text{thr}}} p(V, t)\, dV = 1$.
+
+\vspace{0.5cm}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.5cm}
+
+\section{Soluzione Stazionaria: Distribuzione di Stato Stazionario}
+
+\subsubsection{Il Regime Stazionario}
+
+Il professore si concentra sulla soluzione in regime stazionario, in cui la distribuzione $p(V, t) = p_0(V)$ non varia nel tempo:
+
+\begin{equation}
+\frac{\partial p}{\partial t} = 0 \qquad \Rightarrow \qquad \frac{\partial J}{\partial V} = 0
+\end{equation}
+
+L'equazione di continuità in regime stazionario dice dunque che la corrente di probabilità è \textbf{indipendente da $V$} nel bulk (lontano da $V_r$):
+
+\begin{equation}
+J(V) = \text{cost} = J_0 \quad \text{per } V \neq V_r
+\end{equation}
+
+\subsubsection{La Forma della Corrente Stazionaria}
+
+La corrente stazionaria è:
+
+\begin{equation}
+J_0 = -\frac{V - \mu_0}{\tau_m} p_0(V) - \frac{\sigma_V^2}{2\tau_m} \frac{dp_0}{dV}
+\end{equation}
+
+Questa è un'equazione differenziale del primo ordine per $p_0(V)$, che può essere riscritta come:
+
+\begin{equation}
+\frac{dp_0}{dV} + \frac{2(V - \mu_0)}{\sigma_V^2}\, p_0 = -\frac{2\tau_m J_0}{\sigma_V^2}
+\end{equation}
+
+L'equazione è un'equazione lineare del primo ordine non omogenea, con soluzione:
+
+\begin{equation}
+p_0(V) = \frac{2\tau_m J_0}{\sigma_V^2}\, e^{-\frac{(V - \mu_0)^2}{\sigma_V^2}} \int_{V}^{V_{\text{thr}}} e^{\frac{(u - \mu_0)^2}{\sigma_V^2}}\, du
+\end{equation}
+
+Questa soluzione si ottiene moltiplicando per il fattore integrante $e^{(V-\mu_0)^2/\sigma_V^2}$ e integrando da $V$ a $V_{\text{thr}}$ con la condizione al contorno $p_0(V_{\text{thr}}) = 0$.
+
+\subsubsection{Il Significato della Costante $J_0$}
+
+La costante $J_0$ ha un preciso significato fisico: è il \textbf{flusso di probabilità uniforme} nel bulk, ovvero il tasso con cui le traiettorie "scorrono" da destra a sinistra (o da sinistra a destra) nel dominio. Per le condizioni al contorno del modello LIF, si può mostrare che $J_0 = \nu_{\text{out}}$: il \textbf{tasso di firing in uscita} è esattamente uguale al flusso di probabilità stazionario. La costante $J_0$ viene determinata imponendo la normalizzazione della distribuzione:
+
+\begin{equation}
+\int_{-\infty}^{V_{\text{thr}}} p_0(V)\, dV = 1
+\end{equation}
+
+\vspace{0.5cm}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.5cm}
+
+\section{Il Tasso di Firing $\nu_{\text{out}}$ come Flusso di Probabilità alla Soglia}
+
+\subsubsection{Relazione tra Flusso e Tasso di Firing}
+
+Il professore deriva il \textbf{tasso di firing in uscita} $\nu_{\text{out}}$ dalla soluzione dell'equazione di Fokker-Planck. In regime stazionario, il flusso di probabilità è costante nel bulk:
+
+\begin{equation}
+J(V) = J_0 = \nu_{\text{out}} \quad \text{per qualsiasi } V \in (V_r, V_{\text{thr}})
+\end{equation}
+
+Alla soglia, la condizione $p_0(V_{\text{thr}}) = 0$ e il flusso diretto verso la soglia determinano il tasso di firing:
+
+\begin{equation}
+\nu_{\text{out}} = J_0 = \left[\int_{V_r}^{V_{\text{thr}}} \frac{2\tau_m}{\sigma_V^2}\, e^{\frac{(u - \mu_0)^2}{\sigma_V^2}} \int_{u}^{V_{\text{thr}}} e^{-\frac{(w - \mu_0)^2}{\sigma_V^2}}\, dw\, du\right]^{-1}
+\end{equation}
+
+Questa formula, per quanto complessa, è \textbf{esplicita}: dati $\mu_0$, $\sigma_V^2$, $\tau_m$, $V_r$, $V_{\text{thr}}$, il tasso di firing in uscita $\nu_{\text{out}}$ è completamente determinato.
+
+\subsubsection{Forma Compatta con la Funzione di Errore}
+
+L'integrale può essere espresso in termini della \textbf{funzione di errore complementare} $\text{erfc}(x) = 1 - \text{erf}(x)$. Definendo le variabili adimensionali:
+
+\begin{equation}
+u_{\text{thr}} = \frac{V_{\text{thr}} - \mu_0}{\sigma_V / \sqrt{2}}, \qquad u_r = \frac{V_r - \mu_0}{\sigma_V / \sqrt{2}}
+\end{equation}
+
+il tasso di firing si scrive nella forma nota:
+
+\begin{equation}
+\nu_{\text{out}}^{-1} = \tau_{\text{ref}} + \tau_m \sqrt{\pi} \int_{u_r}^{u_{\text{thr}}} e^{x^2}\left(1 + \text{erf}(x)\right)\, dx
+\end{equation}
+
+dove si è incluso anche il \textbf{periodo refrattario assoluto} $\tau_{\text{ref}}$ (la durata minima tra due spike consecutivi), che può essere aggiunto come una costante additiva al tempo medio di primo passaggio.
+
+Il professore sottolinea che questa formula è \textbf{esatta} nel regime diffusivo (LIF stocastico con rumore bianco gaussiano). Non è un'approssimazione: è la soluzione analitica completa del problema del primo passaggio per il processo OU con soglia e reset.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "Questa formula è uno dei risultati più belli della teoria dei neuroni stocastici. Vi dà il tasso di firing in funzione di soli due numeri — la media $\mu_0$ e la varianza $\sigma^2$ dell'input — più le costanti biologiche $\tau_m$, $V_{\text{thr}}$, $V_r$. È una formula chiusa, analitica. Il neurone è stato risolto."
+\end{tcolorbox}
+
+\vspace{0.5cm}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.5cm}
+
+\section{La Funzione di Trasferimento: $\nu_{\text{out}} = \Phi(\mu_0, \sigma_V^2)$}
+
+\subsubsection{Definizione della Funzione di Trasferimento}
+
+Il risultato fondamentale dell'equazione di Fokker-Planck è che il \textbf{tasso di firing in uscita} $\nu_{\text{out}}$ è una funzione deterministica dei parametri statistici dell'input sinaptico:
+
+\begin{equation}
+\nu_{\text{out}} = \Phi(\mu_0,\, \sigma_V^2)
+\end{equation}
+
+Questa funzione $\Phi$ è la \textbf{funzione di trasferimento} del neurone LIF stocastico. Il professore analizza le proprietà di $\Phi$:
+
+\subsubsection{Regime Sub-Soglia: $\mu_0 < V_{\text{thr}}$}
+
+Quando l'input medio è sotto soglia ($\mu_0 < V_{\text{thr}}$), il neurone può comunque sparare grazie alle \textbf{fluttuazioni stocastiche}. In questo regime, il tasso di firing cresce con la varianza $\sigma_V^2$: un rumore più grande spinge il potenziale oltre la soglia più frequentemente. La funzione $\Phi$ è una funzione \textbf{crescente} di $\sigma_V^2$ in questo regime.
+
+Intuitivamente, le fluttuazioni sinaptiche svolgono qui un ruolo paradossale: anche se in media il potenziale non raggiunge la soglia, le code della distribuzione gaussiana la raggiungono con probabilità finita. Maggiore è il "rumore", maggiore è la probabilità di emissione. Questo è un esempio di \textbf{stochastic resonance} o, più precisamente, di \textbf{noise-driven firing}.
+
+\subsubsection{Regime Sopra-Soglia: $\mu_0 > V_{\text{thr}}$}
+
+Quando l'input medio è sopra soglia ($\mu_0 > V_{\text{thr}}$), il neurone spara anche in assenza di rumore. In questo regime, le fluttuazioni hanno un effetto ambivalente:
+\begin{itemize}
+    \item Se il rumore è grande, le traiettorie raggiungono la soglia prima che il drift deterministico le porti lì, \textbf{aumentando} il tasso di firing.
+    \item Ma le fluttuazioni possono anche portare il potenziale verso valori bassi, \textbf{ritardando} l'emissione.
+\end{itemize}
+
+Il risultato netto è che in questo regime $\Phi$ è una funzione \textbf{decrescente} di $\sigma_V^2$: il rumore riduce il tasso di firing rispetto al caso deterministico.
+
+\subsubsection{Andamento Sigmoide della Funzione di Trasferimento}
+
+La funzione $\Phi(\mu_0, \sigma_V^2 = \text{cost})$ come funzione di $\mu_0$ ha un andamento \textbf{sigmoidale} (a "S"): cresce monotonicamente da 0 a $1/\tau_{\text{ref}}$ (il tasso di firing massimo determinato dal periodo refrattario), con un punto di inflessione vicino a $\mu_0 \approx V_{\text{thr}}$.
+
+Questo andamento sigmoidale è notevolmente simile alla \textbf{funzione di attivazione sigmoide} usata nelle reti neurali artificiali, suggerendo che il comportamento collettivo di un neurone biologico stocastico è ben catturato da questa funzione matematica. Il professore sottolinea che, al contrario delle reti artificiali, qui la sigmoide non è assunta \textit{a priori} ma è \textbf{derivata rigorosamente} dai principi biofisici.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "Guardate cosa abbiamo ottenuto: partendo dall'equazione microscopica di un neurone biologico con rumore stocastico, abbiamo derivato una funzione di trasferimento sigmoidale. Questa è la giustificazione biofisica delle funzioni di attivazione che si usano nelle reti neurali artificiali. Non è un'assunzione: è un risultato."
+\end{tcolorbox}
+
+\vspace{0.5cm}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.5cm}
+
+\section{Teoria di Campo Medio: Consistenza Self-Consistent}
+
+\subsubsection{Il Problema della Consistenza}
+
+Fino a ora, si è trattato un singolo neurone immerso in un campo sinaptico esterno, con parametri $\mu_0$ e $\sigma_V^2$ assegnati come input. Nella realtà, però, il neurone fa parte di una rete: la sua attività contribuisce al campo sinaptico degli altri neuroni, che a loro volta influenzano il neurone in esame. Questa \textbf{retroazione} (feedback) deve essere trattata in modo consistente.
+
+La \textbf{teoria di campo medio} (mean field theory) fornisce il quadro formale per farlo. L'idea fondamentale è che, in una rete sufficientemente grande e sufficientemente connessa (il limite termodinamico della connettività), l'input ricevuto da ciascun neurone è determinato dall'\textbf{attività media} dell'intera rete, con piccole fluttuazioni trascurabili. Ogni neurone è dunque equivalente, e si può risolvere un \textbf{problema self-consistent} per l'unico neurone rappresentativo.
+
+\subsubsection{La Condizione di Self-Consistenza}
+
+Il professore formalizza la condizione di campo medio. Si considerino due popolazioni di neuroni: una eccitatoria (E) con tasso di firing $\nu_E$, e una inibitoria (I) con tasso di firing $\nu_I$. I parametri dell'input sinaptico ricevuto dal neurone rappresentativo (in entrambe le popolazioni) sono:
+
+\begin{equation}
+\mu_0 = J_E K_E \nu_E + J_I K_I \nu_I
+\end{equation}
+
+\begin{equation}
+\sigma_V^2 = J_E^2 K_E \nu_E + J_I^2 K_I \nu_I
+\end{equation}
+
+La funzione di trasferimento determina il tasso di firing di ciascuna popolazione:
+
+\begin{equation}
+\nu_E = \Phi(\mu_0^E,\, \sigma_{V,E}^2)
+\end{equation}
+
+\begin{equation}
+\nu_I = \Phi(\mu_0^I,\, \sigma_{V,I}^2)
+\end{equation}
+
+dove $\mu_0^{E,I}$ e $\sigma_{V,E,I}^2$ sono i parametri dell'input calcolati per un neurone della popolazione $E$ o $I$ rispettivamente.
+
+La \textbf{condizione di self-consistenza} è che i tassi di firing scelti per calcolare $\mu_0$ e $\sigma_V^2$ siano gli stessi che risultano dalla funzione di trasferimento. Si tratta dunque di trovare il \textbf{punto fisso} del sistema:
+
+\begin{equation}
+\nu_E^* = \Phi\!\left(J_E K_{EE} \nu_E^* + J_I K_{EI} \nu_I^*,\; J_E^2 K_{EE} \nu_E^* + J_I^2 K_{EI} \nu_I^*\right)
+\end{equation}
+
+\begin{equation}
+\nu_I^* = \Phi\!\left(J_E K_{IE} \nu_E^* + J_I K_{II} \nu_I^*,\; J_E^2 K_{IE} \nu_E^* + J_I^2 K_{II} \nu_I^*\right)
+\end{equation}
+
+dove $K_{\beta\alpha}$ è il numero di contatti sinaptici che un neurone della popolazione $\beta$ riceve dalla popolazione $\alpha$.
+
+\subsubsection{Soluzione Grafica del Punto Fisso}
+
+Il professore illustra la soluzione della condizione di self-consistenza in modo grafico, nel caso semplificato di una sola popolazione (rete eccitatoria omogenea). In questo caso:
+
+\begin{equation}
+\nu^* = \Phi\!\left(\mu_0(\nu^*),\, \sigma^2(\nu^*)\right)
+\end{equation}
+
+Si tratta di trovare l'\textbf{intersezione} tra la curva $\nu_{\text{out}} = \Phi(\mu_0(\nu), \sigma^2(\nu))$ (funzione di trasferimento, curva sigmoidale) e la retta $\nu_{\text{out}} = \nu$ (condizione di consistenza, retta bisettrice del quadrante I).
+
+Le possibili soluzioni dipendono dai parametri della rete:
+\begin{enumerate}
+    \item \textbf{Un solo punto fisso} (soluzione unica): la rete ha un unico stato di attività stabile.
+    \item \textbf{Tre punti fissi} (bistabilità): coesistono uno stato di bassa attività, uno stato di alta attività, e un terzo punto fisso instabile. Questo è il substrato di neurobiologico per la \textbf{working memory} e altri fenomeni di attività persistente.
+    \item \textbf{Nessuna soluzione} (impossibile per una $\Phi$ normalizzata): non fisicamente rilevante.
+\end{enumerate}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "La bistabilità è di enorme importanza per le neuroscienze cognitive. Se la rete ha due stati stabili, può mantenere una traccia di memoria anche in assenza dello stimolo che l'ha generata. Questo è il meccanismo proposto per la memoria di lavoro. E tutto ciò emerge naturalmente dalla condizione self-consistent, senza alcuna assunzione aggiuntiva."
+\end{tcolorbox}
+
+\subsubsection{Proprietà del Punto Fisso: Stabilità}
+
+Un punto fisso $\nu^*$ è \textbf{stabile} se piccole perturbazioni $\delta\nu$ intorno ad esso decadono nel tempo. La condizione di stabilità è:
+
+\begin{equation}
+\frac{d\Phi}{d\nu}\bigg|_{\nu = \nu^*} < 1
+\end{equation}
+
+ovvero, il guadagno effettivo della rete in quel punto deve essere inferiore a 1. Un guadagno uguale a 1 corrisponde a una \textbf{biforcazione} (il punto fisso perde la stabilità), mentre un guadagno maggiore di 1 indica instabilità e transizione verso un altro stato.
+
+\subsubsection{La Mappa dei Regimi di Rete (Diagramma di Brunel)}
+
+La teoria di campo medio permette di costruire una \textbf{mappa dei regimi di attività} della rete nel piano dei parametri. Nel lavoro seminale di Brunel (2000), questa mappa è costruita nel piano ($g$, $\nu_{\text{ext}}/\nu_{\text{thr}}$), dove:
+
+\begin{itemize}
+    \item $g = |J_I|/J_E$ è il \textbf{rapporto di efficacia inibitoria/eccitatoria} (misura della forza relativa dell'inibizione).
+    \item $\nu_{\text{ext}}/\nu_{\text{thr}}$ è il tasso di input esterno normalizzato alla soglia.
+\end{itemize}
+
+Questa mappa rivela quattro regimi fondamentali della rete, ciascuno con caratteristiche distintive:
+
+\begin{enumerate}
+    \item \textbf{Regime Sincrono e Regolare (SR — Synchronous Regular)}: la rete oscilla in modo sincrono e regolare. Tutti i neuroni sparano allo stesso ritmo. Questo regime corrisponde a situazioni patologiche (epilessia) o a certi ritmi oscillatori cerebrali.
+    \item \textbf{Regime Sincrono e Irregolare (SI — Synchronous Irregular)}: la rete oscilla collettivamente (il firing è sincrono a livello di popolazione) ma i singoli neuroni sparano in modo irregolare (ISI variabili). Questo regime è osservato in alcune condizioni fisiologiche, come i ritmi gamma nella corteccia.
+    \item \textbf{Regime Asincrono e Irregolare (AI — Asynchronous Irregular)}: il regime fisiologico normale della corteccia in veglia. I neuroni sparano in modo indipendente (asincrono) e irregolare. Il firing rate è basso ($\approx 1$–$5\,\text{Hz}$), il coefficiente di variazione degli ISI è vicino a 1 (come in un processo di Poisson). Questo regime è stabilizzato dall'inibizione: richiede $g > 4$ (inibizione dominante).
+    \item \textbf{Regime Fast-Oscillating (FO — Fast Oscillatory)}: oscillazioni rapide della rete, tipicamente nella banda gamma ($40$–$80\,\text{Hz}$). Si verifica al confine tra il regime AI e il regime SI.
+\end{enumerate}
+
+Il regime \textbf{AI} è quello biologicamente più rilevante per la corteccia in condizioni normali. La teoria di campo medio mostra che esso è stabilizzato da una \textbf{forte inibizione} ($g \approx 4$–$6$) in combinazione con un \textbf{input esterno sufficientemente grande} ($\nu_{\text{ext}} \sim \nu_{\text{thr}}$). Questo è consistente con la condizione di bilanciamento E/I derivata nel limite diffusivo.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "Il diagramma di Brunel è uno dei risultati più belli della neuroscienze computazionali: con una manciata di parametri, cattura l'intera fenomenologia dell'attività corticale spontanea. Ai regimi corrispondono stati cerebrali diversi: il regime AI è la veglia normale, il regime SR è simile all'epilessia, il regime oscillatorio è associato a certi stati del sonno o dell'attenzione."
+\end{tcolorbox}
+
+\vspace{0.5cm}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.5cm}
+
+\section{Esempi Numerici e Stima dei Parametri}
+
+\subsubsection{Parametri Tipici del Modello}
+
+Il professore fornisce i valori tipici dei parametri del modello LIF diffusivo per una rete corticale:
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{|X|c|c|}
+    \hline
+    \textbf{Parametro} & \textbf{Simbolo} & \textbf{Valore tipico} \\
+    \hline
+    Costante di tempo di membrana & $\tau_m$ & $20\,\text{ms}$ \\
+    \hline
+    Soglia di emissione & $V_{\text{thr}}$ & $20\,\text{mV}$ \\
+    \hline
+    Potenziale di reset & $V_r$ & $0\,\text{mV}$ \\
+    \hline
+    Periodo refrattario assoluto & $\tau_{\text{ref}}$ & $2\,\text{ms}$ \\
+    \hline
+    Efficacia eccitatoria & $J_E$ & $0.1$–$0.2\,\text{mV}$ \\
+    \hline
+    Efficacia inibitoria & $|J_I|$ & $0.4$–$0.8\,\text{mV}$ \\
+    \hline
+    Numero di contatti eccitatori & $K_E$ & $\approx 16\,000$ \\
+    \hline
+    Numero di contatti inibitori & $K_I$ & $\approx 4\,000$ \\
+    \hline
+    Tasso di firing di background & $\bar{\nu}$ & $1$–$5\,\text{Hz}$ \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Stima di $\mu_0$ e $\sigma^2$}
+
+Con questi parametri tipici, il professore calcola l'ordine di grandezza di $\mu_0$ e $\sigma_V^2$:
+
+\begin{equation}
+\mu_0 = J_E K_E \nu_E + J_I K_I \nu_I
+\end{equation}
+\begin{equation}
+\approx 0.1\,\text{mV} \times 16\,000 \times 5\,\text{Hz} + (-0.4\,\text{mV}) \times 4\,000 \times 5\,\text{Hz}
+\end{equation}
+\begin{equation}
+= 8\,\text{mV/s} \times 20\,\text{ms} - 8\,\text{mV/s} \times 20\,\text{ms} = \text{(quasi cancellazione)}
+\end{equation}
+
+Il valore risultante di $\mu_0$ è piccolo (dell'ordine di $1$–$5\,\text{mV}$, sotto soglia), evidenziando che la rete opera nel regime di \textbf{bilanciamento eccitatorio/inibitorio}.
+
+Per la varianza:
+
+\begin{equation}
+\sigma_V^2 = J_E^2 K_E \nu_E + J_I^2 K_I \nu_I
+\end{equation}
+\begin{equation}
+\approx (0.1)^2 \times 16\,000 \times 5 + (0.4)^2 \times 4\,000 \times 5
+\end{equation}
+\begin{equation}
+= 0.01 \times 80\,000 + 0.16 \times 20\,000 = 800 + 3200 = 4000\,\text{mV}^2/\text{s}
+\end{equation}
+\begin{equation}
+\Rightarrow \sigma_V = \sqrt{4000 \times 0.02\,\text{s}} \approx 9\,\text{mV}
+\end{equation}
+
+Il valore $\sigma_V \approx 9\,\text{mV}$ è dello stesso ordine di grandezza del "gap" tra la media $\mu_0$ e la soglia $V_{\text{thr}} \approx 20\,\text{mV}$, il che indica che le fluttuazioni svolgono un ruolo fondamentale nel portare il potenziale alla soglia. Il regime è genuinamente diffusivo.
+
+\vspace{0.5cm}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.5cm}
+
+\section{Domande degli Studenti e Approfondimenti}
+
+\subsubsection{La Questione della Dipendenza Temporale del Tasso}
+
+Durante la lezione uno studente pone la seguente domanda: «\textit{Il modello di Stein che hai descritto usa un processo di Poisson omogeneo in tempo per i treni di spike presinaptici. Ma noi stessi abbiamo detto che la densità di spike sperimentale è non stazionaria. Come si giustifica l'uso di un tasso costante $\nu_\alpha$?}»
+
+Il professore risponde che la questione ha due livelli:
+
+\begin{enumerate}
+    \item \textbf{Livello del singolo neurone (approssimazione Poissoniana)}: l'approssimazione che i singoli neuroni presinaptici siano processi di Poisson è una semplificazione. I neuroni reali hanno distribuzioni di ISI non-esponenziali (a causa del periodo refrattario, dell'adattamento, etc.). Tuttavia, il Teorema di Griglioni mostra che questa assunzione non è necessaria: anche se i singoli neuroni hanno ISI non-esponenziali, la superposizione converge comunque a un processo di Poisson (non omogeneo in tempo).
+    \item \textbf{Livello della rete (non-stazionarietà)}: la non-stazionarietà sperimentale della densità di spike può essere incorporata usando un processo di Poisson non omogeneo, cioè con intensità $\lambda_\alpha(t) = K_\alpha \nu_\alpha(t)$ che varia nel tempo. Il modello di campo medio stazionario che deriviamo è valido nell'approssimazione di \textbf{lentezza}: si assume che $\nu_\alpha(t)$ vari su scale temporali molto più lente di $\tau_m$, così che il sistema raggiunga quasi-stazionariamente lo stato di campo medio corrispondente al valore istantaneo di $\nu_\alpha(t)$.
+\end{enumerate}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "In pratica, consideriamo sempre il caso stazionario qui. Quando si vuole studiare la risposta dinamica della rete a stimoli temporali, si fa un'analisi di risposta lineare o non lineare attorno al punto fisso stazionario. Questo è esattamente ciò che fa la teoria della risposta lineare che vedrete nelle prossime lezioni."
+\end{tcolorbox}
+
+\subsubsection{La Questione dell'Indipendenza dei Neuroni Presinaptici}
+
+Un'altra domanda riguarda l'assunzione di \textbf{indipendenza} dei neuroni presinaptici richiesta dal Teorema di Griglioni:
+
+\textit{«Ma i neuroni presinaptici non sono indipendenti: appartengono alla stessa rete e sono quindi correlati tra loro. Come si giustifica l'assunzione di indipendenza?»}
+
+Il professore risponde in modo dettagliato:
+
+\begin{itemize}
+    \item In una rete di $N$ neuroni con connettività sparsa (ogni neurone riceve da una frazione $\sim K/N$ dei neuroni), nel limite $N \to \infty$ con $K$ fissato o crescente più lentamente di $N$, le correlazioni tra neuroni diversi tendono a zero come $\sim 1/N$. Questa è la giustificazione del campo medio: in reti grandi, ogni neurone vede i suoi presinaptici come essenzialmente indipendenti.
+    \item La situazione è più complessa nelle \textbf{reti piccole} o nelle \textbf{reti con correlazioni forti} (ad esempio, reti con plasticità sinaptica specifica). In questi casi l'approccio di campo medio deve essere corretto includendo termini di correlazione.
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "La giustificazione rigorosa dell'indipendenza viene dalla teoria di campo medio stessa: mostreremo che la soluzione di campo medio è autoconsistente, ovvero le correlazioni tra neuroni che derivano dalla soluzione di campo medio sono effettivamente trascurabili per reti grandi. È una verifica a posteriori della validità dell'approssimazione."
+\end{tcolorbox}
+
+\vspace{0.5cm}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.5cm}
+
+\section{Riepilogo: Dal Microscopico al Macroscopico}
+
+\subsubsection{La Catena Logica della Derivazione}
+
+Il professore chiude la lezione tracciando la catena logica completa che ha portato dal modello microscopico alla teoria di campo medio:
+
+\textbf{Passo 1} — Modello LIF a sinapsi veloci ($\delta$-approssimazione, $\tau_\alpha \to 0$):
+\begin{equation}
+\tau_m \frac{dV}{dt} = -V + J_E \sum_j S_{Ej}(t) + J_I \sum_j S_{Ij}(t)
+\end{equation}
+
+\textbf{Passo 2} — I treni di spike presinaptici, somma di $K_\alpha \gg 1$ processi sparsi indipendenti, convergono al processo di Poisson per il Teorema di Griglioni.
+
+\textbf{Passo 3} — Nel limite diffusivo ($J_\alpha \to 0$, $K_\alpha \to \infty$, $J_\alpha^2 K_\alpha = \text{cost}$) con bilanciamento E/I, i momenti infinitesimali del processo di conteggio danno:
+\begin{equation}
+\mu = -\frac{V}{\tau_m} + \frac{\mu_0}{\tau_m}, \qquad \sigma^2 = \frac{\sigma_V^2}{\tau_m}
+\end{equation}
+
+\textbf{Passo 4} — L'equazione di Langevin per il singolo neurone:
+\begin{equation}
+\tau_m \frac{dV}{dt} = -(V - \mu_0) + \sigma_V \sqrt{2\tau_m}\, \xi(t)
+\end{equation}
+(processo di Ornstein-Uhlenbeck)
+
+\textbf{Passo 5} — L'equazione di Fokker-Planck per la densità di probabilità:
+\begin{equation}
+\frac{\partial p}{\partial t} = \frac{\partial}{\partial V}\left[\frac{V - \mu_0}{\tau_m}\, p\right] + \frac{\sigma_V^2}{2\tau_m}\frac{\partial^2 p}{\partial V^2}
+\end{equation}
+
+\textbf{Passo 6} — Soluzione stazionaria con condizioni al contorno (assorbente a $V_{\text{thr}}$, reset a $V_r$) $\rightarrow$ \textbf{funzione di trasferimento} $\nu_{\text{out}} = \Phi(\mu_0, \sigma_V^2)$.
+
+\textbf{Passo 7} — \textbf{Condizione self-consistent} di campo medio:
+\begin{equation}
+\nu_\alpha^* = \Phi\!\left(\mu_0(\nu_E^*, \nu_I^*),\, \sigma_V^2(\nu_E^*, \nu_I^*)\right)
+\end{equation}
+
+\subsubsection{Connessione con le Reti Neurali Artificiali}
+
+Il professore apre una breve digressione sul collegamento tra i risultati derivati e le reti neurali artificiali, evidenziando come i concetti biofisici rigorosi derivati giustifichino le scelte euristiche delle reti artificiali.
+
+Nella rete artificiale più semplice (percettrone, rete feed-forward), ogni unità computazionale esegue la trasformazione:
+
+\begin{equation}
+a_i = f\!\left(\sum_j w_{ij}\, x_j - \theta_i\right)
+\end{equation}
+
+dove $f$ è una funzione di attivazione (tipicamente sigmoide o ReLU), $w_{ij}$ sono i pesi sinaptici e $\theta_i$ è la soglia. La scelta della funzione sigmoide come funzione di attivazione è solitamente \textbf{motivata euristicamente} (differenziabilità, range $[0,1]$, saturazione).
+
+La teoria sviluppata in questa lezione fornisce una \textbf{giustificazione biofisica rigorosa}: la funzione di trasferimento $\Phi(\mu_0, \sigma^2)$ del LIF stocastico è effettivamente una funzione sigmoidale di $\mu_0$ (per $\sigma^2$ fissato). I pesi $w_{ij}$ corrispondono alle efficacie sinaptiche $J_{\alpha j}$, la soglia $\theta_i$ corrisponde a $V_{\text{thr}}$. Il rumore sinaptico $\sigma^2$, che nelle reti biologiche è una proprietà emergente del bombardamento sinaptico, svolge il ruolo di un \textbf{parametro di temperatura} che controlla la "morbidezza" della non-linearità: per $\sigma^2 \to 0$ la funzione di trasferimento converge alla funzione di Heaviside (comportamento deterministico), mentre per $\sigma^2 \to \infty$ la sigmoide si appiattisce.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} "Questo è uno dei punti più belli del corso: la biofisica e le reti artificiali si incontrano qui. Non perché qualcuno abbia copiato la biologia nel disegnare le reti artificiali — in realtà la maggior parte delle scelte di design delle reti artificiali è stata fatta senza questa giustificazione. Ma il fatto che ci sia una convergenza è indicativo di qualcosa di più profondo: il bilanciamento tra eccitazione, inibizione e rumore impone una struttura sulla funzione di trasferimento che ha la forma sigmoidale."
+\end{tcolorbox}
+
+\subsubsection{Il Significato Fisico dell'Intera Costruzione}
+
+Il professore sottolinea il salto di scala concettuale compiuto:
+
+\begin{itemize}
+    \item Si è partiti dalla descrizione del \textbf{singolo neurone} con input sinaptico a salti discreti.
+    \item Si è costruita la \textbf{statistica dell'input} per mezzo del Teorema di Griglioni.
+    \item Si è derivata l'\textbf{equazione di Langevin} per la dinamica stocastica del potenziale.
+    \item Si è ottenuta l'\textbf{equazione di Fokker-Planck} per la distribuzione della popolazione.
+    \item Si è ricavata la \textbf{funzione di trasferimento} che connette input e output del singolo neurone.
+    \item Infine, si è costruita la \textbf{teoria di campo medio} che descrive l'attività collettiva della rete come soluzione self-consistent.
+\end{itemize}
+
+Questo percorso è l'equivalente neuronale di quanto in fisica statistica si fa passando dalla meccanica molecolare alla termodinamica: la complessità microscopica (miliardi di spike) si condensa in pochi parametri macroscopici ($\mu_0$, $\sigma_V^2$, $\nu_{\text{out}}$).
