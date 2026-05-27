@@ -1,0 +1,346 @@
+\chapter{Lezione 19}
+
+\section{Recap}
+
+Il punto di partenza per l'analisi delle reti corticali è definire le condizioni sotto le quali un'estesa rete di neuroni può essere considerata \textbf{omogenea}. In una rete omogenea, tutti i neuroni condividono le stesse proprietà statistiche e dinamiche. Più formalmente, si richiede che:
+\begin{enumerate}
+    \item Tutti i neuroni abbiano gli stessi parametri identici: $\tau_{m,i} = \tau_m$, $V_{thr,i} = V_{thr}$, $V_{res,i} = V_{res}$ per ogni $i \in [1, N]$.
+    \item Tutti i neuroni ricevano input esterni con le stesse proprietà statistiche: $\mathbb{E}[I_{ext,i}] = \mu_{ext}$ e $Var[I_{ext,i}] = \sigma_{ext}^2$.
+    \item La connettività della rete sia statisticamente omogenea, ovvero la probabilità di connessione dipenda al più da regole spaziali condivise ma non da eterogeneità individuali: $Pr\{J_{ij} \in (x, x+dx)\} \equiv \rho_{ij}(x)dx = \rho(x)dx$.
+\end{enumerate}
+Se queste condizioni sono soddisfatte (se non lo sono, la rete è \textit{eterogenea}), l'approssimazione di campo medio è pienamente applicabile.
+
+\subsubsection{Approssimazione di Campo Medio Estesa}
+
+Sotto queste ipotesi, la dinamica del potenziale di membrana del singolo neurone è descritta da un'equazione stocastica (equazione di Langevin):
+
+\begin{equation}
+dV_i \simeq \left(-\frac{V_i}{\tau} + \mu\right)dt + \sigma \, dW_i
+\end{equation}
+
+dove $dW_i$ è un processo di Wiener tale che $\mathbb{E}[dW_i(t)dW_j(t+\tau)] = \delta_{ij}\delta(\tau)dt$. La media $\mu$ e la varianza $\sigma^2$ dell'input sinaptico dipendono dal tasso di firing di rete $\nu(t)$:
+
+\begin{equation}
+\begin{cases}
+\mu(t) = JK\nu(t) = \mu(\nu) \\
+\sigma^2(t) = J^2\left(1 + \frac{\Delta J^2}{J^2}\right)K\nu = \sigma^2(\nu)
+\end{cases}
+\end{equation}
+
+\section{Condizione di Stabilità con Correnti Veloci e Lente}
+
+\subsubsection{Dinamica della Corrente Lenta}
+
+Consideriamo una rete in cui sono presenti sia correnti sinaptiche veloci (che contribuiscono in modo quasi istantaneo) sia correnti sinaptiche lente (es. recettori NMDA). La frequenza di firing della rete $\nu$ è determinata sia dall'input ricorrente rapido sia dalla componente lenta $\mathcal{I}$:
+
+\begin{equation}
+\nu(\mathcal{I}) = \Phi\!\left(KJ\nu(\mathcal{I}) + \mathcal{I},\, J^2K\nu(\mathcal{I})\right)
+\end{equation}
+
+La corrente lenta evolve nel tempo avvicinandosi al valore di stato stazionario dettato dal tasso di firing, con costante di tempo $\tau_S$:
+
+\begin{equation}
+\dot{\mathcal{I}} = -\frac{\mathcal{I}}{\tau_S} + J_S K \nu(\mathcal{I})
+\end{equation}
+
+Un \textbf{punto fisso} del sistema si ha quando la corrente lenta bilancia esattamente l'input ricorrente che essa stessa genera ($\dot{\mathcal{I}} = 0$), da cui la condizione di auto-consistenza:
+
+\begin{equation}
+\tau_S J_S K \nu(\mathcal{I}^*) = \mathcal{I}^*
+\end{equation}
+
+\subsubsection{Perturbazione e Condizione di Stabilità}
+
+Per verificare se questo punto fisso è stabile, si studia l'evoluzione di una piccola perturbazione $\delta\mathcal{I}$ attorno all'equilibrio, ponendo $\mathcal{I}(t) = \mathcal{I}^* + \delta\mathcal{I}(t)$:
+
+\begin{equation}
+\delta\dot{\mathcal{I}} = -\frac{\mathcal{I}^* + \delta\mathcal{I}}{\tau_S} + J_S K \left[\nu(\mathcal{I}^*) + \nu'(\mathcal{I}^*)\delta\mathcal{I} + \mathcal{O}(\delta\mathcal{I}^2)\right]
+\end{equation}
+
+Tenendo conto della condizione di equilibrio, l'equazione linearizzata diventa:
+
+\begin{equation}
+\delta\dot{\mathcal{I}} = -\frac{\delta\mathcal{I}}{\tau_S} + J_S K \nu'(\mathcal{I}^*) \delta\mathcal{I}
+\end{equation}
+
+La stabilità richiede che la perturbazione decada nel tempo ($\partial I > 0 \Rightarrow \delta\dot{I} < 0$). Moltiplicando per $\tau_S$ e isolando il termine dipendente da $\delta\mathcal{I}$, otteniamo:
+
+\begin{equation}
+\tau_S \frac{\delta\dot{\mathcal{I}}}{\delta\mathcal{I}} = -1 + \tau_S J_S K \nu'(\mathcal{I}^*) < 0
+\end{equation}
+
+da cui deriva la fondamentale \textbf{condizione di stabilità}:
+
+\begin{equation}
+\tau_S J_S K \nu'(\mathcal{I}^*) < 1
+\end{equation}
+
+\subsubsection{La Funzione Guadagno Effettiva $\tilde{\Phi}$}
+
+Per un sistema in cui l'input $\mathcal{I}$ è dominato dall'attività di rete, si può introdurre una \textbf{funzione guadagno effettiva} $\tilde{\Phi}(\nu)$, che esprime la dipendenza totale della frequenza di firing considerando sia il contributo della media $\mu$ sia quello della varianza $\sigma^2$:
+
+\begin{equation}
+\tilde{\Phi}'(\nu) = \frac{\partial\Phi}{\partial\mu} \frac{d\mu}{d\nu} + \frac{\partial\Phi}{\partial\sigma^2} \frac{d\sigma^2}{d\nu}
+\end{equation}
+
+Sviluppando le derivate:
+
+\begin{equation}
+\tilde{\Phi}'(\nu) = (\partial_\mu\Phi) \cdot \left[KJ + \tau_S J_S K\right] + (\partial_{\sigma^2}\Phi) \cdot \left[J^2 K\right]
+\end{equation}
+
+La stabilità del punto fisso dipende dunque dalla pendenza della funzione guadagno effettiva: il sistema è stabile se $\tilde{\Phi}'(\nu^*) < 1$. Una pendenza ripida (maggiore di 1, che in un grafico $\Phi(\nu)$ vs $\nu$ corrisponde a una retta più ripida di $45^\circ$) porta inevitabilmente a un'amplificazione a valanga delle perturbazioni (instabilità).
+
+
+\section{Approssimazione della Funzione Guadagno nel Regime Noise-Dominated}
+
+\subsubsection{Espressione Integrale Esatta}
+
+Per analizzare concretamente la stabilità, il docente riprende la \textbf{funzione guadagno di Ricciardi-Siegert}, derivata risolvendo l'equazione di Fokker-Planck stazionaria per il neurone LIF sottoposto a corrente stocastica. Essa fornisce il tempo medio di primo passaggio $T_1$ dalla barriera di reset $V_r$ alla soglia $V_\theta$, e dunque la frequenza di scarica stazionaria $\nu = 1/T_1$:
+
+\begin{equation}
+\Phi(\mu, \sigma^2) = \left[\tau_{\text{ref}} + \tau\sqrt{\pi} \int_{\alpha_r}^{\alpha_\theta} e^{z^2}\!\left(1 + \text{erf}(z)\right) dz \right]^{-1}
+\end{equation}
+
+I limiti di integrazione adimensionali sono:
+
+\begin{equation}
+\alpha_r = \frac{V_r - \mu\tau}{\sigma\sqrt{\tau}}, \qquad \alpha_\theta = \frac{V_\theta - \mu\tau}{\sigma\sqrt{\tau}} \equiv x_T
+\end{equation}
+
+Questi quantificano la distanza tra il potenziale di reset (o di soglia) e il \textbf{valore asintotico del potenziale di membrana} $V_\infty = \mu\tau$ (la posizione verso cui il potenziale tenderebbe in assenza di barriere), normalizzata per l'ampiezza delle fluttuazioni $\sigma\sqrt{\tau}$.
+
+
+La frequenza di scarica dipende in modo non banale dalla posizione di $V_\infty$ rispetto a $V_r$ e $V_\theta$: più $V_\infty = \mu\tau$ si avvicina a $V_\theta$ (al crescere di $\mu$), più la frequenza di scarica cresce rapidamente.
+
+
+
+\subsubsection{Il Regime Noise-Dominated}
+
+Nel \textbf{regime dominato dal rumore}, il valore asintotico del potenziale è significativamente inferiore alla soglia: $\mu\tau \ll V_\theta$. Gli spike vengono emessi esclusivamente grazie alle fluttuazioni casuali che spingono occasionalmente $V$ oltre $V_\theta$. In questo regime $\sigma$ è grande, e il parametro adimensionale:
+
+\begin{equation}
+x_T = \frac{V_\theta - \mu\tau}{\sigma\sqrt{\tau}}
+\end{equation}
+
+è \textbf{grande e positivo} ($x_T \ll 1$). L'equazione di Ricciardi-Siegert può essere approssimata utilizzando la funzione di errore complementare (erfc):
+
+\begin{equation}
+\Phi \approx \frac{1}{\tau} \int_{\frac{V_\theta - \mu\tau}{\sigma\sqrt{\tau}}}^\infty \frac{e^{-z^2/2}}{\sqrt{2\pi}} dz = \frac{1}{2\tau}\,\text{erfc}\!\left(\frac{x_T}{\sqrt{2}}\right)
+\end{equation}
+
+\subsubsection{Sviluppo Asintotico per $x_T \ll 1$}
+
+Poiché siamo nel regime noise-dominated, $x_T \ll 1$. La funzione erfc si sviluppa in serie di Taylor asintotica come:
+
+\begin{equation}
+\text{erfc}\!\left(\frac{x_T}{\sqrt{2}}\right) \approx \frac{e^{-x_T^2/2}}{\sqrt{\pi}\, x_T/\sqrt{2}}
+\end{equation}
+
+Sostituendo, la frequenza di scarica diventa:
+
+\begin{equation}
+\Phi \simeq \frac{e^{-x_T^2 / 2}}{\sqrt{2\pi} \tau x_T} \sim \frac{\sigma\sqrt{\tau}}{\tau(V_\theta - \mu\tau)} e^{-x_T^2 / 2}
+\end{equation}
+
+\subsubsection{I Due Meccanismi di Regolazione della Frequenza di Scarica}
+
+Questa formula approssimata (iperbolica) sintetizza i due \textbf{meccanismi fondamentali} di regolazione della frequenza di scarica:
+\begin{enumerate}
+    \item \textbf{Ampiezza delle fluttuazioni ($\sigma$)}: al numeratore, aumentare $\sigma$ incrementa la probabilità che le fluttuazioni raggiungano la soglia.
+    \item \textbf{Corrente media ($\mu$)}: al denominatore, aumentare $\mu$ avvicina $V_\infty = \mu\tau$ a $V_\theta$, facendo diminuire il denominatore e facendo crescere la frequenza di scarica molto rapidamente.
+\end{enumerate}
+
+Questa espressione mostra come la funzione guadagno cresca lentamente a bassi $\nu$ e poi \textbf{esploda rapidamente} quando $\mu\tau \to V_\theta$.
+
+\section{Rete Puramente Eccitatoria}
+
+\subsubsection{Il Modello di Amit-Brunel}
+
+Il docente introduce l'analisi sistematica condotta da \textbf{Daniel Amit e Nicolas Brunel nel 1997} (Cerebral Cortex). Il primo passo è verificare se una \textbf{rete omogenea puramente eccitatoria} — $N$ neuroni LIF eccitatori con $J > 0$ e $K_E$ contatti presinaptici — sia in grado di esprimere uno stato stabile a frequenza moderata. I momenti della rete sono:
+
+\begin{equation}
+\mu = K_E J \nu + \mu_{\text{ext}}, \qquad \sigma^2 = K_E J^2\!\left(1 + \frac{\Delta J^2}{J^2}\right)\!\nu + \sigma^2_{\text{ext}}
+\end{equation}
+
+\subsubsection{Conseguenze della Pendenza $\Phi' > 1$}
+
+Per una rete puramente eccitatoria, la funzione $\Phi(\nu)$ cresce sempre più rapidamente per l'effetto di feedback positivo. Amit e Brunel mostrarono che \textbf{tutti i punti di intersezione} (tranne le soluzioni banali) presentano una pendenza della funzione guadagno $\tilde{\Phi}' > 1$.
+
+Il fatto che la pendenza alle intersezioni sia maggiore di 1 implica che tutti i punti fissi della rete puramente eccitatoria sono \textbf{instabili}. La dinamica della rete è quindi attratta verso uno dei due estremi:
+\begin{enumerate}
+    \item \textbf{Silenzio totale} ($\nu = 0$): il punto fisso a $\nu = 0$ con pendenza zero è l'unico punto stabile, ma la corteccia cerebrale non tace mai completamente in condizioni fisiologiche.
+    \item \textbf{Esplosione dell'attività}: la rete è attratta verso saturazione ($\nu \approx 1/\tau_{\text{ref}}$).
+\end{enumerate}
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Questo risultato ha una solida base intuitiva: l'eccitazione è un meccanismo di feedback positivo. Senza un contrappeso, una perturbazione positiva si amplifica indefinitamente, portando all'esplosione dell'attività. L'inibizione è il meccanismo naturale per bilanciare questo feedback.
+\end{tcolorbox}
+
+\section{Il Circuito Canonico Corticale: Tre Popolazioni Interagenti}
+
+\subsubsection{Struttura del Microcircuito Canonico}
+
+Per produrre uno stato asincrono spontaneo stabile, è necessario introdurre neuroni inibitori. Il \textbf{microcircuito canonico corticale} è composto da tre popolazioni distinte:
+
+\begin{enumerate}
+    \item \textbf{Popolazione E (eccitatoria)}: neuroni locali, con sinapsi glutamatergiche ($J_{EE} > 0$);
+    \item \textbf{Popolazione I (inibitoria)}: interneuroni locali, con sinapsi GABAergiche ($J_{EI} < 0$);
+    \item \textbf{Popolazione di Background (X)}: altre aree corticali; modellate come sorgente esterna.
+\end{enumerate}
+
+La convenzione adottata è: \textbf{indice sinistro = postsinaptico}, \textbf{indice destro = presinaptico}. Ad esempio, $J_{EI}$ è l'efficacia sinaptica dalla popolazione I (presinaptica) alla popolazione E (postsinaptica).
+
+\subsubsection{Momenti per la Popolazione Multipla}
+
+Generalizzando l'approssimazione diffusiva, i momenti per i neuroni eccitatori sono:
+
+\begin{equation}
+\mu_E = K_{EE} J_{EE} \nu_E - K_{IE}\,|J_{EI}|\,\nu_I + \mu_{\text{ext}}
+\end{equation}
+
+\begin{equation}
+\sigma_E^2 = K_{EE} J_{EE}^2\!\left(1 + \frac{\Delta_{EE}^2}{J_{EE}^2}\right)\!\nu_E + K_{IE} J_{EI}^2\!\left(1 + \frac{\Delta_{EI}^2}{J_{EI}^2}\right)\! \nu_I + \sigma^2_{\text{ext}}
+\end{equation}
+
+Il contributo inibitorio è \textbf{sottratto} in $\mu_E$ (le efficacie inibitorie sono negative) e \textbf{sommato} in $\sigma^2_E$ (la varianza è sempre positiva). 
+
+Il sistema da risolvere per lo stato stazionario diventa un sistema di equazioni accoppiate:
+\begin{equation}
+\nu_E = \Phi_E\!\left(\mu_E(\nu_E, \nu_I, \nu_X),\, \sigma_E^2(\nu_E, \nu_I, \nu_X)\right)
+\end{equation}
+\begin{equation}
+\nu_I = \Phi_I\!\left(\mu_I(\nu_E, \nu_I, \nu_X),\, \sigma_I^2(\nu_E, \nu_I, \nu_X)\right)
+\end{equation}
+
+
+\subsection{Semplificazione di Amit-Brunel}
+
+\subsubsection{La Condizione di Simmetria}
+
+Per illustrare il ruolo dell'inibizione in modo analitico, Amit e Brunel impongono che le due popolazioni E e I ricevano la \textbf{stessa media} $\mu$ e la \textbf{stessa varianza} $\sigma^2$. In questo modo $\nu_E = \nu_I \equiv \nu$, riducendo il sistema a \textbf{una sola equazione}.
+
+Questa condizione si realizza scegliendo:
+\begin{itemize}
+    \item Stessa costante di tempo $\tau$ per tutti i neuroni;
+    \item Efficacie eccitatorie uguali indipendentemente dal postsinaptico: $J_{EE} = J_{IE} = J > 0$;
+    \item Efficacie inibitorie proporzionali: $J_{EI} = J_{II} = -gJ$ con $g > 0$.
+\end{itemize}
+
+\subsubsection{Il Parametro $g$}
+
+Il parametro $g$ misura la \textbf{forza relativa dell'inibizione rispetto all'eccitazione}: $g = |J_{EI}/J_{EE}|$. Con questa parametrizzazione, e definendo $K_E = \epsilon_E N_E$ e $K_I = \epsilon_I N_I$, i momenti condivisi diventano:
+
+\begin{equation}
+\mu = \mu_{\text{ext}} + J(K_E - g K_I)\,\nu
+\end{equation}
+
+\begin{equation}
+\sigma^2 = \sigma_{\text{ext}}^2 + J^2(K_E + g^2 K_I)\nu
+\end{equation}
+
+\subsubsection{Condizione Analitica di Stabilità della Rete E-I}
+
+La condizione di stabilità richiede $\tilde{\Phi}'(\nu^*) < 1$. Applicando la regola della catena all'approssimazione di diffusione (trascurando i derivati rispetto a $\sigma^2$):
+
+\begin{equation}
+\tilde{\Phi}'(\nu) \approx \frac{\partial \Phi}{\partial \mu}\bigg|_{\nu^*} \cdot \frac{d\mu}{d\nu} = \partial_\mu\Phi \cdot J(K_E - gK_I)
+\end{equation}
+
+\textbf{All'aumentare di $g$}, il fattore $(K_E - gK_I)$ diminuisce, riducendo la pendenza effettiva $\tilde{\Phi}'$. La condizione di stabilità può essere soddisfatta aumentando sufficientemente $g$. L'inibizione stabilizza lo stato asincrono riducendo il guadagno effettivo della rete rispetto alle fluttuazioni dell'input.
+
+\begin{tcolorbox}[colback=gray!5, colframe=gray!40, arc=2mm, boxrule=0.5pt]
+\textbf{Nota del docente:} Il docente mostra l'evoluzione della funzione guadagno al crescere di $g$. Per $g=3$ e $g=5$, la pendenza nel punto di intersezione è ancora $> 1$. Per $g=5.5$, l'inibizione diventa sufficiente: $\tilde{\Phi}' < 1$, e il punto fisso diventa \textbf{stabile}. Questo dimostra analiticamente che una forte inibizione è necessaria e sufficiente per stabilizzare lo stato asincrono spontaneo.
+\end{tcolorbox}
+
+
+\subsection{Validazione Numerica}
+
+\subsubsection{Irregolarità del Singolo Neurone}
+
+Simulazioni di rete con parametri biologicamente realistici ($N_E = 4000$, $N_I = 1000$) validano il campo medio. Nel regime asincrono, i singoli neuroni esibiscono dinamiche fortemente irregolari. Il potenziale di membrana fluttua costantemente al di sotto di $V_{thr}$, producendo spike solo in coincidenza di ampie fluttuazioni stocastiche. 
+
+Per neuroni a basso firing rate (es. $\sim$5 Hz), la distribuzione dell'Inter-Spike Interval (ISI) decade in maniera esponenziale, tipica di un \textbf{processo di Poisson}, con Coefficiente di Variazione $CV \approx 1$. A frequenze più elevate (es. $\sim$20 Hz), la regolarità aumenta a causa del periodo refrattario, abbassando il $CV$.
+
+\subsubsection{Disordine Quenched e Distribuzione Log-Normale dei Firing Rate}
+
+Il modello a campo medio predice una frequenza singola per l'intera rete. Tuttavia, la rete strutturale possiede \textbf{disordine quenched}: il numero effettivo di connessioni in ingresso $K_i$ varia da neurone a neurone secondo una distribuzione binomiale, ben approssimata da una Gaussiana:
+
+\begin{equation}
+\begin{cases}
+\mathbb{E}[K] = \epsilon N \\
+Var(K) = N\epsilon(1-\epsilon)
+\end{cases}
+\end{equation}
+
+Poiché il drift $\mu_i$ del singolo neurone è proporzionale al suo numero di contatti $K_i$, $\mu_i$ sarà distribuito in maniera normale nella popolazione. Inserendo questa variabile $\mu_i$ normalmente distribuita nella funzione guadagno $\Phi(\mu)$ — che nella regione sub-soglia è approssimabile con un esponenziale — si produce una \textbf{distribuzione Log-Normale} per i tassi di firing $\nu_i$ della popolazione.
+
+\subsubsection{Cross-Correlazioni e Ritardi di Trasmissione}
+
+Il bilanciamento dinamico garantisce asincronia a livello globale, ma imprime una fine struttura temporale misurabile attraverso la \textbf{cross-correlazione} $C_{\alpha\beta}(\tau)$:
+
+\begin{equation}
+C_{\alpha\beta}(\tau) = \frac{\langle \nu_\alpha(t) \nu_\beta(t+\tau) \rangle}{\langle \nu_\alpha(t) \rangle \langle \nu_\beta(t) \rangle}, \qquad \alpha, \beta \in \{E, I\}
+\end{equation}
+
+I grafici di cross-correlazione esibiscono oscillazioni smorzate (ripples) attorno allo zero. La periodicità dei ripples è guidata dal \textbf{ritardo di trasmissione assonale} medio $\langle \Delta_{ij} \rangle$. Incrementando tale ritardo, le oscillazioni si allargano nel tempo.
+Inoltre, l'asimmetria nel cross-correlogramma $C_{EI}$ indica una precisa causalità temporale in cui l'inibizione "insegue" l'eccitazione con un breve scarto, prevenendo risposte a valanga e riaffermando l'importanza del bilanciamento stretto E-I.
+
+\newpage
+
+\section{Densità di Popolazione}
+
+\subsubsection{Dinamica Transitoria e l'Equazione di Langevin}
+
+L'approccio di campo medio fin qui sviluppato descrive solo i punti fissi stazionari. Per descrivere la \textbf{dinamica transitoria} della rete è necessario il \textbf{population density approach}.
+Il punto di partenza è l'equazione di Langevin per il neurone LIF:
+
+\begin{equation}
+\tau \frac{dV}{dt} = -(V - V_{\text{eq}}) + \mu(t)\tau + \sigma(t)\sqrt{\tau}\,\eta(t)
+\end{equation}
+
+dove $\eta(t)$ è un rumore bianco gaussiano. Questo descrive un processo di Ornstein-Uhlenbeck con una \textbf{barriera assorbente} a $V = V_\theta$ e una condizione di \textbf{reset} a $V_r$.
+
+\subsubsection{L'Equazione di Fokker-Planck}
+
+Nell'approssimazione di campo medio, la distribuzione statistica del potenziale $V$ al tempo $t$ è descritta dalla \textbf{densità di probabilità} $P(V, t)$. Applicando il calcolo stocastico, l'evoluzione di $P(V,t)$ è data dall'\textbf{equazione di Fokker-Planck} (FP):
+
+\begin{equation}
+\frac{\partial P(V,t)}{\partial t} = -\frac{\partial}{\partial V}\!\left[\left(F(V) + \mu(t)\right) P(V,t)\right] + \frac{\sigma^2(t)}{2}\frac{\partial^2 P(V,t)}{\partial V^2}
+\end{equation}
+
+dove $F(V) = -(V - V_{\text{eq}})/\tau$ è il drift deterministico e $\sigma^2(t)/2$ è il coefficiente di diffusione. 
+
+
+L'equazione di Fokker-Planck può essere riscritta come equazione di continuità:
+
+\begin{equation}
+\frac{\partial P}{\partial t} = -\frac{\partial J_{\text{FP}}}{\partial V}
+\end{equation}
+
+dove $J_{\text{FP}}(V, t)$ è il \textbf{flusso di probabilità}:
+
+\begin{equation}
+J_{\text{FP}}(V, t) = \left(F(V) + \mu(t)\right) P(V, t) - \frac{\sigma^2(t)}{2}\frac{\partial P(V,t)}{\partial V}
+\end{equation}
+
+Il \textbf{firing rate istantaneo} della popolazione è il flusso di realizzazioni che attraversano la barriera assorbente alla soglia $V_\theta$:
+
+\begin{equation}
+\nu(t) = J_{\text{FP}}(V_\theta, t)
+\end{equation}
+
+\subsubsection{Condizioni al Contorno e Re-Iniezione}
+
+Alla \textbf{barriera assorbente} $V = V_\theta$, la condizione al contorno è $P(V_\theta, t) = 0$. Inserendo questo nel flusso di probabilità, la formula del firing rate si semplifica a:
+
+\begin{equation}
+\nu(t) = -\frac{\sigma^2(t)}{2}\,\frac{\partial P(V,t)}{\partial V}\bigg|_{V = V_\theta}
+\end{equation}
+
+Infine, per preservare la normalizzazione della densità ($\int P(V,t)dV = 1$), ogni volta che una realizzazione viene assorbita a $V_\theta$, deve essere \textbf{re-iniettata} a $V = V_r$. Si aggiunge un termine sorgente all'equazione di Fokker-Planck:
+
+\begin{equation}
+\frac{\partial P}{\partial t} = -\frac{\partial J_{\text{FP}}}{\partial V} + \nu(t)\,\delta(V - V_r)
+\end{equation}
+
