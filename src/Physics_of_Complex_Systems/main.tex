@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PREAMBOLO
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt, a4paper]{book}
@@ -8,61 +8,8 @@
 \usepackage[T1]{fontenc}
 \usepackage[italian]{babel}
 
-% --- Matematica ---
-\usepackage{amsfonts}
-\usepackage{amsmath, amssymb, amsthm, mathtools}
-
-\usepackage{tikz}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
-\usetikzlibrary{arrows.meta, positioning, calc, shapes.geometric, decorations.pathreplacing}
-
-% --- Grafica e Layout ---
-\usepackage{graphicx}
-\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
-\usepackage{fancyhdr} % Per personalizzare header e footer
-\setlength{\headheight}{14.5pt}
-
-\usepackage{wrapfig} 
-\usepackage{caption} 
-\usepackage{fontawesome5} % Per inserire le icone (es. \faGithub)
-
-
-\captionsetup{labelfont=bf} % Aggiunge il grassetto all'etichetta della didascalia
-
-\usepackage{draftwatermark}
+% --- Colori (Caricati prima di TikZ per evitare conflitti) ---
 \usepackage{xcolor}
-\usepackage[most]{tcolorbox}
-
-\usepackage{lmodern} % Font moderno opzionale
-\SetWatermarkText{\sffamily\bfseries\textcolor{gray!10}{github . com / elisabettagnello}}
-\SetWatermarkScale{0.3}
-\SetWatermarkColor{gray!8}
-\SetWatermarkAngle{45}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CONFIGURAZIONE STILE PAGINA (FANCYHDR)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagestyle{fancy}
-\fancyhf{} % Pulisce tutti i campi di header e footer
-\fancyhead[LE,RO]{\nouppercase{\leftmark}} % Titolo del capitolo in alto a sinistra (pagine pari) e destra (pagine dispari)
-\fancyfoot[C]{\thepage} % Numero di pagina al centro del footer
-\renewcommand{\headrulewidth}{0.4pt} % Linea sotto l'header
-\renewcommand{\footrulewidth}{0.4pt} % Linea sopra il footer
-
-\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
-
-\usepackage{titlesec}
-
-\titleformat{\chapter}[display]
-  {\normalfont\huge\bfseries} % stile del titolo
-  {}               
-  {0pt}                      % spazio
-  {\Huge}                     % stile applicato al titolo vero e proprio
-
-% Definizione della palette sequenziale (Viridis-like)
 \definecolor{colorA}{HTML}{003f5c} % 1 - Blu Profondo
 \definecolor{colorB}{HTML}{2f4b7c} % 2 - Indaco
 \definecolor{colorC}{HTML}{665191} % 3 - Viola Bluastro
@@ -71,7 +18,52 @@
 \definecolor{colorF}{HTML}{f95d6a} % 6 - Arancio-Rosso
 \definecolor{colorG}{HTML}{ff7c43} % 7 - Arancio Brillante
 
-\usepackage{hyperref} % Per link interni (es. tabella dei contenuti, riferimenti)
+% --- Matematica e Grafica ---
+\usepackage{amsfonts}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta, positioning, calc, shapes.geometric, decorations.pathreplacing}
+
+% --- Layout, Box e Font ---
+\usepackage{graphicx}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{fancyhdr} 
+\setlength{\headheight}{14.5pt}
+
+\usepackage{wrapfig} 
+\usepackage{caption} 
+\captionsetup{labelfont=bf}
+
+\usepackage{fontawesome5} 
+\usepackage[most]{tcolorbox}
+\usepackage{draftwatermark}
+\usepackage{lmodern} 
+
+% --- Watermark ---
+\SetWatermarkText{\sffamily\bfseries\textcolor{gray!10}{github.com/elisabettagnello}}
+\SetWatermarkScale{0.3}
+\SetWatermarkAngle{45}
+
+% --- Configurazione Stile Pagina ---
+\pagestyle{fancy}
+\fancyhf{} 
+\fancyhead[LE,RO]{\nouppercase{\leftmark}} 
+\fancyfoot[C]{\thepage} 
+\renewcommand{\headrulewidth}{0.4pt} 
+\renewcommand{\footrulewidth}{0.4pt} 
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries} 
+  {}                
+  {0pt}                      
+  {\Huge}                     
+
+\usepackage{hyperref} 
 \hypersetup{
     colorlinks=true,
     linkcolor=colorA,
@@ -84,38 +76,31 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-
-
-
-% --- Copertina Bio-Fisica (Sfondo con Gradiente Elegante) ---
+% --- Copertina Bio-Fisica ---
 \begin{titlepage}
     \thispagestyle{empty}
     
     \begin{tikzpicture}[remember picture, overlay]
         
-        % 1. Sfondo con gradiente: dal Blu Profondo (colorA) all'Indaco (colorB)
+        % 1. Sfondo con gradiente
         \shade[top color=colorA, bottom color=colorC] (current page.north west) rectangle (current page.south east);
         
         % 2. Fascia laterale a contrasto
         \fill[colorE] (current page.south west) rectangle ([xshift=0.4cm]current page.north west);
         
-        % 3. Rete di Hopfield (Pura, solo linee bianche e nodi)
+        % 3. Rete di Hopfield
         \begin{scope}[shift={([xshift=-1.5cm, yshift=-8cm]current page.east)}]
             \def\numnodes{24} 
             \def\radius{9} 
             
-            % Disegna tutte le connessioni in bianco semitrasparente
             \foreach \i in {1,...,\numnodes} {
                 \foreach \j in {\i,...,\numnodes} {
                     \draw[white, opacity=0.15, line width=0.3pt] ({\i*360/\numnodes}:\radius) -- ({\j*360/\numnodes}:\radius);
                 }
             }
             
-            % Disegna i nodi con un leggero alone
             \foreach \i in {1,...,\numnodes} {
-                % Alone luminoso morbido
                 \node[circle, fill=white, opacity=0.15, inner sep=0pt, minimum size=14pt] at ({\i*360/\numnodes}:\radius) {};
-                % Core del nodo
                 \node[circle, fill=white, inner sep=0pt, minimum size=4pt] at ({\i*360/\numnodes}:\radius) {};
             }
         \end{scope}
@@ -123,21 +108,20 @@
 
     % --- Area Testi: Intestazione ---
     \begin{flushleft}
-        \vspace*{1.5cm} % Margine dall'alto
-        \textcolor{colorE}{\rule{2cm}{2pt}}\\[0.4cm] % Linea decorativa
+        \vspace*{1.5cm} 
+        \textcolor{colorE}{\rule{2cm}{2pt}}\\[0.4cm] 
         \textcolor{white}{\sffamily\Large\textbf{SAPIENZA UNIVERSITÀ DI ROMA}}\\[0.2cm]
         \textcolor{white!70}{\sffamily\large Laurea Magistrale in Fisica}\\
         
         \vspace{4.5cm}
         
-        % Titolo Principale 
         \textcolor{colorE}{\sffamily\fontsize{50}{70}\selectfont\textbf{Physics of}}\\[0.1cm]
         \textcolor{colorE}{\sffamily\fontsize{50}{70}\selectfont\textbf{Complex Systems}}\\[0.6cm]
         \textcolor{white!80}{\sffamily\Large Appunti del corso}\\[0.5cm]
-        \textcolor{white!30}{\rule{6cm}{1pt}} % Sottile linea di separazione
+        \textcolor{white!30}{\rule{6cm}{1pt}} 
     \end{flushleft}
     
-    \vfill % Spinge le info dell'autore verso il fondo
+    \vfill 
     
     % --- Area Testi: Autore ---
     \begin{flushleft}
@@ -148,17 +132,16 @@
         \textcolor{white}{\sffamily\Large\textbf{2025/2026}}
     \end{flushleft}
     
-    \vspace*{1cm} % Margine dal basso
+    \vspace*{1cm} 
 \end{titlepage}
 % --- Fine Copertina ---
-    
-
 
 % --- Indice ---
-\frontmatter % Numerazione romana per le pagine iniziali (indice)
+\frontmatter 
+
 % --- Disclaimer ---
 \chapter*{Disclaimer}
-\thispagestyle{empty} % Rimuove header e footer solo per questa pagina
+\thispagestyle{empty} 
 
 Il presente documento costituisce una raccolta di appunti personali presi durante le lezioni del corso di \textit{Physics of Complex Systems}. 
 
@@ -172,7 +155,7 @@ Si prega di notare che questo materiale \textbf{non è stato sottoposto a una re
 Questi appunti sono destinati esclusivamente come supporto allo studio e non sostituiscono in alcun modo il materiale didattico ufficiale. L'autore non si assume alcuna responsabilità per l'uso delle informazioni qui contenute.
 
 % =============================================================================
-\vspace{3cm} % Spazio verticale per staccare il box dal testo sopra
+\vspace{3cm} 
 
 \begin{tcolorbox}[
     colback=colorA!5,      
@@ -185,7 +168,7 @@ Questi appunti sono destinati esclusivamente come supporto allo studio e non sos
 ]
 Per consultare l'archivio aggiornato, segnalare refusi o proporre integrazioni agli appunti, puoi utilizzare i seguenti canali:
 \begin{description}
-    \item[\textsf{\faGlobe\ Archivio Appunti:}] \href{https://elisabettagnello.github.io/elisabetta-physics-notes/}{\texttt{elisabettagnello.github.io/elisabetta-physics-notes/}}
+    \item[\textsf{\faGlobe\ Archivio Appunti:}] \hfill \\ \href{https://elisabettagnello.github.io/elisabetta-physics-notes/}{\texttt{elisabettagnello.github.io/elisabetta-physics-notes/}}
     \item[\textsf{\faGithub\ GitHub:}] \href{https://github.com/elisabettagnello}{\texttt{github.com/elisabettagnello}}
     \item[\textsf{\faLinkedin\ LinkedIn:}] \href{https://www.linkedin.com/in/elisabetta-agnello}{\texttt{linkedin.com/in/elisabetta-agnello}}
     \item[\textsf{\faEnvelope\ Email:}] \href{mailto:agnelloe24@gmail.com}{\texttt{agnelloe24@gmail.com}}
@@ -193,11 +176,10 @@ Per consultare l'archivio aggiornato, segnalare refusi o proporre integrazioni a
 \end{tcolorbox}
 % =============================================================================
 
-
-\clearpage % Forza il passaggio alla pagina successiva
+\clearpage 
 \tableofcontents
 
-\mainmatter 
+\mainmatter
 
 % --- INCLUSIONE DEI CAPITOLI ---
 
@@ -211,7 +193,7 @@ Per consultare l'archivio aggiornato, segnalare refusi o proporre integrazioni a
 \include{l_08}
 \include{l_09}
 \include{l_10}
-\include{l_11}
+%\include{l_11}
 %\include{l_12}
 %\include{l_13}
 %\include{l_14}
