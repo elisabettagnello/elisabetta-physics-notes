@@ -84,11 +84,71 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-% --- Pagina del Titolo (da personalizzare) ---
-\title{\textbf{\Huge Neural Networks}}
-\author{Autore: Agnello Elisabetta}
-\date{anno: 2023/2024}
-\maketitle
+% --- Copertina Bio-Fisica (Sfondo con Gradiente Elegante) ---
+\begin{titlepage}
+    \thispagestyle{empty}
+    
+    \begin{tikzpicture}[remember picture, overlay]
+        
+        % 1. Sfondo con gradiente: dal Blu Profondo (colorA) all'Indaco (colorB)
+        \shade[top color=colorA, bottom color=colorC] (current page.north west) rectangle (current page.south east);
+        
+        % 2. Fascia laterale a contrasto
+        \fill[colorE] (current page.south west) rectangle ([xshift=0.4cm]current page.north west);
+        
+        % 3. Rete di Hopfield (Pura, solo linee bianche e nodi)
+        \begin{scope}[shift={([xshift=-1.5cm, yshift=-8cm]current page.east)}]
+            \def\numnodes{24} 
+            \def\radius{9} 
+            
+            % Disegna tutte le connessioni in bianco semitrasparente
+            \foreach \i in {1,...,\numnodes} {
+                \foreach \j in {\i,...,\numnodes} {
+                    \draw[white, opacity=0.15, line width=0.3pt] ({\i*360/\numnodes}:\radius) -- ({\j*360/\numnodes}:\radius);
+                }
+            }
+            
+            % Disegna i nodi con un leggero alone
+            \foreach \i in {1,...,\numnodes} {
+                % Alone luminoso morbido
+                \node[circle, fill=white, opacity=0.15, inner sep=0pt, minimum size=14pt] at ({\i*360/\numnodes}:\radius) {};
+                % Core del nodo
+                \node[circle, fill=white, inner sep=0pt, minimum size=4pt] at ({\i*360/\numnodes}:\radius) {};
+            }
+        \end{scope}
+    \end{tikzpicture}
+
+    % --- Area Testi: Intestazione ---
+    \begin{flushleft}
+        \vspace*{1.5cm} % Margine dall'alto
+        \textcolor{colorE}{\rule{2cm}{2pt}}\\[0.4cm] % Linea decorativa
+        \textcolor{white}{\sffamily\Large\textbf{SAPIENZA UNIVERSITÀ DI ROMA}}\\[0.2cm]
+        \textcolor{white!70}{\sffamily\large Laurea Magistrale in Fisica}\\
+        
+        \vspace{4.5cm}
+        
+        % Titolo Principale 
+        \textcolor{colorE}{\sffamily\fontsize{60}{70}\selectfont\textbf{Neural}}\\[0.1cm]
+        \textcolor{colorE}{\sffamily\fontsize{60}{70}\selectfont\textbf{Networks}}\\[0.6cm]
+        \textcolor{white!80}{\sffamily\Large Appunti del corso del prof. Maurizio Mattia}\\[0.5cm]
+        \textcolor{white!30}{\rule{6cm}{1pt}} % Sottile linea di separazione
+    \end{flushleft}
+    
+    \vfill % Spinge le info dell'autore verso il fondo
+    
+    % --- Area Testi: Autore ---
+    \begin{flushleft}
+        \textcolor{white!60}{\sffamily\large A cura di}\\[0.2cm]
+        \textcolor{white}{\sffamily\huge\textbf{Elisabetta Agnello}}\\[1.2cm]
+        
+        \textcolor{white!60}{\sffamily\large Anno Accademico}\\[0.2cm]
+        \textcolor{white}{\sffamily\Large\textbf{2023/2024}}
+    \end{flushleft}
+    
+    \vspace*{1cm} % Margine dal basso
+\end{titlepage}
+% --- Fine Copertina ---
+    
 
 % --- Indice ---
 \frontmatter % Numerazione romana per le pagine iniziali (indice)
