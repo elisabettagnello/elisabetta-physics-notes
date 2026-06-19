@@ -30,6 +30,18 @@
 }
 
 
+% --- WATERMARK ---
+\newcommand{\WatermarkOverlay}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[rotate=45, scale=3, opacity=0.15, text=black!50] at (current page.center) {
+      \sffamily\bfseries github.com / elisabettagnello
+    };
+  \end{tikzpicture}%
+}
+
+\begin{document}
+
+
 % --- Copertina Bio-Fisica (Sfondo con Gradiente Elegante) ---
 \begin{titlepage}
     \thispagestyle{empty}
@@ -95,20 +107,6 @@
 \end{titlepage}
 % --- Fine Copertina ---
     
-
-% --- WATERMARK ---
-\newcommand{\WatermarkOverlay}{%
-  \begin{tikzpicture}[remember picture, overlay]
-    \node[rotate=45, scale=3, opacity=0.15, text=black!50] at (current page.center) {
-      \sffamily\bfseries github.com / elisabettagnello
-    };
-  \end{tikzpicture}%
-}
-
-\begin{document}
-
-\maketitle
-
 % --- Disclaimer ---
 \chapter*{Disclaimer}
 \thispagestyle{empty} % Rimuove header e footer solo per questa pagina
