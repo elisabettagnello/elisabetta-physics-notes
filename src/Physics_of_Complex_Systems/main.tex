@@ -22,13 +22,6 @@
 \usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
 \usepackage{fancyhdr} % Per personalizzare header e footer
 \setlength{\headheight}{14.5pt}
-\usepackage{hyperref} % Per link interni (es. tabella dei contenuti, riferimenti)
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,      
-    urlcolor=cyan,
-}
 
 \usepackage{wrapfig} 
 \usepackage{caption} 
@@ -40,9 +33,9 @@
 \usepackage[most]{tcolorbox}
 
 \usepackage{lmodern} % Font moderno opzionale
-\SetWatermarkText{\sffamily\bfseries\textcolor{gray!10}{ELISABETTA AGNELLO}}
-\SetWatermarkScale{0.4}
-\SetWatermarkColor{gray!10}
+\SetWatermarkText{\sffamily\bfseries\textcolor{gray!10}{github . com / elisabettagnello}}
+\SetWatermarkScale{0.3}
+\SetWatermarkColor{gray!8}
 \SetWatermarkAngle{45}
 
 
@@ -76,6 +69,13 @@
 \definecolor{colorF}{HTML}{f95d6a} % 6 - Arancio-Rosso
 \definecolor{colorG}{HTML}{ff7c43} % 7 - Arancio Brillante
 
+\usepackage{hyperref} % Per link interni (es. tabella dei contenuti, riferimenti)
+\hypersetup{
+    colorlinks=true,
+    linkcolor=colorA,
+    filecolor=colorE,      
+    urlcolor=colorB,
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % INIZIO DEL DOCUMENTO
@@ -83,7 +83,7 @@
 \begin{document}
 
 % --- Pagina del Titolo (da personalizzare) ---
-\title{Physics of Complex Systems}
+\title{\textbf{\Huge Physics of Complex Systems}}
 \author{Autore: Agnello Elisabetta}
 \date{anno: 2025/2026}
 \maketitle
@@ -104,6 +104,29 @@ Si prega di notare che questo materiale \textbf{non è stato sottoposto a una re
 \end{itemize}
 
 Questi appunti sono destinati esclusivamente come supporto allo studio e non sostituiscono in alcun modo il materiale didattico ufficiale. L'autore non si assume alcuna responsabilità per l'uso delle informazioni qui contenute.
+
+% =============================================================================
+\vspace{3cm} % Spazio verticale per staccare il box dal testo sopra
+
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    title={Contatti e Segnalazioni},
+    fonttitle=\bfseries\sffamily,
+    arc=3mm,               
+    boxrule=1.2pt,         
+    halign title=flush left
+]
+Per consultare l'archivio aggiornato, segnalare refusi o proporre integrazioni agli appunti, puoi utilizzare i seguenti canali:
+\begin{description}
+    \item[\textsf{\faGlobe\ Archivio Appunti:}] \href{https://elisabettagnello.github.io/elisabetta-physics-notes/}{\texttt{elisabettagnello.github.io/elisabetta-physics-notes/}}
+    \item[\textsf{\faGithub\ GitHub:}] \href{https://github.com/elisabettagnello}{\texttt{github.com/elisabettagnello}}
+    \item[\textsf{\faLinkedin\ LinkedIn:}] \href{https://www.linkedin.com/in/elisabetta-agnello}{\texttt{linkedin.com/in/elisabetta-agnello}}
+    \item[\textsf{\faEnvelope\ Email:}] \href{mailto:agnelloe24@gmail.com}{\texttt{agnelloe24@gmail.com}}
+\end{description}
+\end{tcolorbox}
+% =============================================================================
+
 
 \clearpage % Forza il passaggio alla pagina successiva
 \tableofcontents
