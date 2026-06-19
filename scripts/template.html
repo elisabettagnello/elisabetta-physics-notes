@@ -133,9 +133,18 @@
         }
 
         .disclaimer {
-            font-size: 0.95rem; color: #94a3b8; max-width: 800px; margin: 0 auto; line-height: 1.6;
-            background: rgba(10, 10, 10, 0.4); padding: 25px; border-radius: 16px;
-            border: 1px solid var(--glass-border); margin-top: 50px; backdrop-filter: blur(10px);
+            font-size: 0.95rem; color: #94a3b8; max-width: 800px; margin: 0 auto 40px auto; 
+            line-height: 1.6; background: rgba(10, 10, 10, 0.4); padding: 25px; border-radius: 16px;
+            border: 1px solid var(--glass-border); backdrop-filter: blur(10px);
+            text-align: left; /* Forza l'allineamento a sinistra */
+        }
+        
+        .disclaimer strong {
+            color: var(--text-main);
+            font-size: 1.05rem;
+            display: block;
+            margin-bottom: 8px;
+            font-family: 'Space Grotesk', sans-serif;
         }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; padding-bottom: 80px; }
@@ -223,6 +232,30 @@
                 </a>
             </div>
 
+            <div class="disclaimer">
+                <strong>Disclaimer</strong>
+                Questa è una raccolta open source con i miei appunti universitari. Trattandosi di materiale non ufficiale, potrebbero essere presenti imprecisioni, refusi o sezioni ancora incomplete. Aggiorno progressivamente l'archivio inserendo nuovi appunti man mano che procedo con lo studio.<br><br>
+                Sentiti libero di segnalare eventuali errori o proporre integrazioni!
+            </div>
+
+            <div class="filter-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search notes..." onkeyup="filterLibrary()">
+                
+                <select id="yearFilter" class="filter-select" onchange="filterLibrary()">
+                    <option value="all">All Years</option>
+                    <option value="Magistrale">Magistrale</option>
+                    <option value="Triennale">Triennale</option>
+                </select>
+
+                <select id="codeFilter" class="filter-select" onchange="filterLibrary()">
+                    <option value="all">All Topics</option>
+                    <option value="FIS/01">FIS/01</option>
+                    <option value="FIS/02">FIS/02</option>
+                    <option value="FIS/03">FIS/03</option>
+                    <option value="MAT/07">MAT/07</option>
+                </select>
+            </div>
+
             <div class="filter-container">
                 <input type="text" id="searchInput" class="search-input" placeholder="Search notes..." onkeyup="filterLibrary()">
                 
@@ -241,12 +274,6 @@
                 </select>
             </div>
 
-            <p class="disclaimer">
-    Questa è una raccolta open source con i miei appunti universitari. <br>
-    Trattandosi di materiale non ufficiale, potrebbero essere presenti imprecisioni, refusi o sezioni ancora incomplete. <br>
-    Aggiorno progressivamente l'archivio inserendo nuovi appunti man mano che procedo con lo studio. <br>
-    Sentiti libero di segnalare eventuali errori o proporre integrazioni!
-    </p>
         </header>
 
         <main class="grid">
