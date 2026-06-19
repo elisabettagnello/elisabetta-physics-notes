@@ -1,6 +1,6 @@
 { "Theoretical_Biophysics": { "title": "Theoretical Biophysics", "code": "FIS/02", "year": "Magistrale", "order": 3 }, 
   "Statistical Mechanics and Critical Phenomena": { "title": "Statistical Mechanics and Critical Phenomena", "code": "FIS/02", "year": "Magistrale", "order": 1 },
-  "Neural_Networks": { "title": "Neural_Networks", "code": "FIS/02", "year": "Magistrale", "order": 2 }, 
+  "Neural_Networks": { "title": "Neural Networks", "code": "FIS/02", "year": "Magistrale", "order": 2 }, 
   "Materia_Condensata_I": { "title": "Materia Condensata I", "code": "FIS/03", "year": "Magistrale", "order": 6 }, 
   "Statistical_Mechanics_of_Disordered_Systems": { "title": "Statistical Mechanics of Disordered Systems", "code": "FIS/02", "year": "Magistrale", "order": 7 }, 
   "Laboratorio_di_Biosistemi_I": { "title": "Lab. Biosistemi I", "code": "FIS/01", "year": "Magistrale", "order": 5 }, 
