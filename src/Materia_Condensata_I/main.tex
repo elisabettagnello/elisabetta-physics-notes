@@ -48,9 +48,9 @@
 \usepackage{draftwatermark}
 \usepackage{lmodern} 
 % Corretto il rischio di division by zero e la sintassi del colore
-\SetWatermarkText{\sffamily\bfseries github.com/elisabettagnello}
-\SetWatermarkColor{gray!0}
-\SetWatermarkScale{0.1} 
+\SetWatermarkText{\sffamily\bfseries github.com / elisabettagnello}
+\SetWatermarkColor{gray!10}
+\SetWatermarkScale{0.4} 
 \SetWatermarkAngle{45}
 
 % --- Box Personalizzati (Tcolorbox) ---
@@ -117,6 +117,22 @@
 \maketitle
 
 \frontmatter 
+% --- Disclaimer ---
+\chapter*{Disclaimer}
+\thispagestyle{empty} % Rimuove header e footer solo per questa pagina
+
+Il presente documento costituisce una raccolta di appunti personali presi durante le lezioni del corso di \textit{Materia Condensata I}. 
+
+Si prega di notare che questo materiale \textbf{non è stato sottoposto a una revisione sistematica} né è stato verificato dal docente. Pertanto, è possibile che siano presenti:
+\begin{itemize}
+    \item Errori concettuali o imprecisioni tecniche;
+    \item Refusi o errori di battitura;
+    \item Parti incomplete o sezioni mancanti.
+\end{itemize}
+
+Questi appunti sono destinati esclusivamente come supporto allo studio e non sostituiscono in alcun modo il materiale didattico ufficiale. L'autore non si assume alcuna responsabilità per l'uso delle informazioni qui contenute.
+
+\clearpage % Forza il passaggio alla pagina successiva
 \tableofcontents
 
 \mainmatter 
