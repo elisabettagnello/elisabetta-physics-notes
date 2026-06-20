@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="f59a64bc-ddf7-4429-8435-44812f847da4"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Physics Notes | {{AUTHOR_NAME}}</title>
@@ -268,6 +269,24 @@
     </div>
 
     <script>
+        // Aspetta che tutta la pagina sia caricata
+document.addEventListener("DOMContentLoaded", () => {
+    // Seleziona tutti i link che hanno la classe "download-btn"
+    const downloadButtons = document.querySelectorAll('.download-btn');
+
+    downloadButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Estrae il nome del file dall'URL (es. da "pdfs/meccanica.pdf" prende "meccanica.pdf")
+            const href = button.getAttribute('href');
+            const fileName = href.split('/').pop();
+            
+            // Invia l'evento a Umami (se lo script di Umami è stato caricato correttamente)
+            if (typeof umami !== 'undefined') {
+                umami.track('Download PDF', { file: fileName });
+            }
+        });
+    });
+});
         /**
          * FUNZIONE DI RICERCA E FILTRO (Unica cosa aggiunta al JS)
          */
