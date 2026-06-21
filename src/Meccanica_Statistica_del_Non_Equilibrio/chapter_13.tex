@@ -1,0 +1,320 @@
+\chapter{Lezione 13}
+\label{chap:lezione_13} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 15/04/2025}
+\end{flushright}
+\textit{Bibliografia: 
+Markov processes. The Chapman-Kolmogorov equation. Example: the Wiener process. Definition of stationary Markov processes. The Master Equation. From Master Equation to Fokker-Planck. [Van Kampen, ch 3,4,5,8]}
+
+\section{Riepilogo Lezioni Precedenti}
+
+Iniziamo considerando una variabile stocastica $x$ distribuita secondo una funzione di densità di probabilità $P(x)$, tale che $\int dx~P(x)=1$. Introduciamo una variabile addizionale $t$ e definiamo una funzione aleatoria $y_x(t)$ attraverso una funzione $f$ tale che:
+
+
+\begin{equation}
+y_x(t) = f(x,t)
+\end{equation}
+
+
+Un esempio è l'equazione di Langevin per un grado di libertà $\phi$:
+
+
+\begin{equation}
+\dot{\phi} = F[\phi] + \eta
+\end{equation}
+
+
+dove $\eta$ è una variabile aleatoria Gaussiana con le seguenti proprietà:
+
+
+\begin{equation}
+\langle\eta(t)\rangle = 0
+\end{equation}
+
+
+
+\begin{equation}
+\langle\eta(t)\eta(s)\rangle = 2B\delta(t-s)
+\end{equation}
+
+
+Risolvendo formalmente l'equazione del moto, otteniamo una traiettoria stocastica $\phi_{\eta}(t)$, analoga a $y_x(t)$ sostituendo $y \rightarrow \phi$ e $x \rightarrow \eta$.
+
+Possiamo definire una gerarchia di densità di probabilità $p_n(y_1, t_1, ..., y_n, t_n)$ come:
+
+
+\begin{equation}
+p_n \equiv p_n(y_1, t_1, ..., y_n, t_n) = \int dx~p(x)\prod_{i=1}^{n}\delta[y_i - y_x(t_i)]
+\end{equation}
+
+
+Si possono anche introdurre le probabilità condizionali $p_{l|k}$:
+
+
+\begin{equation}
+p_{l|k} \equiv p_{l|k}(y_{k+1}, t_{k+1}, ..., y_{k+l}, t_{k+l} | y_1, t_1, ..., y_k, t_k) = \frac{p_{k+l}}{p_k}
+\end{equation}
+
+
+\section{Processi di Markov}
+
+I processi di Markov sono processi stocastici tali per cui la probabilità condizionale di trovarsi nello stato $y_n$ al tempo $t_n$, dato il percorso precedente, dipende solo dallo stato immediatamente precedente $y_{n-1}$ al tempo $t_{n-1}$:
+
+
+\begin{equation}
+p_{1|n-1}(y_n, t_n | y_1, t_1, ..., y_{n-1}, t_{n-1}) = p_{1|1}(y_n, t_n | y_{n-1}, t_{n-1})
+\end{equation}
+In sostanza, la probabilità futura dipende solo dal presente e non dal passato.
+
+\noindent Un processo di Markov è completamente definito specificando:
+
+- La probabilità iniziale $p_1(y_1, t_1)$.
+
+- La probabilità di transizione $p_{1|1}(y_2, t_2 | y_1, t_1)$.
+
+\noindent Consideriamo $p_3(y_1, t_1, y_2, t_2, y_3, t_3)$ con $t_3 > t_2 > t_1$. Per definizione:
+
+\begin{equation}
+p_3(y_1, t_1, y_2, t_2, y_3, t_3) = p_{1|2}(y_3, t_3 | y_2, t_2, y_1, t_1) p_2(y_1, t_1, y_2, t_2)
+\end{equation}
+Data la natura Markoviana:
+\begin{equation}
+p_{1|2}(y_3, t_3 | y_2, t_2, y_1, t_1) = p_{1|1}(y_3, t_3 | y_2, t_2)
+\end{equation}
+E dalla definizione di probabilità condizionale:
+\begin{equation}
+p_2(y_1, t_1, y_2, t_2) = p_{1|1}(y_2, t_2 | y_1, t_1) p_1(y_1, t_1)
+\end{equation}
+Quindi, otteniamo:
+\begin{equation}
+p_3(y_1, t_1, y_2, t_2, y_3, t_3) = p_{1|1}(y_3, t_3 | y_2, t_2) p_{1|1}(y_2, t_2 | y_1, t_1) p_1(y_1, t_1)
+\end{equation}
+Questa espressione è completamente determinata conoscendo $p_{1|1}$ e $p_1$.
+
+\section{Equazione di Chapman-Kolmogorov}
+
+Integrando l'equazione $(11.11)$ rispetto a $y_2$, otteniamo:
+
+\begin{equation}
+\int dy_2 p_3(y_1, t_1, y_2, t_2, y_3, t_3) = p_2(y_1, t_1, y_3, t_3)
+\end{equation}
+
+\begin{equation}
+p_2(y_1, t_1, y_3, t_3) = p_1(y_1, t_1) \int dy_2 p_{1|1}(y_3, t_3 | y_2, t_2) p_{1|1}(y_2, t_2 | y_1, t_1)
+\end{equation}
+
+
+Poiché $p_2/p_1 = p_{1|1}(y_3,t_3|y_1,t_1)$, otteniamo l'equazione di Chapman-Kolmogorov:
+
+\begin{equation}
+p_{1|1}(y_3, t_3 | y_1, t_1) = \int dy_2 p_{1|1}(y_3, t_3 | y_2, t_2) p_{1|1}(y_2, t_2 | y_1, t_1)
+\end{equation}
+
+
+Perché il processo stocastico sia Markoviano, la probabilità a un punto $p_1(y_1, t_1)$ e la probabilità di transizione $p_{1|1}(y_2, t_2 | y_1, t_1)$ devono soddisfare l'equazione (14) e la seguente identità:
+
+
+\begin{equation}
+p_1(y_2, t_2) = \int dy_1 p_{1|1}(y_2, t_2 | y_1, t_1) p_1(y_1, t_1)
+\end{equation}
+
+
+\subsection{ Esempio: Processo di Wiener}
+
+Il processo di Wiener, specificato da:
+\begin{equation}
+p_{1|1}(y_2, t_2 | y_1, t_1) = \frac{1}{\sqrt{2\pi(t_2-t_1)}} e^{-\frac{(y_2-y_1)^2}{2(t_2-t_1)}}
+\end{equation}
+
+
+con $t_2 > t_1$, è un processo Markoviano.
+
+Possiamo verificare che soddisfa l'equazione di Chapman-Kolmogorov. Consideriamo l'integrale:
+
+\begin{equation}
+I(t_1, t_3) \equiv \int_{-\infty}^{+\infty} dy_2 p_{1|1}(y_3, t_3 | y_2, t_2) p_{1|1}(y_2, t_2 | y_1, t_1)
+\end{equation}
+
+
+Sostituendo la forma del processo di Wiener:
+
+\begin{equation}
+I(t_1, t_3) = \int_{-\infty}^{+\infty} dy_2 \frac{1}{\sqrt{2\pi(t_3-t_2)}} e^{-\frac{(y_3-y_2)^2}{2(t_3-t_2)}} \frac{1}{\sqrt{2\pi(t_2-t_1)}} e^{-\frac{(y_2-y_1)^2}{2(t_2-t_1)}}
+\end{equation}
+
+
+dove abbiamo definito $\sigma_{21}^2 \equiv t_2 - t_1$ e $\sigma_{32}^2 \equiv t_3 - t_2$.
+
+Dopo alcuni passaggi algebrici (che includono il completamento del quadrato nell'esponenziale e l'integrazione di una Gaussiana), e notando che $\sigma_{32}^2 + \sigma_{21}^2 = (t_3 - t_2) + (t_2 - t_1) = t_3 - t_1$, si ottiene:
+
+
+\begin{equation}
+I(t_1, t_3) = \frac{1}{\sqrt{2\pi(t_3-t_1)}} e^{-\frac{(y_3-y_1)^2}{2(t_3-t_1)}}
+\end{equation}
+
+
+che è esattamente $p_{1|1}(y_3, t_3 | y_1, t_1)$ per il processo di Wiener, confermando la sua natura Markoviana.
+
+\subsection{ Processi di Markov Stazionari}
+
+Nel caso di un processo di Markov stazionario, la probabilità di transizione $p_{1|1}(y_2, t_2 | y_1, t_1)$ non dipende da $t_1$ e $t_2$ separatamente, ma solo dalla loro differenza $\tau \equiv t_2 - t_1$. Quindi scriviamo:
+
+\begin{equation}
+p_{1|1}(y_2, t_2 | y_1, t_1) \equiv T_{\tau}(y_2 | y_1)
+\end{equation}
+
+
+L'equazione di Chapman-Kolmogorov (12) diventa:
+\begin{equation}
+T_{\tau+\tau'}(y_3 | y_1) = \int dy_2 T_{\tau'}(y_3 | y_2) T_{\tau}(y_2 | y_1)
+\end{equation}
+
+\section{Master Equation}
+
+Consideriamo l'espansione dell'equazione (21) per un piccolo intervallo di tempo $\tau'$, con l'obiettivo di ottenere un'equazione differenziale per  $T_{\tau}(y_3 | y_1)$.
+
+Introduciamo il tasso di transizione (o prob. di transizione per unità di tempo) $W(y_2 | y_1) \ge 0$.
+La probabilità $p_{\tau'}^{nt}$ che non ci sia transizione da $y_1$ ad un qualsiasi $y_2 \neq y_1$ fino al tempo $\tau'$ è:
+\begin{equation}
+p_{\tau'}^{nt} = 1 - \tau' \int dy_2 W(y_2 | y_1) = 1 - \tau' a_0(y_1)
+\end{equation}
+
+
+dove
+\begin{equation}
+a_0(y_1) \equiv \int dy_2 W(y_2 | y_1)
+\end{equation}
+
+L'espressione di $a_0(y_1)$ deriva dalla condizione di normalizzazione:
+\begin{equation}
+\int dy_2 T_{\tau}(y_2 | y_1) = 1
+\end{equation}
+
+
+Questo significa che il processo (ad esempio, un camminatore casuale) deve sempre trovarsi in qualche stato.
+Possiamo quindi scrivere $T_{\tau}(x | y)$ per un piccolo $\tau$ come:
+
+\begin{equation}
+   T_{\tau}(x | y) = \begin{cases} \tau W(x | y), & x \ne y \\ 1 - \tau a_0(y), & x = y \end{cases} 
+\end{equation}
+
+
+
+Integrando su $x$, e usando la condizione di normalizzazione, si conferma che: $a_0(y) = \int dx W(x | y)$.
+
+L'espansione di $T_{\tau'}(y_2 | y_1)$ per un piccolo $\tau'$ è:
+\begin{equation}
+T_{\tau'}(y_2 | y_1) \approx [1 - \tau' a_0(y_1)] \delta(y_2 - y_1) + \tau' W(y_2 | y_1)
+\end{equation}
+
+
+Sostituendo questa espansione nell'equazione di Chapman-Kolmogorov:
+\begin{equation}
+T_{\tau+\tau'}(y_3 | y_1) = \int dy_2 \{[1 - \tau' a_0(y_2)] \delta(y_3 - y_2) + \tau' W(y_3 | y_2)\} T_{\tau}(y_2 | y_1)
+\end{equation}
+
+
+Sviluppando l'integrale:
+\begin{align}
+&T_{\tau+\tau'}(y_3 | y_1) = \int dy_2 \delta(y_3 - y_2) T_{\tau}(y_2 | y_1) \nonumber \\
+&\quad - \tau' \int dy_2 a_0(y_2) \delta(y_3 - y_2) T_{\tau}(y_2 | y_1) \nonumber \\
+&\quad + \tau' \int dy_2 W(y_3 | y_2) T_{\tau}(y_2 | y_1) \nonumber \\
+&= T_{\tau}(y_3 | y_1) - \tau' a_0(y_3) T_{\tau}(y_3 | y_1) + \tau' \int dy_2 W(y_3 | y_2) T_{\tau}(y_2 | y_1)
+\end{align}
+
+dove $a_0(y_3) = \int dy_2 W(y_2 | y_3)$.
+
+Sostituendo l'espressione di $a_0(y_3)$:
+\begin{equation*}
+T_{\tau+\tau'}(y_3 | y_1) = T_{\tau}(y_3 | y_1) + \tau' \int dy_2 [W(y_3 | y_2) T_{\tau}(y_2 | y_1) - W(y_2 | y_3) T_{\tau}(y_3 | y_1)]
+\end{equation*}
+
+
+Prendendo il limite per $\tau' \rightarrow 0$:
+\begin{equation}
+\lim_{\tau' \rightarrow 0} \frac{T_{\tau+\tau'}(y_3 | y_1) - T_{\tau}(y_3 | y_1)}{\tau'} = \frac{\partial T_{\tau}(y_3 | y_1)}{\partial \tau}
+\end{equation}
+
+
+Quindi, la Master Equation è:
+\begin{equation}
+\frac{\partial T_{\tau}(y_3 | y_1)}{\partial \tau} = \int dy_2 [W(y_3 | y_2) T_{\tau}(y_2 | y_1) - W(y_2 | y_3) T_{\tau}(y_3 | y_1)]
+\end{equation}
+
+Possiamo riscriverla considerando $y_1$ come la condizione iniziale al tempo $t_1 < t_3$. 
+
+Sostituendo $y_3 \rightarrow y$, $\tau \rightarrow t$ (dove $t$ rappresenta l'intervallo di tempo trascorso dall'inizio) e $T_{\tau}(y_3 | y_1) \rightarrow P(y,t | y_1, t_1) \equiv P(y,t)$ (assumendo che $t_1=0$ e $y_1$ sia la condizione iniziale implicita), la Master Equation diventa:
+
+
+\begin{equation}
+\frac{\partial P(y,t)}{\partial t} = \int dz [W(y | z) P(z,t) - W(z | y) P(y,t)]
+\end{equation}
+
+
+
+
+Il primo termine nel membro di destra rappresenta il flusso di probabilità verso lo stato $y$ da tutti gli altri stati $z$, mentre il secondo termine rappresenta il flusso di probabilità dallo stato $y$ verso tutti gli altri stati $z$.
+
+\section{Equazione di Fokker-Planck}
+
+L'equazione di Fokker-Planck è un'equazione differenziale alle derivate parziali per $P(y,t)$ che può essere derivata dalla Master Equation sotto certe assunzioni.
+
+L'assunzione chiave è che il processo stocastico sia caratterizzato da "piccoli salti", cioè la variabile stocastica cambia di poco in piccoli intervalli di tempo. 
+
+Indichiamo con $r = y - y'$ la dimensione tipica di questi salti.
+
+Il tasso di transizione $W(y | y')$ è quindi meglio rappresentato in termini di un punto di partenza $y'$ e uno spostamento tipico $r$. Scriviamo $W(y | y') = W(y'; r)$.
+
+Con $r = y - y'$, la Master Equation è:
+\begin{equation}
+\partial_t P(y,t) = \int dr W(y-r; r) P(y-r, t) - P(y,t) \int dr W(y; r)
+\end{equation}
+dove nel primo termine $y-r$ è lo stato di partenza e $r$ è il salto per arrivare a $y$. Nel secondo termine, $y$ è lo stato di partenza e $r$ è il salto per andare via da $y$.
+
+Assumiamo che $W(y;r)$ sia trascurabile per $|r| > \delta$ (solo piccoli salti) e che la dipendenza di $W$ da $y$ sia debole, cioè $W(y+\Delta y; r) \approx W(y; r)$ per $|\Delta y| < \delta$.
+
+Definiamo $F_{t}(y',r) \equiv W(y'; r) P(y', t)$. Espandiamo $W(y-r; r)P(y-r, t)$ in serie di Taylor attorno a $y$, fino al secondo ordine in $r$:
+\begin{align}
+W(y-r; r)P(y-r, t) &\approx W(y;r)P(y,t) - r \frac{\partial}{\partial y}[W(y;r)P(y,t)] \nonumber \\  &+ \frac{r^2}{2} \frac{\partial^2}{\partial y^2}[W(y;r)P(y,t)] + O(r^3)
+\end{align}
+
+
+Sostituendo questa espansione nella Master Equation e integrando termine a termine rispetto a $r$:
+\begin{equation*}
+\partial_t P(y,t) = \int dr \left( -r \frac{\partial}{\partial y}[W(y;r)P(y,t)] + \frac{r^2}{2} \frac{\partial^2}{\partial y^2}[W(y;r)P(y,t)] + \dots \right)
+\end{equation*}
+
+
+Il termine di ordine zero $W(y;r)P(y,t)$ integrato su $r$ si cancella con il secondo termine dell'Eq. 31. 
+
+Estraendo le derivate rispetto a $y$ dall'integrale (poiché non dipendono da $r$):
+
+\begin{align}
+\partial_t P(y,t) &= -\frac{\partial}{\partial y} \left[ \left( \int dr~r W(y;r) \right) P(y,t) \right] \nonumber \\ &+ \frac{1}{2}\frac{\partial^2}{\partial y^2} \left[ \left( \int dr~r^2 W(y;r) \right) P(y,t) \right] + \dots
+\end{align}
+
+
+Introduciamo i momenti del tasso di transizione, chiamati coefficienti di Kramers-Moyal:
+\begin{equation}
+a_{\nu}(y) \equiv \int dr~r^{\nu} W(y; r)
+\end{equation}
+
+
+L'equazione di Fokker-Planck si ottiene troncando l'espansione al secondo ordine:
+\begin{equation}
+\frac{\partial P(y,t)}{\partial t} = -\frac{\partial}{\partial y} [a_1(y)P(y,t)] + \frac{1}{2}\frac{\partial^2}{\partial y^2} [a_2(y)P(y,t)]
+\end{equation}
+
+
+$a_1(y)$ è chiamato coefficiente di deriva (drift) e $a_2(y)$ è chiamato coefficiente di diffusione.
+
+Se consideriamo l'espansione di Taylor fino all'n-esimo ordine, arriviamo all'espansione di Kramers-Moyal:
+
+
+\begin{equation}
+\frac{\partial P(y,t)}{\partial t} = \sum_{\nu=1}^{\infty} \frac{(-1)^{\nu}}{\nu!} \frac{\partial^{\nu}}{\partial y^{\nu}} [a_{\nu}(y)P(y,t)]
+\end{equation}
+
+
+L'approssimazione di Fokker-Planck è valida quando i coefficienti $a_{\nu}(y)$ per $\nu > 2$ sono trascurabili. Questo è tipicamente vero per processi continui dove i salti sono piccoli e frequenti.

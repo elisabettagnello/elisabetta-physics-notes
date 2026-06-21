@@ -1,0 +1,157 @@
+\chapter{Lezione 7}
+\label{chap:lezione_07} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 24/03/2025}
+\end{flushright}
+
+
+\section{Equazione di Boltzmann e Teorema H}
+
+\subsection{Equazione di Boltzmann}
+Consideriamo un gas diluito, in cui le particelle interagiscono principalmente attraverso urti elastici binari. L'evoluzione della funzione di distribuzione a una particella, $f_1(\mathbf{v}_1, t)$, è descritta dall'equazione di Boltzmann. In forma generale, l'equazione per la funzione di distribuzione a una particella è data da:
+
+\begin{equation}
+\partial_{t}f_{1}=\int d\Omega~d\mathbf{v}_{2}~g~I(g,\theta)\{f_{12}^{(2)'}-f_{12}^{(2)}\}
+\end{equation}
+
+dove $g = |\mathbf{v}_1 - \mathbf{v}_2|$ è la velocità relativa, $I(g, \theta)$ è la sezione d'urto differenziale, e $f_{12}^{(2)}$ è la funzione di distribuzione a due particelle. Questa equazione non è chiusa, poiché l'evoluzione di $f_1$ dipende da $f_2$.
+
+Per chiudere l'equazione, si introduce l'ipotesi del \textbf{caos molecolare}. Questa ipotesi assume che le velocità delle particelle che stanno per urtarsi non siano correlate. Di conseguenza, la funzione di distribuzione a due particelle può essere fattorizzata nel prodotto delle funzioni di distribuzione a una particella:
+
+\begin{equation}
+f_{12}^{(2)}=f_{1}f_{2}
+\end{equation}
+
+Grazie a questa assunzione, si ottiene un'equazione chiusa ma non lineare per $f_1$:
+\begin{equation}
+\partial_{t}f_{1}=\int d\Omega~d\mathbf{v}_{2}~g~I(g,\theta)\{f'_{1}f'_{2}-f_{1}f_{2}\}
+\end{equation}
+
+Una condizione sufficiente per raggiungere l'equilibrio è che il termine tra parentesi graffe si annulli:
+
+\begin{equation}
+f'_{1}f'_{2}-f_{1}f_{2}=0 \rightarrow f_0(\mathbf{p})
+\end{equation}
+
+Questa condizione porta alla \textbf{distribuzione di Maxwell-Boltzmann} come soluzione di equilibrio, $f_0(\mathbf{p})$. Le costanti presenti in tale distribuzione sono determinate imponendo la conservazione del numero di particelle, della quantità di moto e dell'energia cinetica.
+
+\subsection{Il Teorema H di Boltzmann}
+Per dimostrare che la distribuzione di Maxwell-Boltzmann è una soluzione stabile verso cui il sistema evolve, Boltzmann introdusse il \textbf{funzionale H}, definito come:
+
+\begin{equation}
+H(t)\equiv\int d\mathbf{v}~f(\mathbf{v},t)\log f(\mathbf{v},t)
+\end{equation}
+
+Il \textbf{Teorema H} afferma che, per un gas diluito che obbedisce all'equazione di Boltzmann, la quantità H non può aumentare nel tempo:
+
+\begin{equation}
+\frac{dH}{dt} \le 0
+\end{equation}
+
+La derivata è nulla se e solo se $f$ è la distribuzione di Maxwell-Boltzmann, indicando che H è un funzionale di Lyapunov per il sistema. Questo teorema introduce una "freccia del tempo" a livello macroscopico, mostrando come il sistema evolva irreversibilmente verso l'equilibrio.
+
+\section{I Paradossi della Reversibilità e della Ricorrenza}
+
+L'apparente irreversibilità del teorema H, derivato da una dinamica microscopica reversibile, generò due famose obiezioni (paradossi).
+
+\begin{enumerate}
+    \item \textbf{Paradosso della Ricorrenza di Zermelo:} Basandosi sul teorema di ricorrenza di Poincaré, Zermelo obiettò che un sistema meccanico isolato, con un volume finito nello spazio delle fasi, tornerà arbitrariamente vicino al suo stato iniziale dopo un tempo sufficientemente lungo. Questo implicherebbe che anche la funzione H dovrebbe essere quasi periodica, in contraddizione con la sua diminuzione monotona.
+    \newline
+    \textbf{Risposta:} La critica è formalmente corretta, ma perde di significato pratico quando si considerano sistemi con un numero macroscopico di particelle. Il tempo di ricorrenza di Poincaré ($\tau_R$) per tali sistemi è astronomicamente lungo, superando l'età stimata dell'universo. Ad esempio, per $1 \, \text{cm}^3$ di idrogeno, si stima $\tau_R \sim 10^{10^{19}} \, \text{s}$.
+
+    \item \textbf{Paradosso della Reversibilità di Loschmidt:} La dinamica microscopica (leggi di Newton) è reversibile rispetto al tempo. Loschmidt argomentò che se a un certo istante $t_0$ si invertissero le velocità di tutte le particelle, il sistema dovrebbe ripercorrere la sua traiettoria all'indietro. In questa evoluzione "invertita", la funzione H dovrebbe aumentare ($\frac{dH}{dt} > 0$), contraddicendo il teorema H.
+    \newline
+    \textbf{Risposta:} La chiave per risolvere questo paradosso risiede nell'ipotesi del caos molecolare. Quando si inverte la dinamica, le particelle possiedono velocità altamente correlate, frutto dell'evoluzione passata. In questa situazione, l'ipotesi di caos molecolare non è più valida e, di conseguenza, l'equazione di Boltzmann non descrive correttamente l'evoluzione del sistema. Se il caos molecolare non vale, H può effettivamente aumentare.
+\end{enumerate}
+
+La visione moderna è che la funzione H non decresce in modo strettamente monotono. La sua evoluzione è "frastagliata": nei momenti in cui l'ipotesi di caos molecolare è valida (che è la stragrande maggioranza del tempo per un sistema diluito), H decresce. Tuttavia, possono esistere brevi istanti in cui si sviluppano correlazioni e H fluttua verso l'alto. In media, la tendenza è verso la diminuzione e l'equilibrio.
+
+\subsection{Lemma di Kac e Tempo di Ricorrenza}
+Il lemma di Kac fornisce una stima quantitativa del tempo medio di ricorrenza $\langle\tau_R\rangle$ per uno stato (o una regione A dello spazio delle fasi) in un sistema ergodico.
+
+\begin{equation}
+\langle\tau_{R}\rangle=\frac{\tau_c}{P(A)}
+\end{equation}
+
+dove $\tau_c$ è un tempo caratteristico microscopico e $P(A)$ è la probabilità dello stato, data dalla misura stazionaria sulla regione A: $P(A)=\int_{A}d\mathbf{x}~p_{s}(\mathbf{x})$. Per un sistema con $N_a$ gradi di libertà, se la dimensione tipica del sistema è $L$ e quella della regione di interesse è $\epsilon$, la probabilità è molto piccola:
+
+\begin{equation}
+P(A)\sim(\frac{\epsilon}{L})^{6N_{A}} \quad \Rightarrow \quad \tau_R \sim (\frac{L}{\epsilon})^{6N_{A}}
+\end{equation}
+Questo conferma che per $N_A$ grande, il tempo di ricorrenza diventa estremamente lungo.
+
+\section{Il Modello ad Anello di Kac}
+Il modello di Kac è un modello "giocattolo" che illustra come un comportamento irreversibile a livello macroscopico possa emergere da una dinamica microscopica deterministica e reversibile.
+
+\paragraph{Setup del modello:}
+\begin{itemize}
+    \item $n$ siti sono disposti su un anello.
+    \item Su ogni sito $i$ si trova una pallina, che può essere di due colori: bianca ($W$) o nera ($B$). Lo stato del colore è descritto da una variabile dicotomica $\eta_i = \pm 1$.
+    \item Tra alcuni siti adiacenti sono posizionati dei "marcatori" (crocette). La presenza di un marcatore tra il sito $i-1$ e $i$ è descritta da una variabile $\epsilon_i = \pm 1$ ($\epsilon_i = -1$ se c'è un marcatore, $+1$ altrimenti). Il numero di marcatori $m$ è molto minore del numero di siti $n$ ($m \ll n$).
+    \item A ogni passo temporale discreto, tutte le palline si muovono al sito successivo nella stessa direzione. Se una pallina attraversa un marcatore, cambia colore.
+\end{itemize}
+
+\paragraph{Evoluzione Macroscopica (approccio di campo medio):}
+Definiamo $N_W(t)$ e $N_B(t)$ come il numero totale di palline bianche e nere al tempo $t$. L'evoluzione di $N_W$ è data da:
+\begin{equation}
+N_{W}(t+1)=N_{W}(t)+m_{B}(t)-m_{W}(t)
+\end{equation}
+dove $m_W(t)$ ($m_B(t)$) è il numero di palline bianche (nere) che stanno per attraversare un marcatore al tempo $t$.
+
+Assumiamo ora un'ipotesi analoga al caos molecolare: essere di un certo colore ed essere in procinto di attraversare un marcatore sono eventi scorrelati. La probabilità che un sito abbia un marcatore è $\mu = m/n$. Quindi:
+\begin{equation}
+m_{W}(t) = \frac{m}{n}N_{W}(t) \quad , \quad m_{B}(t) = \frac{m}{n}N_{B}(t)
+\end{equation}
+Sostituendo, otteniamo un'equazione chiusa per $N_W(t)$ e $N_B(t)$. Introducendo la differenza $\Delta N(t) = N_B(t) - N_W(t)$, si trova:
+\begin{equation}
+\Delta N(t+1) = (1-2\mu)\Delta N(t)
+\end{equation}
+la cui soluzione è:
+\begin{equation}
+\Delta N(t)=(1-2\mu)^{t}\Delta N(0) \approx e^{-t/\tau}\Delta N(0)
+\end{equation}
+dove il tempo di rilassamento è $\tau = -1/\log(1-2\mu) \approx 1/(2\mu) = n/(2m)$. Per $t \to \infty$, $\Delta N(t) \to 0$, e il sistema raggiunge l'equilibrio con un numero uguale di palline bianche e nere, mostrando un comportamento macroscopico irreversibile.
+
+\paragraph{Evoluzione Microscopica:}
+La dinamica microscopica è completamente deterministica. Il colore della pallina al sito $i$ al tempo $t$, $\eta_i(t)$, è determinato dal suo colore al tempo $t-1$ e dal marcatore attraversato:
+\begin{equation}
+\eta_{i}(t)=\epsilon_{i-1}\eta_{i-1}(t-1)
+\end{equation}
+Iterando questa relazione, si ottiene:
+\begin{equation}
+\eta_{i}(t) = \epsilon_{i-1}\epsilon_{i-2}...\epsilon_{i-t}\eta_{i-t}(0)
+\end{equation}
+La differenza totale $\Delta N(t)$ è $\sum_i \eta_i(t)$. Per ottenere un risultato macroscopico, mediamo sull'ensemble di tutte le possibili distribuzioni iniziali dei marcatori, assumendo che siano distribuiti casualmente e indipendentemente con probabilità $\mu$. La media del prodotto dei marcatori è:
+\begin{equation}
+\langle\epsilon_{i-1}\epsilon_{i-2}\cdot\cdot\cdot\epsilon_{i-t}\rangle = \langle\epsilon\rangle^t = (1 \cdot (1-\mu) + (-1)\cdot\mu)^t = (1-2\mu)^t
+\end{equation}
+La media di $\Delta N(t)$ diventa quindi:
+\begin{equation}
+\langle\Delta N(t)\rangle = (1-2\mu)^{t}\sum_i \eta_{i-t}(0) = (1-2\mu)^{t}\Delta N(0)
+\end{equation}
+Questo risultato, ottenuto da una media su diverse realizzazioni microscopiche (diverse distribuzioni di marcatori), coincide con l'approccio di campo medio. L'irreversibilità emerge dal processo di media statistica.
+
+\section{Gerarchia BBGKY}
+L'equazione di Boltzmann è un'approssimazione valida per gas diluiti. Un approccio più fondamentale e generale parte dalla \textbf{equazione di Liouville}, che descrive l'evoluzione della funzione di densità di probabilità a $N$ particelle $\rho_N(\mathbf{x}_1, ..., \mathbf{x}_N, t)$ nello spazio delle fasi $\Gamma$.
+\begin{equation}
+\partial_{t}\rho_{N}=-\{\rho_{N},H\}
+\end{equation}
+dove $\{\cdot,\cdot\}$ sono le parentesi di Poisson e $H$ è l'Hamiltoniana del sistema a $N$ particelle:
+\begin{equation}
+H=\sum_{i=1}^N \frac{\mathbf{p}_{i}^{2}}{2m}+\frac{1}{2}\sum_{i\ne j}v_{ij}(|\mathbf{q}_{i}-\mathbf{q}_{j}|)
+\end{equation}
+L'equazione di Liouville può essere riscritta come $[\partial_t + \mathcal{L}_N]\rho_N = 0$, dove $\mathcal{L}_N$ è l'operatore di Liouville.
+
+Poiché gli osservabili macroscopici di solito non dipendono dalle coordinate di tutte le $N$ particelle, è utile definire le \textbf{funzioni di distribuzione ridotte} $f_s$, che descrivono lo stato di un sottosistema di $s$ particelle, integrando sulle coordinate delle restanti $N-s$ particelle:
+\begin{equation}
+f_{s}(\mathbf{x}_{1},...,\mathbf{x}_{s},t)\equiv\frac{N!}{(N-s)!}\int d\mathbf{x}_{s+1}\cdot\cdot\cdot d\mathbf{x}_{N}~\rho_{N}(\mathbf{x}_{1},...,\mathbf{x}_{N},t)
+\end{equation}
+
+Derivando l'equazione di Liouville e integrando, si ottiene una catena di equazioni, nota come \textbf{gerarchia BBGKY} (Bogoliubov-Born-Green-Kirkwood-Yvon). L'equazione per $f_s$ dipende da $f_{s+1}$, creando una gerarchia infinita (nel limite termodinamico):
+
+\begin{equation}
+\left( \partial_t + \sum_{i=1}^s \frac{\mathbf{p}_i}{m}\cdot\frac{\partial}{\partial\mathbf{q}_i} - \frac{1}{2}\sum_{i,j=1, i \neq j}^s \frac{\partial v_{ij}}{\partial\mathbf{q}_i}\cdot\left(\frac{\partial}{\partial\mathbf{p}_i} - \frac{\partial}{\partial\mathbf{p}_j}\right) \right) f_s = \sum_{i=1}^s \int d\mathbf{x}_{s+1} \frac{\partial v_{i,s+1}}{\partial\mathbf{q}_i}\cdot\frac{\partial f_{s+1}}{\partial\mathbf{p}_i}
+\end{equation}
+
+Per $s=1$, l'equazione per $f_1$ dipende da $f_2$. L'equazione di Boltzmann può essere derivata da questa gerarchia introducendo approssimazioni appropriate per $f_2$ (come l'ipotesi del caos molecolare) valide nel regime di gas diluito.

@@ -1,0 +1,353 @@
+\chapter{Lezione 19}
+\label{chap:lezione_19} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 13/05/2025}
+\end{flushright}
+\textit{Bibliografia: 
+Linear response and Fluctuation-Dissipation theorem in equilibrium statistical mechanics. Examples of time-correlation functions. Diffusion, subdiffusion and superdiffusion. Example of the Green-Kubo relation. Fluctuation-Dissipation theorem in the case of the Ornstein-Uhlenbeck process.}
+
+\section*{Recap}
+
+Consideriamo un sistema descritto dalla seguente equazione di Langevin per una variabile $x(t)$:
+\begin{equation}
+\dot{x}(t)=-\mu H^{\prime}(x)+\eta(t)
+\end{equation}
+dove $\mu$ è una mobilità, $H(x)$ è un potenziale (o Hamiltoniana), e $\eta(t)$ è un termine di rumore bianco Gaussiano con le seguenti proprietà:
+\begin{equation}
+\langle\eta(t)\rangle=0
+\end{equation}
+\begin{equation}
+\langle\eta(t)\eta(s)\rangle=2D\delta(t-s)
+\end{equation}
+Il coefficiente $D$ caratterizza la forza del rumore. Per sistemi in equilibrio termico, è legato alla temperatura $T$ e alla mobilità $\mu$ dalla relazione di Einstein: $D=\mu k_{B}T$.
+
+\begin{itemize}
+    \item $\eta(t)=0$
+In assenza di rumore ($\eta(t)=0$), l'equazione descrive un rilassamento deterministico:
+\begin{equation}
+\dot{x}(t)=-H^{\prime}(x)
+\end{equation}
+Il sistema evolverà verso punti di equilibrio $x_{eq}$ tali che la forza derivante dal potenziale sia nulla:
+\begin{equation}
+\left. H^{\prime}(x)\right|_{x_{eq}}=0
+\end{equation}
+Per tempi lunghi ($t\rightarrow+\infty$), la distribuzione di probabilità della posizione $x$ del sistema tenderà a concentrarsi interamente sul punto di equilibrio:
+\begin{equation}
+P(x,t\rightarrow\infty) = \delta(x-x_{eq})
+\end{equation}
+
+\item $\eta(t) \neq 0$
+Quando il sistema è in equilibrio termico, la probabilità di trovare il sistema nella configurazione $x$ è data dalla distribuzione di Boltzmann:
+\begin{equation}
+P_{eq}(x)\propto e^{-\beta H(x)}
+\end{equation}
+\end{itemize}
+Un esempio importante è il modello di Landau per una transizione di fase, dove l'Hamiltoniana è data da:
+\begin{equation}
+H(x)=\frac{ax^{2}}{2}+\frac{bx^{4}}{4}
+\end{equation}
+Qui, $b$ è una costante positiva ($b>0$). Il parametro $a$ è un parametro di controllo che dipende dalla distanza dal punto critico:
+\begin{itemize}
+    \item Se $a>0$: fase paramagnetica
+    \item Se $a=0$: punto critico
+    \item Se $a<0$: fase ferromagnetica
+\end{itemize}
+
+\section{Teorema di Fluttuazione-Dissipazione per la Statica}
+Consideriamo un sistema di spin $\{S_i\}$ descritto dall'Hamiltoniana $H_0[S]$ in assenza di campo esterno. Se accoppiamo il sistema a un campo esterno $h_i$ coniugato a ciascuno spin $S_i$, l'Hamiltoniana totale nell'ensemble canonico diventa:
+\begin{equation}
+H[s]=H_0[s]- \sum_i h_i S_i
+\end{equation}
+Il valore medio dello spin $S_i$ in presenza del campo $\underline{h}=(h_1, \dots, h_N)$ è dato da:
+
+\begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+\langle S_{i}\rangle_{\underline{h}}=\frac{Tr_{\{s\}}S_{i}e^{-\beta H[s]}}{Tr_{\{s\}}e^{-\beta H[s]}}
+\end{equation}
+\end{tcolorbox}
+
+dove $Tr_{\{s\}}$ indica la somma su tutte le possibili configurazioni di spin.
+La funzione di partizione $Z_{\beta}^{\underline{h}}$ è definita come:
+\begin{equation}
+Z_{\beta}^{\underline{h}} = Tr_{\{s\}}e^{-\beta H[s]} = Tr_{\{s\}}e^{-\beta (H_0[s]- \sum_j h_j S_j)}
+\end{equation}
+Il valore medio di $S_i$ può essere ottenuto derivando il logaritmo della funzione di partizione rispetto al campo coniugato $\beta h_i$:
+
+\begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+\langle S_{i}\rangle_{\underline{h}}=\frac{1}{\beta}\frac{\partial \ln Z_{\beta}^{\underline{h}}}{\partial h_{i}}
+\end{equation}
+\end{tcolorbox}
+
+Se valutiamo questa espressione a campo nullo ($\underline{h}=0$), otteniamo la magnetizzazione spontanea:
+\begin{equation}
+\langle S_{i}\rangle_{\underline{h}=0} = \left. \frac{1}{Z_{\beta}^{\underline{h}}}Tr_{\{s\}}S_ie^{-\beta H_0[s]+\beta\sum_j h_j S_j} \right|_{\underline{h}=0} = \frac{Tr_{\{s\}}S_ie^{-\beta H_0[s]}}{Tr_{\{s\}}e^{-\beta H_0[s]}}
+\end{equation}
+La derivata seconda del logaritmo della funzione di partizione ci dà la funzione di correlazione connessa:
+\begin{align}
+\frac{1}{\beta^2}\frac{\partial^{2}\ln Z_{\beta}^{\underline{h}}}{\partial h_i \partial h_j}\bigg|_{\underline{h}=0} &= \frac{1}{\beta}\frac{\partial}{\partial h_j} \left( \frac{1}{Z_{\beta}^{\underline{h}}} \frac{1}{\beta} \frac{\partial Z_{\beta}^{\underline{h}}}{\partial h_i} \right) \bigg|_{\underline{h}=0} \nonumber \\
+&= \left[ \frac{1}{Z_{\beta}^{\underline{h}}}\frac{\partial^{2}Z_{\beta}^{\underline{h}}}{\partial(\beta h_i)\partial(\beta h_j)}-\frac{1}{(Z_{\beta}^{\underline{h}})^{2}}\frac{\partial Z_{\beta}^{\underline{h}}}{\partial(\beta h_i)}\frac{\partial Z_{\beta}^{\underline{h}}}{\partial(\beta h_j)} \right]_{\underline{h}=0} \nonumber \\
+&= \left\{ \frac{Tr_{\{S\}}S_i S_j e^{-\beta H[s]}}{Z_{\beta}^{\underline{h}}} - \frac{Tr_{\{S\}}S_i e^{-\beta H[s]}}{Z_{\beta}^{\underline{h}}} \frac{Tr_{\{S\}}S_j e^{-\beta H[s]}}{Z_{\beta}^{\underline{h}}} \right\}_{\underline{h}=0} \nonumber \\
+&=\langle S_i S_j \rangle_0 - \langle S_i \rangle_0 \langle S_j \rangle_0 \equiv C_{ij}^{c}
+\end{align}
+dove $\langle \cdot \rangle_0$ indica la media a campo nullo. $C_{ij}^{c}$ è la funzione di correlazione connessa (o covarianza) tra lo spin $S_i$ e lo spin $S_j$.
+
+
+\noindent La suscettività statica $\chi_{ij}$ misura la risposta del valore medio dello spin $\langle S_i \rangle$ a una variazione infinitesima del campo $h_j$:
+
+\begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+\chi_{ij}=\frac{\partial \langle S_i \rangle_{\underline{h}}}{\partial h_j}\bigg|_{\underline{h}=0}
+\end{equation}
+\end{tcolorbox}
+
+Utilizzando le espressioni precedenti:
+\begin{equation}
+\chi_{ij} = \frac{\partial}{\partial h_j} \left( \frac{1}{\beta} \frac{\partial \ln Z_{\beta}^{\underline{h}}}{\partial h_i} \right) \bigg|_{\underline{h}=0} = \frac{1}{\beta} \frac{\partial^{2}\ln Z_{\beta}^{\underline{h}}}{\partial h_j \partial h_i}\bigg|_{\underline{h}=0}
+\end{equation}
+Confrontando con l'espressione per $C_{ij}^{c}$, otteniamo la relazione fluttuazione-dissipazione per la statica:
+
+\begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+\chi_{ij}=\beta C_{ij}^{c}
+\end{equation}
+\end{tcolorbox}
+
+Questa relazione fondamentale collega la risposta di un sistema a una perturbazione esterna (misurata da $\chi_{ij}$) alle fluttuazioni spontanee del sistema all'equilibrio (misurate da $C_{ij}^{c}$).
+
+\section{Teorema di Fluttuazione-Dissipazione Dinamico}
+Consideriamo un sistema che si trova inizialmente all'equilibrio.
+Le configurazioni $\{c\}$ del sistema possono rappresentare stati di spin, $\{S_i\}$, o posizioni e momenti di particelle, $(\{q_i\}, \{p_i\})$.
+La probabilità di una configurazione $c$ è data da:
+\begin{equation} 
+P_0(c) = \frac{e^{-\beta E(c)}}{Z_{\beta}}  
+\end{equation}
+dove $Z_{\beta} = \sum_c e^{-\beta E(c)}$.
+Al tempo $t=0$, accendiamo una perturbazione esterna che modifica l'energia del sistema. Se la perturbazione è accoppiata a un osservabile $B(c)$, l'energia diventa:
+\begin{equation}
+E_{\epsilon}(c)=E(c)-\epsilon(t)B(c)
+\end{equation}
+dove $\epsilon(t)$ è l'ampiezza della perturbazione, che assumiamo piccola.
+
+Misuriamo il valore medio di un altro osservabile $A$ al tempo $t$, $\langle A(t) \rangle_{\epsilon}$:
+\begin{itemize}
+    \item Per $t \le 0$, il sistema è all'equilibrio descritto da $P_0(c)$ (stato 1).
+    \item Per $t>0$, il sistema evolve sotto l'effetto della perturbazione e tenderà a un nuovo stato di equilibrio (stato 2).
+\end{itemize}
+
+Il valore medio di $A$ al tempo $t$ in presenza della perturbazione è:
+\begin{equation}
+\langle A(t)\rangle_{\epsilon}=\sum_{\{c_{0}\}}\sum_{\{c\}}A(c)P_{\epsilon}(c,t|c_{0},0)P_{0}(c_{0})
+\end{equation}
+dove $P_0(c_0)$ è la probabilità della configurazione iniziale $c_0$ all'equilibrio, e $P_{\epsilon}(c,t|c_{0},0)$ è la probabilità di transizione dalla configurazione $c_0$ al tempo $0$ alla configurazione $c$ al tempo $t$, in presenza della perturbazione $\epsilon$.
+In assenza di perturbazione ($\epsilon=0$), $P_{0}(c,t|c_{0},0)$ descrive la probabilità di transizione dovuta alle fluttuazioni di equilibrio intrinseche del sistema.
+
+\noindent Il Principio di Regressione di Onsager stabilisce che per piccole perturbazioni:
+
+\begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+P_{\epsilon}(c,t|c_{0},0) \approx P_{0}(c,t|c_{0},0) \exp\{\beta\epsilon \;[B(c) - B(c_0)]\}
+\end{equation}
+\end{tcolorbox}
+
+Utilizzando l'espansione al primo ordine per $\epsilon$ piccolo:
+\begin{equation}
+P_{\epsilon}(c,t|c_{0},0) \approx P_{0}(c,t|c_{0},0) \Bigl(1+\beta\epsilon \; [B(c) -  B (c_0)]\Bigr)
+\end{equation}
+Sostituendo nell'espressione per $\langle A(t)\rangle_{\epsilon}$:
+\begin{align}
+\langle A(t)\rangle_{\epsilon} &= \sum_{c,c_{0}}A(c)P_{0}(c,t|c_{0},0)\Bigl(1+\beta\epsilon \; [B(c) -  B (c_0)]\Bigr)P_0(c_0)
+\end{align}
+sottraendo $\langle A(t)\rangle_{0} = \sum_{c,c_0} A(c) P_0(c,t|c_0,0) P_0(c_0)$:
+\begin{align}
+\langle A(t)\rangle_{\epsilon}-\langle A(t)\rangle_{0} &= \sum_{c,c_{0}}A(c)P_{0}(c,t|c_{0},0)\beta\epsilon[B(c)-B(c_{0})]P_{0}(c_{0}) \nonumber \\
+&= \beta\epsilon [\langle A(t)B(t)\rangle_{0} - \langle A(t)B(0)\rangle_{0}] \label{eq:risposta_lineare}
+\end{align}
+dove $\langle A(t)B(s) \rangle_0$ è la funzione di correlazione temporale tra $A$ al tempo $t$ e $B$ al tempo $s$, calcolata sulla dinamica non perturbata e mediata sulla distribuzione di equilibrio iniziale $P_0(c_0)$.
+Abbiamo usato il fatto che $B(c)$ misurato al tempo $t$ (dopo l'evoluzione da $c_0$) è $B(t)$, e $B(c_0)$ è $B(0)$.
+
+\noindent Definiamo la suscettività generalizzata (o risposta integrata) $\chi_{A,B}(t)$ come la variazione di $\langle A(t) \rangle$ rispetto a una perturbazione costante $\epsilon$ accesa al tempo $0$:
+\begin{equation}
+\chi_{A,B}(t)= \lim_{\epsilon\rightarrow0}\frac{\langle A(t)\rangle_{\epsilon}-\langle A(t)\rangle_{0}}{\epsilon}
+\end{equation}
+Dall'Eq. (\ref{eq:risposta_lineare}), otteniamo:
+\begin{equation}
+\chi_{A,B}(t)=\beta[C_{A,B}(t,t)-C_{A,B}(t,0)]
+\end{equation}
+dove $C_{A,B}(t,s) = \langle A(t)B(s)\rangle_{0}$.
+Nel caso statico, se $A=B$ e consideriamo tempi $t$ sufficientemente lunghi, allora:
+\begin{equation*}
+C_{A,B}(t,t) \rightarrow \langle A^2 \rangle_0 
+\end{equation*}
+\begin{equation*}
+C_{A,B}(t,0) \rightarrow \langle A \rangle_0^2
+\end{equation*}
+In questo caso, $\chi_{A,A} \rightarrow \beta[\langle A^2 \rangle_0 - \langle A \rangle_0^2]$, che è la suscettività statica.
+
+\noindent La funzione di risposta impulsiva $R_{A,B}(t,s)$ è definita come la variazione funzionale di $\langle A(t) \rangle$ rispetto a una perturbazione impulsiva $\epsilon(s)$ applicata al tempo $s$:
+\begin{equation}
+R_{A,B}(t,s)=\frac{\delta\langle A(t)\rangle_{\epsilon}}{\delta\epsilon(s)}\bigg|_{\epsilon=0}
+\end{equation}
+Per il principio di causalità, $R_{A,B}(t,s)=0$ se $s>t$.
+
+\noindent La risposta integrata $\chi_{A,B}(t)$ a una perturbazione costante è data da:
+\begin{equation}
+\chi_{A,B}(t) = \int_{0}^{t}ds' R_{A,B}(t,s')
+\end{equation}
+D'altra parte, possiamo scrivere:
+\begin{equation}
+C_{A,B}(t,t)-C_{A,B}(t,0) = \int_0^t ds' \frac{\partial}{\partial s'}C_{A,B}(t,s')
+\end{equation}
+Confrontando le espressioni per $\chi_{A,B}(t)$, otteniamo una forma del Teorema di Fluttuazione-Dissipazione per la dinamica:
+
+\begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+R_{A,B}(t,s)=\beta\frac{\partial}{\partial s}C_{A,B}(t,s)\theta(t-s)
+\end{equation}
+\end{tcolorbox}
+
+dove $\theta(t-s)$ è la funzione gradino di Heaviside che assicura la causalità. Questa relazione collega la funzione di risposta (dissipazione) alla derivata temporale della funzione di correlazione all'equilibrio (fluttuazioni).
+
+\section{Spostamento Quadratico Medio e Diffusione}
+Lo spostamento quadratico medio (Mean Square Displacement, MSD) è una quantità chiave per caratterizzare il moto delle particelle:
+\begin{equation}
+\text{MSD}(t) = \langle (x(t)-x(0))^2 \rangle
+\end{equation}
+Se $x(0)=0$, si scrive semplicemente $\langle x^2(t) \rangle$.
+Per un processo di Wiener (moto Browniano standard in una dimensione), la cui evoluzione della densità di probabilità $P(x,t)$ è descritta dall'equazione di Fokker-Planck $\partial_t P = D \partial_x^2 P$ si ha:
+\begin{equation}
+\frac{d}{dt}\langle x^{2}(t)\rangle = \int dx \left( \frac{\partial P(x,t)}{\partial t} \right) x^2 = \int dx \Bigl(D \frac{\partial^2 P(x,t)}{\partial x^2}\Bigr) x^2 = 2D
+\end{equation}
+(ottenuto per integrazione per parti, assumendo che $P$ e le sue derivate si annullino all'infinito).
+Integrando nel tempo, si ottiene la legge di crescita lineare tipica della diffusione normale:
+\begin{equation}
+\langle x^{2}(t)\rangle=2Dt
+\end{equation}
+Una definizione operativa del coefficiente di diffusione in $d$ dimensioni spaziali è:
+\begin{equation}
+D = \lim_{t\rightarrow\infty}\frac{1}{2d}\frac{d}{dt}\langle x^{2}(t)\rangle
+\end{equation}
+Il comportamento asintotico dell'MSD permette di classificare diversi regimi di trasporto:
+\begin{itemize}
+    \item \textbf{Diffusivo:} $\langle x^2(t) \rangle \sim t$. In questo caso $\lim_{t\rightarrow\infty}\frac{\langle x^{2}(t)\rangle}{2t} = dD > 0$ (costante).
+    \item \textbf{Sub-diffusivo:} $\langle x^2(t) \rangle \sim t^\alpha$ con $\alpha < 1$. $\lim_{t\rightarrow\infty}\frac{\langle x^{2}(t)\rangle}{t} = 0$.
+    \item \textbf{Super-diffusivo:} $\langle x^2(t) \rangle \sim t^\alpha$ con $\alpha > 1$. $\lim_{t\rightarrow\infty}\frac{\langle x^{2}(t)\rangle}{t} = \infty$.
+\end{itemize}
+Un caso speciale è il moto balistico ($\alpha=2$), dove $\langle x^2(t) \rangle \sim t^2$.
+Lo studio del comportamento di $\log \langle x^2(t) \rangle$ in funzione di $\log t$ permette di determinare l'esponente $\alpha$.
+
+\section{Relazione di Green-Kubo}
+Lo spostamento quadratico medio può essere espresso in termini della funzione di autocorrelazione della velocità $v(t) = \dot{x}(t)$. Assumendo $x(0)=0$, $x(t) = \int_0^t v(t_1) dt_1$.
+Quindi:
+\begin{equation}
+\langle x^{2}(t)\rangle=\int_{0}^{t}dt_{1}\int_{0}^{t}dt_{2}\langle v(t_{1})v(t_{2})\rangle
+\end{equation}
+Derivando rispetto al tempo:
+\begin{equation}
+\frac{d}{dt}\langle x^{2}(t)\rangle = 2\int_{0}^{t}ds\langle v(t)v(s)\rangle
+\end{equation}
+Cambiando variabile $\tau = t-s$:
+\begin{equation}
+\frac{d}{dt}\langle x^{2}(t)\rangle = 2\int_{0}^{t}d\tau \langle v(\tau)v(0)\rangle
+\end{equation}
+Per tempi grandi, $t \rightarrow \infty$, il coefficiente di diffusione (in una dimensione, $d=1$) è dato dalla formula di Green-Kubo:
+
+\begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+D= \lim_{t\rightarrow\infty} \frac{1}{2}\frac{d}{dt}\langle x^{2}(t)\rangle = \int_{0}^{\infty}d\tau\langle v(\tau)v(0)\rangle
+\end{equation}
+\end{tcolorbox}
+
+Questa importante relazione collega una quantità macroscopica di trasporto (il coefficiente di diffusione) all'integrale temporale di una funzione di correlazione microscopica all'equilibrio.
+
+\section{Oscillatore Armonico Overdamped}
+Consideriamo un processo di Ornstein-Uhlenbeck per la variabile $\varphi(t)$ (che può rappresentare la posizione di una particella in un potenziale armonico, in regime overdamped):
+\begin{equation}
+\dot{\varphi}(t)=-k\varphi(t)+\eta(t)
+\end{equation}
+con $\varphi(t=0)=\varphi_0$.
+
+Il rumore $\eta(t)$ ha correlazione $\langle\eta(t)\eta(s)\rangle=2D_{\eta}\delta(t-s)$.
+
+
+
+La soluzione è:
+\begin{equation}
+\varphi(t)=\varphi_{0}e^{-kt}+\int_{0}^{t}ds~\eta(s)e^{-k(t-s)}
+\end{equation}
+La funzione di correlazione $C(t,t^{\prime})=\langle\varphi(t)\varphi(t^{\prime})\rangle$, assumendo $\varphi_0$ come una variabile aleatoria con $\langle \varphi_0 \eta(s) \rangle = 0$, è:
+\begin{equation}
+C(t,t^{\prime}) = \langle\varphi_{0}^{2}\rangle e^{-k(t+t^{\prime})} + \frac{D_{\eta}}{k}\{e^{-k|t-t^{\prime}|}-e^{-k(t+t^{\prime})}\}
+\end{equation}
+Questo può essere riscritto come:
+\begin{equation}
+C(t,t^{\prime}) = \left[\langle\varphi_{0}^{2}\rangle-\frac{D_{\eta}}{k}\right]e^{-k(t+t^{\prime})}+\frac{D_{\eta}}{k}e^{-k|t-t^{\prime}|}
+\end{equation}
+Se il sistema è in uno stato stazionario (equilibrio), le condizioni iniziali sono campionate dalla distribuzione di equilibrio $P(\varphi_0) \approx \mathcal{N} \exp{\left(-\frac{k \varphi_0^2}{2D_{\eta}}\right)}$:
+\begin{equation}
+\langle\varphi_0^2\rangle_0 = \frac{D_{\eta}}{k} 
+\end{equation}
+Con questa condizione, la funzione di correlazione stazionaria diventa:
+\begin{equation}
+C(t,t^{\prime})=\frac{D_{\eta}}{k}e^{-k|t-t^{\prime}|}
+\end{equation}
+Per calcolare la funzione di risposta, introduciamo un campo esterno $h(t')$ accoppiato a $\varphi$.
+L'Hamiltoniana, nel caso di un potenziale armonico, diventa:
+\begin{equation} 
+H= \frac{1}{2}k\varphi^2 - \varphi h(t')
+\end{equation}
+e l'equazione di Langevin:
+\begin{equation}
+\dot{\varphi}(t)=-k\varphi(t)+h(t)+\eta(t)
+\end{equation}
+La soluzione per $\langle \varphi(t) \rangle_h$, assumendo $\langle \eta \rangle = 0$, è:
+\begin{equation}
+\langle\varphi(t)\rangle_{h}= \varphi_{0} e^{-kt} +\int_{0}^{t}ds' h(s')e^{-k(t-s')}
+\end{equation}
+La funzione di risposta $R(t,t') = \frac{\delta\langle\varphi(t)\rangle_h}{\delta h(t')}\bigg|_{h=0}$ è quindi:
+\begin{equation}
+R(t,t')=e^{-k(t-t')}\theta(t-t')
+\end{equation}
+\begin{equation}
+R(t,t')=\beta \; \partial_t C(t, t')\; \theta(t-t')
+\end{equation}
+
+\section{Approccio Generale e Formalismo del Path Integral}
+Consideriamo un'equazione di Langevin generalizzata per una variabile $\varphi(t)$:
+\begin{equation}
+\dot{\varphi}(t)=F[\varphi(t)]+\eta(t)
+\end{equation}
+con condizione iniziale $\varphi(t=t_0)=\varphi_0$.
+Il rumore è bianco: $\langle\eta(t)\rangle=0$ e $\langle\eta(t)\eta(s)\rangle=2D\delta(t-s)$.
+Per sistemi che rilassano verso l'equilibrio, la forza deterministica $F[\varphi]$ deriva da un'Hamiltoniana $H(\varphi)$:
+\begin{equation}
+F[\varphi]=-H^{\prime}(\varphi)
+\end{equation}
+La soluzione $\varphi(t)$ è una variabile aleatoria, un funzionale del rumore $\eta(t)$: $\varphi(t) \equiv \varphi_{\eta}(t)$.
+Questo formalismo permette di affrontare diversi problemi:
+\begin{itemize}
+    \item Trovare il percorso più probabile $\Phi(t)$ tra due stati $(\varphi_0, t_0)$ e $(\varphi_f, t_f)$, massimizzando la probabilità del percorso $P[\varphi(t)]$.
+    \item Calcolare il tempo di salto (o la probabilità di transizione) tra regioni dello spazio delle fasi, ad esempio il tempo di salto tra le buche di un potenziale a doppia buca.
+\end{itemize}
+La probabilità di una traiettoria $\varphi(t)$ che connette $(\varphi_0, t_0)$ a $(\varphi_f, t_f)$ può essere scritta tramite un integrale sui cammini (path integral):
+
+\begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+P[\varphi_f, t_f | \varphi_0, t_0] = \int_{\varphi(t_0)=\varphi_0}^{\varphi(t_f)=\varphi_f} \mathcal{D}[\varphi(t)] e^{-S_{OM}[\varphi]}
+\end{equation}
+\end{tcolorbox}
+
+dove $\mathcal{D}[\varphi(t)]$ è la misura dell'integrazione funzionale sui possibili percorsi e $S_{OM}$ è l'azione di Onsager-Machlup.
+
+\noindent Il valore medio di un osservabile $O[\varphi]$ può essere calcolato mediando su tutte le realizzazioni del rumore $\eta(t)$:
+\begin{equation}
+\langle O[\varphi] \rangle=\int \mathcal{D}\eta(t)P[\eta(t)]O[\varphi_{\eta}]
+\end{equation}
+dove $P[\eta(t)]$ è la distribuzione di probabilità del rumore (tipicamente Gaussiana).
+
+\noindent Questa espressione può essere riscritta come un integrale funzionale sulle traiettorie $\varphi(t)$ introducendo una delta funzionale che impone la dinamica:
+\begin{equation}
+\langle O[\varphi] \rangle =\int \mathcal{D}\eta(t)P[\eta(t)] \int \mathcal{D}\varphi(t)\delta(\varphi-\varphi_{\eta}) O[\varphi(t)]
+\end{equation}
+Questo è alla base del formalismo di Martin-Siggia-Rose-Janssen-De Dominicis per i sistemi dinamici stocastici.

@@ -1,0 +1,459 @@
+\chapter{Lezione 16}
+\label{chap:lezione_16} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 05/05/2025}
+\end{flushright}
+\textit{Bibliografia: 
+Differential Chapman-Kolmogorov Equation. Master Equation for discontinuous processes. Stationary solutions of Master Equations (discrete states). Detailed balance. H-theorem for the master equation.}
+
+\section{Equazione Differenziale di Chapman-Kolmogorov (DCK)}
+
+L'equazione di Chapman-Kolmogorov è una relazione integrale per la probabilità di transizione di un processo Markoviano:
+\begin{equation}
+P(y_3,t_3|y_1,t_1) = \int dy_2 P(y_3,t_3|y_2,t_2)P(y_2,t_2|y_1,t_1) \quad \text{per } t_1 < t_2 < t_3
+\end{equation}
+
+Si cerca di derivare un'equazione differenziale per $P$. Sostituendo le variabili:
+\begin{itemize}
+    \item $(y_1,t_1) \rightarrow (x_0,t_0)$ (condizione iniziale)
+    \item $(y_2,t_2) \rightarrow (y,t)$ (variabile di integrazione a un tempo intermedio $t$)
+    \item $(y_3,t_3) \rightarrow (x, t+\Delta t)$ (stato finale a un tempo $t+\Delta t$)
+\end{itemize}
+
+L'equazione diventa:
+\begin{equation}
+P(x,t+\Delta t|x_0,t_0) = \int dy P(x,t+\Delta t|y,t)P(y,t|x_0,t_0)
+\label{eq:CK_base}
+\end{equation}
+
+La probabilità di transizione $P(x, t | x_0, t_0)$ è una distribuzione. Per studiarla, si introduce una funzione test $\varphi(x) \in C^\infty$ (infinitamente derivabile e a supporto compatto $J \subset I$, dove $I$ è il dominio di definizione di $P$).
+
+Si considera l'azione della distribuzione sulla funzione test:
+\begin{equation}
+\int dx \; \varphi(x) P(x,t|x_0,t_0) = \langle P| \varphi \rangle 
+\end{equation}
+
+\begin{align}
+\int dx  \varphi(x)  P(x,t+\Delta t|&x_0,t_0)  = \nonumber  \\ &\int dx  \varphi(x) \int dy P(x,t+\Delta t|y,t)P(y,t|x_0,t_0)
+\end{align}
+
+La derivata temporale è:
+\begin{equation}
+\partial_t \langle P | \varphi \rangle = \int dx \varphi(x) \partial_t P(x, t | x_0, t_0)
+\end{equation}
+
+Utilizzando la definizione di derivata:
+\begin{equation}
+\partial_t \langle P | \varphi \rangle = \lim_{\Delta t \to 0} \frac{1}{\Delta t} \left\{ \int dx \varphi(x) [P(x, t+\Delta t | x_0, t_0) - P(x, t | x_0, t_0)] \right\}
+\end{equation}
+
+Sostituiamo il primo termine di destra con l'Equazione di CK (\ref{eq:CK_base}):
+\begin{equation} 
+\begin{aligned}
+\partial_t \langle P | \varphi \rangle = \lim_{\Delta t \rightarrow 0} \frac{1}{\Delta t} & \left[ \int dx \varphi(x) \int dy P(x,t+\Delta t|y,t)P(y,t|x_0,t_0) \right.  \\  & \left.  - \int dx \varphi(x) P(x,t|x_0,t_0) \right] 
+\end{aligned}
+\end{equation}
+
+Cambiamo il nome della variabile muta di integrazione del secondo termine a destra:
+\begin{equation}
+\int dx \varphi(x) P(x,t|x_0,t_0) \stackrel{x \to y}{=} \int dy \varphi(y) P(y,t|x_0,t_0)
+\end{equation}
+
+E moltiplichiamo per l'identità $\int dx P(x,t+\Delta t|y,t) = 1$. Ricordando che $\int dy P(x, t+\Delta t | y, t)$ su tutti i possibili $y$ fa 1 per chiusura, il secondo termine diventa:
+\begin{equation}
+\int dx \varphi(x) P(x,t|x_0,t_0) \to \int dy  \varphi(y)  \left[ \int dx P(x,t+\Delta t|y,t) \right]P(y,t|x_0,t_0)
+\end{equation}
+
+Mettendo insieme i pezzi l'expressione per la derivata diventa:
+\begin{equation}
+\begin{aligned}
+\partial_t \langle P|\varphi \rangle &= \lim_{\Delta t \rightarrow 0} \frac{1}{\Delta t} \Biggl[
+\phantom{-} \int dx \, \varphi(x) \int dy \, P(x,t+\Delta t|y,t)P(y,t|x_0,t_0) \\
+& \quad \quad\quad\quad\quad - \int dy \, \varphi(y) \int dx \, P(x,t+\Delta t|y,t) P(y,t|x_0,t_0)
+\Biggr]
+\end{aligned}
+\label{eq:derivata_p_omega}
+\end{equation}
+
+\subsection{Processi Markoviani Continui e Discontinui}
+Si distingue tra processi continui e discontinui.
+
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    title={Definizione},
+    fonttitle=\bfseries\sffamily,
+    arc=3mm,               
+    boxrule=1.2pt,         
+    halign title=flush left
+]
+Un processo stocastico Markoviano è continuo se:
+\begin{equation}
+\forall \epsilon > 0: \lim_{\Delta t \rightarrow 0} \frac{1}{\Delta t} \int_{|x-y|>\epsilon} dx P(x,t+\Delta t|y,t) = 0
+\end{equation}
+Questo implica che la probabilità di avere grandi salti in piccoli intervalli di tempo è nulla.
+\end{tcolorbox}
+
+\begin{itemize}
+    \item \textbf{Processo Markoviano Continuo}
+Per i processi continui, la variabile $x-y$ è piccola. Si può quindi espandere $\varphi(x)$ in serie di Taylor attorno a $y$:
+\begin{equation}
+\varphi(x-y) = \varphi(y) + \sum_{m=1}^{N} \frac{(x-y)^m}{m!} \frac{\partial^m \varphi}{\partial y^m} + R_{N}
+\end{equation}
+Dove $R_N$ è il resto e tende a 0 per $\epsilon \to 0$.
+\item \textbf{Processo Markoviano Discontinuo}
+Si verifica se la condizione di continuità non è soddisfatta. 
+\end{itemize}
+
+
+Per trattare entrambi i casi, l'integrale in $dx$ nell'Eq. (\ref{eq:derivata_p_omega}) viene spezzato in due parti:
+\begin{equation}
+\int  dx dy \dots \rightarrow \int dy \int_{|x-y| \le \epsilon} dx \dots + \int dy \int_{|x-y| > \epsilon} dx \dots
+\label{eq:spezzamento_integrali}
+\end{equation}
+
+\begin{itemize}
+    \item $|x-y| \le \epsilon$ (contributo ``continuo'', dove si usa l'espansione di Taylor):
+    \begin{equation*}
+    \int  dy \int_{|x-y| \le \epsilon} dx \varphi(x) \dots \to \int  dy \int_{|x-y| \le \epsilon} dx \left[ \varphi(y) + \sum_{m=1}^{N} \frac{(x-y)^m}{m!}  \frac{\partial^m \varphi}{\partial y^m} + R_{N} \right]
+    \end{equation*}
+    \item $|x-y| > \epsilon$ (contributo dei ``salti'')
+\end{itemize}
+
+Identifichiamo con $\Omega$ gli integrali:
+\begin{equation}
+\begin{aligned}
+\partial_t \langle P|\varphi \rangle &= \lim_{\Delta t \rightarrow 0} \frac{1}{\Delta t} \Biggl[
+\phantom{-} \int dx \, \varphi(x) \int dy \, P(x,t+\Delta t|y,t)P(y,t|x_0,t_0) \\
+& \quad \quad\quad\quad\quad - \int dy \, \varphi(y) \int dx \, P(x,t+\Delta t|y,t) P(y,t|x_0,t_0)
+\Biggr] \\ &= \lim_{\Delta t \rightarrow 0} \frac{1}{\Delta t} \left( \Omega \right)
+\end{aligned}
+\end{equation}
+
+Possiamo scomporre il termine $\Omega$ in cinque contributi più un resto $R^N_{\epsilon}$ che può essere trascurato:
+\begin{equation}
+\Omega = \Omega_1 + \Omega_2 + \Omega_3 + \Omega_4 + \Omega_5 + R^N_{\epsilon} \quad (\text{con } R^N_{\epsilon} \to 0)
+\end{equation}
+dove:
+
+\begin{enumerate}
+    \item Il primo termine è un contributo continuo, è il primo pezzo dato dall'espansione di Taylor applicata nel primo integrale dell'equazione (\ref{eq:spezzamento_integrali}):
+\begin{equation}
+\Omega_1 = \int dy \int_{|x-y| \le \epsilon} dx \, \varphi(y) P(x, t+\Delta t | y, t) P(y, t | x_0, t_0)
+\end{equation}
+\item Il secondo termine è il contributo dei salti del primo integrale dell'equazione (\ref{eq:spezzamento_integrali}) ($\varphi (x)$ in questo caso non viene sostituito con la sua espansione di Taylor perché è un path discontinuo):
+\begin{equation}
+\Omega_2 = \int dy \int_{|x-y| > \epsilon} dx \, \varphi(x) P(x, t+\Delta t | y, t) P(y, t | x_0, t_0)
+\end{equation}
+
+\item Il terzo termine è il contributo continuo del secondo integrale dell'equazione (\ref{eq:spezzamento_integrali}):
+\begin{equation}
+\Omega_3 = - \int dy \, \varphi(y) \int_{|x-y| \le \epsilon} dx \, P(x, t+\Delta t | y, t) P(y, t | x_0, t_0)
+\end{equation}
+
+\item Il quarto termine è il contributo dei salti del secondo integrale dell'equazione (\ref{eq:spezzamento_integrali}):
+\begin{equation}
+\Omega_4 = - \int dy \, \varphi(y) \int_{|x-y| > \epsilon} dx \, P(x, t+\Delta t | y, t) P(y, t | x_0, t_0)
+\end{equation}
+
+\item Il quinto termine è un contributo continuo, è il secondo pezzo dato dall'espansione di Taylor applicata nel primo integrale dell'equazione (\ref{eq:spezzamento_integrali}):
+\begin{equation}
+\Omega_5 = \int dy \int_{|y-x| \le \epsilon} dx \, \sum_{m=1}^{N} \frac{1}{m!} \frac{\partial^m \varphi}{\partial y^m} (x-y)^m P(x,t+\Delta t|y,t)P(y,t|x_0,t_0)
+\label{eq:omega5_def}
+\end{equation}
+
+\end{enumerate}
+
+Il primo e il terzo termine si cancellano in quanto $\Omega_3 = -\Omega_1$, quindi:
+\begin{equation}
+\begin{aligned}
+\partial_t \langle P|\varphi \rangle &=  \lim_{\Delta t, \epsilon \rightarrow 0} \frac{1}{\Delta t} \left[ \Omega_5 + (\Omega_2 +\Omega_4  ) \right]
+\end{aligned}
+\end{equation}
+dove in $\Omega_2$ è stato fatto un cambio di variabile muta $x \to y$, così facendo il termine $\Omega_2 + \Omega_4$ è dato da:
+\begin{equation*}
+\int dy \, \varphi(y) \int_{|x-y| > \epsilon} dx \, \Biggl[ P(y, t+\Delta t | x, t) P(x, t | x_0, t_0)- P(x, t+\Delta t | y, t) P(y, t | x_0, t_0) \Biggr]
+\end{equation*}
+
+\begin{tcolorbox}[
+    colback=colorD!5,      
+    colframe=colorD,       
+    title={Attenzione},
+    fonttitle=\bfseries\sffamily,
+    arc=3mm,               
+    boxrule=1.2pt,         
+    halign title=flush left
+]
+L'integrale per $|x-y|>\epsilon$ va interpretato in valore principale di Cauchy quando $\epsilon \to 0$.
+\begin{equation}
+\lim_{\epsilon \to 0 } \int_{|x-y|>\epsilon} dx f(x, y) \equiv \int_{PV} dx f(x,y)
+\end{equation}
+\end{tcolorbox}
+
+Si definiscono i seguenti limiti:
+\begin{itemize}
+    \item Tasso di transizione (per la parte discontinua):
+    \begin{equation}
+    W(x,t|y,t) = \lim_{\Delta t \to 0} \frac{1}{\Delta t} P(x, t+\Delta t | y, t)
+    \end{equation}
+    \begin{equation}
+    W(y,t|x,t) = \lim_{\Delta t \to 0} \frac{1}{\Delta t} P(y, t+\Delta t | x, t)
+    \end{equation}
+    \item Coefficienti dell'espansione (Kramers-Moyal):
+    \begin{equation}
+    a^{(m)}_{\epsilon}(y,t) = \frac{1}{m!} \lim_{\Delta t, \epsilon \to 0} \frac{1}{\Delta t} \int_{|x-y|\le \epsilon} dx (x-y)^m P(x, t+\Delta t | y, t)
+    \end{equation}
+\end{itemize}
+
+Riscriviamo il termine $\Omega_2 + \Omega_4$ sfruttando la definizione di tasso di transizione e interpretando l'integrale in $dx$ come il valore principale:
+\begin{align}
+&\lim_{\Delta t, \epsilon \to 0} \frac{1}{\Delta t} ( \Omega_2 + \Omega_4) = \nonumber \\ &\int dy \, \varphi(y) \int_{PV} dx \, \Biggl[ W(y,t|x,t) P(x, t | x_0, t_0)- W(x,t|y,t)P(y, t | x_0, t_0) \Biggr]
+\end{align}
+
+Usando la definizione di coefficienti dell'espansione di Kramers-Moyal, riscriviamo $\Omega_5$ nel seguente modo:
+\begin{equation}
+\lim_{\Delta t, \epsilon \to 0} \frac{1}{\Delta t} \Omega_5 = \int dy \sum_{m=1}^{N}  a^{(m)}_{\epsilon}(y,t)  \;\frac{\partial^m \varphi}{\partial y^m} \; P(y,t|x_0,t_0)
+\label{eq:omega5_fourier}
+\end{equation}
+
+Integriamo per parti l'integrale nell'equazione (\ref{eq:omega5_fourier}):
+\begin{align}
+\int dy & \sum_{m=1}^{N} (-1)^m  a^{(m)}_{\epsilon}(y,t)  \;\frac{\partial^m \varphi}{\partial y^m} \; P(y,t|x_0,t_0)  =\\ & \underbrace{[\dots]_{\text{bordo}}}_{\to 0} + \sum_{m=1}^{N} (-1)^m \int dy \; \varphi(y) \frac{\partial^m }{\partial y^m} \left[a^{(m)}_{\epsilon}(y,t)  P(y,t|x_0,t_0)   \right] \nonumber
+\end{align}
+
+Assumiamo che i termini di bordo siano nulli grazie alla scelta del supporto compatto per $\varphi(x)$, si ottiene:
+\begin{align}
+\int dy &\varphi(y) \partial_t P(y,t|x_0,t_0) = \nonumber \\ & \quad \int dy \varphi(y) \sum_{m=1}^{\infty} (-1)^m \frac{\partial^m}{\partial y^m} [a^{(m)}(y,t) P(y,t|x_0,t_0)] \nonumber\\ &  +\int dy \varphi(y) \int_{PV} dx [W(y,t|x,t)P(x,t|x_0,t_0) - W(x,t|y,t)P(y,t|x_0,t_0)] \end{align}
+
+Dato che questa equazione deve valere per ogni funzione test $\varphi(y)$ sufficientemente regolare, si ottiene l'equazione differenziale di Chapman-Kolmogorov (o equazione di Kramers-Moyal generalizzata):
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation*} 
+\begin{aligned}
+\partial_t P(y,t|x_0,t_0) &= \sum_{m=1}^{\infty} (-1)^m \frac{\partial^m}{\partial y^m} \biggl[a^{(m)}(y,t) P(y,t|x_0,t_0)\biggr] \\ &+\int_{PV} dx \Biggl [W(y,t|x,t)P(x,t|x_0,t_0) - W(x,t|y,t)P(y,t|x_0,t_0) \Biggr] 
+\end{aligned} 
+\end{equation*}
+\end{tcolorbox}
+
+Questa equazione è molto generale. Se tutti i coefficienti $a^{(m)}$ sono nulli per $m \ge 3$, e si mantengono solo $a^{(1)}$ (drift) e $a^{(2)}$ (diffusione), si ottiene l'equazione di Fokker-Planck con un termine aggiuntivo per i salti. Se anche la parte dei salti è nulla, si ritrova l'equazione di Fokker-Planck. Se il processo è continuo ($W(x|y)=0$) si ritrova l'espansione di Kramers-Moyal.
+
+\section{Processi di Salto}
+Per i processi di puro salto (Jump Processes), tutti i coefficienti $a^{(m)}(y,t)$ sono nulli, in quanto non c'è una parte continua nel processo. L'equazione differenziale di Chapman-Kolmogorov si riduce a:
+\begin{equation*} 
+\begin{aligned}
+\partial_t P(y,t|x_0,t_0) =\int_{PV} dx \Biggl [W(y,t|x,t)P(x,t|x_0,t_0) - W(x,t|y,t)P(y,t|x_0,t_0) \Biggr] 
+\end{aligned} 
+\end{equation*}
+Questa è la Master Equation per variabili continue.
+
+\subsection{Processi stazionari}
+Per i processi stazionari, le proprietà statistiche sono invarianti per traslazione temporale. Si introduce $\tau = t - t_0$. La probabilità di transizione dipende solo da $\tau$:
+\begin{equation}
+P(y,t|x_0,t_0) \rightarrow P_{\tau}(y|x_0)
+\end{equation}
+
+I tassi di transizione $W$ non dipendono esplicitamente dal tempo:
+\begin{equation}
+W(x,t|y,t) \rightarrow W(x|y)
+\end{equation}
+
+L'equazione diventa:
+\begin{equation}
+\partial_{\tau} P_{\tau}(x|x_0) = \int dy \biggl[W(x|y)P_{\tau}(y|x_0) - W(y|x)P_{\tau}(x|x_0)\biggr]
+\end{equation}
+
+Mediando sulla distributione iniziale $p(x_0)$ si può definire la probabilità:
+\begin{equation} 
+P_{\tau}(x) = \int dx_0 p(x_0) P_{\tau}(x|x_0) 
+\end{equation}
+
+Questa soddisfa la stessa Master Equation:
+\begin{equation}
+\dot{P}_{\tau}(x) = \int dy \biggl[W(x|y)P_{\tau}(y) - W(y|x)P_{\tau}(x)\biggr]
+\end{equation}
+
+Se lo spazio degli stati è discreto, etichettato da indici $n, m, \dots$, la Master Equation diventa:
+\begin{equation*}
+\partial_t P(n,t|n',t') = \sum_m \biggl[W(n,t|m,t)P(m,t|n',t') - W(m,t|n,t)P(n,t|n',t')\biggr]
+\end{equation*}
+
+Per processi omogenei nel tempo (tassi di transizione $W(n|m)$ indipendenti dal tempo):
+\begin{equation}
+\frac{dP_n(t)}{dt} = \sum_m \biggl[W_{nm}P_m(t) - W_{mn}P_n(t)\biggr]
+\label{eq:master_discrete}
+\end{equation}
+dove $W_{nm}$ è il tasso di transizione dallo stato $m$ allo stato $n$.
+
+\subsection{Soluzioni Stazionarie e Bilancio Dettagliato}
+La soluzione stazionaria $P_n^{\infty}$ si ottiene ponendo $\frac{dP_n(t)}{dt} = 0$:
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation}
+\sum_m [W_{nm}P_m^{\infty} - W_{mn}P_n^{\infty}] = 0
+\end{equation}
+\end{tcolorbox}
+Questa è una condizione di bilancio globale.
+
+Una condizione più forte è il bilancio dettagliato, che richiede che ogni termine della somma sia nullo:
+\begin{equation}
+W_{nm}P_m^{\infty} = W_{mn}P_n^{\infty} \quad \forall n,m
+\end{equation}
+Questo implica:
+\begin{equation}
+\frac{W_{nm}}{W_{mn}} = \frac{P_n^{\infty}}{P_m^{\infty}}
+\end{equation}
+
+Se la distribuzione stazionaria è quella di Boltzmann, $P_n^{\infty} = \frac{1}{Z} e^{-\beta E_n}$, allora il bilancio dettagliato implica:
+\begin{equation} 
+\frac{W_{nm}}{W_{mn}} = e^{-\beta(E_n - E_m)} 
+\end{equation}
+
+\section{Teorema H di Kullback-Leibler (Entropia Relativa)}
+Dimostriamo ora il teorema H nel caso di un processo stocastico stazionario definito su un insieme di stati discreti, come descritto da (\ref{eq:master_discrete}). Partiamo dall'equazione di bilancio che definisce la distribuzione stazionaria:
+\begin{equation}
+\sum_m W_{mn} P_n^{\infty} -\sum_m W_{nm} P_m^{\infty} =0
+\end{equation}
+
+Vale la seguente condizione di chiusura $\sum_m W_{mn} = 1$. Quindi, arriviamo a:
+\begin{equation}
+P_n^\infty = \sum_m W_{nm} P_m^\infty
+\end{equation}
+
+Si definisce la divergenza/distanza/entropia di Kullback-Leibler (o entropia relativa) tra la distribuzione $P_n(t)$ e la distribuzione stazionaria $P_n^{\infty}$:
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation}
+H_{KL}(t) = \sum_n P_n(t) \log \frac{P_n(t)}{P_n^{\infty}}
+\end{equation}
+\end{tcolorbox}
+$H_{KL}(t)$ è una misura (non simmetrica) della distanza tra le due distribuzioni.
+
+Come nel caso del Teorema H vale il seguente teorema:
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation}
+\frac{dH_{KL}}{dt} \leq 0 \quad \begin{cases} =0 \quad \text{allora} \quad  P_m(t) = P_m^\infty\\ <0 \quad \text{altrimenti} \quad\end{cases}
+\end{equation}
+\end{tcolorbox}
+
+\subsection{Dimostrazione}
+Definizioni utili per la dimostrazione:
+\begin{itemize}
+    \item $f_n(t) \equiv \frac{P_n(t)}{P_n^{\infty}}$
+    \item $B_{nm} \equiv W_{nm}P_m^{\infty}$
+    \item $F(x) \equiv x \log x \implies F'(x) = 1 + \log x, \; F''(x) = 1/x > 0 \quad (\text{per } x>0)$ quindi $F(x)$ è convessa.
+\end{itemize}
+
+Riscriviamo $H_{KL}(t)$ come segue:
+\begin{align*}
+H_{KL}(t) &= \sum_n P_n(t) \frac{P_n^\infty}{P_n^\infty} \log \frac{P_n(t)}{P_n^\infty} \nonumber \\
+&= \sum_n f_n(t) \log \biggl(f_n(t) \biggr)P_n^\infty
+\end{align*}
+
+Eseguiamo la derivata temporale:
+\begin{align*}
+\frac{dH_{KL}}{dt} &= \sum_n \left\{ \left( \frac{df_n}{dt} \right) \log(f_n) P_n^\infty + f_n \frac{1}{f_n} P_n^\infty \frac{df_n}{dt} \right\} \nonumber \\
+&= \sum_n P_n^\infty \dot{f}_n \biggl[1 + \log (f_n) \biggr] \nonumber \\
+&= \sum_n P_n^\infty \dot{f}_n F'(f_n) \nonumber \\ &= \sum_n P_n^\infty \frac{\dot{P}_n}{P_n^\infty} F'(f_n) \nonumber \\
+&= \sum_n \dot{P}_n F'(f_n)
+\end{align*}
+
+Sostituendo $\dot{P}_n = \sum_m \biggl[W_{nm}P_m(t) - W_{mn}P_n(t)\biggr]$ :
+\begin{align*}
+\frac{dH_{KL}}{dt} &= \sum_{n,m} \{W_{nm}P_{m} - W_{mn}P_{n}\}F'(f_{n}) \\
+&= \sum_{n,m} \left\{ W_{nm}P_{m}^{\infty}\frac{P_{m}}{P_{m}^{\infty}} - W_{mn}P_{n}^{\infty}\frac{P_{n}}{P_{n}^{\infty}} \right\}F'(f_{n}) \\
+&= \sum_{n,m} \left\{ B_{nm} f_m - B_{mn} f_n \right\}F'(f_{n})
+\end{align*}
+
+\begin{tcolorbox}[
+    colback=colorD!5,      
+    colframe=colorD,       
+    title={Nota},
+    fonttitle=\bfseries\sffamily,
+    arc=3mm,               
+    boxrule=1.2pt,         
+    halign title=flush left
+]
+Nota che $\sum_{m,n} B_{mn} (\psi_n - \psi_m) = 0$ con $\psi_m$ generico set di numeri.
+\end{tcolorbox}
+
+Ritornando a $\frac{dH_{KL}}{dt}$:
+\begin{align*}
+\frac{dH_{KL}}{dt} &= \sum_{n,m} \{B_{nm}f_m - B_{mn}f_n \} F'(f_n) \\
+&= \sum_{n,m} B_{nm} f_m F'(f_n) - \sum_{n,m} B_{mn} f_n F'(f_n) \\
+&\quad \text{(scambio indici } m \leftrightarrow n \text{ nella 2° somma)}\\ 
+&= \sum_{n,m} B_{nm} f_m F'(f_n) - \sum_{m,n} B_{nm} f_m F'(f_m) \\
+&= \sum_{n,m} B_{nm} \{ f_m F'(f_n) - f_m F'(f_m) \}
+\end{align*}
+
+Sommo $\sum_{m,n} B_{nm} (\psi_n - \psi_m) = 0$ prendendo:
+\begin{equation*} 
+\psi_n - \psi_m = \biggl(F(f_n) -f_n F'(f_n) \biggr)- \biggl( F(f_m) -f_m F'(f_m) \biggr) 
+\end{equation*}
+
+Segue:
+\begin{align*}
+\frac{dH_{KL}}{dt} &= \sum_{n,m} B_{nm} \{ f_m F'(f_n) - f_m F'(f_m) \} \\ &+ \sum_{m,n} B_{nm} \Bigl[ F(f_n) -f_n F'(f_n) - F(f_m) +f_m F'(f_m)\Bigr] \\ 
+&=\sum_{n,m} B_{nm} \Bigl[ F'(f_n) \left( f_m -f_n\right) + F(f_n) - F(f_m)  \Biggr]
+\end{align*}
+
+\noindent Poiché $F(x)$ è una funzione convessa, vale $F(x) \ge F(y) + F'(y)(x-y)$. 
+
+\noindent Quindi $F(f_m) \ge F(f_n) + F'(f_n)(f_m-f_n)$, ovvero: $(f_m-f_n)F'(f_n) + F(f_n) - F(f_m) \le 0$.
+
+\noindent Dato che $B_{nm} = W_{nm}P_m^\infty \ge 0$, allora:
+\begin{equation*}
+\frac{dH_{KL}}{dt} \le 0
+\end{equation*}
+L'uguaglianza a zero si ha se $f_m = f_n$ per tutti gli $n,m$ per cui $B_{nm} \neq 0$, che implica $P_n(t) = P_n^{\infty}$. Altrimenti, $H_{KL}(t)$ decresce monotonamente fino al suo valore minimo $H_{KL}[P^{\infty}]=0$.
+
+\section{Equazione di Langevin con Forza Esterna}
+Consideriamo l'equazione di Langevin per una particella in un potenziale, includendo l'inerzia:
+\begin{equation}
+m\ddot{x} = -\gamma\dot{x} + f(x) + \eta(t)
+\end{equation}
+dove $f(x) = -\frac{d\Phi(x)}{dx}$ è la forza derivante da un potenziale $\Phi(x)$.
+
+Per scrivere l'equazione di Fokker-Planck per la distribuzione di probabilità $P(x,v,t)$ con $v=\dot{x}$, si può trasformare l'equazione del secondo ordine in un sistema di due equazioni del primo ordine:
+\begin{equation}
+\begin{cases}
+\dot{x} &= v \\
+\dot{v} &= -\frac{\gamma}{m}v + \frac{1}{m}f(x) + \frac{1}{m}\eta_v(t)
+\end{cases}
+\end{equation}
+Questo sistema è analogo a un sistema di Langevin bidimensionale nel regime overdamped per le variabili $(x,v)$.
+
+La distribuzione stazionaria $P_{\infty}(x,v)$ è la distribuzione di Maxwell-Boltzmann:
+\begin{equation}
+P_{\infty}(x,v) \propto \exp\left(-\beta H(x,v)\right)
+\end{equation}
+dove $H(x,v) = \frac{1}{2}mv^2 + \Phi(x)$ è l'Hamiltoniana del sistema.
+
+Per un sistema di $N$ particelle interagenti in un regime overdamped, l'equazione di Langevin per la i-esima particella è:
+\begin{equation}
+\frac{dx_i}{dt} = \mu f_i(\mathbf{x}) + \eta_i(t)
+\end{equation}
+dove $f_i = -\frac{\partial V}{\partial x_i}$ e $V$ è il potenziale di interazione, ad esempio un potenziale di coppia $V = \frac{1}{2} \sum_{i \ne j} \phi(|\mathbf{x}_i - \mathbf{x}_j|)$. Questo descrive, ad esempio, un sistema di colloidi interagenti.
+
+Un altro esempio è il modello di spin sferico, dove le variabili di spin $S_i \in (-\infty, +\infty)$ evolvono secondo:
+\begin{equation}
+\dot{S}_i = -\frac{\partial H[S]}{\partial S_i} + \eta_i(t)
+\end{equation}
+con un Hamiltoniano $H[S]$ (e.g., interazioni p-spin) e un vincolo sferico $\sum S_i^2 = N$.

@@ -1,0 +1,250 @@
+\chapter{Lezione 21}
+\label{chap:lezione_21} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 20/05/2025}
+\end{flushright}
+\textit{Bibliografia: 
+Path integral and stochastic dynamics: discretization and continuum limit. Exact computation of the dynamical generating functional in the case of the Ornstein-Uhlenbeck process.}
+
+\section{Formalismo del Path Integral nel Continuo}
+Consideriamo l'equazione di Langevin per una singola variabile stocastica $\varphi(t)$:
+\begin{equation}
+\dot{\varphi} = F(\varphi) + \eta(t)
+\label{eq:langevin_pi_base}
+\end{equation}
+dove $F(\varphi) = -V'(\varphi)$ è una forza deterministica derivante da un potenziale $V(\varphi)$. Un esempio comune è costituito dal potenziale quadratico (associato alla dinamica di un oscillatore armonico smorzato):
+\begin{equation}
+V(\varphi) = \frac{1}{2}k\varphi^2 \quad \Rightarrow \quad F(\varphi) = -k\varphi
+\end{equation}
+
+Il termine $\eta(t)$ rappresenta un rumore bianco Gaussiano caratterizzato dalle seguenti proprietà statistiche:
+\begin{align}
+\langle \eta(t) \rangle &= 0 \\
+\langle \eta(t)\eta(s) \rangle &= 2D\delta(t-s) \\
+D &= \mu k_B T
+\end{align}
+
+All'equilibrio termodinamico, la distribuzione di probabilità stazionaria $P_{\text{eq}}(\varphi)$ è data dalla classica distribuzione di Boltzmann:
+\begin{equation}
+P_{\text{eq}}(\varphi) = C e^{-\beta V(\varphi)}
+\label{eq:boltzmann_pi_det}
+\end{equation}
+dove $C$ è la costante di normalizzazione definita dalla condizione $\int d\varphi P_{\text{eq}}(\varphi) = 1$.
+
+La dinamica stocastica descritta dall'equazione (\ref{eq:langevin_pi_base}) può essere risolta analiticamente solo in pochi casi particolari, come ad esempio quando il potenziale è lineare o nullo. In generale, per potenziali non lineari, si ricorre a metodi approssimati come la teoria delle perturbazioni o l'approccio degli integrali funzionali.
+
+Se il potenziale complessivo può essere scomposto nella forma $V(\varphi) = V_0(\varphi) + V_I(\varphi)$, dove la soluzione esatta per il potenziale imperturbato $V_0(\varphi) = \frac{k\varphi^2}{2}$ è nota, è possibile trattare il termine non lineare $V_I(\varphi)$ come una perturbazione.
+
+L'approccio degli integrali funzionali basato sul formalismo di Martin-Siggia-Rose-Janssen-De Dominicis (MSRJD) permette di calcolare rigorosamente i valori medi di osservabili generiche $O(\varphi)$ e le relative funzioni di correlazione.
+
+\noindent Il valore medio di un osservabile è espresso come:
+\begin{equation}
+\langle O(\varphi) \rangle = \int \mathcal{D}\varphi \mathcal{D}\hat{\varphi} e^{-S[\varphi,\hat{\varphi}]} O(\varphi)
+\end{equation}
+dove la misura $\mathcal{D}\varphi \mathcal{D}\hat{\varphi}$ indica l'integrazione funzionale eseguita su tutti i possibili cammini temporali del campo fisico $\varphi(t)$ e del campo ausiliario $\hat{\varphi}(t)$.
+
+L'azione dinamica $S[\varphi,\hat{\varphi}]$ nel formalismo continuo è definita da:
+\begin{equation}
+S[\varphi,\hat{\varphi}] = -D\hat{\varphi}^2 + \hat{\varphi} \left[ \partial_t\varphi + V'(\varphi) \right]
+\label{eq:msrjd_azione_continua}
+\end{equation}
+
+Si introduce il funzionale generatore delle funzioni di correlazione temporali $Z[J,\hat{J}]$:
+\begin{equation}
+Z[J,\hat{J}] = \int \mathcal{D}\varphi \mathcal{D}\hat{\varphi} e^{-S[\varphi,\hat{\varphi}] + \int dt \left[J(t)\varphi(t) + \hat{J}(t)\hat{\varphi}(t)\right]}
+\label{eq:funzionale_generatore_completo}
+\end{equation}
+
+Da questa funzione generatrice si possono ricavare le funzioni di correlazione eseguendo derivate funzionali rispetto alle sorgenti esterne $J(s)$ e $\hat{J}(s)$, valutandole successivamente a zero. Ad esempio:
+\begin{equation}
+\langle \varphi(t) \rangle = \left. \frac{\delta Z[J,\hat{J}]}{\delta J(t)} \right|_{J=\hat{J}=0}
+\end{equation}
+\begin{equation}
+\langle \varphi(t)\varphi(s) \rangle = C(t,s) = \left. \frac{\delta^2 Z[J,\hat{J}]}{\delta J(t)\delta J(s)} \right|_{J=\hat{J}=0}
+\end{equation}
+
+La funzione di risposta lineare $R(t,s)$ descrive la reattività del valore medio del campo rispetto a una piccola perturbazione esterna deterministica $h(s)$:
+\begin{equation}
+R(t,s) = \left. \frac{\delta \langle \varphi(t) \rangle_h}{\delta h(s)} \right|_{h(s)=0}
+\end{equation}
+
+Per calcolarla esplicitamente, si accoppia il campo esterno modificando l'azione dinamica del sistema:
+\begin{equation}
+S_h[\varphi,\hat{\varphi}] = -D\hat{\varphi}^2 + \hat{\varphi} \left[ \partial_t\varphi + V'(\varphi) + h\right]
+\end{equation}
+
+Nel formalismo MSRJD, la funzione di risposta lineare corrisponde alla funzione di correlazione mista che coinvolge il campo fisico e il campo ausiliario $\langle \varphi(t)\hat{\varphi}(s) \rangle$:
+\begin{equation}
+\langle \varphi(t)\hat{\varphi}(s) \rangle = \left. \frac{\delta^2 Z[J,\hat{J}]}{\delta J(t)\delta \hat{J}(s)} \right|_{J=\hat{J}=0}
+\end{equation}
+I campi ausiliari $\hat{\varphi}$ prendono il nome di ``campi di risposta'' proprio perché consentono la determinazione delle funzioni di risposta macroscopiche del sistema.
+
+Eseguendo l'integrazione funzionale sul campo ausiliario $\hat{\varphi}$ nell'azione (\ref{eq:msrjd_azione_continua}), si perviene all'azione efficace di Onsager-Machlup $A[\varphi]$:
+\begin{equation}
+\int \mathcal{D}\hat{\varphi} e^{-S[\varphi,\hat{\varphi}]} = e^{-A[\varphi]}
+\end{equation}
+dove l'azione risultante dipende esclusivamente dal campo fisico $\varphi$:
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation}
+A[\varphi] = \frac{1}{4D} \int dt \left[ \dot{\varphi} + V'(\varphi) \right]^2
+\label{eq:azione_onsager_machlup_cont}
+\end{equation}
+\end{tcolorbox}
+Questa espressione pesa la probabilità intrinseca associata a una specifica traiettoria temporale $\varphi(s)$.
+
+\section{Discretizzazione Temporale dell'Equazione di Langevin}
+Al fine di ricavare l'integrale funzionale in modo costruttivo e rigoroso, consideriamo l'equazione di Langevin in presenza di una forza esterna $h(t)$ vincolata alla condizione iniziale $\varphi(0)=0$:
+\begin{equation}
+\dot{\varphi}(t) = f(\varphi) + h(t) + \eta(t)
+\end{equation}
+dove si è definito il termine di forza $f(\varphi) = -V'(\varphi)$.
+
+Suddividiamo l'intervallo temporale in passi discreti di ampiezza finita: $t_m = m\Delta$. Adottiamo la notazione compatta $\varphi_m = \varphi(t_m)$, $f_m = f(\varphi_m)$, e $h_m = h(t_m)$. L'equazione differenziale stocastica discretizzata può essere formulata introducendo un parametro di scomposizione generico $\lambda \in [0,1]$ che specifica la regola di discretizzazione scelta:
+\begin{equation}
+\frac{\varphi_{m+1}-\varphi_m}{\Delta} = (1-\lambda)[f_m+h_m] + \lambda[f_{m+1}+h_{m+1}] + \eta_m
+\label{eq:langevin_discretizzata_gen}
+\end{equation}
+La scelta $\lambda=0$ fissa lo schema forward di Itô, mentre la scelta $\lambda=1/2$ definisce lo schema mid-point di Stratonovich. Il rumore discreto soddisfa le condizioni:
+\begin{equation}
+\langle \eta_m \rangle = 0, \quad \langle \eta_m \eta_{m'} \rangle = \frac{2D}{\Delta}\delta_{mm'}
+\end{equation}
+
+Definiamo gli incrementi del processo di Wiener discreto $W_m$ come:
+\begin{equation}
+\varphi_{m+1}-\varphi_m = A_m \Delta + W_m
+\end{equation}
+dove la forza di drift efficace $A_m$ raccoglie i contributi deterministici riscalati dal parametro $\lambda$:
+\begin{equation}
+A_m = (1-\lambda)[f_m+h_m] + \lambda[f_{m+1}+h_{m+1}]
+\end{equation}
+Di conseguenza, l'incremento stocastico assume la forma $W_m = \varphi_{m+1}-\varphi_m - A_m\Delta$, le cui proprietà statistiche ereditate dal rumore bianco sono $\langle W_m \rangle = 0$ e $\langle W_m W_{m'} \rangle = 2D\Delta \delta_{mm'}$.
+
+Introducendo i vettori delle traiettorie discrete $\underline{\varphi} = (\varphi_1, \dots, \varphi_M)$ e delle fluttuazioni $\underline{W} = (W_0, \dots, W_{M-1})$, la distribuzione di probabilità congiunta per il rumore Gaussiano si scrive:
+\begin{equation}
+P(\underline{W}) = \frac{1}{(4\pi D\Delta)^{M/2}} \exp\left\{ -\frac{1}{4D\Delta} \sum_{m=0}^{M-1} W_m^2 \right\}
+\label{eq:prob_rumore_discreto}
+\end{equation}
+
+\section{Costruzione della Funzione Generatrice Discreta}
+La funzione generatrice discreta delle relazioni di correlazione $Z[\underline{J}]$ assume la forma:
+\begin{equation}
+Z[\underline{J}] = \int \left(\prod_{k=1}^{M} d\varphi_k\right) \exp\left\{ i\Delta \sum_{m=1}^{M} J_m \varphi_m \right\} P[\underline{\varphi}]
+\end{equation}
+dove $P[\underline{\varphi}]$ rappresenta la densità di probabilità associata alla traiettoria discreta. Eseguendo un cambio di variabili nello spazio delle configurazioni da $\underline{\varphi}$ a $\underline{W}(\underline{\varphi})$, si ottiene:
+\begin{equation}
+P[\underline{\varphi}] = P[\underline{W}(\underline{\varphi})] \left\| \frac{\partial \underline{W}}{\partial \underline{\varphi}} \right\|
+\end{equation}
+dove $\left\| \frac{\partial \underline{W}}{\partial \underline{\varphi}} \right\|$ definisce il determinante della matrice Jacobiana della trasformazione. Sostituendo le espressioni nell'integrale:
+\begin{equation*}
+Z[\underline{J}] = \int d\underline{\varphi} \left\| \frac{\partial \underline{W}}{\partial \underline{\varphi}} \right\| \exp\left\{ i\Delta \sum_{m=1}^{M} J_m \varphi_m - \frac{1}{4D\Delta} \sum_{m=0}^{M-1} [\varphi_{m+1}-\varphi_m-A_m\Delta]^2 \right\}
+\end{equation*}
+con la misura abbreviata $d\underline{\varphi} = \prod_{k=1}^{M} d\varphi_k$.
+
+Al fine di linearizzare il termine quadratico presente all'interno dell'esponenziale, ricorriamo all'identità Gaussionale della trasformazione di Hubbard-Stratonovich:
+\begin{equation}
+C \exp\left\{ -\frac{B^2}{4A} \right\} = C \int d\hat{\varphi} \exp\left\{ -A\hat{\varphi}^2 + i\hat{\varphi}B \right\}
+\end{equation}
+Identificando per ciascun passo temporale $m$ i termini $B_m = \varphi_{m+1}-\varphi_m-A_m\Delta$ e la costante $A = D\Delta$, l'applicazione della trasformazione produce:
+\begin{align}
+C\exp\left\{ -\frac{1}{4D\Delta} \sum_{m=0}^{M-1} [\varphi_{m+1}-\varphi_m-A_m\Delta]^2 \right\} = \nonumber \\
+C' \int d\underline{\hat{\varphi}} \exp\left\{ \sum_{m=0}^{M-1} \left[ -D\Delta\hat{\varphi}_m^2 + i\hat{\varphi}_m(\varphi_{m+1}-\varphi_m-A_m\Delta) \right] \right\}
+\end{align}
+
+Esprimendo il funzionale generatore discreto includendo esplicitamente i campi di risposta linearizzati si ottiene:
+\begin{align}
+Z[\underline{J}] &= C_M \int d\underline{\varphi} d\underline{\hat{\varphi}} \left\| \frac{\partial \underline{W}}{\partial \underline{\varphi}} \right\| \exp\left\{ i\Delta \sum_{j=1}^{M} J_j \varphi_j \right. \nonumber \\ 
+&\left. + \sum_{m=0}^{M-1} \left[ -D\Delta\hat{\varphi}_m^2 + i\hat{\varphi}_m(\varphi_{m+1}-\varphi_m-A_m\Delta) \right] \right\}
+\label{eq:funzionale_discreto_completo}
+\end{align}
+
+\section{Calcolo del Determinante Jacobiano}
+Il calcolo del determinante Jacobiano richiede la differenziazione degli incrementi stocastici discreti rispetto alle coordinate fisiche del cammino, $W_m = \varphi_{m+1}-\varphi_m - \Delta A_m$. Gli elementi che compongono la matrice Jacobiana $\frac{\partial W_m}{\partial \varphi_j}$ sono così strutturati:
+\begin{itemize}
+    \item \textbf{Elementi diagonali}:
+    \begin{equation}
+    \frac{\partial W_m}{\partial \varphi_{m+1}} = 1 - \Delta \frac{\partial A_m}{\partial \varphi_{m+1}} = 1 - \lambda\Delta f'_{m+1}
+    \end{equation}
+    dove si è introdotta la derivata spaziale della forza $f'_{m+1} = \left. \frac{\partial f}{\partial\varphi} \right|_{\varphi_{m+1}}$. Ridefinendo l'indice temporale, la diagonale principale è costituita da termini del tipo $1 - \lambda\Delta f'_{m}$.
+    \item \textbf{Elementi sotto-diagonali}:
+    \begin{equation}
+    \frac{\partial W_m}{\partial \varphi_m} = -1 - \Delta \frac{\partial A_m}{\partial \varphi_m} = -1 - (1-\lambda)\Delta f'_m
+    \end{equation}
+\end{itemize}
+
+Poiché la matrice Jacobiana assume una struttura triangolare inferiore, il suo determinante coincide con il prodotto regolare degli elementi disposti sulla diagonale principale:
+\begin{align}
+\left\| \frac{\partial \underline{W}}{\partial \underline{\varphi}} \right\| &= \prod_{m=1}^{M} (1-\lambda\Delta f'_m) \nonumber \\ 
+&= \exp\left \{\sum_{m=1}^{M} \log \Bigl( 1-\lambda\Delta f'_m\Bigr) \right\} \nonumber \\ 
+&\approx \exp\left\{ -\lambda \sum_{m=1}^{M} \Delta f'_m \right\} \quad \text{per } \Delta \to 0
+\label{eq:determinante_jacobiano_esponenziale}
+\end{align}
+
+Raggruppando le componenti all'interno del funzionale generatore discreto si ottiene l'espressione generale:
+\begin{align}
+Z[\underline{J}] = C' \int d\underline{\varphi} d\underline{\hat{\varphi}} \exp\left\{ -\lambda \sum_{k=1}^{M} \Delta f'_k + i\Delta \sum_{j=1}^{M} J_j \varphi_j \right. \nonumber \\ 
+\left. + \sum_{m=0}^{M-1} \left[ -D\Delta\hat{\varphi}_m^2 + i\hat{\varphi}_m(\varphi_{m+1}-\varphi_m-A_m\Delta) \right] \right\}
+\end{align}
+
+Nel caso specifico dello schema di Itô ($\lambda=0$), la forza efficace di drift si riduce a $A_m = f_m+h_m$, mentre il contributo del determinante Jacobiano (\ref{eq:determinante_jacobiano_esponenziale}) diventa identicamente pari a 1. L'azione di Itô discretizzata assume la forma:
+\begin{equation}
+S_{\text{Ito}}[\underline{\varphi},\underline{\hat{\varphi}}] = \sum_{m=0}^{M-1} \Delta \left[ D\hat{\varphi}_m^2 + i\hat{\varphi}_m\left(\frac{\varphi_{m+1}-\varphi_m}{\Delta} + f_m+h_m\right) \right]
+\end{equation}
+
+Eseguendo il limite al continuo per $\Delta\to 0$ e $M\to\infty$, le differenze finite convergono alle rispettive definizioni differenziali:
+\begin{equation*}
+\frac{\varphi_{m+1}-\varphi_m}{\Delta} \to \dot{\varphi}(t), \quad \sum_m \Delta \to \int dt
+\end{equation*}
+Il funzionale generatore continuo si riduce alla formulazione standard:
+\begin{equation}
+Z[J] = \int \mathcal{D}\varphi \mathcal{D}\hat{\varphi} \exp\left\{ -S[\varphi,\hat{\varphi}] + \int ds J(s)\varphi(s) \right\}
+\end{equation}
+dove l'azione limite nel continuo per la discretizzazione di Itô corrisponde a:
+\begin{equation}
+S[\varphi,\hat{\varphi}] = \int ds \left[ D\hat{\varphi}(s)^2 + i\hat{\varphi}(s)\left(\dot{\varphi}(s) + f(\varphi(s)) + h(s)\right) \right]
+\label{eq:azione_ito_continuo_finale}
+\end{equation}
+
+Questo formalismo consente il calcolo diretto delle funzioni di correlazione e di risposta macroscopiche mediante differenziazione discreta:
+\begin{equation}
+C_{mn} = \langle \varphi_m \varphi_n \rangle = \left. \frac{1}{\Delta^2} \frac{\partial^2 Z[\underline{J}]}{\partial J_m \partial J_n} \right|_{\underline{J}=0}
+\end{equation}
+\begin{equation}
+R_{mn} = \langle \varphi_m i\hat{\varphi}_n \rangle
+\end{equation}
+
+\section{Caso Lineare}
+Consideriamo il caso lineare in cui la forza è definita da $f(\varphi) = k\varphi$ (ovvero derivante da un potenziale espresso come $V'(\varphi)=-k\varphi$, corrispondente a una forza lineare $F(\varphi)=k\varphi$). L'equazione stocastica di Langevin si riduce alla forma lineare $\dot{\varphi} = k\varphi + \eta(t)$.
+
+L'azione dinamica del sistema in assenza di campi esterni ($h=0$) è data da:
+\begin{equation}
+S[\varphi,\hat{\varphi}] = \int ds \, \mathcal{L}[\varphi(s),\hat{\varphi}(s)] = \int ds \left[ D\hat{\varphi}^2 - i\hat{\varphi}(\dot{\varphi} + k\varphi) \right]
+\end{equation}
+Trattandosi di un'azione interamente quadratica nei campi $\varphi$ e $\hat{\varphi}$, è possibile formalizzarla introducendo una scrittura matriciale compatta. Definiamo il vettore dei campi combinati $\Phi(s) = \begin{pmatrix} \hat{\varphi}(s) \\ \varphi(s) \end{pmatrix}$. L'azione può essere riscritta come:
+\begin{equation}
+S = \frac{1}{2} \int ds \, \Phi^T(s) M \Phi(s)
+\end{equation}
+previa simmetrizzazione del termine cinetico misto basata sulla scomposizione differenziale:
+\begin{equation}
+\hat{\varphi}\dot{\varphi} = \frac{1}{2}(\hat{\varphi}\dot{\varphi} - \dot{\hat{\varphi}}\varphi) + \frac{1}{2}\partial_s(\hat{\varphi}\varphi)
+\end{equation}
+
+Trascurando i contributi puramente valutati al bordo, l'azione assume la forma simmetrizzata:
+\begin{equation}
+S = \int ds \left[ D\hat{\varphi}^2 + \frac{i}{2}\hat{\varphi}\dot{\varphi} - \frac{i}{2}\dot{\hat{\varphi}}\varphi + ik\hat{\varphi}\varphi \right]
+\label{eq:azione_lineare_simmetrizzata}
+\end{equation}
+Il corrispondente operatore quadratico differenziale $M$ è rappresentato dalla matrice:
+\begin{equation}
+M = \begin{pmatrix} 2D & \partial_t+k \\ -\partial_t+k & 0 \end{pmatrix}
+\end{equation}
+
+La funzione generatrice esatta del modello lineare si ottiene integrando le fluttuazioni gaussiane, fornendo il risultato analitico:
+\begin{equation*}
+Z[J_\varphi, J_{\hat{\varphi}}] = (\det M)^{-1/2} \exp\left\{ \frac{1}{2} \int ds' ds'' \begin{pmatrix} J_{\hat{\varphi}}(s') \\ J_\varphi(s') \end{pmatrix}^T M^{-1}(s',s'') \begin{pmatrix} J_{\hat{\varphi}}(s'') \\ J_\varphi(s'') \end{pmatrix} \right\}
+\end{equation*}

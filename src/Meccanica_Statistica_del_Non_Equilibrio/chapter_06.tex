@@ -1,0 +1,159 @@
+\chapter{Lezione 6}
+\label{chap:lezione_06} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 18/03/2025}
+\end{flushright}
+\section{L'equazione di Boltzmann}
+
+L'obiettivo è descrivere l'evoluzione temporale di un sistema di particelle, partendo da uno stato iniziale arbitrario, non necessariamente di equilibrio, per mostrare come l'equilibrio venga raggiunto dinamicamente. Per derivare l'equazione di Boltzmann, si introducono due assunzioni fondamentali: una di natura meccanica e una di natura statistica.
+
+\subsection{Assunzione Meccanica}
+Consideriamo un sistema di particelle modellate come sfere dure. Le interazioni avvengono esclusivamente tramite urti elastici tra coppie di particelle. Un urto trasforma le velocità $(\underline{v}_1, \underline{v}_2)$ di una coppia di particelle nelle velocità $(\underline{v}_1', \underline{v}_2')$. Poiché gli urti sono elastici e si assume che le particelle abbiano la stessa massa, si conservano sia la quantità di moto totale che l'energia cinetica totale del sistema:
+
+\begin{equation}
+\underline{v}_1 + \underline{v}_2 = \underline{v}_1' + \underline{v}_2'
+\end{equation}
+
+\begin{equation}
+\underline{v}_1^2 + \underline{v}_2^2 = \underline{v}_1'^2 + \underline{v}_2'^2
+\end{equation}
+
+Il sistema è descritto dalla funzione di distribuzione a una particella $f_1 = f(\underline{v}_1, t)$, che rappresenta la densità di probabilità di trovare una particella con velocità $\underline{v}_1$ al tempo $t$. L'evoluzione di $f_1$ è data da un'equazione che, considerando solo le interazioni di coppia, dipende dalla funzione di distribuzione a due particelle $f_{12}^{(2)}$:
+
+\begin{equation}
+\partial_t f_1 = \frac{a^2}{4} \int d\Omega \, d\underline{v}_2 |\underline{v}_2 - \underline{v}_1| \{ f_{12}^{(2)'} - f_{12}^{(2)} \}
+\end{equation}
+
+Questa equazione non è chiusa: per calcolare l'evoluzione di $f_1$, è necessario conoscere $f_{12}^{(2)}$, la cui evoluzione dipenderà a sua volta da $f^{(3)}$, e così via, generando una gerarchia infinita di equazioni (gerarchia BBGKY).
+
+\subsection{Assunzione Statistica: Caos Molecolare}
+Per chiudere l'equazione, si introduce un'assunzione di natura puramente statistica, nota come ipotesi del \textbf{caos molecolare}. Si assume che le velocità delle particelle che stanno per urtarsi siano statisticamente scorrelate. Questo permette di fattorizzare la funzione di distribuzione a due particelle nel prodotto delle funzioni a una particella:
+
+\begin{equation}
+f_{12}^{(2)} = f_1 f_2 = f(\underline{v}_1, t) f(\underline{v}_2, t)
+\end{equation}
+
+Questa ipotesi è giustificata fisicamente in un gas rarefatto, dove gli urti sono eventi rari. Tra un urto e l'altro, le particelle percorrono distanze tali da "dimenticare" le loro correlazioni precedenti, per cui al momento dell'urto successivo possono essere considerate statisticamente indipendenti.
+
+Sotto questa assunzione, l'equazione per $f_1$ diventa chiusa e non lineare, e prende il nome di \textbf{equazione di Boltzmann}:
+
+\begin{equation}
+\partial_t f_1 = \int d\Omega \, d\underline{v}_2 \, g \, I(g, \theta) \{ f_1' f_2' - f_1 f_2 \}
+\end{equation}
+
+dove $g = |\underline{v}_2 - \underline{v}_1|$ è la velocità relativa e $I(g, \theta)$ è la sezione d'urto differenziale.
+
+\section{Il Teorema H di Boltzmann}
+
+Per studiare l'avvicinamento all'equilibrio, Boltzmann introdusse una funzionale H, definita come:
+
+\begin{equation}
+H(t) = \int d\underline{v} \, f(\underline{v}, t) \log f(\underline{v}, t)
+\end{equation}
+
+Il \textbf{Teorema H} afferma che se la funzione di distribuzione $f(\underline{v}, t)$ soddisfa l'equazione di Boltzmann, allora la sua derivata temporale è non positiva:
+
+\begin{equation}
+\frac{dH}{dt} \le 0
+\end{equation}
+
+Inoltre, la derivata si annulla se e solo se la funzione di distribuzione è la distribuzione di equilibrio di Maxwell-Boltzmann, $f = f_0(\underline{v})$.
+
+Questo teorema implica che la funzione H decresce monotonicamente nel tempo fino a raggiungere un valore minimo, $H_\infty$, che corrisponde allo stato di equilibrio stazionario. Di conseguenza, per tempi lunghi, la distribuzione delle velocità tende alla distribuzione di equilibrio:
+
+\begin{equation}
+\lim_{t \to +\infty} f(\underline{v}, t) = f_0(\underline{v})
+\end{equation}
+
+dove $\partial_t f_0 = 0$.
+
+\subsection{Paradossi}
+
+\textbf{Paradosso di Loschmidt o paradosso della reversibilità}
+Il comportamento monotono della funzione H introduce una "freccia del tempo" nel sistema: la dinamica ha una direzione privilegiata, quella che porta H a diminuire verso l'equilibrio. Questo risultato è in apparente contraddizione con le leggi della meccanica Newtoniana che governano gli urti microscopici, le quali sono reversibili rispetto all'inversione temporale. 
+
+\textbf{Paradosso della ricorrenza di Zermelo:}
+
+Dal teorema di Poincaré, dato un sistema meccanico con spazio delle fasi limitato che evolve
+$X(0) \rightarrow X(t)$ allora esiste un tempo di ritorno per cui, dopo
+un certo tempo, il sistema deve tornare in prossimità della condizione iniziale; in
+contrasto con quanto stabilito dal teorema H. Tuttavia l'obiezione viene respinta da Boltzmann
+stesso con l'argomento che i tempi di attesa per sistemi di questo tipo sono ben superiori alla
+vita dell'universo, per cui non hanno interesse fisico.
+
+\section{Modello Discreto e Master Equation}
+Per comprendere meglio l'origine dell'irreversibilità, è utile analizzare un modello discreto. Discretizziamo lo spazio delle velocità in un insieme di stati $\{i, j, k, l, \dots\}$.
+Definiamo $P_i(t)$ come la probabilità di osservare una particella nello stato di velocità $i$ al tempo $t$. L'evoluzione temporale di $P_i(t)$ è descritta da una \textbf{Master Equation}. La variazione di $P_i(t)$ è data da un bilancio tra termini di guadagno (transizioni da altri stati $(k,l)$ verso stati che includono $i$) e termini di perdita (transizioni da stati che includono $i$ verso altri stati $(k,l)$).
+
+\begin{equation}
+\frac{dP_i(t)}{dt} = \sum_{j,k,l} \{ W_{(k,l)\to(i,j)}^{(2)} P_{kl}(t) - W_{(i,j)\to(k,l)}^{(2)} P_{ij}(t) \}
+\end{equation}
+
+dove $W^{(2)}$ sono i rate di transizione e $P_{kl}(t)$ è la probabilità congiunta di osservare una coppia di particelle negli stati $k$ e $l$.
+Anche in questo caso, per chiudere l'equazione si assume il caos molecolare, ovvero che gli stati siano scorrelati:
+
+\begin{equation}
+P_{ij} = P_i P_j \quad \text{e} \quad P_{kl} = P_k P_l
+\end{equation}
+
+Inoltre, per il principio di microreversibilità (invarianza per inversione temporale a livello microscopico), le probabilità di transizione per il processo diretto e inverso sono uguali:
+
+\begin{equation}
+W_{(k,l)\to(i,j)}^{(2)} = W_{(i,j)\to(k,l)}^{(2)}
+\end{equation}
+
+Sotto queste ipotesi, la Master Equation diventa un'equazione chiusa ma non lineare per le probabilità $P_i(t)$:
+
+\begin{equation}
+\frac{dP_i(t)}{dt} = \sum_{j,k,l} W_{(k,l)\to(i,j)} \{ P_k P_l - P_i P_j \}
+\end{equation}
+
+\subsection{Teorema H nel caso discreto}
+Definiamo la funzione H per il sistema discreto:
+
+\begin{equation}
+H(t) = \sum_i P_i(t) \log P_i(t)
+\end{equation}
+
+Anche in questo caso, è possibile dimostrare che $\frac{dH}{dt} \le 0$. La dimostrazione sfrutta le simmetrie del rate di transizione. Calcolando la derivata si ottiene:
+\begin{equation}
+\frac{dH}{dt} = \sum_i (1 + \log P_i) \frac{dP_i}{dt} = \sum_i \log P_i \frac{dP_i}{dt}
+\end{equation}
+dove si è usato il fatto che $\sum_i \frac{dP_i}{dt} = \frac{d}{dt} \sum_i P_i = 0$. Sostituendo l'espressione per $\frac{dP_i}{dt}$:
+\begin{equation}
+\frac{dH}{dt} = \sum_{i,j,k,l} W_{(k,l)\to(i,j)} (P_k P_l - P_i P_j) \log P_i
+\end{equation}
+Sfruttando le simmetrie delle collisioni e scambiando gli indici, si arriva alla forma finale:
+\begin{equation}
+\frac{dH}{dt} = \frac{1}{4} \sum_{i,j,k,l} W_{(k,l)\to(i,j)} [P_k P_l - P_i P_j] [\log(P_i P_j) - \log(P_k P_l)]
+\end{equation}
+Posto $x = P_i P_j$ e $y = P_k P_l$, il termine in parentesi quadre è della forma $(y-x) \log(x/y)$, che è sempre $\le 0$. Poiché $W \ge 0$, l'intera somma è non positiva, dimostrando il teorema.
+
+\section{Risoluzione dei Paradossi e Riformulazione del Teorema H}
+
+I paradossi (reversibilità di Loschmidt, ricorrenza di Zermelo) sorgono perché si applica un ragionamento basato sulla dinamica meccanica reversibile a un'equazione (quella di Boltzmann) che è stata derivata usando un'assunzione statistica, il caos molecolare.
+
+\textbf{La chiave per la risoluzione dei paradossi è riconoscere che l'ipotesi del caos molecolare non è valida in ogni istante di tempo}. È un'ipotesi che può essere valida in un certo istante, ma la dinamica stessa genera correlazioni tra le particelle, portando alla sua violazione in istanti successivi.
+
+\subsection{Riformulazione del Teorema H}
+Il Teorema H va quindi riformulato in modo più debole e preciso.
+Si assume di scegliere un istante di tempo arbitrario $\tau$ in cui il sistema si trova in uno stato di caos molecolare. Sotto questa condizione:
+\begin{enumerate}
+    \item L'equazione di Boltzmann è valida all'istante $\tau$.
+    \item Per tempi immediatamente successivi a $\tau$, la derivata della funzione H è non positiva:
+    \begin{equation}
+    \left. \frac{dH}{dt} \right|_{t=\tau^+} \le 0
+    \end{equation}
+    \item L'uguaglianza vale se e solo se la distribuzione all'istante $\tau$ è quella di Maxwell-Boltzmann.
+\end{enumerate}
+Per dimostrare ciò, si considera un esperimento mentale. Sia dato un GAS 1 per cui all'istante $t=0$ vale l'ipotesi di caos molecolare. Per il teorema H riformulato, $\frac{dH}{dt} \le 0$ per $t=0^+$.
+Ora si considera un GAS 2, che all'istante $t=0$ si trova nelle stesse posizioni del GAS 1, ma con tutte le velocità invertite $(-\underline{v})$. Anche questo sistema soddisfa l'ipotesi di caos molecolare a $t=0$. La sua evoluzione futura è l'evoluzione passata (time-reversed) del GAS 1. Per il GAS 2, il teorema H implica $\frac{dH}{dt} \le 0$ per $t=0^+$. Ma l'evoluzione del GAS 2 per $t>0$ corrisponde all'evoluzione del GAS 1 per $t<0$. Poiché $H$ dipende solo dal modulo delle velocità, $H_{GAS1}(t) = H_{GAS2}(-t)$.
+Di conseguenza, per il GAS 1 deve valere $\frac{dH}{dt} \ge 0$ per $t=0^-$.
+Se $\frac{dH}{dt} \ge 0$ subito prima di $t=0$ e $\frac{dH}{dt} \le 0$ subito dopo, significa che all'istante $t=0$ in cui vale il caos molecolare, la funzione H ha un massimo locale.
+
+L'evoluzione di H(t) non è una curva liscia e monotona decrescente, ma piuttosto una curva fluttuante. I momenti in cui vale il caos molecolare corrispondono ai picchi di questa curva, da cui il sistema evolve (in media) verso valori di H inferiori, cioè verso l'equilibrio.
+
+\subsection{Limite di Boltzmann-Grad}
+La derivazione dell'equazione di Boltzmann e la validità del caos molecolare possono essere formalizzate matematicamente in un limite specifico, detto limite di Boltzmann-Grad. Si considera un sistema con $N$ particelle di diametro $a$ in un volume $V$. Si fa tendere il numero di particelle a infinito ($N \to \infty$) e il loro diametro a zero ($a \to 0$), mantenendo però costante il prodotto $N a^2$. Questo corrisponde a un limite di gas rarefatto in cui il cammino libero medio rimane finito, garantendo che gli urti avvengano ma siano sufficientemente rari da giustificare l'assunzione di scorrelazione.
+

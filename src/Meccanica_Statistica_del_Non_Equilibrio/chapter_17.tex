@@ -1,0 +1,432 @@
+\chapter{Lezione 17}
+\label{chap:lezione_17} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 06/05/2025}
+\end{flushright}
+\textit{Bibliografia: 
+Several variables: Langevin equation, Ito lemma, and the Fokker-Planck equation. Underdamped Brownian particle in external fields: Fokker-Planck and stationary solution. Langevin equation and relaxation dynamics. Zwanzig oscillators model (Zwanzig, 1.6)}
+
+\vspace{1cm}
+
+Il corso si è concentrato su due aspetti principali dei sistemi fuori dall'equilibrio. Inizialmente, abbiamo esaminato l'evoluzione di un sistema verso l'equilibrio, analizzando la dinamica cinetica e il teorema H di Boltzmann. Successivamente, ci siamo dedicati allo studio dei processi stocastici, seguendo due approcci paralleli:
+
+- L'approccio ispirato da Einstein, che porta alla Master Equation per descrivere l'evoluzione della probabilità.
+
+- L'approccio basato sulle equazioni di Langevin, che descrivono l'evoluzione delle traiettorie stocastiche tramite equazioni differenziali stocastiche (SDE).
+
+\noindent Per le SDE, abbiamo discusso come arrivare a un'equazione per la densità di probabilità, l'equazione di Fokker-Planck, e le sue generalizzazioni come l'espansione di Kramers-Moyal. Abbiamo anche considerato processi stocastici discontinui. Ora, l'attenzione si sposta più specificamente sulla dinamica di rilassamento, approfondendo l'uso delle SDE.
+
+\section{Equazione di Langevin con più gradi di libertà}
+Fino ad ora abbiamo principalmente considerato sistemi con un singolo grado di libertà. Tuttavia, molti sistemi fisici, come una particella in un fluido con inerzia (limite underdamped), richiedono una descrizione che coinvolga più gradi di libertà. Per affrontare questi casi, è necessario estendere il formalismo dei processi stocastici a sistemi multidimensionali.
+
+Mentre potremmo generalizzare l'approccio basato sulle traiettorie stocastiche, preferiamo qui utilizzare l'equazione di Langevin e il calcolo di Itô, poiché gli strumenti sviluppati (como il lemma di Itô) si estendono in modo abbastanza diretto.
+
+\hfil \\
+Consideriamo un sistema con $N$ gradi di libertà $x_i(t)$, dove $i=1, \dots, N$. L'evoluzione di ciascun grado di libertà è descritta da un sistema di equazioni di Langevin:
+\begin{equation}
+\dot{x}_i(t) = f_i(\underline{x}) + \eta_i(t)
+\label{eq:langevin_multi}
+\end{equation}
+con condizione iniziale $x_i(t_0) = x_i^0$.
+
+\begin{itemize}
+    \item Il termine $\underline{x}$ denota il vettore di tutte le coordinate $\{x_i\}_{i=1}^N$.
+    \item La forza $f_i(\underline{x})$ può dipendere da tutte le coordinate, accoppiando i gradi di libertà. Se la forza deriva da un potenziale $\Phi(\underline{x})$, allora $f_i = -\frac{\partial \Phi}{\partial x_i}$.
+    \item Il rumore stocastico $\eta_i(t)$ è tipicamente assunto essere un rumore bianco Gaussiano con le seguenti proprietà:
+\end{itemize}
+
+\begin{equation} 
+\langle \eta_i(t) \rangle = 0 
+\end{equation}
+\begin{equation}
+\langle \eta_i(t)\eta_j(s) \rangle = 2D_{ij}\delta(t-s)
+\end{equation}
+
+La matrice $D_{ij}$ è la matrice di diffusione, che in generale può essere costante o dipendere da $\underline{x}$. Per ora, la consideriamo costante (rumore additivo).
+
+Secondo il calcolo di Itô, la variazione infinitesima $dx_i(t)$ è:
+\begin{equation}
+dx_i(t) = f_i(\underline{x})dt + dW_i(t)
+\end{equation}
+dove $dW_i(t)$ rappresenta l'incremento di un processo di Wiener multidimensionale.
+
+Definiamo un generico osservabile $O(t) \equiv O(\underline{x}(t))$, che dipende dal tempo implicitamente attraverso le coordinate $\underline{x}(t)$. Il suo valore medio è dato da:
+\begin{equation}
+\langle O(t) \rangle = \int d\underline{x} \, O(\underline{x}) P(\underline{x}, t | \underline{x}_0, t_0)
+\end{equation}
+dove $d\underline{x} = \prod_i dx_i$ e $P(\underline{x}, t | \underline{x}_0, t_0)$ è la probabilità di transizione.
+
+Se si media anche sulle condizioni iniziali con una distribuzione $P(\underline{x}_0)$, si ottiene la densità di probabilità:
+\begin{equation} 
+P(\underline{x},t) = \int d\underline{x}_0 P(\underline{x}, t | \underline{x}_0, t_0) P(\underline{x}_0) 
+\end{equation}
+
+La derivata temporale del valore medio dell'osservabile è:
+\begin{equation}
+\partial_t \langle O(t) \rangle = \int d\underline{x} \, O(\underline{x}) \partial_t P(\underline{x}, t)
+\label{eq:derivata_media_O}
+\end{equation}
+
+Per trovare l'evoluzione di $P(\underline{x},t)$, utilizziamo il lemma di Itô per più variabili. La variazione infinitesima dell'osservabile $O(\underline{x}(t))$ è:
+\begin{equation}
+dO = \sum_i \frac{\partial O}{\partial x_i} dx_i + \frac{1}{2} \sum_{i,j} \frac{\partial^2 O}{\partial x_i \partial x_j} dx_i dx_j
+\end{equation}
+
+Il termine $dx_i dx_j$ è cruciale. Sostituendo $dx_i = f_i dt + dW_i$:
+\begin{align}
+dx_i dx_j &= (f_i dt + dW_i)(f_j dt + dW_j) \nonumber \\ 
+&= f_i f_j (dt)^2 + f_i dt dW_j + f_j dt dW_i + dW_i dW_j
+\end{align}
+
+\begin{tcolorbox}[
+    colback=colorD!5,      
+    colframe=colorD,       
+    title={Attenzione},
+    fonttitle=\bfseries\sffamily,
+    arc=3mm,               
+    boxrule=1.2pt,         
+    halign title=flush left
+]
+Nel calcolo di Itô, i termini di ordine $(dt)^2$ e $dt dW \sim (dt)^{3/2}$ sono trascurabili rispetto a $dt$ quando si calcolano le medie.
+
+\end{tcolorbox}
+Il termine $dW_i dW_j$ è l'unico che contribuisce all'ordine $dt$: 
+\begin{equation*}
+dW_i dW_j = 2D_{ij} dt
+\end{equation*}
+
+Quindi, conservando solo i termini fino all'ordine $dt$:
+\begin{equation}
+dO = \sum_i \frac{\partial O}{\partial x_i} (f_i dt + dW_i) + \frac{1}{2} \sum_{i,j} \frac{\partial^2 O}{\partial x_i \partial x_j} (2D_{ij} dt)
+\end{equation}
+
+Raggruppando i termini in $dt$ e $dW_i$:
+\begin{equation}
+dO = \left( \sum_i f_i \frac{\partial O}{\partial x_i} + \sum_{i,j} D_{ij} \frac{\partial^2 O}{\partial x_i \partial x_j} \right) dt + \sum_i \frac{\partial O}{\partial x_i} dW_i
+\end{equation}
+
+Calcolando il valore medio $\langle dO \rangle = d\langle O \rangle$ (poiché $\langle dW_i \rangle = 0$ per definizione), e dividendo per $dt$:
+\begin{equation}
+\partial_t \langle O(t) \rangle = \left\langle \sum_i f_i \frac{\partial O}{\partial x_i} + \sum_{i,j} D_{ij} \frac{\partial^2 O}{\partial x_i \partial x_j} \right\rangle
+\end{equation}
+
+Esprimendo il valore medio tramite l'integrale con $P(\underline{x},t)$:
+\begin{equation}
+\partial_t \langle O(t) \rangle = \int d\underline{x} P(\underline{x},t) \left\{ \sum_i f_i \frac{\partial O}{\partial x_i} + \sum_{i,j} D_{ij} \frac{\partial^2 O}{\partial x_i \partial x_j} \right\}
+\end{equation}
+
+Confrontando con l'espressione (\ref{eq:derivata_media_O}):
+\begin{equation}
+\int d\underline{x} \, O(\underline{x}) \partial_t P(\underline{x}, t) = \int d\underline{x} P(\underline{x},t) \left\{ \sum_i f_i \frac{\partial O}{\partial x_i} + \sum_{i,j} D_{ij} \frac{\partial^2 O}{\partial x_i \partial x_j} \right\}
+\end{equation}
+e integrando il termine di destra per parti (assumendo che il termine al bordo sia nullo), si trasferiscono le derivate da $O(\underline{x})$ a $P(\underline{x},t)$:
+\begin{equation}
+\int d\underline{x} \, O(\underline{x}) \partial_t P(\underline{x}, t) = - \int d\underline{x} \, O(\underline{x}) \left \{ \sum_i \frac{\partial}{\partial x_i} (f_i(\underline{x}) P(\underline{x},t)) - \sum_{i,j} D_{ij}\frac{\partial^2}{\partial x_i\partial x_j} \left( P(\underline{x},t)\right) \right\}
+\end{equation}
+
+Si ottiene così l'equazione di Fokker-Planck per $P(\underline{x},t)$:
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation}
+\partial_t P(\underline{x},t) = - \sum_i \frac{\partial}{\partial x_i} (f_i(\underline{x}) P(\underline{x},t)) + \sum_{i,j} D_{ij}\frac{\partial^2}{\partial x_i\partial x_j} \left( P(\underline{x},t)\right)
+\end{equation}
+Questa è l'equazione generale per l'evoluzione della densità di probabilità di un sistema descritto da equazioni di Langevin multidimensionali con rumore additivo.
+\\
+\end{tcolorbox}
+
+\section{Moto Browniano Underdamped}
+Consideriamo ora il caso specifico di una particella underdamped, la cui equazione del moto è $m\ddot{x} = -\gamma \dot{x} + f(x) + \eta(t)$. Per semplicità, poniamo la massa $m=1$. Introduciamo la velocità $v = \dot{x}$. Il sistema di equazioni del primo ordine diventa:
+\begin{equation}
+\begin{cases}
+\dot{x} = v \\
+\dot{v} = -\gamma v + f(x) + \eta(t)
+\end{cases}
+\label{eq:underdamped_sys}
+\end{equation}
+Questo sistema ha due gradi di libertà nello spazio delle fasi ridotto, $x_1 = x$ e $x_2 = v$.
+
+\begin{itemize}
+    \item Il vettore delle coordinate è:
+    \begin{equation}  \underline{x} = \begin{pmatrix} x \\ v \end{pmatrix} = \begin{pmatrix} x_1 \\ x_2 \end{pmatrix} \end{equation}
+    \item Il vettore della forza generalizzata è:
+    \begin{equation}  \underline{F} = \begin{pmatrix} v \\ -\gamma v + f(x)\end{pmatrix} = \begin{pmatrix} f_1 \\ f_2\end{pmatrix} \end{equation}
+    \item Il rumore agisce solo sull'equazione della velocità, quindi:
+    \begin{equation}  \underline{\eta} = \begin{pmatrix} 0 \\ \eta \end{pmatrix} = \begin{pmatrix} \eta _1 \\ \eta _2\end{pmatrix} \end{equation}
+\end{itemize}
+
+Assumiamo le proprietà standard del rumore per $\eta(t)$:
+\begin{equation} \langle \eta_i(t) \rangle = 0 \end{equation}
+\begin{equation}
+\langle \eta_i(t)\eta_j(s) \rangle = 2D_{ij}\delta(t-s)
+\end{equation}
+Da cui segue:
+\begin{equation}
+\langle \underline{\eta} \, \underline{\eta} \rangle = 2 \underline{D} \delta(t-s) = \begin{pmatrix} \langle \eta_1\eta_1 \rangle & \langle \eta_1\eta_2 \rangle \\ \langle \eta_2\eta_1 \rangle & \langle \eta_2\eta_2 \rangle \end{pmatrix} = 2 \delta(t-s) \begin{pmatrix} 0 & 0 \\ 0 & D \end{pmatrix}
+\end{equation}
+
+L'equazione di Fokker-Planck per $P(x,v,t) \equiv P(x_1,x_2,t)$ diventa:
+\begin{equation}
+\partial_t P(x,v,t) = -\frac{\partial}{\partial x_1}(f_1 P) - \frac{\partial}{\partial x_2}(f_2P) + D \frac{\partial^2 P}{\partial x_2^2}
+\end{equation}
+Da cui si ricava l'equazione di Kramers:
+\begin{equation}
+\partial_t P(x,v,t) = -\frac{\partial}{\partial x}(v P) - \frac{\partial}{\partial v} \bigl[(-\gamma v + f(x))P\bigr] + D \frac{\partial^2 P}{\partial v^2}
+\label{eq:kramers_p_t}
+\end{equation}
+
+Cerchiamo la soluzione stazionaria $P_{\infty}(x,v)$, per la quale $\partial_t P_{\infty}(x,v) = 0$:
+\begin{equation}
+0 = -\frac{\partial}{\partial x}(v P_{\infty}) - \frac{\partial}{\partial v}((-\gamma v + f(x))P_{\infty}) + D \frac{\partial^2 P_{\infty}}{\partial v^2}
+\label{eq:kramers_stazionaria}
+\end{equation}
+
+\begin{tcolorbox}[
+    colback=colorD!5,      
+    colframe=colorD,       
+    title={Attenzione},
+    fonttitle=\bfseries\sffamily,
+    arc=3mm,               
+    boxrule=1.2pt,         
+    halign title=flush left
+]
+Ci aspettiamo che, per tempi lunghi, il sistema raggiunga uno stato di equilibrio termodinamico, se le forze sono conservative e non dipendono esplicitamente dal tempo. In tale caso, la distribuzione di probabilità dovrebbe essere la distribuzione di Boltzmann:
+\begin{equation*}
+P \propto e^{-\beta H}
+\end{equation*}
+dove $H = v^2/2 + \Phi(x)$ è l'Hamiltoniana (con $m=1$) e $f(x) = -\Phi'(x)$.
+Questa intuizione ci guida a cercare una soluzione fattorizzata del tipo:
+\begin{equation*}
+P_{\infty}(x,v) = h(x)g(v)
+\end{equation*}
+\end{tcolorbox}
+Sostituendo nell'equazione (\ref{eq:kramers_stazionaria}):
+\begin{align*}
+0 &= -\frac{\partial}{\partial x}\Bigl(v \; [h(x)g(v)]\Bigr) - \frac{\partial}{\partial v} \Bigl((-\gamma v + f(x))\; [h(x)g(v)] \Bigr) + D \frac{\partial^2 }{\partial v^2} (h(x)g(v)) \\ 
+&= - v \; g(v) \frac{\partial h(x)}{\partial x}  + \gamma [h(x)g(v)] \frac{\partial v}{\partial v}  + \gamma v h(x) \frac{\partial g(v)}{\partial v} - f(x) h(x) \frac{\partial g(v)}{\partial v} + D h(x)\frac{\partial^2g(v) }{\partial v^2} \\ 
+&= \underbrace{h(x)\left[ \gamma g(v) + \gamma v \frac{\partial g}{\partial v} + D \frac{\partial^2 g}{\partial v^2} \right]}_{\textcircled{1}} - \underbrace{\left[ v g(v) \frac{\partial h}{\partial x} + f(x) h(x) \frac{\partial g}{\partial v} \right]}_{\textcircled{2}}
+\end{align*}
+
+Il sistema di equazioni che ne deriva è il seguente:
+\begin{equation}
+\begin{cases}
+\textcircled{1} = 0 \\
+\textcircled{2} = 0
+\end{cases}
+\end{equation}
+
+Concentriamoci sulla seconda, assumendo $f(x) = -\Phi'(x)$:
+\begin{equation}  
+v g(v) \frac{\partial h}{\partial x} + f(x) h(x) \frac{\partial g}{\partial v} =0 \longrightarrow  v g(v) \frac{\partial h}{\partial x} = \Phi'(x) h(x) \frac{\partial g}{\partial v}
+\end{equation}
+
+Separiamo le variabili:
+\begin{equation}  
+\frac{1}{\Phi'(x) h(x) }\frac{\partial h}{\partial x} = \frac{\partial g}{\partial v} \frac{1}{ v g(v) }
+\end{equation}
+
+Si cercano soluzioni tali che i termini a destra e a sinistra siano proporzionali attraverso una costante di separazione $A$:
+\begin{equation}  
+\underbrace{A=\frac{1}{\Phi'(x) h(x) }\frac{\partial h}{\partial x}}_{i.} = \underbrace{\frac{\partial g}{\partial v} \frac{1}{ v g(v) }=A}_{ii.}
+\end{equation}
+
+Termine a sinistra ($i.$):
+\begin{equation}  
+A=\frac{1}{\Phi'(x) h(x) }\frac{\partial h}{\partial x} \longrightarrow h(x)= e^{A \Phi(x)}
+\end{equation}
+
+Termine a destra ($ii.$):
+\begin{equation}   
+\frac{\partial g}{\partial v} \frac{1}{ v g(v) } =A \longrightarrow g(v)= e^{A \frac{v^2}{2}} 
+\end{equation}
+
+Imponendo che il termine $\textcircled{1}$ sia zero:
+\begin{equation}
+\gamma g(v) + \gamma v \frac{\partial g}{\partial v} + D \frac{\partial^2 g}{\partial v^2} = 0
+\label{eq:condizione_uno}
+\end{equation}
+
+Deriviamo sostituendo $g(v) = e^{A v^2/2}$:
+\begin{equation*}
+\frac{\partial g}{\partial v} = Av e^{A v^2/2} = Av g(v)
+\end{equation*}
+\begin{equation*}
+\frac{\partial^2 g}{\partial v^2} = A e^{A v^2/2} + A^2 v^2 e^{A v^2/2} = (A + A^2 v^2) g(v)
+\end{equation*}
+
+Sostituendo nell'equazione (\ref{eq:condizione_uno}):
+\begin{equation}
+\gamma g + \gamma v (Av g) + D (A + A^2 v^2) g = 0
+\end{equation}
+
+Dividendo per $g$ (assumendo $g \neq 0$):
+\begin{equation}
+(\gamma + DA) + v^2 A(\gamma + DA) = 0
+\end{equation}
+\begin{equation}
+(1+Av^2)(\gamma + DA) = 0
+\end{equation}
+
+Poiché questa equazione deve valere per ogni $v$, il termine $(\gamma+DA)$ deve essere nullo:
+\begin{equation}
+\gamma + DA = 0 \quad \longrightarrow \quad A = -\frac{\gamma}{D}
+\end{equation}
+
+Quindi, la soluzione stazionaria è:
+\begin{equation}
+P_{\infty}(x,v) = \mathcal{N} \exp\left[-\frac{\gamma}{D}\left(\frac{v^2}{2} + \Phi(x)\right)\right]
+\end{equation}
+
+Sostituiamo $D$ con la relazione di Einstein (per $m=1$), $D = \gamma k_B T$:
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation}
+P_{\infty}(x,v) = \mathcal{N} \exp\left[- \beta\left(\frac{v^2}{2} + \Phi(x)\right)\right]
+\end{equation}
+Abbiamo ritrovato esattamente la distribuzione di Maxwell-Boltzmann.
+\end{tcolorbox}
+
+\section{Dinamica di Puro Rilassamento e Modello di Zwanzig}
+L'evoluzione di un sistema verso uno stato stazionario di equilibrio è un esempio di dinamica di puro rilassamento di equilibrio.
+
+\begin{tcolorbox}[
+    colback=colorD!5,      
+    colframe=colorD,       
+    title={Attenzione},
+    fonttitle=\bfseries\sffamily,
+    arc=3mm,               
+    boxrule=1.2pt,         
+    halign title=flush left
+]
+Quando studiamo sistemi complessi, spesso separiamo i gradi di libertà in ``rilevanti'' (quelli che ci interessano, che tipicamente evolvono su scale temporali più lunghe) e ``irrilevanti'' o ``veloci'' (che costituiscono un bagno termico e si presume si termalizzino molto più rapidamente).
+\end{tcolorbox}
+
+L'equazione di Langevin:
+\begin{equation*}
+\dot{\varphi} = F_{det}(\varphi) + \eta(t)
+\end{equation*}
+può essere vista come una dinamica di puro rilassamento; ovvero come la descrizione dell'evoluzione del grado di libertà rilevante $\varphi$, dove il termine stocastico $\eta(t)$ modella l'effetto cumulativo e rapido dei gradi di libertà veloci, che si assumono essere in equilibrio termico.
+
+Il modello di Zwanzig è un esempio paradigmatico che illustra come un'equazione di tipo Langevin, possibilmente con termini di memoria, possa emergere da un sistema Hamiltoniano deterministico sottostante. Non si tratta di una derivazione rigorosa in tutti i contesti, ma fornisce un'intuizione fisica su come l'interazione con molti gradi di libertà possa portare a un comportamento dissipativo e stocastico per un sottosistema.
+
+Si considera un sistema composto da:
+\begin{itemize}
+    \item \textbf{Un grado di libertà di interesse} $(X, P)$, descritto dalla coordinata $X$ e dall'impulso $P$. La sua Hamiltoniana è:
+    \begin{equation*}
+    H_S(X,P) = \frac{P^2}{2m} + U(X)
+    \end{equation*}
+    \item \textbf{Un bagno termico}, modellato come un insieme di $N_{osc}$ oscillatori armonici indipendenti, con coordinate $q_i$ e impulsi $p_i$. Per semplicità, si assume massa unitaria $m_i=1$ per gli oscillatori del bagno. L'Hamiltoniana del bagno, includendo un accoppiamento lineare tra il sistema di interesse e ciascun oscillatore del bagno, è data da:
+    \begin{equation}
+    H_B(q_i, p_i, X) = \sum_i \left\{ \frac{p_i^2}{2} + \frac{1}{2}\omega_i^2 \left[ q_i - \frac{c_i}{\omega_i^2}X \right]^2 \right\}
+    \end{equation}
+    dove $\omega_i$ sono le frequenze degli oscillatori del bagno e $c_i$ sono le costanti di accoppiamento.
+\end{itemize}
+
+L'Hamiltoniana totale è:
+\begin{equation*} 
+H = H_S + H_B 
+\end{equation*}
+
+Le equazioni di Hamilton per il sistema sono:
+\begin{itemize}
+    \item Per il grado di libertà $(X,P)$:
+    \begin{equation} \begin{cases}
+    \dot{X} &= \frac{\partial H}{\partial P} = \frac{P}{M} \\ 
+    \dot{P} &= -\frac{\partial H}{\partial X} = -U'(X) + \sum_i c_i \left[ q_i - \frac{c_i}{\omega_i^2}X \right]
+    \end{cases} \end{equation}
+    \item Per gli oscillatori del bagno:
+    \begin{equation} \begin{cases}
+    \dot{q}_i &= \frac{\partial H}{\partial p_i} = p_i \\ 
+    \dot{p}_i &= -\frac{\partial H}{\partial q_i}  = -\omega_i^2 q_i + c_i X = \ddot{q}_i
+    \end{cases} \end{equation}
+\end{itemize}
+
+Se si tratta $X(t)$ come una forzante esterna data (assumendo una separazione di scale temporali, dove $X(t)$ varia lentamente rispetto a $q_i(t)$), possiamo integrare le equazioni del moto per il bagno termico, ottenendo (con $t_0=0$):
+\begin{equation} 
+q_i(t) = q_i(0)\cos(\omega_i t) + p_i(0)\frac{\sin(\omega_i t)}{\omega_i} + c_i \int_0^t ds \, X(s) \frac{\sin(\omega_i(t-s))}{\omega_i} 
+\label{eq:soluzione_qi}
+\end{equation}
+
+Integriamo per parti l'integrale:
+\begin{align*} 
+\int_0^t ds \, X(s) \frac{\sin(\omega_i(t-s))}{\omega_i} &= \left. \frac{1}{\omega_i^2} X(s) \cos[\omega_i(t-s)] \right|_0^t - \int_0^t ds \, \dot{X}(s) \frac{\cos[\omega_i(t-s)]}{\omega_i^2}  \\ 
+&= \frac{X(t)}{\omega_i^2} - \frac{X(0)}{\omega_i^2}\cos(\omega_i t) - \int_0^t ds \, \frac{P(s)}{M} \frac{\cos[\omega_i(t-s)]}{\omega_i^2}
+\end{align*}
+
+Sostituendo nella (\ref{eq:soluzione_qi}) possiamo ricavare la soluzione per il termine $q_i(t) - \frac{c_i}{\omega_i^2}X(t)$ (che appare nell'equazione per $\dot{P}$):
+\begin{align}
+q_i(t) - \frac{c_i}{\omega_i^2}X(t) = & \left[q_i(0) - \frac{c_i}{\omega_i^2}X(0)\right]\cos(\omega_i t) + \frac{p_i(0)}{\omega_i}\sin(\omega_i t) \nonumber \\
+& - \frac{c_i}{\omega_i^2 M} \int_0^t ds P(s) \cos(\omega_i(t-s))
+\end{align}
+
+Sostituendo questa espressione nell'equazione per $\dot{P}$:
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    title={Equazione di Langevin Generalizzata},
+    fonttitle=\bfseries\sffamily,
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation}
+\frac{dP}{dt} = -U'[x(t)] -\int_0^t ds \, K(s) \frac{P(t-s)}{M} + F_P(t)
+\end{equation}
+\end{tcolorbox}
+
+dove vengono definiti:
+\begin{itemize}
+    \item \textbf{Memory Kernel}:
+    \begin{equation}
+    K(t) \equiv \sum_i \frac{c_i^2}{\omega_i^2} \cos(\omega_i t)
+    \end{equation}
+    Questo termine è il kernel di memoria dell'attrito; introduce una dissipazione che dipende dalla storia passata della velocità del sistema (attrito non istantaneo o non-Markoviano).
+    \item \textbf{Noise}:
+    \begin{equation}
+    F_P(t) \equiv \sum_i c_i p_i(0) \frac{\sin(\omega_i t)}{\omega_i} + \sum_i c_i \left[q_i(0) - \frac{c_i}{\omega_i^2} X(0)\right]\cos(\omega_i t)
+    \end{equation}
+    Questo è il termine di rumore, e dipende dalle condizioni iniziali degli oscillatori del bagno.
+\end{itemize}
+
+Se il numero di oscillatori del bagno è grande e le loro frequenze $\omega_i$ formano uno spettro continuo descritto da una densità degli stati $g(\omega)$, e l'accoppiamento $c(\omega)$ ha una certa forma costante, possiamo sostituire la sommatoria con un integrale nel kernel di memoria:
+\begin{equation}
+K(t) \equiv \int_0^{+ \infty} d\omega \; g(\omega) \; \frac{c(\omega)^2}{\omega^2} \cos(\omega t)
+\end{equation}
+
+In particolare, se $g(\omega) \approx \omega^2$ e $c=\gamma=\text{cost.}$, il kernel può approssimarsi a una funzione delta:
+\begin{equation}
+K(t) \approx  \gamma\delta(t)  
+\end{equation}
+
+In questo limite Markoviano, l'equazione generalizzata di Langevin si riduce all'equazione di Langevin standard con attrito istantaneo $\gamma \dot{X}$ e rumore bianco:
+\begin{equation}
+\frac{dP}{dt} = -\gamma \frac{P(t)}{M} + F_P(t)
+\end{equation}
+
+Se si assume che gli oscillatori del bagno siano inizialmente in equilibrio termico, allora le condizioni iniziali $q_i(0), p_i(0)$ sono variabili casuali che possono essere estratte da $P \propto e^{-\beta H_B}$. Sotto questa assunzione si ha:
+\begin{align*}
+\langle q_i(0) - \frac{c_i}{\omega_i^2}X(0) \rangle &= 0 \\
+\langle p_i(0)\rangle &= 0 \\
+\langle \Bigl( q_i(0) - \frac{c_i}{\omega_i^2}X(0) \Bigr)^2 \rangle &= \frac{k_B T}{\omega_i^2} \\
+\langle \Bigl(p_i(0) \Bigr)^2 \rangle &= k_B T
+\end{align*}
+
+Da cui segue la relazione di fluttuazione-dissipazione:
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation}
+\langle F_P(t) F_P(s) \rangle = k_B T K(t-s)
+\end{equation}
+Questa relazione fondamentale collega le proprietà statistiche del rumore (fluttuazioni) alle proprietà dissipative del sistema (kernel di memoria).
+\end{tcolorbox}

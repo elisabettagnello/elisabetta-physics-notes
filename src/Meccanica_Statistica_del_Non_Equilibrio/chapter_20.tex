@@ -1,0 +1,411 @@
+\chapter{Lezione 20}
+\label{chap:lezione_20} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 19/05/2025}
+\end{flushright}
+\textit{Bibliografia: 
+Generating function of moments. Generating function of connected correlations. Gaussian integrals. Path integral representation of the dynamics. Martin-Siggia-Rose dynamical action. Onsager-Machlup Action. Generating functional of correlation and response functions.}
+
+\section{Recap e Principio di Regressione di Onsager}
+Iniziamo considerando il principio di regressione di Onsager. Questo principio è fondamentale per comprendere come un sistema che è stato perturbato ritorna all'equilibrio.
+
+Consideriamo un sistema descritto dalla variabile $\varphi$. L'evoluzione di $\varphi$ è data dalla seguente equazione di Langevin:
+\begin{equation}
+\dot{\varphi} = -k\varphi + h + \eta
+\label{eq:langevin_recap}
+\end{equation}
+dove $k$ è una costante di rilassamento, $h$ è un campo esterno (perturbazione) e $\eta$ rappresenta un rumore bianco gaussiano con media nulla.
+
+La funzione di risposta $R(t,s)$ misura come il valore medio di $\varphi(t)$ cambia in risposta a una perturbazione impulsiva $h(s)$ applicata al tempo $s$. È definita come la derivata funzionale del valore medio di $\varphi(t)$ rispetto a $h(s)$, valutata con $h=0$:
+\begin{equation}
+R(t,s) = \frac{\delta \langle \varphi(t) \rangle}{\delta h(s)} \bigg|_{h=0}
+\end{equation}
+
+Per calcolare $\langle \varphi_h(t) \rangle$, risolviamo l'equazione di Langevin:
+\begin{equation}
+\varphi_h(t) = \varphi_0 e^{-kt} + \int ds [h(s) + \eta(s)] e^{-k(t-s)}
+\end{equation}
+
+Facendo la media sul rumore $\eta$ (ricordando che $\langle \eta(s) \rangle = 0$):
+\begin{equation}
+\langle \varphi_h(t) \rangle = \varphi_0 e^{-kt} + \int ds h(s) e^{-k(t-s)}
+\end{equation}
+
+Assumendo per semplicità $\varphi_0 = 0$ (o considerando tempi lunghi tali che il termine iniziale sia trascurabile), otteniamo:
+\begin{equation}
+\langle \varphi_h(t) \rangle = \int ds h(s) e^{-k(t-s)}
+\end{equation}
+
+Da cui, derivando rispetto a $h(s)$:
+\begin{equation}
+R(t,s) = e^{-k(t-s)}
+\end{equation}
+Questa risposta è valida per $t > s$, e nulla altrimenti, a causa del principio di causalità: la risposta non può precedere la perturbazione.
+
+In assenza di campo esterno ($h=0$), possiamo calcolare la funzione di correlazione temporale $C(t,s) = \langle \varphi(t) \varphi(s) \rangle$. Per il processo di Ornstein-Uhlenbeck si ha:
+\begin{equation}
+C(t,s) = \frac{T}{k} e^{-k|t-s|}
+\label{eq:corr_ou}
+\end{equation}
+dove $T$ è la temperatura (abbiamo posto la costante di Boltzmann $k_B=1$).
+
+Il Teorema di Fluttuazione-Dissipazione (FDT) mette in relazione la funzione di risposta $R(t,s)$ con la derivata della funzione di correlazione $C(t,s)$ per sistemi all'equilibrio:
+\begin{equation}
+R(t,s) = \beta \frac{\partial C(t,s)}{\partial s} \theta(t-s)
+\end{equation}
+La funzione gradino $\theta(t-s)$ assicura la causalità.
+
+\section{Funzione Generatrice dei Momenti}
+Data una variabile aleatoria $x$ con distribuzione di probabilità $P(x)$ (pdf, probability density function), il momento di ordine $m$ è definito come:
+\begin{equation}
+\langle x^m \rangle \equiv \int dx \, x^m P(x)
+\end{equation}
+
+La condizione di normalizzazione per la pdf è:
+\begin{equation}
+\int dx P(x) = 1
+\end{equation}
+La \textbf{funzione generatrice dei momenti} $Z(J)$ è definita come:
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation}
+Z(J) \equiv \langle e^{Jx} \rangle = \int dx \, e^{Jx} P(x)
+\end{equation}
+\end{tcolorbox}
+
+I momenti possono essere ottenuti derivando $Z(J)$ rispetto a $J$ e valutando in $J=0$:
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation}
+\langle x^m \rangle \equiv \frac{\partial^m Z(J)}{\partial J^m} \bigg|_{J=0} \end{equation}
+\end{tcolorbox}
+Notiamo che $Z(0) = \int dx P(x) = 1$.
+
+La funzione generatrice dei cumulanti $W(J)$ è definita come il logaritmo della funzione generatrice dei momenti:
+\begin{equation}
+W(J) \equiv \log \Bigl( Z(J) \Bigr)
+\end{equation}
+
+I cumulanti $\langle x^m \rangle_c$ sono ottenuti derivando $W(J)$ rispetto a $J$ e valutando in $J=0$:
+\begin{equation}
+\langle x^m \rangle_c = \frac{\partial^m W(J)}{\partial J^m} \bigg|_{J=0}
+\end{equation}
+
+Ad esempio, il primo cumulante è:
+\begin{equation}
+\langle x \rangle_c = \frac{\partial W(J)}{\partial J} \bigg|_{J=0} = \frac{1}{Z(J)} \frac{\partial Z(J)}{\partial J} \bigg|_{J=0} = \frac{1}{1} \langle x \rangle = \langle x \rangle
+\end{equation}
+
+Il secondo cumulante è:
+\begin{align}
+\langle x^2 \rangle_c &= \frac{\partial}{\partial J} \left[ \frac{1}{Z(J)} \frac{\partial Z(J)}{\partial J} \right] \bigg|_{J=0} \nonumber \\
+&= \left[ \frac{1}{Z(J)} \frac{\partial^2 Z(J)}{\partial J^2} - \frac{1}{(Z(J))^2} \left( \frac{\partial Z(J)}{\partial J} \right)^2 \right] \bigg|_{J=0} \nonumber \\
+&= \langle x^2 \rangle - \langle x \rangle^2
+\end{align}
+che è la varianza di $x$.
+
+\section{Integrali Gaussiani Multidimensionali}
+Consideriamo un integrale gaussiano multidimensionale del tipo:
+\begin{equation}
+I(A, \underline{B}) = \int \prod_i dx_i \exp \left\{ -\frac{1}{2} \sum_{ij} x_i A_{ij} x_j + \sum_i B_i x_i \right\}
+\end{equation}
+dove $A$ è una matrice simmetrica definita positiva. In notazione vettoriale:
+\begin{equation}
+I(A, \underline{B}) = \int d\underline{x} \exp \left\{ -\frac{1}{2} \underline{x}^T A \underline{x} + \underline{B}^T \underline{x} \right\}
+\end{equation}
+
+Definiamo l'azione $S[\underline{x}, A, \underline{B}]$:
+\begin{equation}
+S = \frac{1}{2} \underline{x}^T A \underline{x} - \underline{B}^T \underline{x}
+\end{equation}
+
+L'integrale può essere calcolato con il metodo del punto di sella. Cerchiamo il minimo di $S$ ponendo la derivata rispetto a $x_k$ uguale a zero:
+\begin{equation}
+\frac{\partial S}{\partial x_k} = \frac{2}{2}\sum_{ij} \delta_{ik} A_{ij} x_j - \sum_{i} \delta_{ik}  B_i = 0 \quad \Rightarrow \quad A_{kj} x_j = B_k
+\end{equation}
+La soluzione è:
+\begin{equation} 
+x_i = (A^{-1})_{ik} B_k  
+\label{eq:sella_gaussiana}
+\end{equation}
+
+Il primo termine diventa:
+\begin{equation}
+\frac{1}{2}\underline{x}^{T}A\underline{x} = \frac{1}{2}\sum_{i,j,k,l} (A^{-1})_{ik}B_k A_{ij} (A^{-1})_{jl}B_l = \frac{1}{2} B_i (A^{-1})_{ij}B_j 
+\end{equation}
+
+Il secondo termine diventa:
+\begin{equation} 
+\underline{B}^T\underline{x} = \sum_i B_i x_i = B_i (A^{-1})_{ik}B_k 
+\end{equation}
+
+Quindi, $S(\underline{x}^*) = \frac{1}{2}\underline{B}^T A^{-1}\underline{B} - \underline{B}^T A^{-1}\underline{B} = -\frac{1}{2}\underline{B}^T A^{-1}\underline{B}$.
+L'esponente nell'integrale valutato al punto di sella è: $-S(\underline{x}^*) = \frac{1}{2}\underline{B}^T A^{-1}\underline{B}$.
+
+L'integrale $I(A,\underline{B})$ è dato dal valore dell'esponenziale al punto di sella moltiplicato per un prefattore che deriva dall'integrazione delle fluttuazioni gaussiane attorno a $\underline{x}$. Il risultato finale è:
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation}
+I(A, \underline{B}) = \sqrt{\frac{(2\pi)^N}{\det A}} \exp \left\{ \frac{1}{2} \underline{B}^T A^{-1} \underline{B} \right\}
+\end{equation}
+\end{tcolorbox}
+dove $N$ è la dimensione del vettore $\underline{x}$.
+
+Nel caso monodimensionale:
+\begin{equation}
+I(a,b) = \int dx e^{-ax^2 + bx}
+\end{equation}
+L'azione è $S(x) = ax^2 - bx$.
+Il punto di sella si trova da $S'(x) = 2ax - b = 0 \Rightarrow x^* = \frac{b}{2a}$.
+Il valore dell'azione al punto di sella è $S(x^*) = a \left(\frac{b}{2a}\right)^2 - b \left(\frac{b}{2a}\right) = \frac{b^2}{4a} - \frac{b^2}{2a} = -\frac{b^2}{4a}$.
+La derivata seconda è $S''(x) = 2a$.
+L'integrale è:
+\begin{equation}
+I(a,b) = \sqrt{\frac{2\pi}{S''(x^*)}} e^{-S(x^*)} = \sqrt{\frac{2\pi}{2a}} e^{\frac{b^2}{4a}}
+\end{equation}
+
+\section{Formalismo del Path Integral}
+Consideriamo un'equazione di Langevin più generale:
+\begin{equation}
+\dot{\varphi} = F(\varphi) + \eta
+\end{equation}
+dove la forza deriva da un potenziale, cioè $F(\varphi) = -\frac{\partial V}{\partial \varphi}$.
+
+Il rumore $\eta$ ha le seguenti proprietà:
+\begin{equation}
+\langle \eta(t) \rangle = 0
+\end{equation}
+\begin{equation}
+\langle \eta(t) \eta(s) \rangle = 2D \delta(t-s)
+\end{equation}
+Possiamo anche scrivere $\langle \eta(t) \eta(s) \rangle = 2D K(t,s)$, con $K(t,s) = \delta(t-s) $ per il rumore bianco (delta-correlato).
+
+La variabile $\varphi(t)$ è una variabile stocastica, indicata come $\varphi_{\eta}(t)$, poiché la sua traiettoria dipende dalla specifica realizzazione del rumore $\eta(t)$. Siamo interessati a calcolare la probabilità di transizione $P(\varphi_t, t | \varphi_0, t_0)$, ovvero la probabilità che il sistema si trovi in $\varphi_t$ al tempo $t$ essendo partito da $\varphi_0$ al tempo $t_0$.
+
+Un concetto correlato è quello di \textit{optimal path} (percorso più probabile). Date le condizioni iniziali $\varphi_0$ al tempo $t_0$ e finali $\varphi_t$ al tempo $t$, qual è la traiettoria $\varphi(t)$ che massimizza la probabilità?
+
+Il valore medio di un osservabile $O(\varphi)$ si calcola integrando su tutte le possibili realizzazioni del rumore $\eta(t)$, pesate con la loro probabilità $P[\eta(t)]$:
+\begin{equation}
+\langle O(\varphi) \rangle = \int \mathcal{D}\eta(t) P[\eta(t)] O(\varphi_{\eta})
+\end{equation}
+L'integrale $\int \mathcal{D}\eta(t)$ è un integrale funzionale sul rumore, $P[\eta(t)]$ è la distribuzione di probabilità del rumore.
+
+Possiamo riscrivere l'integrale precedente introducendo una delta funzionale di Dirac per vincolare $\varphi(t)$ a essere la soluzione $\varphi_{\eta}(t)$ dell'equazione di Langevin per una data $\eta(t)$:
+\begin{equation}
+\langle O(\varphi) \rangle = \int \mathcal{D}\eta(t) P[\eta(t)] \int \mathcal{D}\varphi(t) \delta[\varphi(t) - \varphi_{\eta}(t)] O[\varphi(t)]
+\label{eq:media_osservabile_delta}
+\end{equation}
+
+La delta funzionale $\delta[\varphi(t) - \varphi_{\eta}(t)]$ può essere riscritta usando la relazione:
+\begin{equation}
+\eta(t) = \dot{\varphi}(t) - F(\varphi(t)) = \dot{\varphi}(t) + V'(\varphi(t)) 
+\end{equation}
+Definiamo $g(\varphi) = \dot{\varphi} + V'(\varphi) - \eta = 0$.
+
+Usando la proprietà della delta di Dirac $\delta[g(x)] = \sum_{x_0: g(x_0)=0} \frac{\delta(x-x_0)}{|g'(x_0)|}$, la delta funzionale diventa:
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation}
+\delta[\varphi(t) - \varphi_{\eta}(t)] = \delta[\dot{\varphi} + V'(\varphi) - \eta] \left\| \det \frac{\delta \eta}{\delta \varphi} \right\|
+\end{equation}
+\end{tcolorbox}
+dove $\left\| \det \frac{\delta \eta}{\delta \varphi} \right\|$ è lo Jacobiano funzionale della trasformazione da $\eta$ a $\varphi$. L'operatore $\frac{\delta \eta(t)}{\delta \varphi(s)}$ è dato da:
+\begin{equation}
+\frac{\delta \eta(t)}{\delta \varphi(s)} = \left( \partial_t + V'' \right) \delta(t-s)
+\end{equation}
+
+Se il rumore ha una correlazione generica $K(t,s)$ e se esiste l'inversa $K^{-1}$ tale che $\int ds' K(t,s')K^{-1}(s',s'') = \delta(t-s'')$, allora:
+\begin{equation}
+P[\eta(t)] \propto \exp\left\{ -\frac{1}{4D} \iint ds ds' \, \eta(s) K^{-1}(s,s') \eta(s') \right\}
+\end{equation}
+Per un rumore gaussiano delta-correlato dove $K^{-1}(s, s')=\delta(s-s')$:
+\begin{equation}
+P[\eta(t)] \propto \exp\left\{ -\frac{1}{4D} \int dt \, \eta^2(t) \right\}
+\end{equation}
+
+Per trattare la delta funzionale nella (\ref{eq:media_osservabile_delta}), si introduce una sua rappresentazione integrale mediante un campo ausiliario $\hat{\varphi}(s)$ (campo di risposta):
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{align}
+\delta[\dot{\varphi} + V'(\varphi) - \eta] &= \int \frac{\mathcal{D}\hat{\varphi}}{2 \pi i} \exp\left\{-\hat{\varphi} \cdot [\dot{\varphi} + V'(\varphi) - \eta] \right\} \nonumber \\ 
+&=\int \frac{\mathcal{D}\hat{\varphi}}{2 \pi i} \exp\left\{-\int ds \hat{\varphi}(s)[\partial_{s}\varphi(s)+V'(\varphi)-\eta(s)]\right\}
+\end{align}
+\end{tcolorbox}
+
+Andando a sostituire nella (\ref{eq:media_osservabile_delta}) si ottiene una scrittura più compatta:
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation}
+\langle O(\varphi) \rangle = \int \mathcal{D}\eta \int \mathcal{D}\varphi \mathcal{D} \hat{\varphi} \; O(\varphi) e^{-G} \left\| \det \frac{\delta \eta}{\delta \varphi} \right\|
+\end{equation}
+\end{tcolorbox}
+
+Dove abbiamo definito:
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    arc=3mm,               
+    boxrule=1.2pt
+]
+\begin{equation}
+G \equiv G(\eta,\varphi,\hat{\varphi}) = \int ds\, \mathcal{G}(\eta,\varphi,\hat{\varphi}) 
+\end{equation}
+\begin{equation}
+\mathcal{G}(\eta,\varphi,\hat{\varphi}) = \frac{\eta^2(s)}{4D} + \hat{\varphi}[\partial_s\varphi+V'-\eta]
+\end{equation}
+\end{tcolorbox}
+
+A questo punto, il nostro obiettivo è integrare esplicitamente rispetto alle realizzazioni del rumore. La parte dell'esponenziale $e^{-G}$ che dipende da $\eta$ è:
+\begin{equation}
+\exp\left(-\int ds \left[\frac{\eta^2(s)}{4D} - \hat{\varphi}(s)\eta(s)\right]\right)
+\end{equation}
+
+Definiamo quindi l'integrale funzionale sul rumore come:
+\begin{equation}
+I\{\hat{\varphi}\}\equiv\int\mathcal{D}\eta \exp\{-A[\eta,\hat{\varphi}]\}
+\label{eq:integrale_funz_rumore}
+\end{equation}
+dove l'azione $A[\eta,\hat{\varphi}]$ è data da:
+\begin{equation}
+A[\eta,\hat{\varphi}] \equiv\int ds \, \mathcal{L}_{\eta}(\eta(s),\hat{\varphi}(s))
+\end{equation}
+con la ``lagrangiana del rumore'' $\mathcal{L}_{\eta}$ definita come:
+\begin{equation}
+\mathcal{L}_{\eta}=\frac{\eta^{2}}{4D}-\hat{\varphi}\eta
+\label{eq:lagrangiana_rumore}
+\end{equation}
+
+L'integrale in (\ref{eq:integrale_funz_rumore}) è un integrale gaussiano funzionale rispetto a $\eta(s)$. Possiamo calcolarlo con il metodo del punto di sella. Cerchiamo il valore $\eta_{sp}(s)$ che minimizza $A[\eta,\hat{\varphi}]$ calcolando la derivata funzionale di $A$ rispetto a $\eta(t)$ e ponendola a zero:
+\begin{equation}
+\frac{\delta A}{\delta\eta(t)}=\int ds~\delta(t-s)\frac{\partial\mathcal{L}_{\eta}}{\partial\eta(s)} = \frac{\eta(t)}{2D}-\hat{\varphi}(t)=0
+\end{equation}
+
+Da cui otteniamo la relazione tra il rumore al punto di sella e il campo ausiliario $\hat{\varphi}(t)$:
+\begin{equation}
+\eta_{sp}(\hat{\varphi})=2D\hat{\varphi}(t)
+\label{eq:rumore_sella}
+\end{equation}
+
+Sostituendo questo risultato nell'espressione di $\mathcal{L}_{\eta}$ (\ref{eq:lagrangiana_rumore}), otteniamo il valore della lagrangiana del rumore al punto di sella:
+\begin{equation} 
+\mathcal{L}_{\eta} = \frac{(2D\hat{\varphi})^2}{4D} - \hat{\varphi}(2D\hat{\varphi}) = \frac{4D^2\hat{\varphi}^2}{4D} - 2D\hat{\varphi}^2 = -D\hat{\varphi}^2 
+\end{equation}
+
+Il valore medio dell'osservabile $O(\varphi)$ può quindi essere scritto come un integrale funzionale solo su $\varphi$ e $\hat{\varphi}$:
+\begin{equation}
+\langle O(\varphi)\rangle=\int\mathcal{D}\varphi\mathcal{D}\hat{\varphi}e^{-S[\varphi,\hat{\varphi}]}O(\varphi)
+\label{eq:msr_valore_medio}
+\end{equation}
+dove $S[\varphi,\hat{\varphi}]$ è la cosiddetta azione di Martin-Siggia-Rose (MSR), data da:
+\begin{equation} 
+S[\varphi,\hat{\varphi}] = \int ds \, \mathcal{L}[\varphi(s),\hat{\varphi}(s)] 
+\end{equation}
+Con:
+\begin{equation}
+\mathcal{L}[\varphi,\hat{\varphi}] = -D\hat{\varphi}^{2}(s) + \hat{\varphi}(s)[\partial_{s}\varphi(s)+V^{\prime}(\varphi(s))]
+\end{equation}
+
+Il termine Jacobiano $\left\|\det\frac{\delta\eta}{\delta\varphi}\right\|$ è stato qui assorbito nella normalizzazione dell'integrale funzionale. Per alcune scelte di discretizzazione (come la discretizzazione di Itô), questo determinante può essere indipendente da $\varphi$ e $\hat{\varphi}$ e quindi contribuire solo come una costante. In altri casi, può dipendere dai campi e portare a termini aggiuntivi nell'azione, ma spesso viene trascurato nelle derivazioni formali o si assume che la sua contribuzione sia cancellata da altri fattori.
+
+A questo punto, l'espressione per il valore medio di un osservabile coinvolge un'integrazione funzionale sui campi $\varphi$ e $\hat{\varphi}$, pesata con l'azione $S[\varphi,\hat{\varphi}]$. Il passo successivo consiste nell'analizzare questa azione, integrando anche sul campo ausiliario $\hat{\varphi}$:
+\begin{equation}
+\frac{\delta S}{\delta\hat{\varphi}(t)}=-2D\hat{\varphi}+\partial_{s}\varphi+V^{\prime}(\varphi)=0\Rightarrow\hat{\varphi}=\frac{1}{2D}[\partial_{s}\varphi+V^{\prime}(\varphi)]
+\end{equation}
+
+Si ottiene una nuova azione che dipende solo da $\varphi$. Calcoliamo i termini:
+\begin{equation}
+-D\hat{\varphi}^{2} = -D \left(\frac{1}{2D}[\partial_{s}\varphi+V^{\prime}(\varphi)]\right)^2 = -\frac{1}{4D}[\partial_{s}\varphi+V^{\prime}(\varphi)]^{2}
+\end{equation}
+\begin{equation}
+\hat{\varphi}[\partial_{s}\varphi+V^{\prime}(\varphi)]=\frac{1}{2D}[\partial_{s}\varphi+V^{\prime}(\varphi)]^{2}
+\end{equation}
+
+Sommando questi due termini, la lagrangiana efficace per $\varphi$ diventa:
+\begin{equation}
+\mathcal{L}[\varphi] = -\frac{1}{4D}[\partial_{s}\varphi+V^{\prime}(\varphi)]^{2} + \frac{1}{2D}[\partial_{s}\varphi+V^{\prime}(\varphi)]^{2} = \frac{1}{4D}[\partial_{s}\varphi+V^{\prime}(\varphi)]^{2} 
+\end{equation}
+
+La probabilità di una data traiettoria $\varphi(s)$ è quindi proporzionale a $e^{-A[\varphi]}$:
+\begin{equation}
+\begin{cases}
+A[\varphi] = \frac{1}{4D} \int ds \left[ \partial_s \varphi + V'(\varphi) \right]^2 \\
+P[\varphi] \propto e^{-A[\varphi]}
+\end{cases}
+\end{equation}
+Questa è nota come l'azione di Onsager-Machlup, e fornisce la probabilità di una specifica traiettoria $\varphi(s)$.
+
+La probabilità di transizione $P(\varphi_f, t_f | \varphi_i, t_i)$, può essere espressa tramite l'integrale sui cammini utilizzando l'azione di Martin-Siggia-Rose $S[\varphi,\hat{\varphi}]$:
+\begin{equation}
+P(\varphi_f, t_f | \varphi_i, t_i) = \int_{\varphi(t_i)=\varphi_i}^{\varphi(t_f)=\varphi_f}\mathcal{D}\varphi\mathcal{D}\hat{\varphi}e^{-S[\varphi,\hat{\varphi}]}
+\end{equation}
+dove l'integrazione è vincolata alle condizioni al contorno specificate.
+
+Nel limite di rumore debole, cioè per $D\rightarrow0$, l'integrale sui cammini è dominato dal cammino che minimizza l'azione $S[\varphi,\hat{\varphi}]$. Questo cammino è detto \textit{optimal path} e si ottiene annullando le derivate funzionali di $S$ rispetto a $\varphi$ e $\hat{\varphi}$ (equazioni di punto di sella):
+\begin{equation}
+\begin{cases}
+\left. \frac{\delta S}{\delta \varphi} \right|_{\text{SP}} = 0 & \Rightarrow \hat{\varphi} (\partial_s + V''(\varphi)) = 0 \\
+\left. \frac{\delta S}{\delta \hat{\varphi}} \right|_{\text{SP}} = 0 & \Rightarrow \partial_s \varphi = -V'(\varphi) + 2D\hat{\varphi}
+\end{cases}
+\end{equation}
+
+\noindent Se poniamo $\hat{\varphi}=0$ nelle equazioni del punto di sella, la seconda equazione si riduce a:
+\begin{equation}
+\partial_s\varphi = -V'(\varphi)
+\end{equation}
+che è l'equazione di moto deterministica in assenza di rumore. 
+
+\noindent Soluzioni con $\hat{\varphi} \neq 0$ descrivono invece i percorsi che deviano dalla traiettoria deterministica a causa del rumore, inclusi quelli, ad esempio, che permettono al sistema di superare barriere di potenziale (\textit{up-hill paths}).
+
+Per calcolare i valori medi e le funzioni di correlazione della variabile $\varphi(s)$, si introduce un funzionale generatore $Z[J]$. Questo si ottiene sostituendo l'osservabile $O(\varphi)$ con $e^{\int ds J(s)\varphi(s)}$:
+\begin{equation}
+Z[J]\equiv\langle e^{\int ds J(s)\varphi(s)}\rangle = \int\mathcal{D}\varphi\mathcal{D}\hat{\varphi}e^{-S[\varphi,\hat{\varphi}]+\int ds J(s)\varphi(s)}
+\end{equation}
+
+Le derivate funzionali di $Z[J]$ rispetto a $J(s)$, valutate in $J=0$, forniscono i momenti:
+\begin{equation}
+\frac{\delta Z[J]}{\delta J(s)}\Big|_{J=0}=\langle\varphi(s)\rangle
+\end{equation}
+\begin{equation}
+\frac{\delta^{2}Z[J]}{\delta J(t)\delta J(s)}\Big|_{J=0}=\langle\varphi(s)\varphi(t)\rangle
+\end{equation}
+
+Per calcolare le funzioni di risposta, che descrivono come il sistema reagisce a una perturbazione esterna, si considera l'equazione di Langevin con l'aggiunta di un campo (o forza) esterno $h(s)$:
+\begin{equation}
+\dot{\varphi}=-V^{\prime}(\varphi)+h(s)+\eta(s)
+\end{equation}
+
+L'accoppiamento con il campo esterno modifica l'azione $S[\varphi,\hat{\varphi}]$, l'azione in presenza del campo è data da:
+\begin{equation}
+S_{h}[\varphi,\hat{\varphi}] = S[\varphi,\hat{\varphi}] - \int ds h(s)\hat{\varphi}(s)
+\end{equation}
+
+La funzione di risposta lineare $R(t,s)$ è data da:
+\begin{equation}
+R(t, s) = \frac{\delta}{\delta h(s)} \langle \varphi(t) \rangle \bigg|_{h=0} = \frac{\delta}{\delta h(s)} \int \mathcal{D}\varphi \mathcal{D}\hat{\varphi} \, e^{-S_h[\varphi,\hat{\varphi}]} \varphi(t)
+\end{equation}
+Questa relazione è fondamentale nel formalismo di Martin-Siggia-Rose, poiché collega la funzione di risposta, una quantità che misura la reattività del sistema, a una funzione di correlazione tra il campo fisico $\varphi$ e il campo ausiliario $\hat{\varphi}$.

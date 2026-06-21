@@ -1,0 +1,300 @@
+\chapter{Lezione 15}
+\label{chap:lezione_15} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 29/04/2025}
+\end{flushright}
+\textit{Bibliografia: 
+Liouville equation and its solution. Fokker-Planck equation of Ornstein-Uhlenbeck processes: solution with method of characteristics. Comparison with results from stochastic dynamics. Differential Chapman-Kolmogorov equation.}
+
+\section{Espansione di Kramers-Moyal: equazione di Liouville}
+
+L'espansione di Kramers-Moyal per la probabilità condizionata $P(y,t|y_{0},t_{0})$ è data da:
+\begin{equation}
+\partial_{t}P(y,t|y_{0},t_{0})=\sum_{\nu=1}^{\infty}\frac{(-1)^{\nu}}{\nu!}\frac{\partial^{\nu}}{\partial y^{\nu}}(a_{\nu}(y)P(y,t|y_{0},t_{0}))
+\end{equation}
+dove $a_{\nu}(y)$ sono i coefficienti dell'espansione.
+
+\subsection{Caso dell'Equazione di Liouville}
+Se consideriamo il caso in cui solo $a_1 \neq 0$ e tutti gli $a_{\nu}=0$ per $\nu > 1$, otteniamo l'equazione di Liouville:
+\begin{equation}
+\partial_{t}P(x,t|x_{0},t_{0})=-\frac{\partial}{\partial x}[a_1(x)P(x,t|x_{0},t_{0})]
+\end{equation}
+
+Se $a_1(x) = v = \text{cost.}$, l'equazione diventa:
+\begin{equation}
+\partial_{t}P(x,t|x_{0},t_{0})=-\partial_{x}(v P(x,t|x_{0},t_{0}))
+\end{equation}
+con la condizione iniziale:
+\begin{equation}
+P(x,t_{0}|x_{0},t_{0})=\delta(x-x_{0})
+\end{equation}
+
+Passando allo spazio di Fourier per la variabile spaziale $x$, dove $q$ è la variabile coniugata a $x$:
+\begin{equation}
+\tilde{P}(q,t|x_0, t_0) = \int dx e^{-iqx} P(x,t|x_0, t_0)
+\end{equation}
+
+L'equazione trasformata è:
+\begin{equation}
+\partial_t \tilde{P}(q,t|x_0,t_0) = -iqv \tilde{P}(q,t|x_0,t_0)
+\end{equation}
+
+La condizione iniziale trasformata è:
+\begin{equation}
+\tilde{P}(q,t_0|x_0,t_0) = e^{-iqx_0}
+\end{equation}
+
+La soluzione nello spazio di Fourier è:
+\begin{equation}
+\tilde{P}(q,t|x_0, t_0) = e^{-iqx_0} e^{-iqv(t-t_0)} = e^{-iq(x_0 + v(t-t_0))}
+\end{equation}
+
+Definendo $x(t) \equiv x_0 + v(t-t_0)$, si ha:
+\begin{equation}
+\tilde{P}(q,t|x_0, t_0) = e^{-iqx(t)}
+\end{equation}
+
+Antitrasformando, si ottiene la soluzione nello spazio reale:
+\begin{equation}
+P(x,t|x_{0},t_{0})=\frac{1}{2\pi}\int_{-\infty}^{+\infty}dq \;e^{iq(x-x(t))} = \delta(x-x(t))
+\end{equation}
+Questa soluzione descrive un processo deterministico in cui la densità di probabilità si propaga come una delta di Dirac centrata sulla traiettoria classica $x(t)$.
+
+\section{Processo di Ornstein-Uhlenbeck}
+Il processo di Ornstein-Uhlenbeck è descritto dall'equazione di Langevin:
+\begin{equation}
+\dot{x}(t) = -kx + \tilde{\eta}(t) = -kx + \sqrt{2D}\eta(t)
+\end{equation}
+dove $\langle \tilde{\eta}(t)\tilde{\eta}(s) \rangle = 2D\delta(t-s)$ e $\langle \eta(t)\eta(s) \rangle = \delta(t-s)$
+
+\subsection{Media e varianza dello spostamento con il metodo delle caratteristiche}
+L'equazione di Fokker-Planck associata al processo di Ornstein-Uhlenbeck è:
+\begin{equation} \begin{cases}
+\partial_{t}P(x,t|x_{0},t_{0})=D\partial_{x}^{2}P(x,t|x_{0},t_{0}) + \partial_{x}(kx P(x,t|x_{0},t_{0})) \\ P(x,t_{0}|x_{0},t_{0})=\delta(x-x_{0}) \end{cases}
+\end{equation}
+
+Questa equazione si risolve passando nello spazio di Fourier per la variabile spaziale $x$. La trasformata $\tilde{P}(q,t|x_0,t_0)$ soddisfa:
+\begin{equation}
+\partial_{t}\tilde{P} + kq\partial_q\tilde{P} = -\frac{D}{2}q^{2}\tilde{P}
+\label{eq:13}
+\end{equation}
+
+La condizione iniziale trasformata è:
+\begin{equation}
+\tilde{P}(q,t_{0}|x_{0},t_{0})=e^{iqx_{0}} \equiv f(q_0)
+\end{equation}
+
+Questa è un'equazione differenziale alle derivate parziali (PDE) del primo ordine, che può essere risolta con il metodo delle caratteristiche.
+In generale possiamo riscrivere l'equazione \ref{eq:13} nel seguente modo:
+\begin{equation}
+a (q, t) \; \partial_t \tilde{P} + b(q,t) \; \partial_q \tilde{P} + c(q, t)\; \tilde{P} =0
+\end{equation}
+
+Si cercano curve caratteristiche $(q(s), t(s))$ lungo le quali la PDE diventa una ODE.
+Sia $\tilde{P}(q,t) \equiv \tilde{P}(q(s), t(s))$
+Le equazioni per le caratteristiche sono:
+\begin{equation}
+\frac{dt}{ds} = a(q, t) \quad (\text{coefficiente di } \partial_t \tilde{P})
+\end{equation}
+\begin{equation}
+\frac{dq}{ds} = b(q,t) \quad (\text{coefficiente di } \partial_q \tilde{P})
+\end{equation}
+Lungo queste curve:
+\begin{equation}
+\frac{d\tilde{P}}{ds} = \frac{\partial \tilde{P}}{\partial t}\frac{dt}{ds} + \frac{\partial \tilde{P}}{\partial q}\frac{dq}{ds} = a(q,t)\partial_t \tilde{P} + b(q,t)\partial_q \tilde{P}
+\end{equation}
+Quindi l'equazione per $\tilde{P}$ lungo le caratteristiche diventa:
+\begin{equation}
+\frac{d\tilde{P}}{ds} + c(q,t)\tilde{P} =0
+\end{equation}
+
+Questa è un'equazione differenziale ordinaria (ODE).
+Nel caso specifico si ha:
+\begin{equation} \begin{cases}
+\frac{dt}{ds} = 1 \quad \Rightarrow \quad t=s+A  \quad \Rightarrow \quad t=s \\ \frac{dq}{ds} = kq \quad \Rightarrow \quad \frac{dq}{q} = kds \quad \Rightarrow \quad q(t) = q_0 e^{k (t-t_0)} \end{cases}
+\label{eq:20}
+\end{equation}
+
+Per comodità abbiamo posto la costante $A=0$ .
+Dall'equazione \ref{eq:20} segue che:
+\begin{equation}
+q_0 = q(t) e^{-k (t-t_0)} 
+\label{eq:21}
+\end{equation}
+
+L'equazione per $\tilde{P}$ lungo le caratteristiche è:
+\begin{equation} \begin{cases}
+\frac{d\tilde{P}}{ds} = -\frac{Dq^{2}}{2}\tilde{P} \\ \tilde{P}(q,t_{0}|x_{0},t_{0})=e^{iq_0x_{0}} \equiv f(q_0)\end{cases}
+\end{equation}
+
+Sostituendo con $ds = \frac{dq}{kq}$ :
+\begin{equation}
+\frac{d\tilde{P}}{\tilde{P}} = -\frac{Dq^2}{2k}\frac{dq}{q}
+\end{equation}
+
+Integrando:
+\begin{align}
+\tilde{P} &= f(q_0) e^{-\frac{D}{4k}(q^2-q_0^2) } \\  &= e^{iq_0x_{0}} e^{-\frac{D}{4k}(q^2-q_0^2) }
+\end{align}
+
+Sostituiamo $q_0$ con l'equazione \ref{eq:21}:
+\begin{align}
+\tilde{P}   &= \exp\left(iq e^{-k (t-t_0)} x_{0} -\frac{Dq^2}{4k}\left[1- e^{-2k (t-t_0)} \right] \right)
+\end{align}
+
+Questa è nella forma $\tilde{P}(q,t|x_{0},t_{0}) = e^{Bq-Aq^2}$ con:
+\begin{equation}
+B = ix_{0}e^{-k(t-t_{0})}
+\end{equation}
+\begin{equation}
+A = \frac{D}{4k}(1-e^{-2k(t-t_{0})})
+\end{equation}
+
+L'antitrasformata di Fourier di una Gaussiana è:
+\begin{equation} \frac{1}{2\pi}\int_{-\infty}^{+\infty}dq e^{-iqx}e^{Bq-Aq^2} = \frac{1}{2\pi}\int_{-\infty}^{+\infty}dq e^{-Aq^2 + (B-ix)q} \end{equation}
+
+Questo è un integrale Gaussiano del tipo $\int_{-\infty}^{+\infty} e^{-az^2+bz}dz = \sqrt{\frac{\pi}{a}}e^{b^2/(4a)}$.
+Qui $a=A$ e $b=B-ix$.
+\begin{equation*}\frac{b^2}{4a} = \frac{( ix_{0}e^{-k(t-t_{0})}-ix)^2}{\frac{D}{k}(1-e^{-2k(t-t_{0})})} =\frac{(i(x_0 e^{-k(t-t_0)}-x  ))^2}{\frac{D}{k}(1-e^{-2k(t-t_{0})})} = \frac{-(x-x_0 e^{-k(t-t_0)})^2}{\frac{D}{k}(1-e^{-2k(t-t_{0})})}\end{equation*}
+
+Quindi:
+\begin{equation}
+P(x,t|x_{0},t_{0}) = \frac{1}{2\pi} \sqrt{\frac{4k \pi}{D(1-e^{-2k(t-t_0)})}} \exp\left\{-\frac{k(x-x_0e^{-k(t-t_0)})^2}{D(1-e^{-2k(t-t_0)})}\right\}
+\end{equation}
+
+Questa è una Gaussiana con media $\langle x(t) \rangle = x_0e^{-k(t-t_0)}$
+e varianza $\sigma^2(t) = \frac{D}{2k}(1-e^{-2k(t-t_0)})$.\\
+Per $t \rightarrow \infty$, la distribuzione tende a una distribuzione stazionaria:
+\begin{equation}
+P_{\infty}(x) = \sqrt{\frac{k}{\pi D}}e^{-\frac{k}{D}x^{2}}
+\end{equation}
+
+La media e la varianza al limite $t \rightarrow \infty$ sono:
+\begin{equation}
+\langle x(t) \rangle \xrightarrow{t\rightarrow\infty} 0
+\end{equation}
+\begin{equation}
+\langle x^{2}(t) \rangle\xrightarrow{t\rightarrow\infty} \frac{D}{2k}
+\end{equation}
+
+\subsection{Media e varianza dello spostamento dall'equazione di Langevin}
+SDE di un generico processo di Ornstein-Uhlenbeck:
+\begin{equation} \dot{\phi} =- k \phi+ \eta \end{equation}
+
+Nel caso di un oscillatore armonico overdamped si ha:
+\begin{equation} \begin{cases}
+\dot{x}(t) = -kx + \eta \\ x(t=0)=x_0\end{cases}
+\end{equation}
+
+Svolgendo i calcoli si può trovare la seguente soluzione:
+\begin{equation}
+x(t) = x_0 e^{-kt} + \int_0^t ds e^{-k(t-s)}\eta(s) \end{equation}
+
+Il valore medio è:
+\begin{equation} \langle x(t) \rangle = x_0 e^{-kt} \xrightarrow{t\rightarrow+\infty} 0 \end{equation}
+
+Per la varianza si può trovare:
+\begin{equation} \langle x^2(t) \rangle = x_0^2 e^{-2kt} + \int_0^t ds_1 \int_0^t ds_2 e^{-k(t-s_1)}e^{-k(t-s_2)} \langle \eta(s_1)\eta(s_2) \rangle \end{equation}
+
+Sfruttando la relazione $\langle \eta(s_1)\eta(s_2) \rangle = 2D \delta(s_1-s_2)$ :
+\begin{equation}
+\langle x^2(t) \rangle = x_0^2 e^{-2kt} + \frac{D}{k}(1-e^{-2kt}) \xrightarrow{t\rightarrow\infty} \frac{D}{k}
+\end{equation}
+
+La funzione di correlazione temporale è:
+\begin{equation}
+\langle x(t_1)x(t_2) \rangle = x_0^2 e^{-K(t_1+t_2)} + \frac{D}{K} (e^{-K|t_1-t_2|} - e^{-K(t_1+t_2)})
+\end{equation}
+
+\section{Equazione Differenziale di Chapman-Kolmogorov (DCK)}
+L'equazione di Chapman-Kolmogorov è una relazione integrale per la probabilità di transizione di un processo Markoviano:
+\begin{equation}
+P(y_3,t_3|y_1,t_1) = \int dy_2 P(y_3,t_3|y_2,t_2)P(y_2,t_2|y_1,t_1) \quad \text{per } t_1 < t_2 < t_3
+\end{equation}
+
+Si cerca di derivare un'equazione differenziale per $P$.
+Sostituendo le variabili:
+\begin{itemize}
+    \item $(y_1,t_1) \rightarrow (x_0,t_0)$ (condizione iniziale)
+    \item $(y_2,t_2) \rightarrow (y,t)$ (variabile di integrazione a un tempo intermedio $t$)
+    \item $(y_3,t_3) \rightarrow (x, t+\Delta t)$ (stato finale a un tempo $t+\Delta t$)
+\end{itemize}
+
+L'equazione diventa:
+\begin{equation}
+P(x,t+\Delta t|x_0,t_0) = \int dy P(x,t+\Delta t|y,t)P(y,t|x_0,t_0)
+\label{eq:42}
+\end{equation}
+
+Consideriamo una funzione di prova $\varphi(x) \in C^\infty$ tale che:
+\begin{equation}
+\int dx \; \varphi(x) P(x,t|x_0,t_0) = \langle P| \varphi \rangle \end{equation}
+
+\begin{equation}
+\int dx \; \varphi(x)  P(x,t+\Delta t|x_0,t_0) = \int dx \; \varphi(x) \int dy P(x,t+\Delta t|y,t)P(y,t|x_0,t_0)
+\label{eq:43}
+\end{equation}
+
+Vogliamo trovare la derivata temporale dell'equazione \ref{eq:43}, portiamo la derivata dentro l'integrale e usiamo la definizione di derivata:
+\begin{align}
+\partial_t \int dx \varphi(x) P(x,t&|x_0,t_0) = \nonumber \\ &\lim_{\Delta t \rightarrow 0} \frac{1}{\Delta t}  \left \{ \int dx \varphi(x) \left[ P(x,t+\Delta t)-  P(x,t) \right] \right\}
+\end{align}
+
+Sostituiamo il primo termine di destra con l'Equazione di CK \ref{eq:42}:
+\begin{align*}
+&\partial_t \int dx \varphi(x) P(x,t|x_0,t_0) =  \\ &\lim_{\Delta t \rightarrow 0} \frac{1}{\Delta t} \left[ \int dx \varphi(x) \int dy P(x,t+\Delta t|y,t)P(y,t|x_0,t_0) - \int dx \varphi(x) P(x,t|x_0,t_0) \right] \nonumber
+\end{align*}
+
+Cambiamo il nome della variabile muta di integrazione del secondo termine a destra:
+\begin{equation*}
+\int dx \varphi(x) P(x,t|x_0,t_0) =^{x \to y} \int dy \varphi(y) P(y,t|x_0,t_0) \end{equation*}
+
+E moltiplichiamo per l'identità $\int dx P(x,t+\Delta t|y,t) = 1$ (condizione di chiusura). Il secondo termine diventa:
+\begin{equation*}\int dy  \varphi(y)  \left[ \int dx P(x,t+\Delta t|y,t) \right]P(y,t|x_0,t_0) \end{equation*}
+
+Quindi si ottiene:
+\begin{equation}
+\begin{aligned}
+\partial_t \langle P|\varphi \rangle &= \lim_{\Delta t \rightarrow 0} \frac{1}{\Delta t} \Biggl[
+\phantom{-} \int dx \, \varphi(x) \int dy \, P(x,t+\Delta t|y,t)P(y,t|x_0,t_0) \\
+& \quad \quad\quad\quad\quad - \int dy \, \varphi(y) \int dx \, P(x,t+\Delta t|y,t) P(y,t|x_0,t_0)
+\Biggr] \\ &= \lim_{\Delta t \rightarrow 0} \frac{1}{\Delta t} \Biggl[ \int dy P(y,t|x_0,t_0) \int dx [\varphi(x)-\varphi(y)] P(x,t+\Delta t|y,t)\Biggr]
+\end{aligned}
+\label{eq:45}
+\end{equation}
+
+Si distingue tra processi continui e discontinui.
+
+\begin{tcolorbox}[
+    colback=colorA!5,      
+    colframe=colorA,       
+    title={Definizione},
+    fonttitle=\bfseries\sffamily,
+    arc=3mm,               
+    boxrule=1.2pt,         
+    halign title=flush left
+]
+Un processo stocastico Markoviano è continuo se:
+\begin{equation}
+\forall \epsilon > 0: \lim_{\Delta t \rightarrow 0} \frac{1}{\Delta t} \int_{|x-y|>\epsilon} dx P(x,t+\Delta t|y,t) = 0
+\end{equation}
+\end{tcolorbox}
+
+\begin{itemize}
+    \item Path discontinui con  $\int_{|x-y| > \epsilon}$
+    \item Path continui con  $\int_{|x-y| \le \epsilon}$  :
+\end{itemize}
+
+Per la parte continua del processo (dove $|x-y| \le \epsilon$), si espande $\varphi(x)$ in serie di Taylor attorno a $y$:
+\begin{equation}
+\varphi(x) = \varphi(y) + \sum_{m=1}^{N} \frac{(x-y)^m}{m!} \left. \frac{\partial^m \varphi}{\partial y^m} \right|_{y=x} + R_N
+\end{equation}
+Dove $R_N$ è il resto e tende a 0 per $\epsilon \to 0$.
+
+Sostituendo nell'equazione \ref{eq:45}:
+\begin{align*}
+\partial_t \langle P | \varphi \rangle &= \lim_{\Delta t \to 0} \frac{1}{\Delta t} \left\{ \int_{|x-y|\le\epsilon} dy dx \sum_m \frac{(x-y)^m}{m!} \left. \frac{\partial^m \varphi}{\partial y^m} \right|_{y=x} P(x,t+\Delta t|y,t) P(y,t|x_0,t_0) \right. \\
+&+ \left. \int \text{Resto} \right. \\  &+ \left. \int_{|x-y|>\epsilon} dx dy \, \varphi(x) P(x,t+\Delta t|y,t) P(y,t|x_0,t_0) \quad \right\} \\ &+ \dots 
+\end{align*}
+Il primo integrale è la parte continua, mentre il secondo quella discontinua.

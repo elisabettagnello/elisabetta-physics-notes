@@ -1,0 +1,403 @@
+\chapter{Lezione 3}
+\label{chap:lezione_03} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 10/03/2025}
+\end{flushright}
+\textit{Bibliografia: Thermodynamic potentials and Maxwell relations. Probability distribution of small fluctuations. Fluctuations of intensive and extensive observables. Fluctuations and Ornstein-Zernike formula. [DiCastro-Raimondi, Ch 1.4]. Introduction to kinetic theory [Thompson, Ch 1, DiCastro-Raimondi, Ch 2]}
+
+
+\section{Relazioni di Maxwell}
+
+Iniziamo la nostra trattazione partendo dai potenziali termodinamici. Il punto di partenza fondamentale è l'energia interna $U$. Le sue variabili naturali sono l'entropia $S$ e il volume $V$. Questo si evince direttamente dal primo e secondo principio della termodinamica, secondo cui la variazione di energia interna $dU$ può essere espressa come:
+\begin{equation}
+    dU = TdS - pdV
+    \label{eq:dU_ch3}
+\end{equation}
+
+Da questa espressione, vediamo che le derivate parziali di $U$ rispetto a $S$ e $V$ danno la temperatura $T$ e la pressione $p$:
+\begin{equation}
+    \frac{\partial U}{\partial S} \bigg|_{V} = T
+    \label{eq:dU_dS}
+\end{equation}
+\begin{equation}
+    \frac{\partial U}{\partial V} \bigg|_{S} = -p
+    \label{eq:dU_dV}
+\end{equation}
+
+Dalla relazione di uguaglianza delle derivate seconde miste $\frac{\partial^2 U}{\partial V \partial S} = \frac{\partial^2 U}{\partial S \partial V}$, otteniamo la relazione di Maxwell per l'energia interna:
+\begin{equation}
+    \frac{\partial T}{\partial V}\bigg|_{S}=-\frac{\partial P}{\partial s}\bigg|_{V}
+    \label{eq:maxwell_U_ch3}
+\end{equation}
+
+Tuttavia, per ragioni operative e sperimentali, è spesso più comodo lavorare a temperatura e pressione costanti piuttosto che a entropia costante. Per questo motivo, si introducono altri potenziali termodinamici attraverso trasformazioni di Legendre. Queste trasformazioni consentono di cambiare le variabili naturali del sistema, passando da una coppia di variabili estensiva-intensiva ad un'altra.
+
+\subsubsection{Energia Libera di Helmholtz F(T, V)}
+
+Per passare a variabili naturali $(T, V)$, si definisce l'energia libera di Helmholtz, $F$, partendo da $U(S,V)$ e applicando una trasformata di Legendre per sostituire la variabile estensiva $S$ con la variabile intensiva coniugata $T$.
+\begin{equation}
+    F = U - TS
+    \label{eq:def_F_ch3}
+\end{equation}
+
+Il suo differenziale è $dF = dU - TdS - SdT = -pdV - SdT$. Da cui si ricavano le derivate parziali:
+\begin{equation}
+    \frac{\partial F}{\partial T} \bigg|_{V} = -S
+    \label{eq:dF_dT}
+\end{equation}
+\begin{equation}
+    \frac{\partial F}{\partial V} \bigg|_{T} = -p
+    \label{eq:dF_dV}
+\end{equation}
+
+La corrispondente relazione di Maxwell è:
+\begin{equation}
+    \frac{\partial P}{\partial T}\bigg|_{V}=+\frac{\partial S}{\partial V}\bigg|_{T}
+    \label{eq:maxwell_F}
+\end{equation}
+
+\subsubsection{Energia Libera di Gibbs G(T, P)}
+
+Per passare a variabili naturali $(T, P)$, si definisce l'energia libera di Gibbs, $G$, partendo da $F(T,V)$.
+\begin{equation}
+    G(T,P)=F+pV
+    \label{eq:def_G}
+\end{equation}
+
+Il suo differenziale è:
+\begin{equation}
+    dG = -SdT+VdP
+    \label{eq:dG}
+\end{equation}
+
+Da cui le derivate parziali:
+\begin{equation}
+    \frac{\partial G}{\partial T}\bigg|_{P}=-S
+    \label{eq:dG_dT}
+\end{equation}
+\begin{equation}
+    \frac{\partial G}{\partial P}\bigg|_{T}=V
+    \label{eq:dG_dP}
+\end{equation}
+
+E la relativa relazione di Maxwell:
+\begin{equation}
+    \frac{\partial V}{\partial T}\bigg|_{P}=-\frac{\partial S}{\partial P}\bigg|_{T}
+    \label{eq:maxwell_G}
+\end{equation}
+
+\section{Fluttuazioni e Stabilità Termodinamica}
+
+Consideriamo un sistema piccolo in cui è più probabile osservare delle fluttuazioni rispetto al sistema complessivo. Queste fluttuazioni possono essere spontanee o imposte esternamente. Quando osserviamo una fluttuazione, il sistema deve rimanere in una condizione di stabilità termodinamica.
+
+Il punto di partenza è il costo energetico della fluttuazione, anche detto Lavoro minimo o availability $\Delta A$:
+\begin{equation}
+    \Delta A=(\Delta U-T_{0}\Delta S+p_{0}\Delta V)
+    \label{eq:delta_A}
+\end{equation}
+
+Dove $T_0$ e $p_0$ sono la temperatura e la pressione dell'ambiente (termostato). Poiché all'equilibrio il primo ordine dello sviluppo è nullo, si analizza il secondo ordine per derivare le condizioni di stabilità termodinamica. Queste condizioni richiedono che i calori specifici e la compressibilità siano definiti positivi:
+\begin{equation}
+\begin{cases}
+    c_{v}&>0 \\ c_{p}&>0 \\ K_{s}&>0
+\end{cases}
+\end{equation}
+
+\subsection*{Relazione di Boltzmann e Probabilità delle Fluttuazioni}
+
+Per collegare la termodinamica con la meccanica statistica, si parte dalla famosa relazione di Boltzmann, che lega l'entropia $S$ (una grandezza macroscopica) al numero di microstati accessibili $W$ (una misura dello spazio delle fasi microscopico):
+\begin{equation}
+    s=K_{b}\ln (W)
+    \label{eq:boltzmann}
+\end{equation}
+Dove $K_b$ è la costante di Boltzmann ($K_b = R/N_a$).
+
+L'idea di Einstein fu quella di invertire questa relazione per stimare la probabilità di osservare un dato microstato. Questa probabilità è proporzionale al numero di modi in cui tale stato può essere realizzato:
+\begin{equation}
+    P(\text{micro})\propto e^{S/K_{b}}
+    \label{eq:prob_micro}
+\end{equation}
+
+Utilizzando questo principio, possiamo stimare la probabilità di una fluttuazione termodinamica. Questa sarà proporzionale all'esponenziale della variazione di entropia totale dell'universo (sistema + ambiente), $\Delta S_{TOT}$:
+\begin{equation}
+    P(\text{flutt.})\propto e^{\Delta S_{TOT}/K_{b}}
+    \label{eq:prob_flutt_S}
+\end{equation}
+
+La variazione di entropia totale è legata al lavoro minimo $\Delta A$ dalla relazione:
+\begin{equation}
+    -\Delta S_{TOT}=\frac{1}{T_{0}}\Delta A
+    \label{eq:delta_S_A}
+\end{equation}
+
+Sostituendo, otteniamo la probabilità di una fluttuazione in funzione di $\Delta A$:
+\begin{equation}
+    P(\text{flutt.})\propto e^{\Delta S_{TOT}/K_{b}}=e^{-\Delta A/K_{b}T}
+    \label{eq:prob_flutt_A}
+\end{equation}
+
+Introducendo $\beta = \frac{1}{K_b T}$, e considerando che per piccole fluttuazioni il costo energetico è dominato dallo sviluppo al secondo ordine dell'energia, $\Delta U^{(2)}$, si ha:
+\begin{equation}
+    P(\text{flutt.})=e^{-\beta\Delta U^{(2)}}
+    \label{eq:prob_flutt_U2}
+\end{equation}
+
+\subsection*{Analisi delle Fluttuazioni (Sviluppo al Secondo Ordine)}
+
+Il termine $\Delta A$ corrisponde allo sviluppo al secondo ordine dell'energia interna, $\Delta U^{(2)}$:
+\begin{equation}
+    \Delta A=\Delta U^{(2)}=\frac{1}{2}\left\{\frac{\partial^{2}U}{\partial V^{2}}\bigg|_{S}(\Delta V)^{2}+\frac{\partial^{2}U}{\partial s^{2}}\bigg|_{V}(\Delta S)^{2}+2\frac{\partial^{2}U}{\partial S\partial V}\Delta S\Delta V\right\}
+    \label{eq:delta_A_U2}
+\end{equation}
+
+Utilizzando le derivate dei potenziali, possiamo riscrivere i termini:
+\begin{equation}
+    \Delta A = \frac{1}{2}\left(-\frac{\partial P}{\partial V}\bigg|_{S}(\Delta V)^{2}+\frac{\partial T}{\partial S}\bigg|_{V}(\Delta S)^{2}-\frac{\partial P}{\partial S}\Delta S\Delta V+ \frac{\partial T}{\partial V}\Delta S\Delta V\right)
+    \label{eq:delta_A_derivate}
+\end{equation}
+
+Raccogliendo i termini, notiamo che le espressioni tra parentesi quadre corrispondono a $\Delta P$ e $\Delta T$:
+\begin{equation}
+    \Delta A = \frac{1}{2}\bigg\{-\Delta V\underbrace{\left[\frac{\partial P}{\partial V}\Delta V+\frac{\partial P}{\partial S}\Delta S\right]}_{\Delta P}+\Delta S\underbrace{\left[\frac{\partial T}{\partial S}\Delta S+\frac{\partial T}{\partial V}\Delta V\right]}_{\Delta T}\bigg\}
+    \label{eq:delta_A_raccolto}
+\end{equation}
+
+Otteniamo così una forma più compatta per $\Delta A$:
+\begin{equation}
+    \Delta A=\frac{1}{2}\{-\Delta V\Delta P+\Delta S\Delta T\}
+    \label{eq:delta_A_compatto}
+\end{equation}
+
+Per ottenere una forma gaussiana nelle variabili di fluttuazione $\Delta V$ e $\Delta T$, che sono spesso più facili da controllare sperimentalmente, esprimiamo $\Delta P$ e $\Delta S$ in funzione di queste:
+\begin{equation}
+    \Delta P=\frac{\partial P}{\partial T}\Delta T+\frac{\partial P}{\partial V}\Delta V \quad , \quad \Delta S=\frac{\partial S}{\partial T}\Delta T+\frac{\partial S}{\partial V}\Delta V
+    \label{eq:delta_P_S}
+\end{equation}
+
+Sostituendo, e usando la relazione di Maxwell $\frac{\partial S}{\partial V}|_T = \frac{\partial P}{\partial T}|_V$ (eq. \ref{eq:maxwell_F}), il termine incrociato $\Delta V \Delta T$ si annulla, diagonalizzando la forma quadratica:
+\begin{equation}
+    \Delta A=\frac{1}{2}\left\{-\frac{\partial P}{\partial V}(\Delta V)^{2}+\frac{\partial S}{\partial T}(\Delta T)^{2}+\underbrace{\Delta V\Delta T\left(\frac{\partial S}{\partial V}\bigg|_{T}-\frac{\partial P}{\partial T}\bigg|_{V}\right)}_{=0}\right\}
+    \label{eq:delta_A_diagonale}
+\end{equation}
+
+Introduciamo le funzioni di risposta del sistema: la compressibilità isoterma $K_T$ e il calore specifico a volume costante per unità di volume $c_V$:
+\begin{equation}
+    K_{T}=-\frac{1}{V}\frac{\partial V}{\partial P}\bigg|_{T}
+    \label{eq:def_KT}
+\end{equation}
+\begin{equation}
+    c_{V}=\frac{T}{V}\left(\frac{\partial S}{\partial T}\right)_V
+    \label{eq:def_cV}
+\end{equation}
+
+Da cui:
+\begin{equation}
+    \frac{\partial P}{\partial V}\bigg|_{T}=\frac{-1}{VK_{T}} \quad , \quad \frac{\partial S}{\partial T}\bigg|_{V}=\frac{c_{V} V}{T}
+    \label{eq:derivate_risposta}
+\end{equation}
+
+La probabilità della fluttuazione assume la forma di una gaussiana:
+\begin{equation}
+    P(\text{flutt.})=e^{-\beta\Delta U^{(2)}}=\exp\left(\frac{-1}{2k_{B}T}\left[\frac{1}{VK_{T}}(\Delta V)^{2}+\frac{c_{V} V}{T}(\Delta T)^{2}\right]\right)
+    \label{eq:prob_gaussiana}
+\end{equation}
+
+Da questa distribuzione, possiamo calcolare le varianze delle fluttuazioni:
+\begin{itemize}
+    \item \textbf{Fluttuazione del Volume (variabile estensiva):}
+    \begin{equation}
+        \langle(\Delta V)^{2}\rangle=VK_{T}K_{b}T\sim N
+        \label{eq:varianza_V}
+    \end{equation}
+    \item \textbf{Fluttuazione della Temperatura (variabile intensiva):}
+    \begin{equation}
+        \langle(\Delta T)^{2}\rangle=\frac{K_{b}T^{2}}{VC_v}\sim\frac{1}{N}
+        \label{eq:varianza_T}
+    \end{equation}
+\end{itemize}
+
+Un risultato notevole è che la fluttuazione relativa, sia per una quantità estensiva che intensiva, va a zero nel limite termodinamico ($N \rightarrow \infty$):
+\begin{equation}
+    \frac{\langle(\Delta O)^{2}\rangle^{1/2}}{\langle O\rangle} \sim \frac{1}{\sqrt{N}}\longrightarrow0 \quad \quad \quad\text{ per } N\rightarrow\infty
+    \label{eq:fluttuazione_relativa}
+\end{equation}
+
+\subsection*{Punti Critici e l'Espressione di Ornstein-Zernike}
+
+Le fluttuazioni diventano particolarmente interessanti quando divergono, come in prossimità di una transizione di fase. In un diagramma di fase P-V di un fluido, esiste un'isoterma critica che termina nel punto critico.
+
+In questo punto, la pendenza dell'isoterma è nulla:
+\begin{equation}
+    \frac{\partial P}{\partial V}=0 \quad \quad \longrightarrow \quad \quad K_{T}\rightarrow+\infty
+    \label{eq:punto_critico}
+\end{equation}
+Una divergenza della compressibilità $K_T$ implica fluttuazioni macroscopiche del volume e della densità.
+
+Per studiare le correlazioni spaziali di queste fluttuazioni, si usa l'approccio di \textbf{Ornstein-Zernike}.
+
+Introduciamo la densità di particelle $n$ (una quantità intensiva):
+\begin{equation}
+    n=\frac{N}{V}
+    \label{eq:def_n}
+\end{equation}
+La fluttuazione relativa del volume è legata a quella della densità:
+\begin{equation}
+    \frac{\Delta V}{V}=-\frac{\Delta n}{n}
+    \label{eq:flutt_V_n}
+\end{equation}
+
+Partendo dalla varianza del volume $\langle(\Delta V)^{2}\rangle=VK_{T}K_{b}T$ (eq. \ref{eq:varianza_V}), possiamo trovare la varianza delle fluttuazioni di densità. Sostituendo la relazione tra le fluttuazioni, otteniamo:
+\begin{equation}
+    \langle(\Delta n)^{2}\rangle=\frac{n^{2}}{V}K_{T}K_{b}T
+    \label{eq:varianza_n}
+\end{equation}
+
+La probabilità di osservare una fluttuazione omogenea di densità $\Delta n$ assume quindi la forma di una gaussiana:
+\begin{equation}
+    P(\text{flutt.}) \propto \exp\left\{-\frac{1}{2}\frac{V}{K_{b}Tn^{2}K_{T}}(\Delta n)^{2}\right\}
+    \label{eq:prob_flutt_n}
+\end{equation}
+
+\subsection*{Fluttuazioni Spaziali e Trasformata di Fourier}
+
+Ora permettiamo alla densità di variare punto per punto nello spazio, considerando una fluttuazione locale $\delta n(\vec{x})$ rispetto al valor medio $\bar{n}$:
+\begin{equation}
+    n(\vec{x})=\overline{n}+\delta n(\vec{x})
+    \label{eq:n_locale}
+\end{equation}
+
+Il costo energetico della fluttuazione, $\Delta A$, diventa un integrale su tutto il volume di una densità di energia libera $u(\vec{x})$:
+\begin{equation}
+    \Delta A=\int d\vec{x}u(\vec{x})
+    \label{eq:delta_A_integrale}
+\end{equation}
+
+Questa densità di energia $u(\vec{x})$ dipenderà non solo dalla fluttuazione locale $\delta n(\vec{x})$, ma anche da come essa varia nello spazio, cioè dal suo gradiente $\nabla \delta n(\vec{x})$.
+
+Espandendo $u(\vec{x})$ al second'ordine per piccole fluttuazioni e assumendo un sistema isotropo (in cui i termini di primo gradiente sono nulli), l'espressione per $\Delta A$ diventa:
+\begin{equation}
+    \Delta A=\int d\vec{x}\left[\frac{1}{2n^{2}K_{T}}(\delta n(x))^{2}+\frac{u^{(2)}}{2}(\nabla \delta n(x))^2\right]
+    \label{eq:delta_A_espanso}
+\end{equation}
+dove il coefficiente $u^{(2)}$ è una costante che deriva dallo sviluppo in serie e rappresenta il costo energetico associato alla "rigidità" del sistema, ovvero quanto è energeticamente sfavorevole creare una variazione spaziale della densità.
+
+Per "diagonalizzare" questa espressione, passiamo allo spazio di Fourier. Definiamo $\Lambda$ come il cutoff dei vettori d'onda. La trasformata della fluttuazione di densità è quindi una somma limitata da questo cutoff:
+\begin{equation}
+    \delta n(\vec{x})=\frac{1}{\sqrt{V}}\sum_{|k|<\Lambda}e^{i\vec{k}\cdot \vec{x}}\delta n(\vec{k})
+    \label{eq:fourier_n}
+\end{equation}
+
+Nello spazio di Fourier, il costo energetico $\Delta A$ diventa una somma sui modi $\vec{k}$, dove il termine di gradiente si trasforma in un termine in $k^2$:
+\begin{equation}
+    \Delta A=\sum_{|k|<\Lambda}\frac{1}{2}\left\{\frac{1}{n^{2}K_{T}}+u^{(2)} k^{2}\right\}|\delta n(\vec{k})|^{2}
+    \label{eq:delta_A_fourier}
+\end{equation}
+
+\subsubsection{Funzione di Correlazione e Divergenza}
+
+Questa espressione per $\Delta A$ descrive ancora una distribuzione di probabilità gaussiana per ogni modo di fluttuazione $\delta n(\vec{k})$. La varianza di ogni modo è data dall'inverso del coefficiente nell'esponenziale:
+\begin{equation}
+    \langle|\delta n(\vec{k})|^{2}\rangle=\frac{K_{b}T}{c_1 k^{2}+c_2}
+    \label{eq:varianza_nk}
+\end{equation}
+Dove $c_1=u^{(2)}$ e $c_2= \frac{1}{n^2 K_T}$.
+
+Antitrasformando questa espressione, si ottiene la funzione di correlazione spaziale $G(\vec{x}) = \langle \delta n(\vec{x}) \delta n(0) \rangle$, che descrive come una fluttuazione in un punto sia correlata a una fluttuazione in un altro punto. Per grandi distanze, questa funzione ha la forma:
+\begin{equation}
+    G(x) \sim \frac{e^{-x/\xi}}{x}
+    \label{eq:corr_G}
+\end{equation}
+dove $\xi$ è la \textbf{lunghezza di correlazione}. Questa lunghezza caratteristica è determinata dal rapporto dei coefficienti del termine in $k^2$ e del termine costante al denominatore della varianza:
+\begin{equation}
+    \xi^{2}=\frac{c_1}{c_2}
+    \label{eq:def_xi}
+\end{equation}
+Da questa relazione vediamo che la lunghezza di correlazione è proporzionale alla radice quadrata della compressibilità:
+\begin{equation}
+    \xi \sim K_{T}^{1/2}
+    \label{eq:xi_KT}
+\end{equation}
+
+Questo è un risultato fondamentale: quando ci si avvicina al punto critico, $K_T \rightarrow \infty$, e di conseguenza anche la lunghezza di correlazione $\xi$ diverge.
+
+\section{Teoria Cinetica}
+
+\subsection*{Introduzione Storica}
+
+Storicamente, l'approccio alla meccanica statistica non partì dai problemi di equilibrio, ma da quelli di non-equilibrio, attraverso la teoria cinetica. Lo scopo è ottenere un legame tra il mondo microscopico dei costituenti (atomi, molecole) e il mondo macroscopico.
+
+La teoria cinetica non lavora nello spazio delle fasi $\Gamma$ (6N dimensioni) ma nel cosiddetto spazio $\mu$, lo spazio a 6 dimensioni di posizione $\vec{r}$ e velocità $\vec{v}$ di una singola particella. L'oggetto di studio è la funzione di distribuzione $f(\vec{r}, \vec{v}, t)$, tale che $f(\vec{r}, \vec{v}, t)d\vec{r}d\vec{v}$ è il numero di particelle che al tempo $t$ si trovano in un intorno $d\vec{r}$ di $\vec{r}$ con velocità in un intorno $d\vec{v}$ di $\vec{v}$.
+
+Si considerano le seguenti ipotesi per un gas diluito:
+\begin{enumerate}
+    \item \textbf{Alta temperatura}: La lunghezza d'onda termica di de Broglie $\lambda_T$ è piccola rispetto alle distanze interparticellari, permettendo una trattazione classica.
+    \begin{equation}
+        \lambda_{T}=\sqrt{\frac{2\pi\hbar^{2}}{mk_{b}T}}
+        \label{eq:deBroglie_lambda}
+    \end{equation}
+    \item \textbf{Bassa densità}: Le collisioni avvengono principalmente tra due particelle (collisioni binarie).
+\end{enumerate}
+
+\subsection*{Primi Modelli Cinetici}
+
+\begin{itemize}
+    \item \textbf{Step Zero (Clausius, 1856):} Si considera un gas in un cubo di lato L. Le particelle hanno tutte la stessa velocità $v$. La frazione $\Phi$ di particelle che collidono con una faccia in un tempo $\delta t$ è:
+    \begin{equation}
+        \Phi = \frac{N v \delta t}{L}
+        \label{eq:clausius_phi}
+    \end{equation}
+    La pressione è data da:
+    \begin{equation}
+        P=\frac{1}{6} \frac{N v \delta t}{L} \frac{2mv}{L^2 \delta t} = \frac{1}{3} \frac{Nmv^2}{L^3}
+        \label{eq:clausius_p}
+    \end{equation}
+    Da cui si ottiene l'equazione di stato per un gas ideale:
+    \begin{equation}
+        PV=\frac{2}{3}E_{cin}
+        \label{eq:gas_ideale}
+    \end{equation}
+    
+    \item \textbf{Maxwell (1859):} Maxwell migliora il modello introducendo una distribuzione statistica per le velocità $f(v_i)$. La pressione viene calcolata come un integrale su tutte le possibili velocità:
+    \begin{equation}
+        P=\int_{0}^{\infty}dv_{i}f(v_{i})\Phi\frac{2mv_{i}}{\delta tL^{2}}
+        \label{eq:maxwell_p}
+    \end{equation}
+\end{itemize}
+
+\subsection*{Calcolo della lunghezza d'onda termica di de Broglie $\lambda_T$}
+
+Per un gas ideale classico, l'Hamiltoniana è puramente cinetica:
+\begin{equation}
+    H=\sum_{i=1}^{N}\frac{p_{i}^{2}}{2m}
+    \label{eq:hamiltoniana_gas}
+\end{equation}
+La funzione di partizione canonica classica è:
+\begin{equation}
+    Z_{B}=\int\prod_{i}\frac{d\mathbf{p}_{i}d\mathbf{q}_{i}}{h^{3N}N!}e^{-\beta H}
+    \label{eq:Z_B}
+\end{equation}
+L'integrazione sulle posizioni dà $V^N$:
+\begin{equation}
+    Z_{B}=\frac{V^{N}}{h^{3N}N!}\int\prod_{i}d\vec{p}_{i}e^{-\frac{\beta}{2m}\Sigma{p_{i}}^{2}}
+    \label{eq:Z_B_V}
+\end{equation}
+L'integrale gaussiano sugli impulsi è:
+\begin{equation}
+    \int_{-\infty}^{+\infty}dwe^{-\frac{\beta}{2m}w^{2}}=\sqrt{\frac{2\pi m}{\beta}}
+    \label{eq:gauss_integral}
+\end{equation}
+Elevando alla $3N$, la funzione di partizione diventa:
+\begin{equation}
+    Z_{B}=\frac{V^{N}}{h^{3N}N!}\left(\sqrt{\frac{2\pi m}{\beta}}\right)^{3N}=\frac{V^{N}}{N!}\left(\frac{2\pi mk_{b}T}{h^2}\right)^{3N/2}
+    \label{eq:Z_B_finale}
+\end{equation}
+Questa espressione può essere riscritta definendo la lunghezza d'onda termica di de Broglie $\lambda_T$ come in eq. \ref{eq:deBroglie_lambda}:
+\begin{equation}
+    \lambda_T = \left(\frac{2\pi \hbar^2 }{mk_{b}T}\right)^{1/2}
+\end{equation}
+E la funzione di partizione diventa:
+\begin{equation}
+    Z_B = \frac{1}{N!}\left(\frac{V}{\lambda_T^3}\right)^N
+    \label{eq:Z_B_lambda}
+\end{equation}

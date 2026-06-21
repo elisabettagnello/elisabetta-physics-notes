@@ -1,0 +1,150 @@
+\chapter{Lezione 4}
+\label{chap:lezione_04} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 11/03/2025}
+\end{flushright}
+\textit{Bibliografia: Non-homogeneous density profiles [DiCastro-Raimondi, Ch. 1.4]. Kinetic Theory. Kronig-Clausius model. Maxwell model. The Boltzmann equation. [Thompson, Ch. 1, DiCastro-Raimondi Ch 2, Huang, Ch. 3]}
+
+\section{Teoria Cinetica di Maxwell}
+
+Maxwell migliora il modello della teoria cinetica introducendo una distribuzione statistica per le velocità, invece di assumerle tutte uguali. Introduce la funzione di distribuzione di probabilità $f(v_i)$ per la componente $i$-esima della velocità.
+
+Assume che la distribuzione sia pari: $f(v_i)=f(-v_i)$.
+
+La pressione esercitata su una faccia viene quindi calcolata come un integrale su tutte le possibili velocità, pesato dalla distribuzione $f(v_i)$:
+\begin{equation}
+    P=\int_{0}^{\infty}dv_{i}f(v_{i})\Phi\frac{2mv_{i}}{\delta tL^{2}}
+    \label{eq:maxwell_p_integral}
+\end{equation}
+
+Effettuo il conto faccia per faccia:
+\begin{equation}
+    P=\int_{0}^{\infty}dv_{i}f(v_{i})\frac{2mNv_{i}^2}{V}
+    \label{eq:maxwell_p_integral_2}
+\end{equation}
+
+Usando la parità di $f(v_i)$ si trova:
+\begin{equation}
+    P =  \frac{2N}{V} \left< \frac{1}{2} m v_i^2 \right>
+    \label{eq:maxwell_p_avg}
+\end{equation}
+Dove il valor medio è definito come: $\langle O(v_i) \rangle = \int_{-\infty}^{+\infty} dv_i f(v_i) O(v_i)$.
+
+Sommando su ogni componente si trova:
+\begin{equation}
+    \left< \frac{1}{2} m v_i^2 \right> = \frac{1}{3} \left< \frac{1}{2} m \sum_i^3 v_i^2 \right> = \frac{1}{3N} \left< \frac{1}{2} N m v^2 \right>
+    \label{eq:avg_energy_component}
+\end{equation}
+
+Riscrivendo l'equazione, si ottiene:
+\begin{equation}
+    PV = \frac{2}{3} \langle E \rangle = RT \implies T = \frac{2}{3R} \langle E \rangle = \frac{1}{3k_B} \frac{m}{2} \langle v^2 \rangle
+    \label{eq:temperature_kinetic}
+\end{equation}
+
+Si ha quindi l'interpretazione della temperatura come energia cinetica media della particella.
+
+Dalla parità e isotropia di $f$ segue che questa dipende solo dal modulo:
+\begin{equation}
+    f(v_x^2 + v_y^2 + v_z^2) \to f(v^2) = A e^{-B v^2}
+    \label{eq:distrib_maxwell}
+\end{equation}
+
+Sono le velocità relative degli urti ad essere correlate tra loro. Ci si aspetta che $f(v, t)$ sia funzione di velocità e tempo, trascorso sufficiente tempo dovrebbe arrivare ad una condizione $f_0(v)$. Su tempi lunghi si riduce la correlazione per cui è possibile descrivere una distribuzione stazionaria.
+
+Boltzmann modellizza un gas diluito (=alte temperature) che non parte dall'equilibrio. L'idea è che l'equilibrio nasca dalle collisioni.
+
+\begin{itemize}
+    \item Per un \textbf{gas omogeneo} la distribuzione è solo della velocità e non della posizione. Si considerano $N$ sfere rigide modellizzate con un potenziale di interazione di potenziale infinito a distanza relativa $a$, con $f(v, t)$ funzione di distribuzione della velocità.
+    
+    Il numero di particelle che hanno  $v \in [v, v+dv]$ è:
+    \begin{equation}
+        dN = f(v, t) dv 
+        \label{eq:dN_v}
+    \end{equation}
+    
+    Assunzioni:
+    \begin{enumerate}
+        \item \textbf{Solo urti binari} (ipotesi sulla dinamica): ciò significa che il cammino libero medio $l \gg a$ con $l = \frac{V}{N^{1/3}}$ (il sistema è diluito).
+        \item \textbf{Caos molecolare}: è un'ipotesi sulla distribuzione di coppia.
+        \begin{equation}
+            f^{(2)}(v_1, v_2, t) = f^{(1)}(v_1, t) f^{(1)}(v_2, t) \implies f_{12}^{(2)} = f_1^{(1)} f_2^{(1)}
+            \label{eq:caos_molecolare}
+        \end{equation}
+        ossia le velocità sono scorrelate, è un'ipotesi di tipo statistico.
+    \end{enumerate}
+    
+    \item In un \textbf{gas non omogeneo} $f(r, v, t) \implies dN = f(r, v, t) dr dv$.
+\end{itemize}
+
+I differenziali devono essere considerati in maniera fisica, in modo che il volumetto abbia un numero di particelle sufficiente da permettere una trattazione statistica. In condizione standard $\approx 10^{19}$ molecole per $cm^3$. Consideriamo $d \bar{r} \approx 10^{-10} cm^3$ in modo che ci siano $\approx 10^{9}$ molecole in $d \bar{r}$.
+
+Consideriamo l’evoluzione temporale:
+
+$t + \delta t \longrightarrow f(\bar{r}+ \bar{v} \delta t, \bar{v} + \frac{1}{m} \bar{F} \delta t, t+ \delta t ) d\bar{r}’ d\bar{v}’ = f(\bar{r}, \bar{v} , t) d\bar{r} d\bar{v}$
+
+$f (\bar{r}+ \delta \bar{r}, \bar{v} + \delta \bar{v}, t+\delta t) = f (\bar{r}, \bar{v}, t) +  \frac{\partial f}{\partial t} \delta t +  \frac{\partial f}{\partial \bar{r}} \delta \bar{r} + \frac{\partial f}{\partial \bar{v}} \delta \bar{v} + O(\delta^2) =    f (\bar{r}, \bar{v}, t)$
+
+\begin{equation}
+    \frac{\partial f}{\partial t} + \vec{v} \cdot \nabla_{\vec{r}} f + \frac{\vec{F}}{m} \cdot \nabla_{\vec{v}} f = \left( \frac{\partial f}{\partial t} \right)_{\text{coll}}
+    \label{eq:boltzmann_equation}
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $\vec{v} \cdot \nabla_{\vec{r}} f$ descrive la variazione di $f$ dovuta al moto delle particelle (termine di trasporto).
+    \item $\frac{\vec{F}}{m} \cdot \nabla_{\vec{v}} f$ descrive la variazione di $f$ dovuta all'azione di una forza esterna $\vec{F}$.
+    \item $\left( \frac{\partial f}{\partial t} \right)_{\text{coll}}$ è l'\textbf{integrale di collisione}, che modella la variazione di $f$ a causa degli urti tra le particelle.
+\end{itemize}
+
+Nel caso senza urti l’evoluzione è:
+\begin{equation}
+    \left \{ \frac{\partial}{\partial t} + \bar{v} \frac{\partial}{\partial \bar{r}} + \frac{1}{m}\bar{F} \frac{\partial}{\partial v}  \right\} f (\bar{r}, \bar{v}, t) =0 \quad \quad \text{(Equazione di trasporto)}
+    \label{eq:transport_equation}
+\end{equation}
+
+Se $\bar{F} =0$ e il sistema è omogeneo (non dipende da $\bar{r}$), e reintroducendo gli urti.
+
+Il termine di collisione viene scomposto in due parti: un termine di guadagno ($I_{\text{in}}$) e un termine di perdita ($I_{\text{out}}$).
+\begin{equation}
+    \left( \frac{\partial f}{\partial t} \right)_{\text{coll}} = I_{\text{in}} - I_{\text{out}}
+    \label{eq:collision_integral}
+\end{equation}
+
+\begin{itemize}
+    \item Il \textbf{termine di perdita ($I_{\text{out}}$)} conta le particelle con velocità $\vec{v}$ che, a seguito di un urto, cambiano la loro velocità, uscendo così dal volume infinitesimo.
+    \item Il \textbf{termine di guadagno ($I_{\text{in}}$)} conta le particelle che, avendo inizialmente una velocità diversa da $\vec{v}$, acquisiscono proprio la velocità $\vec{v}$ a seguito di un urto, entrando così nel volume.
+\end{itemize}
+
+Il calcolo di questi termini si basa su considerazioni geometriche. Si considera un "cilindro di collisione" con un volume infinitesimo spazzato dalla velocità relativa $\vec{g} = \vec{v} - \vec{v}_1$ di due particelle che urtano. Integrando su tutte le possibili velocità delle particelle bersaglio e su tutti i possibili parametri d'urto, si ottiene la forma esplicita dell'integrale di collisione.
+
+Se gli urti sono binari, in un “volumetto” (inteso come regione di velocità) ci saranno particelle che entrano e altre che escono.
+
+Se si ha a che fare con urti elastici, momento ed energia si conservano:
+\begin{equation}
+    \bar{v_1}+  \bar{v_2} =\bar{v_1}'+  \bar{v_2}' \quad \quad , \quad \quad \bar{v_1}^2+  \bar{v_2}^2 =\bar{v_1}'^2+  \bar{v_2}'^2
+    \label{eq:elastic_collision}
+\end{equation}
+
+È conveniente usare delle coordinate relative:
+\begin{equation}
+    \bar{g}= \bar{v_2}-\bar{v_1} \quad \quad , \quad \quad \bar{g}'= \bar{v_2}'-\bar{v_1}'
+    \label{eq:relative_coords}
+\end{equation}
+
+Avverrà una collisione tra le due particelle se il parametro d’urto è minore del diametro delle particelle, ovvero solo se esse si trovano in un volume $g \delta t$ in lunghezza.
+\begin{equation}
+    2 \alpha = \pi - \theta \implies \alpha = \frac{\pi - \theta}{2}
+    \label{eq:alpha_theta}
+\end{equation}
+\begin{equation}
+    b = a \sin \alpha  = a \sin \frac{\pi - \theta}{2} = a \cos \frac{ \theta}{2} \implies db = \frac{a}{2}\sin \frac{ \theta}{2}  \; d\theta
+    \label{eq:impact_parameter}
+\end{equation}
+
+Guardando un elemento del cilindro di collisione:
+\begin{equation}
+    b \; d \phi \; db \; g \; \delta t = a \cos \frac{ \theta}{2}  \; b \; \frac{db}{d \theta } \; d\theta \; d \phi \; g \; \delta t = \frac{ a^2}{2} \cos \frac{ \theta}{2} \sin \frac{ \theta}{2} \; d\theta \; d \phi \; g \; \delta t
+    \label{eq:collision_cylinder_element}
+\end{equation}

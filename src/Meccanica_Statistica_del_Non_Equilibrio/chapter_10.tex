@@ -1,0 +1,313 @@
+\chapter{Lezione 10}
+\label{chap:lezione_10} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 01/04/2025}
+\end{flushright}
+\textit{Bibliografia: 
+Random Walk in 1d and Brownian motion. From Chapman-Kolmogorov to Fokker-Plank through Kramers-Moyal expansion in the case of 1d random walk. Wiener processes. Finite difference Brownian motion. Stochastic integration. [Gardiner 3.8.1, Gardiner 3.8.2, Gardiner 4.2.1]}
+
+\section*{Recap}
+Il moto Browniano, osservato in particelle sospese in un fluido, rappresenta un punto di partenza naturale per introdurre le equazioni differenziali stocastiche. La traiettoria di queste particelle appare estremamente irregolare al microscopio. L'interpretazione fisica, radicata nella teoria cinetica, è che la particella sia costantemente in collisione con le molecole del fluido circostante (il "bagno termico"). Assumiamo che il fluido sia all'equilibrio termodinamico. Il moto irregolare della particella è una proprietà emergente dell'interazione con i gradi di libertà microscopici (le molecole del fluido) su una scala più piccola. Modernamente, possiamo vedere la particella Browniana come una "sonda" immersa in un sistema complesso (il fluido) per studiarne le proprietà.
+
+Storicamente, il problema è stato affrontato principalmente tramite due approcci complementari:
+
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{itemize}
+    \item \textbf{Approccio di Einstein:} Basato sull'evoluzione della distribuzione di probabilità della posizione della particella, $P(x,t)$, tramite un'equazione di diffusione.
+    \item \textbf{Approccio di Langevin:} Basato sull'equazione del moto Newtoniana ($F=ma$) per la singola particella, includendo forze dissipative e una forza stocastica (rumore).
+\end{itemize}
+\end{tcolorbox}
+
+\section{Approccio di Langevin: Equazione del Moto Stocastica}
+Questo approccio si concentra sulla dinamica della singola particella (colloide) di massa $m$. Si parte dalla seconda legge di Newton:
+\begin{equation}
+\label{eq:newton_langevin}
+m \frac{d\vec{v}}{dt} = \vec{F}_{TOT}
+\end{equation}
+
+La forza totale \textbf{agente sulla particella è modellizzata come somma di:}
+\begin{itemize}
+    \item Una forza di attrito viscoso, proporzionale alla velocità: $\vec{F}_{visc} = -\zeta \vec{v}$, dove $\zeta$ è il coefficiente di attrito. Questo termine rappresenta la dissipazione.
+    \item Una forza stocastica (o "rumore") $\delta F(t)$, che rappresenta l'effetto netto degli urti casuali delle molecole del fluido sulla particella. Questo termine rappresenta le fluttuazioni.
+\end{itemize}
+
+È cruciale notare la separazione delle scale temporali:
+\begin{itemize}
+    \item Tempo di collisione tra molecole del fluido: $\sim 10^{-11} \text{ s}$
+    \item Tempo di rilassamento della velocità della particella Browniana: $\sim 10^{-7} \text{ s}$
+    \item Tempo osservativo del moto Browniano: secondi o più.
+\end{itemize}
+Il rumore riflette l'effetto dei gradi di libertà veloci (molecole) sul grado di libertà lento (particella). L'equilibrio è raggiunto quando "tutte le cose veloci sono accadute" (Feynman).
+
+\section{Random Walk 1D e Moto Browniano}
+Per comprendere meglio la connessione tra descrizione microscopica discreta e l'equazione di diffusione continua, consideriamo un camminatore aleatorio su un reticolo 1D con passo $a$.
+
+\begin{itemize}
+    \item Passo $N$
+    \item Posizione: $x = Na$
+    \item Tempo: $t = N \delta t$
+    \item Probabilità di fare un passo a destra: $q$
+    \item Probabilità di fare un passo a sinistra: $1-q$
+\end{itemize}
+
+\begin{verbatim}
+|---|---|---|---|---|---->
+    0   a     
+\end{verbatim}
+
+Sia $P(x, N)$ la probabilità di trovarsi in $x$ al passo $N$. L'evoluzione è data da:
+\begin{equation}
+\begin{cases}
+P(x, N+1) = \sum_y \prod(x,y) P(y, N) \\ 
+P(x,0) =\delta(x)
+\end{cases}
+\end{equation}
+
+Dove $\prod(x,y)$ indica la probabilità di transire dalla posizione $x$ a quella $y$. Abbiamo imposto la condizione iniziale di trovarci al passo $N=0$ in $x$ tramite la delta di Dirac.
+Questo è un processo Markoviano: la probabilità futura dipende solo dallo stato presente, non dalla storia passata (="memoria solo dello step precedente").
+
+Sostituendo $\prod(x,y)$ con $q$ e $1-q$, e scrivendo esplicitamente la sommatoria si ha:
+\begin{equation}
+\label{eq:rw_discrete}
+P(x, N+1) = q P(x-a, N) + (1-q) P(x+a, N)
+\end{equation}
+Abbiamo scritto in modo esplicito la probabilità di arrivare in $x$ da sinistra (ovvero da $x-a$) e destra (ovvero da $x+a$).
+
+Consideriamo ora il limite per $a \to 0$ e $\delta t \to 0$. Sostituiamo $N \to t$ e $N+1 \to (t+\delta t)$:
+\begin{equation}
+\label{eq:rw_continuous}
+P(x, t+\delta t) = q P(x-a, t) + (1-q) P(x+a, t)
+\end{equation}
+
+Espandiamo entrambi i membri in serie di Taylor per $\delta t$ e $a$ piccoli:
+
+\begin{itemize}
+    \item Termine di sinistra:
+\begin{equation}
+P(x, t+\delta t) \approx P(x,t) + \delta t \frac{\partial P}{\partial t}
+\end{equation}
+
+\item Termine di destra:
+\begin{equation}
+P(x\pm a, t) \approx P(x,t) \pm a \frac{\partial P}{\partial x} + \frac{a^2}{2} \frac{\partial^2 P}{\partial x^2} + \dots 
+\end{equation}
+
+\end{itemize}
+
+Sostituendo e riorganizzando:
+\begin{equation}
+\begin{aligned}
+P + \delta t \frac{\partial P}{\partial t} &\approx q \left( P - a P_x + \frac{a^2}{2} P_{xx} \right) + (1-q) \left( P + a P_x + \frac{a^2}{2} P_{xx} \right) \\
+P + \delta t \frac{\partial P}{\partial t} &\approx (q+1-q)P + (-qa + a - qa) P_x + \left(q \frac{a^2}{2} + (1-q)\frac{a^2}{2}\right) P_{xx} \\
+P + \delta t \frac{\partial P}{\partial t} &\approx P + a(1-2q) P_x + \frac{a^2}{2} P_{xx} \\  
+\delta t \frac{\partial P}{\partial t} &\approx  a(1-2q) P_x + \frac{a^2}{2} P_{xx}
+\end{aligned}
+\end{equation}
+
+Dividendo per $\delta t$ e prendendo il limite:
+\begin{equation}
+\frac{\partial P}{\partial t} = \lim_{\delta t, a \to 0} \left( -(2q-1)\frac{a}{\delta t} \frac{\partial P}{\partial x} + \frac{a^2}{2 \delta t} \frac{\partial^2 P}{\partial x^2} \right)
+\end{equation}
+
+Affinché il limite sia ben definito, dobbiamo mantenere costanti:
+
+\begin{enumerate}
+    \item  La velocità di drift:
+\begin{equation} 
+v_d = \lim \;(2q-1) \frac{a}{\delta t} 
+\end{equation}
+
+\item Il coefficiente di diffusione:
+\begin{equation} 
+D = \lim \frac{a^2}{2 \delta t} 
+\end{equation}
+\end{enumerate}
+
+Otteniamo così l'Equazione di Fokker-Planck:
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+\label{eq:fokker_planck}
+\frac{\partial P(x,t)}{\partial t} = -v_d \frac{\partial P(x,t)}{\partial x} + D \frac{\partial^2 P(x,t)}{\partial x^2}
+\end{equation}
+\end{tcolorbox}
+
+Se $q=1/2$ (camminata simmetrica), allora $v_d=0$ e ritroviamo l'equazione di diffusione pura.
+Se $q \neq 1/2$, c'è una deriva sistematica (drift) sovrapposta alla diffusione.
+È necessario arrivare al secondo ordine nello sviluppo spaziale ($a^2$) per ottenere il termine diffusivo. Fermarsi al primo ordine darebbe solo l'advezione $\partial_t P = -v_d \partial_x P$.
+
+\subsection{Approccio di Einstein}
+Possiamo ritrovare l'equazione (\ref{eq:fokker_planck}) anche usando l'approccio di Einstein. Questo approccio descrive l'evoluzione della densità di probabilità $P(x,t)$ di trovare la particella nella posizione $x$ al tempo $t$.
+Si può ricavare l'equazione (\ref{eq:fokker_planck}) considerando gli spostamenti casuali $\Delta$ che la particella subisce in un piccolo intervallo di tempo $\delta t$. Assumendo una distribuzione di probabilità $\phi(\Delta)$ con varianza finita, si può scrivere:
+\begin{equation}
+P(x, t+\delta t) = \int d\Delta \, \phi(\Delta) P(x-\Delta, t)
+\end{equation}
+
+Espandiamo in serie di Taylor $P(x, t+\delta t)$ per $\delta t$ piccoli e $P(x-\Delta, t)$ per $\Delta$ piccoli:
+\begin{equation}
+P(x, t+\delta t) \approx P(x,t) + \delta t \frac{\partial P}{\partial t}
+\end{equation}
+\begin{equation}
+P(x-\Delta,  t) \approx P(x,t) - \Delta  \frac{\partial P}{\partial x} + \frac{\Delta^2 }{2} \frac{\partial^2 P}{\partial x^2} + \dots
+\end{equation}
+
+Sostituendo e dividendo per $\delta t$:
+\begin{equation}
+\frac{\partial P(x,t)}{\partial t} = - \frac{ \Delta }{\delta t} \frac{\partial P(x,t)}{\partial x} + \frac{ \Delta^2 }{2 \delta t} \frac{\partial^2 P(x,t)}{\partial x^2}
+\end{equation}
+
+Abbiamo ritrovato un'equazione analoga alla (\ref{eq:fokker_planck}) con $v_d = \frac{ \Delta }{\delta t}$ e $D = \frac{ \Delta^2 }{2 \delta t}$.
+Assumendo una distribuzione di probabilità $\phi(\Delta)$ simmetrica, il termine con la derivata prima è nullo e ritroviamo l'equazione di diffusione pura senza drift.
+
+\section{Mean Square Displacement (MSD)}
+
+\subsection{Dall'Equazione di Langevin}
+Risolvendo l'equazione di Langevin, si può calcolare l'evoluzione temporale dello spostamento quadratico medio $\langle x^2(t) \rangle$.
+Si trovano due regimi distinti, separati dal tempo di rilassamento $\tau = m/\zeta$:
+\begin{itemize}
+    \item \textbf{Regime balistico} ($t \ll \tau$): L'inerzia domina. La particella si muove quasi liberamente tra gli urti. $\langle x^2(t) \rangle \propto t^2$
+    \item \textbf{Regime diffusivo} ($t \gg \tau$): La particella ha subito molte collisioni, "dimenticando" la sua velocità iniziale. Il moto è dominato dalla diffusione. $\langle x^2(t) \rangle \approx 2Dt$ dove $D = k_B T / \zeta$
+\end{itemize}
+Il crossover tra i due regimi avviene attorno a $t \approx \tau$.
+
+\subsection{Dall'Equazione di Diffusione}
+Consideriamo l'equazione di diffusione pura (equivalente al caso $v_d=0$).
+\begin{equation}
+\frac{\partial P(x,t)}{\partial t} = D\frac{\partial^2 P(x,t)}{\partial x^2}
+\end{equation}
+Con $\int dx\; P(x,t) = 1 \quad \forall t$
+
+Calcoliamo l'evoluzione temporale di $\langle x^2 \rangle$:
+\begin{equation}
+\langle x^2(t) \rangle = \int_{-\infty}^{+\infty} dx \, x^2 P(x,t)
+\end{equation}
+
+Derivando rispetto al tempo:
+\begin{equation}
+\begin{aligned}
+\frac{d \langle x^2 \rangle}{dt} &= \int dx \, x^2 \frac{\partial P}{\partial t} \\
+&= \int dx \, x^2 \left( D \frac{\partial^2 P}{\partial x^2} \right) \\
+&\quad \text{(Integrazione per parti)} \\
+&= D \left[ x^2 \frac{\partial P}{\partial x} \right]_{-\infty}^{+\infty} - D \int dx \, (2x) \frac{\partial P}{\partial x} \\ 
+&\quad \text{(Termini al bordo nulli)} \\
+&= -2D \int dx \, x \frac{\partial P}{\partial x} \\ 
+&\quad \text{(Integrazione per parti)} \\
+&= -2D \left[ x P \right]_{-\infty}^{+\infty} + 2D \int dx \, P(x,t)\\ 
+&\quad \text{(Termini al bordo nulli)} \\
+&= 2D \int dx \, P(x,t) \\ 
+&\quad \left( \int P(x,t) dx = 1 \right) \\
+&= 2D
+\end{aligned}
+\end{equation}
+
+Quindi:
+\begin{equation}
+\frac{d \langle x^2 \rangle}{dt} = 2D
+\end{equation}
+
+Integrando nel tempo (assumendo $\langle x^2(0) \rangle = 0$):
+\begin{equation}
+\langle x^2(t) \rangle = 2Dt
+\end{equation}
+Questo risultato mostra solo il regime diffusivo. L'approccio basato sull'equazione di diffusione non cattura il regime balistico iniziale perché assume implicitamente che il tempo di rilassamento $\tau$ sia trascurabile (limite overdamped), ovvero parte da una descrizione dove l'inerzia non gioca un ruolo.
+
+\section{Equazione di Chapman-Kolmogorov}
+L'evoluzione di un processo Markoviano può essere descritta in modo più generale dall'equazione di Chapman-Kolmogorov, che lega le distribuzioni di probabilità a tempi diversi tramite una probabilità di transizione $\prod (x,y)$:
+\begin{equation}
+P(x, t+\delta t) = \int dy \, \prod (x,y) P(y, t)
+\end{equation}
+Il passaggio dall'equazione integrale di Chapman-Kolmogorov (o dalla master equation discreta) all'equazione differenziale di Fokker-Planck viene effettuato tramite l'espansione di Kramers-Moyal. Questa è essenzialmente l'espansione di Taylor che abbiamo usato nel caso del random walk. Mantiene tipicamente solo i primi due momenti (drift e diffusione) degli incrementi del processo.
+
+\section{Processo di Wiener}
+
+\subsection{Equazioni Differenziali Stocastiche (SDE): Forma Generale}
+L'obiettivo è comprendere meglio la relazione tra la descrizione tramite equazione di Fokker-Planck e la descrizione tramite SDE.
+Una SDE generica per una variabile $x(t)$ può essere scritta (formalmente) come:
+\begin{equation}
+\label{eq:sde_generale}
+\frac{dx}{dt} = a(x,t) + b(x,t) \xi(t)
+\end{equation}
+dove:
+\begin{itemize}
+    \item $a(x,t)$ è il termine di drift (deterministico).
+    \item $b(x,t)$ modula l'intensità del rumore.
+    \item $\xi(t)$ è il rumore bianco Gaussiano, con $\langle \xi(t) \rangle = 0$ e $\langle \xi(t) \xi(t') \rangle = 2D \delta(t-t')$
+\end{itemize}
+
+\begin{tcolorbox}[colback=colorF!5,colframe=colorF,title=\textbf{!! Attenzione !!}, fonttitle=\bfseries\sffamily, arc=3mm, boxrule=1.2pt]
+L'equazione (\ref{eq:sde_generale}) presenta problemi formali perché $\xi(t)$, essendo delta-correlato, non è una funzione ben definita e la sua "varianza istantanea" sarebbe infinita. Questo si riflette nel fatto che le traiettorie del processo risultante, $x(t)$, pur essendo continue, non sono differenziabili.
+\end{tcolorbox}
+
+Consideriamo il caso più semplice con:
+\begin{itemize}
+    \item $a=0$
+    \item $b=1$
+    \item $\langle \xi(t)\xi(t') \rangle = \delta(t-t')$ (convenzione $D=1/2$)
+\end{itemize}
+
+L'equazione è:
+\begin{equation} 
+\frac{dx}{dt} = \xi(t) 
+\end{equation}
+
+La soluzione della corrispondente equazione di Fokker-Planck:
+\begin{equation}  
+\partial_t P =D \; \partial_x^2 P
+\end{equation}
+
+è la Gaussiana ($D=1/2$):
+\begin{equation}
+P(x, t | x_0, t_0) = \frac{1}{\sqrt{2\pi (t-t_0)}} e^{-\frac{(x-x_0)^2}{2(t-t_0)}}
+\end{equation}
+
+Per un piccolo incremento temporale $\Delta t$, l'incremento spaziale $\Delta x = x(t_0+\Delta t) - x(t_0)$ segue una distribuzione:
+\begin{equation}
+P(x_0 +\Delta x, t_0+\Delta t) = \frac{1}{\sqrt{2\pi \Delta t}} e^{-\frac{\Delta x^2}{2\Delta t}}
+\end{equation}
+
+Questo $\Delta x$ può essere visto come un'istanza $\Delta W$ di un incremento del processo di Wiener:
+\begin{equation}
+P(\Delta W,  t) = \frac{1}{\sqrt{2\pi \Delta t}} e^{-\frac{\Delta W^2}{2\Delta t}}
+\end{equation}
+
+\subsection{Non-Differenziabilità delle Traiettorie}
+Consideriamo il seguente rapporto incrementale:
+\begin{equation} 
+\frac{x(t+h) - x(t)}{h} 
+\end{equation}
+
+La sua varianza è:
+\begin{equation} 
+\frac{\langle (x(t+h)-x(t))^2 \rangle}{h^2} = \frac{\langle (\Delta W)^2 \rangle}{h^2} = \frac{h}{h^2} = \frac{1}{h} 
+\end{equation}
+Al tendere di $h \to 0$, la varianza diverge.
+
+Più formalmente, calcoliamo la probabilità che il valore assoluto del rapporto incrementale superi una costante $K > 0$:
+\begin{equation} 
+\begin{aligned}
+Prob\left( \left| \frac{x(t+h) - x(t)}{h} \right| > K \right) &= Prob\left( |x'-x| > hK \right) \\ &= 2 \int_{hK}^{\infty} \frac{dx}{\sqrt{2\pi h}} e^{-x^2/2h}
+\end{aligned} 
+\end{equation}
+
+Nel limite $h \to 0$, l'integrale tende a:
+\begin{equation} 
+\lim_{h \to 0} \; 2 \int_{hK}^{\infty} \frac{dx}{\sqrt{2\pi h}} e^{-x^2/2h} = 1 
+\end{equation}
+
+Questo significa che, per ogni $K$, la probabilità che il rapporto incrementale sia maggiore di $K$ tende a 1 quando $h \to 0$. La derivata è quindi infinita "quasi ovunque". Tale processo ha traiettorie continue ma non derivabili quasi ovunque.
+
+\subsection{Formulazione Integrale}
+Poiché la forma differenziale (\ref{eq:sde_generale}) è problematica, si preferisce la forma integrale. L'idea è che l'integrazione sia un'operazione più "regolare" della differenziazione.
+L'equazione (\ref{eq:sde_generale}) viene riscritta introducendo l'incremento del processo di Wiener:
+\begin{equation}  
+dW(t) = \xi(t) dt 
+\end{equation}
+\begin{equation}
+dx(t) = a(x,t) dt + b(x,t) dW(t)
+\end{equation}
+
+Questa è un'abbreviazione per l'equazione integrale:
+\begin{equation}
+x(t) - x(t_0) = \int_{t_0}^t a(x(s), s) ds + \int_{t_0}^t b(x(s), s) dW(s)
+\end{equation}
+Il primo integrale è un integrale standard di Riemann. Il secondo è un integrale stocastico, che richiede una definizione precisa.

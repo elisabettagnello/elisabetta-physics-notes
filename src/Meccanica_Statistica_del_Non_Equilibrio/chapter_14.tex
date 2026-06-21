@@ -1,0 +1,400 @@
+\chapter{Lezione 14}
+\label{chap:lezione_14} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 28/04/2025}
+\end{flushright}
+\textit{Bibliografia: 
+Chapman-Kolmogorov and Master Equation for continuous processes. Kramers-Moyal and Fokker-Planck. Average over initial conditions and the Fokker-Planck equation for the 1-particle reduced distribution. Probability current, boundary conditions (natural, reflecting, and absorbing), and stationary solutions. Fokker-Planck for the overdamped Langevin equation: Smoluchowski equation and stationary solution. Maxwell-Boltzmann velocity distribution}
+
+\section{Chapman-Kolmogorov e Master Equation}
+
+Si considera l'operatore di transizione $T_{\tau+ \tau'}(y_3|y_1)$ che descrive la probabilità di transizione da uno stato $y_1$ a uno stato $y_3$. Questo può essere espresso attraverso la composizione di due transizioni intermedie, integrando su tutti i possibili stati intermedi $y_2$:
+\begin{equation}
+T_{\tau+ \tau'}(y_3|y_1) = \int dy_2 T_{ \tau'}(y_3|y_2) T_{ \tau}(y_2|y_1)  
+\end{equation}
+
+
+Definiamo l'operatore di transizione infinitesimale $T_{\tau}(x|y)$ come:
+\begin{equation}
+T_{\tau}(x|y) =
+\begin{cases}
+\tau W(x|y) & \text{se } x \neq y \\
+1 - \tau a_0(x) & \text{se } x = y
+\end{cases} 
+\end{equation}
+dove $y$ è lo stato di partenza e $x$ è lo stato di arrivo. $W(x|y)$ è la **rate di transizione** (probabilità di transizione per unità di tempo) da $y$ a $x$ (con $x \neq y$) , $a_0(y)$ rappresenta la rate totale di uscita dallo stato $y$.
+
+La condizione di normalizzazione per la probabilità di transizione è:
+\begin{equation}
+\int dx \;T_{\tau}(x|y) = 1
+\end{equation}
+
+
+Sostituendo l'espressione (3) e usando la delta di Dirac per il caso $x=y$:
+\begin{align}
+\int dx \;T_{\tau}(x|y) = 1 &= \int dx \; \tau W(x|y) + \int dx \; [ 1 - \tau a_0(x) ] \delta(x-y) \nonumber \\ &= \tau  \int dx \; W(x|y) + 1 - \tau a_0(y)
+\end{align}
+
+Segue:
+\begin{equation}
+\tau \int_{x \neq y} dx W(x|y)  - \tau a_0(y) = 0
+\end{equation}
+
+
+Assumendo che $W(x|y)$ sia definita anche per $x=y$ ma che non contribuisca al salto (o che $W(y|y)=0$), otteniamo la relazione che definisce $a_0(y)$:
+\begin{equation}
+a_0(y) = \int dx W(x|y)  
+\end{equation}
+Per ottenere un'equazione differenziale, partiamo dall'equazione di Chapman-Kolmogorov. 
+\begin{equation}
+T_{\tau+ \tau'}(y_3|y_1) = \int dy_2 T_{ \tau'}(y_3|y_2) T_{ \tau}(y_2|y_1)  
+\end{equation}
+Sostituiamo $T_{ \tau'}(y_3|y_2)$ con l’ Eq. $(3)$ e $a_0(y_2)$ con la $(7)$:
+\begin{align*}
+T_{\tau+ \tau'}(y_3|y_1) &= \int dy_2 \; \{ \tau'   \; W(y_3|y_2) + \left[1 - \tau' a_0(y_2) \delta(y_3 -y_2) \right] \;  \} \;T_{ \tau}(y_2|y_1)  \nonumber \\ &= \tau' \int dy_2 \;  W(y_3|y_2) \; T_{ \tau}(y_2|y_1)  + T_{ \tau}(y_3|y_1) \nonumber \\   &- \tau' \int dy_2 \; W(y_2|y_3)   \; T_{ \tau}(y_2|y_1) 
+\end{align*}
+Portiamo $T_{ \tau}(y_3|y_1)$ a sinistra, dividiamo per $\tau’$ e consideriamo il limite:
+\begin{align}
+&\lim_{\tau' \to 0} \frac{1}{\tau'} \left( T_{\tau+ \tau'}(y_3|y_1) - T_{ \tau}(y_3|y_1) \right) = \dots
+\end{align}
+Otteniamo la Master Equation (o equazione differenziale di Chapman-Kolmogorov):
+\begin{equation}
+\partial_t P(y,t|y_0,t_0) = \int dz \{ W(y|z)P(z,t|y_0,t_0) - W(z|y)P(y,t|y_0,t_0) \} 
+\end{equation}
+
+dove abbiamo identificato:    $y_3 \equiv y \; , \quad  y_1 \equiv y_0 \; , \quad y_2 \equiv z \; , \quad T \equiv P$    e abbiamo usato la definizione di derivata.
+
+Questa equazione descrive come la probabilità di trovarsi nello stato $y$ al tempo $t$ cambia a causa dei salti da altri stati $z$ verso $y$ (termine positivo, "gain") e dei salti dallo stato $y$ verso altri stati $z$ (termine negativo, "loss").
+
+\subsection{ Interpretazione con Salti e Momenti}
+
+Possiamo anche caratterizzare le transizioni in termini di "salti" $r$. La probabilità di transizione $T_\tau(y;r)$ descrive la probabilità che, partendo da $y$, si arrivi in $y+r$ con un salto di ampiezza $r$. 
+
+\begin{equation}
+T_{\tau}(y;r) =
+\begin{cases}
+\tau W(y;r) & \text{se } r \neq 0 \\
+[1-\tau a_0(y+r)]\delta(r) & \text{se } r = 0
+\end{cases}
+\end{equation}
+Qui $W(y;r)$ è la rate di transizione per un salto di ampiezza $r$ partendo da $y$.
+
+I salti che stiamo considerando sono tali che per $t \to 0$ si resta sempre connessi alla traiettoria.
+
+La normalizzazione $\int dr T_{\tau}(y;r) = 1$ porta a:
+\begin{equation}
+a_0(y) = \int dr W(y;r)
+\end{equation}
+Si definiscono poi i momenti della rate di transizione $a_{\nu}(y)$ come:
+\begin{equation}
+a_{\nu}(y) = \int dr r^{\nu} W(y;r)  
+\end{equation}
+Questi momenti saranno cruciali per l'espansione di Kramers-Moyal.
+
+\section{ Approssimazione di Kramers-Moyal e Equazione di Fokker-Planck}
+
+Si introducono le seguenti ipotesi:
+\begin{itemize}
+    \item Salti piccoli: Esiste $\delta r_0$ tale che $W(y;r) \simeq 0$ per $|r| > \delta r_0$
+\item Dipendenza debole dal punto di partenza del salto:
+Esiste $\delta y_0$ tale che $W(y+ \Delta y;r) \simeq W(y;r)$ per $|\Delta y| < \delta y_0$
+    
+\end{itemize} 
+Definendo: 
+
+\begin{equation} F(y,r;t) \equiv W(y-r;r)P(y-r,t) \end{equation}
+si può sviluppare in serie di Taylor per salti piccoli ($r$ piccolo)
+\begin{equation*}
+\partial_t P(y,t|y_0,t_0) = \int dr \left[ -r \partial_y (W(y;r)P(y,t)) + \frac{1}{2}r^2 \partial_y^2 (W(y;r)P(y,t)) + \dots \right]
+\end{equation*}
+Utilizzando la definizione dei momenti $a_{\nu}(y)$:
+\begin{equation}
+\partial_t P(y,t|y_0,t_0) = - \partial_y [a_1(y)P(y,t|y_0,t_0)] + \frac{1}{2} \partial_y^2 [a_2(y)P(y,t|y_0,t_0)]
+\end{equation}
+Questa è l'equazione di Fokker-Planck. 
+
+L'espansione di Kramers-Moyal è data da:
+\begin{equation}
+\partial_t P(y,t|y_0,t_0) = \sum_{\nu=1}^{\infty} \frac{(-1)^{\nu}}{\nu!} \frac{\partial^{\nu}}{\partial y^{\nu}} [a_{\nu}(y)P(y,t|y_0,t_0)]
+\end{equation}
+
+
+\section{Teorema di Pawula: }
+Se l'espansione di Kramers-Moyal si arresta a un ordine finito $\nu > 2$ (cioè $a_{\nu} \neq 0$ e $a_k = 0$ per $k > \nu$), allora l'espansione è inconsistente. Quindi:
+
+\begin{itemize}
+    \item O l'espansione si arresta a $\nu=2$ (equazione di Fokker-Planck).
+\item Oppure si devono tenere tutti gli ordini dell'espansione.
+\end{itemize}
+
+L'equazione di Fokker-Planck può essere riscritta come:
+\begin{equation}
+\partial_t P(x,t|x_0,t_0) = -\partial_x [a_1(x)P(x,t|x_0,t_0)] + \partial_x^2 [a_2(x)P(x,t|x_0,t_0)]
+\end{equation}
+dove $a_1(x)$ è il \textbf{coefficiente di drift} e $a_2(x)$ è il \textbf{coefficiente di diffusione} (1/2 riassorbito).
+
+Corrispondenza con l'equazione di Langevin: 
+per un processo di Langevin $\dot{x}(t) = a(x) + b(x)\eta(t)$, con $\langle \eta(t) \rangle = 0$ e $\langle \eta(t)\eta(s) \rangle = \delta(t-s)$si ha:
+\begin{align*}
+a_1(x) & \leftrightarrow a(x) \\
+\frac{b^2(x)}{2} & \leftrightarrow a_2(x)
+\end{align*}
+
+
+\section{Media sulle condizioni iniziali:}
+
+Si definisce l'operatore di Fokker-Planck $\hat{\mathcal{L}}_{FP}$:
+\begin{equation}
+\hat{\mathcal{L}}_{FP} \equiv -\frac{\partial}{\partial x}a_1(x) + \frac{\partial^2}{\partial x^2}a_2(x)
+\end{equation}
+Quindi l'equazione di Fokker-Planck diventa:
+\begin{equation}
+\partial_t P(x,t|x_0,t_0) = \hat{\mathcal{L}}_{FP} P(x,t|x_0,t_0)
+\end{equation}
+Se $p(x_0,t_0)$ è la densità di probabilità iniziale, allora la densità di probabilità al tempo $t$ è:
+\begin{equation}
+P(x,t) = \int dx_0  \;p(x_0,t_0) P(x,t|x_0,t_0)
+\end{equation}
+Per $t=t_0$:
+\begin{equation}
+P(x,t_0) = \int dx_0 \; p(x_0,t_0) P(x,t_0|x_0,t_0) = \int dx_0 \; p(x_0,t_0) \delta(x-x_0) 
+\end{equation}
+Derivando $P(x,t)$ rispetto al tempo:
+\begin{align}
+\partial_t P(x,t) &= \partial_t \int dx_0 p(x_0,t_0) P(x,t|x_0,t_0)  \nonumber \\ &= \int dx_0 p(x_0,t_0) \partial_t P(x,t|x_0,t_0)
+\end{align}
+Usando la relazione $(19)$ si ha:
+\begin{align}
+\partial_t P(x,t) &= \int dx_0 p(x_0,t_0) \hat{\mathcal{L}}_{FP} P(x,t|x_0,t_0) \nonumber \\ &= \hat{\mathcal{L}}_{FP} P(x,t)
+\end{align}
+
+\section{Distribuzioni Stazionarie}
+Per $t \rightarrow \infty$, si cerca una distribuzione stazionaria $P_{\infty}(x)$ tale che: 
+$$
+\lim_{t \rightarrow \infty} P(x,t) = P_{\infty}(x)
+$$
+
+La condizione di stazionarietà è $\partial_t P_{\infty}(x) = 0$, quindi:
+\begin{equation}
+\partial_t P_{\infty}(x) =\hat{\mathcal{L}}_{FP} P_{\infty}(x) = 0
+\end{equation}
+
+
+Si introduce la corrente di probabilità $J(x,t)$:
+\begin{equation}
+J(x,t) \equiv a_1(x)P(x,t) - \partial_x [a_2(x)P(x,t)]
+\end{equation}
+L'equazione di Fokker-Planck può essere scritta come un'\textbf{equazione di continuità}:
+\begin{equation}
+\partial_t P(x,t) = -\partial_x J(x,t)
+\end{equation}
+
+
+\subsection{Condizioni al contorno (Boundary Conditions - BC):}
+
+\begin{itemize}
+    \item Natural BC: $\lim_{x \rightarrow \pm \infty} J(x,t) = 0$ per ogni $t$
+    
+    Integrando l'equazione di continuità su un intervallo $[a,b]$, per $a \rightarrow -\infty$ e $b \rightarrow \infty$ :
+    \begin{equation}
+    \lim_{ a, b \to \pm \infty } \left[ \int_a^b dx \partial_t P(x,t) = -\int_a^b dx \partial_x J(x,t) = J(a,t) - J(b,t) \right] =0
+    \end{equation}
+
+\item  Reflecting BC: flusso nullo al bordo  $J(b,t) = 0 \quad \forall t$
+    \begin{equation}
+    J(b,t) = a_1(x)P(x,t)|_{x=b} - \partial_x [a_2(x)P(x,t)]|_{x=b} = 0 \quad \forall t
+    \end{equation}
+
+\item  Absorbing BC: probabilità nulla al bordo
+    \begin{equation}
+    P(b,t) = 0 \quad \forall t
+    \end{equation}
+    
+\end{itemize}
+
+
+Consideriamo lo stato stazionario: $\partial_t P_{\infty}(x) = 0 \Rightarrow -\partial_x J_{\infty}(x) = 0$
+
+Una soluzione è data da: $J_{\infty}(x) = \text{costante}$
+
+Con Reflecting BC in $a$ e $b$ ($J_{\infty}(a) = J_{\infty}(b) = 0$), si ha $J_{\infty}(x) = 0$ per ogni $x \in [a,b]$
+    
+Se $J_{\infty}(x) = 0$, e ponendo $a_1(x) \equiv a(x)$ e $a_2(x) \equiv D(x)$ :
+\begin{align}
+&a(x)P_{\infty}(x) - \partial_x [D(x)P_{\infty}(x)] = 0 \\ &a(x)P_{\infty}(x) - [ \partial_x D(x) ] P_{\infty}(x) -  D(x) \partial_x P_{\infty}(x) =0
+\end{align}
+Riordinando i termini si trova:
+\begin{equation}
+\frac{a(x) - \partial_x D(x)}{D(x)} = \frac{\partial_x P_{\infty}(x)}{P_{\infty}(x)}
+\end{equation}
+
+\begin{equation}
+dx \left( \frac{a(x)}{D(x)} - \frac{d \ln D(x)}{dx} \right) = \frac{d P_{\infty}(x)}{P_{\infty}(x)}
+\end{equation}
+Risolvendo:
+\begin{equation}
+P_{\infty}(x) = \frac{N}{D(x)} \exp\left( \int^x_{x_0} dy \frac{a(y)}{D(y)} \right)
+\end{equation}
+dove $N$ è la costante di normalizzazione tale che $\int dx P_{\infty}(x) = 1$
+
+\subsection{Esempio: Langevin Overdamped}
+
+Consideriamo l'equazione di Langevin per una particella smorzata (overdamped) in un potenziale:
+\begin{equation}
+\dot{x}(t) = \mu f(x) + \tilde{\eta}(t)
+\end{equation}
+dove $\mu$ è la mobilità, $f(x)$ è la forza, e $\tilde{\eta}(t)$ è un rumore bianco Gaussiano con:
+\begin{equation*}
+\langle \tilde{\eta}(t) \rangle = 0
+\end{equation*}
+
+\begin{equation*}
+\langle \tilde{\eta}(t) \tilde{\eta}(s) \rangle = 2D \delta(t-s) \quad (D = \mu k_B T)
+\end{equation*}
+La distribuzione stazionaria $P_{\infty}(x)$ usando la formula $(34)$ è:
+\begin{equation}
+P_{\infty}(x) = N\exp\left( \frac{\mu}{D} \int dy f(y) \right)
+\end{equation}
+Se la forza deriva da un potenziale, $f(y) = -\frac{d\Phi}{dy}$ e usando la relazione di Einstein $D = \mu k_B T$
+\begin{equation}
+P_{\infty}(x) = \tilde{N} \exp\left( -\frac{\Phi(x)}{k_B T} \right) \quad (\text{Distribuzione di Boltzmann})
+\end{equation}
+dove $\tilde{N}$ è la nuova costante di normalizzazione. 
+
+\section{Esempio: Particella Libera con Attrito }
+
+L'equazione di Langevin per la velocità $v$ di una particella di massa $m$ con coefficiente d'attrito $\zeta$ e forza stocastica $\delta F(t)$ è:
+\begin{equation}
+m\dot{v} = -\zeta v + \delta F(t)
+\end{equation}
+Con:
+\begin{equation}
+\langle \delta F(t) \rangle = 0
+\end{equation}
+
+\begin{equation}
+\langle \delta F(t) \delta F(s) \rangle = 2B \delta(t-s)
+\end{equation}
+dove $B = \zeta k_B T$
+
+Riscrivendo l'equazione:
+\begin{equation}
+\dot{v} = -\frac{\zeta}{m}v + \frac{\delta F(t)}{m} = -\frac{\zeta}{m}v + \frac{1}{m}\sqrt{2B}\eta(t)
+\end{equation}
+dove $\langle \eta(t) \rangle = 0$ e $\langle \eta(t)\eta(s) \rangle = \delta(t-s)$
+
+Identifichiamo $a(v) = -\frac{\zeta v}{m}$ e $b(v) = \frac{\sqrt{2B}}{m}$
+\begin{equation}
+P_{\infty}(v) = N \exp\left( \int^v dv' \frac{-(\zeta v'/m)}{(\zeta k_B T / m^2)} \right) = N \exp\left( -\int^v dv' \frac{m v'}{k_B T} \right)
+\end{equation}
+Ricaviamo così la \textbf{distribuzione di Maxwell-Boltzmann per le velocità}:
+\begin{equation}
+P_{\infty}(v) = N \exp\left( -\frac{m v^2}{2k_B T} \right) 
+\end{equation}
+ 
+ \section{Processo di Ornstein-Uhlenbeck}
+
+L'equazione di Langevin per il processo di Ornstein-Uhlenbeck è:
+\begin{equation}
+\dot{x}(t) = -kx + \tilde{\eta}(t) = -kx + \sqrt{2D}\eta(t)
+\end{equation}
+dove $\langle \tilde{\eta}(t)\tilde{\eta}(s) \rangle = 2D\delta(t-s)$ e $\langle \eta(t)\eta(s) \rangle = \delta(t-s)$
+
+L'equazione di Fokker-Planck corrispondente è:
+\begin{equation}
+\partial_t P(x,t|x_0,t_0) = \frac{D}{2} \partial_x^2 P(x,t|x_0,t_0) + k \partial_x [x P(x,t|x_0,t_0)]
+\end{equation}
+con condizione iniziale $P(x,t_0|x_0,t_0) = \delta(x-x_0)$
+
+Si utilizza la trasformata di Fourier spaziale:
+\begin{equation}
+\tilde{P}(q,t|x_0,t_0) = \int_{-\infty}^{+\infty} dx e^{iqx} P(x,t|x_0,t_0)
+\end{equation}
+
+\begin{equation}
+P(x,t|x_0,t_0) = \frac{1}{2\pi} \int_{-\infty}^{+\infty} dq e^{-iqx} \tilde{P}(q,t|x_0,t_0)
+\end{equation}
+La condizione iniziale trasformata è $\tilde{P}(q,t_0|x_0,t_0) = e^{iqx_0}$
+
+Trasformando i termini dell'equazione di Fokker-Planck:
+
+\begin{enumerate}
+    \item Termine a sinistra:
+
+    \begin{equation}
+    \partial_t P = \frac{1}{2\pi} \int_{-\infty}^{+\infty} dq \; e^{-iqx} \; \partial_t \tilde{P}
+    \end{equation}
+
+    
+    $$
+     \mathcal{F}\{\partial_t P\} = \partial_t \tilde{P}
+    $$
+    
+\item  Primo termine a destra:
+
+    \begin{equation}
+    \partial_x^2 P = \frac{1}{2\pi} \int_{-\infty}^{+\infty} dq \; (-q^2) \; e^{-iqx} \;\tilde{P}
+    \end{equation}
+    
+    $$
+     \mathcal{F}\{\partial_x^2 P\} = (iq)^2 \tilde{P} = -q^2 \tilde{P}
+    $$
+    
+\item  Secondo termine a destra:
+
+    \begin{align}
+    xP &= \frac{x}{2\pi} \int_{-\infty}^{+\infty} dq \; e^{-iqx} \;\tilde{P} \nonumber \\ &= \frac{i}{2\pi} \int_{-\infty}^{+\infty} dq \left( \partial_q e^{-iqx} \right)\;\tilde{P} \nonumber \\ &= \frac{i}{2\pi} \left[ \quad \underbrace{(e^{-iqx}  \;\tilde{P} )|_{bordo}}_{\text{termine di bordo va a 0}}- \int_{-\infty}^{+\infty} dq  e^{-iqx}  \left( \partial_q \;\tilde{P} \right) \right] \nonumber \\ &= - \frac{i}{2\pi}\int_{-\infty}^{+\infty} dq  \; e^{-iqx}  \left( \partial_q \;\tilde{P} \right)
+    \end{align}
+
+    
+    $$
+     \mathcal{F}\{xP\} = -i \partial_q \tilde{P}
+    $$
+    
+    $$
+    \mathcal{F}\{\partial_x [xP]\} = -iq (-i \partial_q \tilde{P}) =- q \partial_q \tilde{P} 
+    $$
+    
+\end{enumerate} 
+
+Sostituendo nell'equazione di Fokker-Planck trasformata:
+
+\begin{equation}
+\partial_t \tilde{P}(q,t|x_0,t_0) = \frac{D}{2}(-q^2)\tilde{P}(q,t|x_0,t_0) + k(-q \partial_q \tilde{P}(q,t|x_0,t_0))
+\end{equation}
+
+\begin{equation}
+\partial_t \tilde{P} + kq \partial_q \tilde{P} = -\frac{D}{2}q^2 \tilde{P}
+\end{equation}
+
+ \subsection{Metodo delle caratteristiche}
+
+In generale possiamo riscrivere la $(51)$ nel seguente modo:
+\begin{equation}
+a (q, t) \; \partial_t \tilde{P} + b(q,t) \; \partial_q \tilde{P} + c(q, t)\; \tilde{P} =0
+\end{equation}
+Questa è un'equazione differenziale alle derivate parziali (PDE) del primo ordine lineare, che può essere risolta con il metodo delle caratteristiche. 
+
+Si cercano curve caratteristiche $(q(s), t(s))$ lungo le quali la PDE diventa una ODE.
+
+Sia $\tilde{P}(q,t) \equiv \tilde{P}(q(s), t(s))$
+
+Le equazioni per le caratteristiche sono:
+\begin{equation}
+\frac{dt}{ds} = a(q, t) \quad (\text{coefficiente di } \partial_t \tilde{P})
+\end{equation}
+
+\begin{equation}
+\frac{dq}{ds} = b(q,t) \quad (\text{coefficiente di } \partial_q \tilde{P})
+\end{equation}
+Lungo queste curve:
+\begin{equation}
+\frac{d\tilde{P}}{ds} = \frac{\partial \tilde{P}}{\partial t}\frac{dt}{ds} + \frac{\partial \tilde{P}}{\partial q}\frac{dq}{ds} = a(q,t)\partial_t \tilde{P} + b(q,t)\partial_q \tilde{P}
+\end{equation}
+Quindi l'equazione per $\tilde{P}$ lungo le caratteristiche diventa:
+
+\begin{equation}
+\frac{d\tilde{P}}{ds} + c(q,t)\tilde{P} =0
+\end{equation}
+Questa è un'equazione differenziale ordinaria (ODE).

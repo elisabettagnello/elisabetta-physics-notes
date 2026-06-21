@@ -1,0 +1,203 @@
+\chapter{Lezione 2}
+\label{chap:lezione_02} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 04/03/2025}
+\end{flushright}
+\textit{Bibliografia: Teorema di Liouville [Thompson, Appendix A]. Potenziali Termodinamici e Fluttuazioni in Termodinamica [DiCastro-Raimondi, ch 1.3-1.4]}
+
+
+\section{Sistemi Fuori dall'Equilibrio}
+
+In meccanica statistica, si considerano sistemi per cui è necessaria una descrizione probabilistica. Questo non implica che il problema sia intrinsecamente probabilistico, ma piuttosto che la quantità di informazione necessaria per una descrizione deterministica è ingestibile e, in gran parte, irrilevante per le proprietà macroscopiche. Ad esempio, per un gas composto da un numero di particelle dell'ordine del numero di Avogadro, descrivere il sistema nel quadro Hamiltoniano richiederebbe di risolvere un numero enorme di equazioni del moto con le relative condizioni iniziali.
+
+Tuttavia, le proprietà macroscopiche di un sistema all'equilibrio, come l'aria in una stanza, non dipendono dalle precise condizioni iniziali delle singole particelle. La dinamica microscopica è estremamente irregolare e caotica, ma le proprietà macroscopiche osservate sono stabili nel tempo, almeno in un quadro di equilibrio. Questa stabilità emerge nonostante la dinamica sottostante.
+
+Esiste una netta separazione delle scale temporali. Il tempo caratteristico microscopico, come il tempo di volo medio tra due collisioni di particelle, è estremamente piccolo (es. $10^{-12}$ s), mentre il tempo sperimentale macroscopico è molto più grande (dell'ordine dei secondi). Questa separazione di ordini di grandezza giustifica le ipotesi di lavoro della meccanica statistica dell'equilibrio.
+
+Tuttavia, siamo interessati a studiare cosa succede quando le condizioni di equilibrio vengono a mancare o vengono perturbate. Ci sono diversi modi in cui un sistema può essere portato fuori dall'equilibrio:
+\begin{enumerate}
+    \item \textbf{Cambiamento dei parametri termodinamici}: Ad un certo istante, si modifica una condizione esterna (es. pressione, volume, temperatura). Il sistema evolverà verso un nuovo stato di equilibrio. Studieremo le proprietà di rilassamento verso questo nuovo equilibrio.
+    \item \textbf{Fluttuazioni}: Anche in un sistema all'equilibrio, esistono sempre fluttuazioni spontanee e momentanee attorno ai valori medi. Sebbene le fluttuazioni relative di una quantità estensiva decrescano con la taglia del sistema (come $1/\sqrt{N}$), la probabilità di osservare una fluttuazione arbitrariamente grande non è mai nulla per un numero finito di particelle. Queste fluttuazioni portano il sistema momentaneamente fuori dall'equilibrio.
+    \item \textbf{Campi esterni dipendenti dal tempo}.
+    \item \textbf{Dinamica con memoria (processi non-Markoviani)}.
+\end{enumerate}
+
+In queste situazioni, la meccanica statistica dell'equilibrio non è più sufficiente e dobbiamo ripartire dall'analisi della dinamica del sistema.
+
+\section{Teorema di Liouville}
+
+Un concetto fondamentale per descrivere la dinamica di un sistema nel quadro Hamiltoniano è il Teorema di Liouville.
+Consideriamo un sistema con $N$ gradi di libertà e il suo corrispondente spazio delle fasi a $2N$ dimensioni, con coordinate $(\vec{p}, \vec{q})$. Un singolo punto in questo spazio rappresenta lo stato microscopico dell'intero sistema.
+
+L'idea degli \textit{ensemble statistici} postula che a un dato macrostato (definito da vincoli macroscopici come pressione, volume, etc.) corrispondano molti microstati compatibili. Possiamo quindi pensare a una "nube" di punti nello spazio delle fasi, ognuno rappresentante una copia del sistema, che occupa un certo volume. Introduciamo una densità di probabilità (o densità di punti) $\rho(\vec{p}, \vec{q}, t)$ tale che $\rho(\vec{p}, \vec{q}, t) d\vec{p} d\vec{q}$ rappresenti il numero di sistemi (o la probabilità di trovare il sistema) in un volumetto infinitesimo $d\vec{p} d\vec{q}$ dello spazio delle fasi.
+
+Il teorema di Liouville afferma che questa densità, vista lungo la traiettoria di un punto nello spazio delle fasi, è costante. In altre parole, la "nube" di punti si muove nello spazio delle fasi come un fluido incomprimibile. La sua derivata totale rispetto al tempo è nulla:
+\begin{equation}
+    \frac{d\rho}{dt} = 0
+    \label{eq:derivata_totale_rho}
+\end{equation}
+
+Espandendo la derivata totale, otteniamo l'equazione di Liouville:
+\begin{equation}
+    \frac{\partial\rho}{\partial t} + \sum_{i} \left[ \frac{\partial\rho}{\partial q_i}\dot{q}_i + \frac{\partial\rho}{\partial p_i}\dot{p}_i \right] = 0
+    \label{eq:liouville_espansa}
+\end{equation}
+
+Utilizzando le equazioni di Hamilton:
+\begin{equation}
+    \dot{q}_i = \frac{\partial H}{\partial p_i}
+    \label{eq:hamilton_q}
+\end{equation}
+\begin{equation}
+    \dot{p}_i = -\frac{\partial H}{\partial q_i}
+    \label{eq:hamilton_p}
+\end{equation}
+l'equazione può essere riscritta usando le parentesi di Poisson $\{\rho, H\}$:
+\begin{equation}
+    \frac{d\rho}{dt} = \frac{\partial\rho}{\partial t} + \{\rho, H\} = 0
+    \label{eq:liouville_poisson}
+\end{equation}
+
+\subsubsection{Dimostrazione della conservazione del volume dello spazio delle fasi}
+
+Il teorema implica che il volume occupato da un insieme di punti nello spazio delle fasi si conserva durante l'evoluzione temporale. Sia $A$ un insieme di punti nello spazio delle fasi al tempo $t=0$, e $A_t$ la sua evoluzione al tempo $t$. Definiamo il volume di $A$ come:
+\begin{equation}
+    V(A) \equiv \int_A d\Gamma = \int_A dq_1...dq_N dp_1...dp_N
+    \label{eq:volume_A}
+\end{equation}
+dove $d\Gamma$ è l'elemento di volume nello spazio delle fasi.
+
+Vogliamo dimostrare che $V(A_t) = V(A)$.
+
+Il volume al tempo $t$ può essere calcolato tramite un cambio di variabili, tornando alle coordinate iniziali $(\vec{p}(0), \vec{q}(0))$. L'integrale sarà pesato dal determinante Jacobiano $J$ della trasformazione dalle coordinate iniziali a quelle finali:
+\begin{equation}
+    V(A_t) = \int_A d\vec{p}(0) d\vec{q}(0) J(t)
+    \label{eq:volume_At}
+\end{equation}
+
+Adottiamo una notazione compatta in cui $x_i = q_i$ e $x_{i+N} = p_i$ per $i=1,...,N$. La derivata temporale dello Jacobiano risulta essere:
+\begin{equation}
+    \frac{dJ}{dt} = J \sum_i \frac{\partial \dot{x}_i}{\partial x_i} = J \vec{\nabla} \cdot \vec{v}
+    \label{eq:derivata_jacobiano}
+\end{equation}
+dove $\vec{v} = (\dot{q}_1, ..., \dot{q}_N, \dot{p}_1, ..., \dot{p}_N)$ è il vettore "velocità" nello spazio delle fasi. La divergenza di questo vettore è:
+\begin{equation}
+    \vec{\nabla} \cdot \vec{v} = \sum_i \left( \frac{\partial \dot{q}_i}{\partial q_i} + \frac{\partial \dot{p}_i}{\partial p_i} \right) = \sum_i \left( \frac{\partial}{\partial q_i}\frac{\partial H}{\partial p_i} - \frac{\partial}{\partial p_i}\frac{\partial H}{\partial q_i} \right) = 0
+    \label{eq:divergenza_nulla}
+\end{equation}
+
+La divergenza è nulla grazie alle equazioni di Hamilton (eq. \ref{eq:hamilton_q} e \ref{eq:hamilton_p}) e al teorema di Schwarz sulle derivate seconde. Poiché $\frac{dJ}{dt} = 0$ e $J(0)=1$, lo Jacobiano è $J(t)=1$ per ogni tempo.
+
+Di conseguenza, $V(A_t) = V(A)$, il che dimostra il teorema.
+
+
+
+\subsection*{Misura Microcanonica}
+
+In un sistema microcanonico, l'energia è fissata all'interno di un guscio infinitesimo:
+\begin{equation}
+    E \le H(\underline{p},\underline{q}) \le E+dE
+    \label{eq:guscio_energetico}
+\end{equation}
+
+Prendiamo un sottoinsieme $A$ di questo guscio energetico. Definiamo $dn$ come la direzione normale alla superficie isoenergetica e $d\sigma$ come l'elemento di superficie.
+
+Per il teorema di Liouville, la misura di un'area sulla superficie si conserva nel tempo:
+\begin{equation}
+    \int_{A_{t}}dn~d\sigma=\int_{A}dn~d\sigma
+    \label{eq:conservazione_area}
+\end{equation}
+
+Definiamo il gradiente dell'Hamiltoniana:
+\begin{equation}
+    ||\text{grad}~H||^{2}=\sum_{i}\left(\frac{\partial H}{\partial x_{i}}\right)^{2}
+    \label{eq:gradiente_H}
+\end{equation}
+
+L'elemento di spessore $dn$ può essere espresso in funzione del differenziale di energia $dE$. Dato che $dE = \sum_i \frac{\partial E}{\partial x_i} dx_i$, e la componente dello spostamento $dx_i$ lungo la normale è $dn \frac{\partial E}{\partial x_i} ||\text{grad}~H||^{-1}$, si ottiene:
+\begin{equation}
+    dE=dn||\text{grad}~H||
+    \label{eq:dE_dn}
+\end{equation}
+Da cui:
+\begin{equation}
+    dn=\frac{dE}{||\text{grad}~H||}
+    \label{eq:dn_dE}
+\end{equation}
+
+Sostituendo l'espressione \ref{eq:dn_dE} nell'integrale \ref{eq:conservazione_area}, otteniamo la misura microcanonica, che è conservata dall'evoluzione temporale:
+\begin{equation}
+    \int_{A}\frac{dE~d\sigma}{||\text{grad}~H||}
+    \label{eq:misura_microcanonica}
+\end{equation}
+
+\section{Potenziali Termodinamici}
+
+I potenziali termodinamici hanno le seguenti proprietà:
+\begin{itemize}
+    \item Sono differenziali esatti.
+    \item Hanno le dimensioni dell'energia.
+    \item Ammettono delle variabili termodinamiche coniugate.
+    \item Sono estensivi e additivi.
+\end{itemize}
+
+\subsubsection{Energia Interna}
+
+L'energia interna $U$ è una funzione di stato le cui variabili naturali sono l'entropia $S$ e il volume $V$.
+
+Il suo differenziale, che incorpora il primo e il secondo principio della termodinamica, è:
+\begin{equation}
+    dU=TdS-pdV
+    \label{eq:dU}
+\end{equation}
+Da cui si ricavano le definizioni di temperatura e pressione:
+\begin{equation}
+    T=\frac{\partial U}{\partial S}\bigg|_{V} \quad p=-\frac{\partial U}{\partial V}\bigg|_{S}
+    \label{eq:def_T_p}
+\end{equation}
+
+Essendo $dU$ un differenziale esatto, vale la relazione di Maxwell. I passaggi per ottenerla sono:
+\begin{equation}
+    \frac{\partial T}{\partial V}=\frac{\partial}{\partial V}\frac{\partial U}{\partial S}=\frac{\partial^{2}U}{\partial V\partial S}
+    \label{eq:maxwell1}
+\end{equation}
+\begin{equation}
+    -\frac{\partial P}{\partial S}=\frac{\partial}{\partial S}\frac{\partial U}{\partial V}=\frac{\partial^{2}U}{\partial V\partial S}
+    \label{eq:maxwell2}
+\end{equation}
+La relazione di Maxwell finale è:
+\begin{equation}
+    \frac{\partial T}{\partial V}\bigg|_{S}=-\frac{\partial P}{\partial S}\bigg|_{V}
+    \label{eq:maxwell_finale_U}
+\end{equation}
+
+\subsubsection{Energia Libera di Helmholtz}
+
+Per passare a variabili più comode sperimentalmente, come la temperatura e il volume, si utilizza una trasformata di Legendre. Si introduce l'energia libera di Helmholtz, $F(T,V)$.
+
+La sua definizione è:
+\begin{equation}
+    F=U-TS
+    \label{eq:def_F}
+\end{equation}
+Il suo differenziale si ottiene come segue:
+\begin{equation}
+    dF=dU-d(TS)
+    \label{eq:dF_start}
+\end{equation}
+Sostituendo $dU = TdS - pdV$ (eq. \ref{eq:dU}), si ottiene:
+\begin{equation}
+    dF=TdS-pdV-TdS-SdT=-pdV-SdT
+    \label{eq:dF_finale}
+\end{equation}
+Le nuove variabili coniugate sono l'entropia e la pressione:
+\begin{equation}
+    -S=\frac{\partial F}{\partial T}\bigg|_{V} \quad -P=\frac{\partial F}{\partial V}\bigg|_{T}
+    \label{eq:coniugate_F}
+\end{equation}
+All'equilibrio, a $T$ e $V$ costanti, l'energia libera è minima.
+\begin{equation}
+    F=F_{min} \quad \text{equilibrio}
+    \label{eq:F_min}
+\end{equation}

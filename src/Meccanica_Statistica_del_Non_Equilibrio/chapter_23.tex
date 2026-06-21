@@ -1,0 +1,393 @@
+\chapter{Lezione 23}
+\label{chap:lezione_23} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 27/05/2025}
+\end{flushright}
+\textit{Bibliografia: 
+Most Probable Path of the Ornstein-Uhlenbeck process. Fluctuations and Onsager relations [Puglisi-Sarracino-Vulpiani, ch 3]. Shannon and Gibbs Entropy. Introduction to Stochastic Thermodynamics.}
+
+
+
+\section{Traiettorie Ottimali}
+
+Vogliamo calcolare il percorso ottimale che collega due punti.
+Poiché stiamo lavorando con un'equazione differenziale stocastica, la soluzione generica $\varphi(t)_{\eta}$ è una traiettoria casuale che dipende dalla realizzazione del rumore $\eta(t)$.
+Il percorso ottimale è quello che massimizza la probabilità di transizione $P(\varphi_{1},t_{1}|\varphi_{0},t_{0})$, che rappresenta la probabilità di trovare il sistema nello stato $\varphi_{1}$ al tempo $t_{1}$, dato che si trovava nello stato $\varphi_{0}$ al tempo $t_{0}$.
+
+Questa probabilità può essere espressa attraverso un integrale di cammino (path integral) sulle possibili traiettorie $\varphi(t)$ e sui campi ausiliari $\hat{\varphi}(t)$:
+\begin{equation}
+P[\varphi_{1},t_{1}|\varphi_{0},t_{0}]=\int_{\varphi_{0}=\varphi(t_{0})}^{\varphi_{1}=\varphi(t_{1})}\mathcal{D}\varphi\mathcal{D}\hat{\varphi}e^{-\frac{S[\varphi,\hat{\varphi}]}{D}}
+\end{equation}
+L'azione dinamica corrispondente è:
+\begin{equation}
+S[\varphi,\hat{\varphi}]=\int_{t_{0}}^{t_{1}}ds\mathcal{L}[\varphi,\hat{\varphi}]
+\end{equation}
+Il Lagrangiano è dato da:
+\begin{equation}
+\mathcal{L}[\varphi,\hat{\varphi}]=-\hat{\varphi}^{2}+\hat{\varphi}[\partial_{t}\varphi+V^{\prime}(\varphi)]
+\end{equation}
+Qui, $V'(\varphi)$ rappresenta la derivata del potenziale $V(\varphi)$ rispetto a $\varphi$.
+
+\noindent Consideriamo un potenziale a doppia buca.
+Se scegliamo come stato iniziale $\varphi_0$ la posizione di un minimo del potenziale e come stato finale $\varphi_1$ la posizione dell'altro minimo, il sistema deve superare una barriera di potenziale. Il passaggio da un minimo all'altro può avvenire tramite due tipi di processi:
+\begin{itemize}
+    \item \textbf{Uphill:} Il sistema si muove contro la forza derivante dal potenziale (serve "rumore" o energia esterna).
+    \item \textbf{Downhill:} Il sistema si muove seguendo la forza derivante dal potenziale (processo "gratuito" o spontaneo).
+\end{itemize}
+
+Estendendo l'intervallo temporale da $t_0 \rightarrow -\infty$ e $t_1 \rightarrow +\infty$, l'eccitazione che porta il sistema da un minimo all'altro è chiamata istantone. L'istantone è una soluzione classica delle equazioni del moto, ovvero una traiettoria che minimizza l'azione funzionale.
+
+Nel limite $D \rightarrow 0$ (dove $D$ è un parametro legato all'intensità del rumore o alla temperatura), la probabilità di transizione può essere approssimata tramite il metodo del punto di sella:
+\begin{equation}
+P(\varphi_{1},t_{1}|\varphi_{0},t_{0})\simeq \exp \Biggl\{-\frac{S[\varphi_{sp},\hat{\varphi}_{sp}]}{D} \Biggr\}
+\end{equation}
+dove $(\varphi_{sp},\hat{\varphi}_{sp})$ sono le traiettorie del punto di sella che soddisfano le equazioni del moto ottenute variando l'azione $S$:
+\begin{equation}
+\frac{\delta S}{\delta\varphi}\Bigg|_{SP}=0 \quad  \quad , \quad  \quad\frac{\delta S}{\delta\hat{\varphi}}\Bigg|_{SP}=0
+\end{equation}
+Da queste condizioni si ottengono le seguenti equazioni del moto di Ornstein-Uhlenbeck:
+
+\begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+\begin{cases} 
+\partial_{t} \hat{\varphi}_{SP}  &= \hat{\varphi}_{SP} V^{\prime\prime}(\varphi_{SP})     \quad \quad(i)\\  
+\partial_{t} \varphi_{SP}  &= - V^{\prime}(\varphi_{SP}) +2 \hat{\varphi}_{SP}   \quad \quad(ii)   
+\end{cases}
+\end{equation}
+\end{tcolorbox}
+
+\subsection{Caso Semplice: Oscillatore Armonico}
+Consideriamo il potenziale di un oscillatore armonico:
+\begin{equation}
+V(\varphi)=\frac{k\varphi^{2}}{2}
+\end{equation}
+Le derivate del potenziale sono:
+\begin{equation}
+V^{\prime}(\varphi)=k\varphi \implies -V^{\prime}(\varphi)=-k\varphi
+\end{equation}
+\begin{equation}
+V^{\prime\prime}(\varphi)=k
+\end{equation}
+Sostituiamo nelle equazioni del moto $(i)$ e $(ii)$ :
+\begin{equation}
+\begin{cases} 
+\partial_{t} \hat{\varphi}_{SP}  &= k\hat{\varphi}_{SP}  \quad \quad(i) \\  
+\partial_{t} \varphi_{SP}  &= -k\varphi_{SP} +2 \hat{\varphi}_{SP}   \quad \quad(ii)   
+\end{cases}
+\end{equation}
+Risolviamo queste equazioni.
+Dalla prima equazione per $\hat{\varphi}(t)$:
+\begin{equation}
+\hat{\varphi}_{SP}(t)=\hat{\varphi}_{0}e^{kt}
+\end{equation}
+Sostituiendo questa soluzione nella seconda equazione per $\varphi(t)$:
+\begin{equation*}
+(ii) \quad \quad  \partial_{t} \varphi_{SP}  = -k\varphi_{SP} +2 \hat{\varphi}_{0}e^{kt}
+\end{equation*}
+Questa è un'equazione differenziale lineare del primo ordine. La soluzione generale si ottiene sommando la soluzione dell'omogenea associata e una soluzione particolare dell'equazione completa.
+Risolvendo (ponendo $t_0=0$ senza perdita di generalità):
+\begin{equation}
+\varphi(t)=\varphi_{0}e^{-kt}+2\int_{0}^{t}ds\hat{\varphi}(s)e^{-k(t-s)}
+\end{equation}
+Sostituiendo $\hat{\varphi}(s)=\hat{\varphi}_{0}e^{ks}$:
+\begin{equation}
+\varphi(t)=\varphi_{0}e^{-kt}+2\hat{\varphi}_{0}\int_{0}^{t}dse^{ks}e^{-k(t-s)} = \varphi_{0}e^{-kt}+2\hat{\varphi}_{0}e^{-kt}\int_{0}^{t}dse^{2ks}
+\end{equation}
+Calcolando l'integrale: $\int_{0}^{t}dse^{2ks} = \left[\frac{e^{2ks}}{2k}\right]_0^t = \frac{e^{2kt}-1}{2k}$
+Quindi:
+\begin{equation}
+\varphi(t)=\varphi_{0}e^{-kt}+2\hat{\varphi}_{0}e^{-kt}\frac{e^{2kt}-1}{2k} = \varphi_{0}e^{-kt}+\frac{\hat{\varphi}_{0}}{k}(e^{kt}-e^{-kt})
+\end{equation}
+Utilizzando la definizione di seno iperbolico $\text{senh}(x) = \frac{e^x - e^{-x}}{2}$:
+\begin{equation}
+\varphi(t)=\varphi_{0}e^{-kt}+\frac{2\hat{\varphi}_{0}}{k}\text{senh}(kt) \label{eq:sol_generale_armonico}
+\end{equation}
+Questa è la soluzione generale.
+Imponiamo le condizioni al contorno: $\varphi(t_1) = \varphi_1$
+\begin{equation}
+\varphi_{1}=\varphi(t_{1})=\varphi_{0}e^{-kt_{1}}+\frac{2\hat{\varphi}_{0}}{k}\text{senh}(kt_{1})
+\end{equation}
+Da questa equazione possiamo ricavare $\hat{\varphi}_0$:
+\begin{equation}
+\hat{\varphi}_{0}=\frac{k}{2}\frac{\varphi_{1}-\varphi_{0}e^{-kt_{1}}}{\text{senh}(kt_{1})}
+\end{equation}
+Sostituiendo $\hat{\varphi}_{0}$ nell'espressione (\ref{eq:sol_generale_armonico}):
+\begin{equation}
+\varphi(t)=\varphi_{0}e^{-kt}+\frac{\varphi_{1}-\varphi_{0}e^{-kt_{1}}}{\text{senh}(kt_{1})}\text{senh}(kt)
+\end{equation}
+Questa traiettoria è esatta per l'oscillatore armonico nel contesto di questo formalismo.
+
+\section{Termodinamica Stocastica}
+La connessione tra probabilità e entropia è data dalla formula di Boltzmann $S=k_{B}\ln W$, dove $W$ è il numero di microstati. Questo suggerisce una forma per la probabilità di una fluttuazione:
+\begin{equation}
+P(\text{fluttuazione}) \sim e^{\frac{S}{k_{B}}}
+\end{equation}
+Consideriamo:
+\begin{itemize}
+    \item Un set di $M$ osservabili/variabili macroscopiche, che arrangiamo in un vettore: $\vec{\alpha} = (\alpha_{1},\dots,\alpha_{M})$.  Un esempio potrebbe essere la magnetizzazione in un sistema di Ising: $m=\frac{1}{N}\sum_{i}s_{i}$ (somma di variabili aleatorie).
+    \item Queste variabili macroscopiche $\underline{\alpha}$ sono una funzione delle configurazioni microscopiche $\underline{x}$ del sistema: $\underline{\alpha} = \underline{g}(\underline{x})$. Per un sistema di particelle, $\underline{x}$ può rappresentare le posizioni e i momenti $(q,p)$ di tutte le particelle.
+    \item Parametri di controllo: pressione, volume, temperatura, numero di particelle, ecc. Questi parametri definiscono l'ensemble statistico.
+\end{itemize}
+Quindi, abbiamo $\alpha_m = g_m(\underline{x})$ per $m=1,\dots,M$.
+Per un sistema di particelle in contatto con un bagno termico (ensemble canonico), la probabilità di una configurazione microscopica $\underline{x}$ (che può contenere le posizioni $\underline{q}$ e i momenti $\underline{p}$) è data da:
+\begin{equation}
+P(\underline{x},\underline{p}) = P(\underline{x}, N, V, \beta) = \frac{e^{-\beta H[\underline{x}]}}{Z_{\beta}^{N,V}}
+\end{equation}
+dove $H[\underline{x}] $ è l'Hamiltoniana del sistema, $\beta = (k_B T)^{-1}$ e $Z_{\beta}^{N,V}$ è la funzione di partizione canonica:
+\begin{equation}
+Z_{\beta}^{N,V}=\int\frac{d\underline{p}d\underline{q}}{\hbar^{3N}N!}e^{-\beta H[\underline{p},\underline{q}]}
+\end{equation}
+Siamo interessati alla distribuzione di probabilità $P(\underline{\alpha})$ del nostro set di osservabili.
+
+\noindent Procediamo in maniera formale:
+
+Se $\underline{x}=\{S_{i}\}_{i=1}^{N}$ rappresenta le variabili microscopiche ($(q,p)$ in questo caso), la probabilità delle variabili macroscopiche $\underline{\alpha}$ è ottenuta marginalizzando la distribuzione di probabilità microscopica:
+\begin{equation}
+P(\underline{\alpha})=\int d\underline{x}\prod_{m=1}^{M}\delta[\alpha_{m}-g_{m}(\underline{x})]\rho(\underline{x},\underline{p})
+\end{equation}
+dove $\rho(\underline{x},\underline{p})$ è la densità di probabilità canonica che dipende dai parametri di controllo $\underline{P}$
+
+\noindent Le funzioni delta assicurano che consideriamo solo le configurazioni microscopiche $\underline{x}$ che corrispondono ai valori specifici delle osservabili $\alpha_m$.
+Per un sistema di particelle:
+\begin{equation} 
+\rho(\underline{x},\underline{P})=\rho(\underline{x},N,V,\beta) = \frac{e^{-\beta H[\underline{x}]}}{Z(\underline{P})} 
+\end{equation}
+L'energia libera di Helmholtz $F(\underline{P})$ è definita como:
+\begin{equation}
+F(\underline{P})=-\frac{1}{\beta}\log Z(\underline{P}) \implies Z(\underline{P})=e^{-\beta F(\underline{P})}
+\end{equation}
+Quindi la densità di probabilità microscopica può essere scritta come:
+\begin{equation}
+\rho(\underline{x},\underline{P})=\frac{e^{-\beta H[\underline{x}]}}{Z(\underline{P})}=e^{\beta F(\underline{P})-\beta H[\underline{x}]}
+\end{equation}
+Sostituiendo in $P(\underline{\alpha})$:
+\begin{equation}
+P(\underline{\alpha})=e^{\beta F(\underline{P})} \int d\underline{x} e^{-\beta H[\underline{x}]} \prod_{m=1}^{M}\delta[\alpha_{m}-g_{m}(\underline{x})]
+\end{equation}
+L'integrale può essere interpretato come una funzione di partizione $Z(\underline{\alpha},\underline{P})$ per un valore fissato di $\underline{\alpha}$, $Z(\underline{\alpha},\underline{P}) = e^{-\beta F(\underline{\alpha}|\underline{P})}$, dove $F(\underline{\alpha}|\underline{P})$ è un'energia libera condizionata per le variabili $\underline{\alpha}$.
+Quindi, la probabilità $P(\underline{\alpha})$ può essere scritta come:
+\begin{equation}
+P(\underline{\alpha}) = e^{-\beta[F(\underline{\alpha}|\underline{P})-F(\underline{P})]}
+\end{equation}
+Identifichiamo la variazione di entropia $\delta S(\underline{\alpha})$ come:
+\begin{equation}
+\frac{\delta S(\underline{\alpha})}{k_B} = -\beta[F(\underline{\alpha}|\underline{P})-F(\underline{Pctx})]
+\end{equation}
+Se consideriamo $k_B =1$ si ha:
+\begin{equation}
+\delta S(\underline{\alpha})= -\frac{1}{T}[F(\underline{\alpha}|\underline{P})-F(\underline{P})]
+\end{equation}
+Da cui segue:
+\begin{equation}
+P(\underline{\alpha})=C \cdot \exp\left\{\frac{\delta S(\underline{\alpha})}{k_{B}}\right\}
+\end{equation}
+Siamo interessati a fluttuazioni attorno all'equilibrio. I valori medi (o più probabili) delle osservabili sono i valori di equilibrio $\langle\underline{\alpha}\rangle=\underline{\alpha}^{*}$.
+
+Sviluppiamo $\delta S(\underline{\alpha})$ in serie di Taylor attorno al valore di equilibrio $\underline{\alpha}^{*}$ fino al secondo ordine (il termine lineare è nullo perché $\underline{\alpha}^{*}$ è un massimo per l'entropia):
+\begin{equation}
+\delta S(\underline{\alpha})=-\frac{1}{2}\delta\underline{\alpha}^{T}G\delta\underline{\alpha}+O(\delta\alpha^{3})
+\end{equation}
+dove $\delta\underline{\alpha}=\underline{\alpha}-\langle\underline{\alpha}\rangle=\underline{\alpha}-\underline{\alpha}^{*}$.
+
+La matrice $G$ è definita come la derivata seconda (negativa) dell'entropia, valutata all'equilibrio:
+\begin{equation}
+G_{ij}=-\frac{\partial^{2}S}{\partial\alpha_{i}\partial\alpha_{j}}\Bigg|_{\underline{\alpha}^{*}}
+\end{equation}
+Questa forma quadratica per l'entropia porta a una distribuzione di probabilità Gaussiana per le fluttuazioni $\delta\underline{\alpha}$:
+\begin{align}
+P(\underline{\alpha}) &= C' \exp\left\{-\frac{1}{2k_{B}}\delta\underline{\alpha}^{T}G\delta\underline{\alpha}\right\} \nonumber  \\
+&= \sqrt{\frac{(2\pi k_B)^M}{\det G}}\exp\left\{-\frac{1}{2k_{B}}\delta\underline{\alpha}^{T}G\delta\underline{\alpha}\right\}
+\end{align}
+Poiché i parametri $\underline{\alpha}$ fluttuano gaussianamente attorno all'equilibrio, vogliamo scrivere un'equazione di Langevin per queste variabili.
+
+\noindent Definiamo le affinità $X_m$ coniugate alle variabili $\delta\alpha_m$:
+\begin{equation}
+X_{m} \equiv \frac{\partial(\delta S)}{\partial(\delta\alpha_{m})}
+\end{equation}
+Se $\delta S(\underline{\alpha})=-\frac{1}{2}\delta\underline{\alpha}^{T}G\delta\underline{\alpha}$, allora:
+\begin{equation}
+X_{m} = -\sum_j G_{mj}\delta\alpha_{j}
+\end{equation}
+Dalla teoria delle fluttuazioni all'equilibrio, si hanno le seguenti relazioni (teorema di equipartizione generalizzato o relazioni di Onsager):
+\begin{equation}
+\langle\delta\alpha_{j}X_{m}\rangle=-k_{B}\delta_{jm}
+\end{equation}
+E la covarianza delle fluttuazioni è legata all'inversa della matrice $G$:
+\begin{equation}
+\langle\delta\alpha_{i}\delta\alpha_{j}\rangle=k_{B}G_{ij}^{-1}
+\end{equation}
+Per semplicità, trasliamo l'origine in modo che $\underline{\alpha}^{*}=0$, quindi $\delta\underline{\alpha}=\underline{\alpha}-\underline{\alpha}^{*}=\underline{\alpha}$
+
+\noindent Possiamo postulare un'equazione di Langevin lineare multivariata (processo di Ornstein-Uhlenbeck) per le fluttuazioni $\underline{\alpha}$:
+\begin{equation}
+d\underline{\alpha}=-M\underline{\alpha}dt+Bd\underline{W}
+\end{equation}
+dove $M$ è la matrice di rilassamento, $B$ è una matrice che descrive l'ampiezza del rumore, e $d\underline{W}$ è un vettore di incrementi di processi di Wiener indipendenti (rumore bianco Gaussiano), con $\langle dW_i(t) \rangle = 0$ e $\langle dW_i(t) dW_j(t') \rangle = \delta_{ij} \delta(t-t') dt$.
+
+\noindent Le matrici $M$ e $B$ sono costanti.
+
+\noindent Da un processo di Ornstein-Uhlenbeck, possiamo derivare la corrispondente equazione di Fokker-Planck per la densità di probabilità $P(\underline{\alpha},t)$:
+\begin{equation}
+\partial_{t}P(\underline{\alpha},t)= \sum_{j,m} M_{jm}\partial_{\alpha_j}[\alpha_{m}P(\underline{\alpha},t)] + \frac{1}{2}\sum_{j,m} Q_{jm}\frac{\partial^{2}P}{\partial\alpha_{j}\partial\alpha_{m}}
+\end{equation}
+dove $Q_{jm}$ è la matrice di diffusione, data da $Q = BB^T$
+Avendo ridefinito $\delta\underline{\alpha}=\underline{\alpha}$ , si ha:
+\begin{equation}
+\sigma = \underline{\alpha} \cdot\underline{\alpha}=k_{B}G^{-1}
+\end{equation}
+Con $\sigma_{ij} = \alpha_i \alpha_j$
+
+\noindent Se $\underline{\alpha} = \begin{pmatrix} x \\ y \end{pmatrix}$, allora $\underline{\alpha} \cdot\underline{\alpha} = \begin{pmatrix} x^2 & xy \\ yx & y^2 \end{pmatrix}$
+
+\noindent Ora definiamo l'equazione di Lyapunov. L'equazione di Lyapunov stazionaria lega la matrice di covarianza $\sigma$ alla matrice di drift $M$ e alla matrice di diffusione $Q=BB^T$ per un processo di Ornstein-Uhlenbeck stazionario:
+\begin{equation}
+\tilde{Q} = BB^T = M\sigma + \sigma M^T
+\end{equation}
+Consideriamo l'evoluzione della matrice di covarianza:
+
+$\underline{\alpha} \equiv \underline{\alpha}(t)$
+
+$\underline{\alpha}' \equiv \underline{\alpha}(t+dt) = \underline{\alpha}-M\underline{\alpha}dt+Bd\underline{W}$
+
+\noindent Calcoliamo $\langle\alpha_{i}^{\prime}\alpha_{j}^{\prime}\rangle$:
+
+$\alpha_i' = \alpha_i - \sum_l M_{il}\alpha_l dt + \sum_l B_{il}dW_l$
+
+$\alpha_j' = \alpha_j - \sum_m M_{jm}\alpha_m dt + \sum_m B_{jm}dW_m$
+\begin{equation*}
+\langle\alpha_{i}^{\prime}\alpha_{j}^{\prime}\rangle = \langle (\alpha_i - \sum_l M_{il}\alpha_l dt + \sum_l B_{il}dW_l) (\alpha_j - \sum_m M_{jm}\alpha_m dt + \sum_m B_{jm}dW_m) \rangle
+\end{equation*}
+Mantenendo i termini fino a $dt$:
+
+$\langle \alpha_i \alpha_j \rangle - \sum_l M_{il} \langle \alpha_l \alpha_j \rangle dt - \sum_m M_{jm} \langle \alpha_i \alpha_m \rangle dt + \sum_{l,m} B_{il} B_{jm} \langle dW_l dW_m \rangle + O(dt^{3/2})$
+
+Usando $\langle dW_l dW_m \rangle = \delta_{lm} dt$ e $\langle \alpha_k dW_l \rangle = 0$:
+
+\begin{equation}
+\sigma_{ij}(t+dt) = \sigma_{ij}(t) - (M\sigma(t))_{ij}dt - (\sigma(t)M^T)_{ij}dt + (BB^T)_{ij}dt
+\end{equation}
+
+Quindi l'equazione differenziale per $\sigma(t)$ è $\frac{d\sigma}{dt} = -M\sigma - \sigma M^T + Q$
+
+\noindent All'equilibrio, $\frac{d\sigma}{dt}=0$, il che porta all'equazione di Lyapunov: $M\sigma + \sigma M^T = Q$
+
+\noindent Introduciamo la matrice di Onsager $L$:
+\begin{equation}
+L = MG^{-1}
+\end{equation}
+Poichè $\underline{\alpha} = G^{-1} \underline{X}$ segue $X_{m} \equiv \frac{\partial(S)}{\partial(\alpha_m)}$
+
+\noindent Sostituiamo $\underline{\alpha}$ nella relazione $d\underline{\alpha}=-M\underline{\alpha}dt+Bd\underline{W}$ :
+\begin{equation}
+d\underline{\alpha} = -L\underline{X}dt + Bd\underline{W} 
+\end{equation}
+Imponiamo che la dinamica sia "time reversal" perché siamo all'equilibrio, e lì vale il bilancio dettagliato.
+
+\noindent Una conseguenza del bilancio dettagliato per osservabili generiche $F, G$ è:
+$\langle F[x(t)]G[x(0)]\rangle = \langle G[x(0)]F[x(t)]\rangle$
+
+\noindent Per le variabili $\alpha$ , le correlazioni temporali soddisfano:
+\begin{equation}
+\langle \underline{\alpha}(t)\underline{\alpha}(t')\rangle = \langle \underline{\alpha}(t')\underline{\alpha}(t)\rangle 
+\end{equation}
+Consideriamo $t'=t+dt$:
+\begin{equation} 
+\alpha_{j}(t+dt)=\alpha_{j}(t)-\sum_m L_{jm}X_{m}dt+\sum_m B_{jm}dW_{m} 
+\end{equation}
+\begin{align} 
+\langle\alpha_{i}(t)\alpha_{j}(t+dt)\rangle &= \langle\alpha_{i}(t) [ \alpha_{j}(t)-\sum_m L_{jm}X_{m}dt+\sum_m B_{jm}dW_{m} ] \rangle \nonumber\\ 
+&= \langle\alpha_{i}(t)\alpha_{j}(t)\rangle - \sum_m L_{jm}\langle\alpha_{i}(t)X_{m}(t)\rangle dt  
+\end{align}
+Assumendo $\langle \alpha_i(t) dW_m(t) \rangle = 0$
+\begin{align} 
+\langle\alpha_{i}(t+dt)\alpha_{j}(t)\rangle &= \langle [ \alpha_{i}(t)-\sum_m L_{im}X_{m}dt+\sum_m B_{im}dW_{m} ] \alpha_{j}(t) \rangle \nonumber \\ 
+&= \langle\alpha_{i}(t)\alpha_{j}(t)\rangle - \sum_m L_{im}\langle X_{m}(t)\alpha_{j}(t)\rangle dt
+\end{align}
+Affinché $\langle\alpha_{i}(t)\alpha_{j}(t+dt)\rangle = \langle\alpha_{j}(t)\alpha_{i}(t+dt)\rangle$, e usando $\langle \alpha_i X_m \rangle = -k_B \delta_{im}$:
+
+$-L_{jm}\langle\alpha_{i}X_{m}\rangle = -L_{im}\langle X_{m}\alpha_{j}\rangle$
+$-L_{ji}(-k_B) = -L_{ij}(-k_B)$
+
+\noindent Questo implica $L_{ji} = L_{ij}$ ovvero che la matrice di Onsager è simmetrica.
+\begin{equation}
+L=MG^{-1} \implies G^{-1}=\frac{1}{k_{B}}\sigma
+\end{equation}
+e quindi:
+\begin{equation}
+M\sigma = (M \sigma)^T 
+\end{equation}
+
+\section{Entropia e Teoria dell'Informazione}
+L'entropia è un modo per quantificare l'incertezza. Data una distribuzione di probabilità $P_i$ per variabili discrete, o $P(x)$ per variabili continue.
+L'entropia di Shannon è definita come:
+\begin{equation}
+H[P]=-\sum_{i}p_{i}\log p_{i}
+\end{equation}
+Per il caso continuo: $H[P]=-\int P(x)\log P(x) dx$
+
+\noindent Questa definizione è consistente con l'entropia termodinamica. Per un sistema all'equilibrio:
+\begin{equation}
+S=k_{B}H[P_{eq}]=-k_{B}\sum_{\{c\}}P_{eq}[c]\log P_{eq}[c]
+\end{equation}
+dove $\{c\}$ rappresenta le configurazioni microscopiche del sistema.
+
+\noindent L'energia libera è data da $F=-\frac{1}{\beta}\log Z \implies Z=e^{-\beta F}$
+
+\noindent La probabilità di equilibrio di una configurazione è:
+\begin{equation}
+P_{eq}[c]=\frac{e^{-\beta E[c]}}{Z}=e^{\beta (F-E[c])}
+\end{equation}
+Sostituiendo nell'espressione dell'entropia di Shannon:
+\begin{align}
+H[P_{eq}]&=-\sum_{\{c\}}P_{eq}[c] \beta (F-E[c]) \nonumber \\ 
+&= -\beta F \sum P_{eq}[c] + \beta \sum P_{eq}[c]E[c] \nonumber \\ 
+& =-\beta F + \beta \langle E \rangle = \beta (\langle E \rangle - F)
+\end{align}
+Poiché in termodinamica $S = (\langle E \rangle - F)/T$ si ha:
+\begin{equation}
+H[P_{eq}]=\frac{S}{k_{B}}
+\end{equation}
+Vogliamo ora capire cosa succede poco fuori dall'equilibrio (Termodinamica Stocastica)
+Consideriamo un sistema descritto da un'equazione di Langevin del tipo:
+\begin{equation}
+\dot{x}=\mu F(x)+\eta
+\end{equation}
+Un esempio è un colloide in un bagno termico.
+Abbiamo:
+\begin{itemize}
+    \item La traiettoria stocastica $x_{\eta}(t)$
+    \item La densità di probabilità $P(x,t)$
+\end{itemize}
+Se la forza deriva da un potenziale, $F(x)=-V^{\prime}(x)$, allora per $t \rightarrow \infty$, la distribuzione di probabilità $P(x,t)$ tende alla distribuzione di equilibrio $P_{\infty}(x)=P_{eq}(x)$
+
+\noindent Introduciamo una dipendenza da un parametro di controllo esterno $\lambda$, che può variare nel tempo: $F(x) \rightarrow F(x,\lambda)$. Ad esempio, $\lambda$ potrebbe essere un campo magnetico esterno.
+
+\noindent La forza $F(x,\lambda)$ può essere decomposta in una parte conservativa (derivante da un potenziale) e una parte non conservativa:
+\begin{equation}
+F(x,\lambda)=-\partial_{x}V(x,\lambda)+f(x,\lambda)
+\end{equation}
+dove $f(x,\lambda)$ è il termine di forza non conservativa.
+
+\noindent Quando $f \neq 0$ o $\lambda$ varia nel tempo, il sistema può raggiungere uno stato stazionario di non equilibrio:
+\begin{equation*}
+P(x,\lambda,t) \xrightarrow{t\rightarrow\infty} P_{\infty}(x,\lambda) \neq P_{eq}(x,\lambda)
+\end{equation*}
+Chiaramente, se $f=0$ e $\lambda=\text{costante}$, e le condizioni al contorno imposte sono compatibili con correnti nulle, allora il sistema raggiunge l'equilibrio:
+\begin{equation*}
+P(x,t,\lambda) \xrightarrow{t\rightarrow\infty} P_{eq}(x,\lambda)
+\end{equation*}
+dove:
+\begin{equation}
+P_{eq}(x,\lambda)=\exp\left\{-\frac{1}{T}[V(x,\lambda)-F(\lambda)]\right\}
+\end{equation}
+e l'energia libera è:
+\begin{equation}
+F(\lambda)=-T\log\int dx e^{-V(x,\lambda)/T}
+\end{equation}
+In un contesto di termodinamica stocastica:
+\begin{itemize}
+    \item Attraverso la variazione del parametro di controllo $\lambda(t)$ e/o la presenza della forza non conservativa $f$, possiamo fare lavoro $W$ sul sistema.
+    \item Questo lavoro $W$ verrà (parzialmente o totalmente) dissipato come calore $Q$.
+    \item Ci sarà una produzione di entropia $S_{\text{prod}}$.
+\end{itemize}

@@ -1,0 +1,393 @@
+\chapter{Lezione 12}
+\label{chap:lezione_12} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 14/04/2025}
+\end{flushright}
+\textit{Bibliografia: 
+Stochasting integration and SDE. Nonanticipating Functions. Ito SDE. Ito Lemma and the Fokker-Planck equation. Stratonovich SDE. Link between Ito and Strotonovich [Gardiner ch 4.2,4.3,4.4]. Elements of stochastic processes [Van Kampen, ch 3]. }
+
+\section{Riepilogo della Lezione Precedente}
+Nella lezione precedente, è stata introdotta l'equazione di Langevin:
+\begin{equation}
+\dot{x}(t) = f[x(t)] + g[x(t)]\eta(t)
+\end{equation}
+dove il termine di rumore $\eta(t)$ soddisfa:
+\begin{equation}
+\langle\eta(t)\rangle = 0
+\end{equation}
+\begin{equation}
+\langle\eta(t)\eta(s)\rangle = \delta(t-s)
+\end{equation}
+Per conferire un significato rigoroso a tale equazione, è necessario definire le modalità dell'integrazione stocastica. L'equazione (10.1) è stata riscritta come:
+\begin{equation}
+\begin{aligned}
+dx(t) &= f[x(t)]dt + g[x(t)]\eta(t)dt \\ &= f[x(t)]dt + g[x(t)]dW(t)
+\end{aligned}
+\end{equation}
+dove $dW(t) \equiv W(t+dt) - W(t)$ rappresenta l'incremento di un processo di Wiener.
+Anche questa è una scrittura formale che necessita di un'interpretazione precisa, specialmente per quanto riguarda il termine $g[x(t)]dW(t)$. Fissata la condizione iniziale, a causa del termine stocastico, non si ottiene un'unica traiettoria per $x(t)$, ma un insieme di possibili traiettorie, ognuna corrispondente a una diversa realizzazione del processo di Wiener $W(t)$.
+L'integrazione formale dell'equazione (10.4) porta a:
+\begin{equation}
+x(t) - x(t_0) = \int_{t_0}^{t} f[x(s)]ds + \int_{t_0}^{t} g[x(s)]dW(s)
+\end{equation}
+Per definire l'integrale stocastico $I[G(s)] = \int_{t_0}^{t} G(s)dW(s)$, si considera una partizione dell'intervallo temporale $[t_0, t]$ in $n$ sottointervalli $[t_{j-1}, t_j]$, con $t_0 < t_1 < \dots < t_n = t$.
+L'integrale è definito come il limite in media quadratica di una somma:
+\begin{equation}
+S_n = \sum_{j=1}^{n} G(\tau_j)[W(t_j) - W(t_{j-1})]
+\end{equation}
+dove $\Delta W_j = W(t_j) - W(t_{j-1})$ è l'incremento del processo di Wiener e $\tau_j$ è un punto scelto all'interno di ogni intervallo $[t_{j-1}, t_j]$.
+La scelta di $\tau_j$ è fondamentale e porta a diverse definizioni dell'integrale.
+Si definisce $\tau_j = (1-\alpha)t_{j-1} + \alpha t_j$ per $\alpha \in [0,1]$.
+Le due scelte più comuni sono:
+
+\begin{itemize}
+    \item Prescrizione di Ito: $\alpha=0$, cioè $\tau_j = t_{j-1}$. Il valore di $G$ è preso all'inizio dell'intervallo.
+    \item Prescrizione di Stratonovich: $\alpha=1/2$, cioè $\tau_j = (t_{j-1}+t_j)/2$. Il valore di $G$ è preso nel punto medio.
+\end{itemize}
+Il limite è inteso in media quadratica (ms-limit):
+$X_n \xrightarrow{\text{ms}} X$   se   $\lim_{n\rightarrow\infty} \langle (X_n - X)^2 \rangle = 0$
+Quindi:
+\begin{equation}
+I[G] = \text{ms-lim}_{n\rightarrow\infty} S_n
+\end{equation}
+Si consideri l'integrale: $\int_{t_0}^{t} W(s)dW(s)$
+
+Secondo la prescrizione di Ito:
+\begin{equation}
+\int_{t_0}^{t} W(s)dW(s) = \frac{1}{2}[W^2(t) - W^2(t_0) - (t-t_0)]
+\end{equation}
+Il valore atteso di questo integrale è $\langle \int_{t_0}^{t} W(s)dW(s) \rangle = 0$, assumendo $\langle W^2(s) \rangle = s$
+Secondo la prescrizione di Stratonovich, l'integrale segue le regole del calcolo ordinario:
+\begin{equation}
+\int_{t_0}^{t} W(s) \circ dW(s) = \frac{1}{2}[W^2(t) - W^2(t_0)]
+\end{equation}
+Il valore atteso è $\langle \int_{t_0}^{t} W(s) \circ dW(s) \rangle = \frac{1}{2}(t-t_0)$.
+Questa differenza evidenzia come le regole del calcolo stocastico possano deviare da quelle del calcolo differenziale ordinario.
+
+\subsection{Funzioni Non Anticipanti}
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA, title=Definizione]
+Una funzione (o funzionale) $G(t)$ si dice non anticipante se, per ogni tempo $t$, il suo valore dipende dalla storia del processo di Wiener $W(s)$ solo per $s \le t$, e non dagli incrementi futuri $W(s')-W(t)$ per $s' > t$.
+\end{tcolorbox}
+Nella discretizzazione dell'integrale di Ito, $G(\tau_j)$ con $\tau_j=t_{j-1}$ è non anticipante rispetto all'incremento $\Delta W_j = W(t_j)-W(t_{j-1})$.
+
+\subsection{Proprietà degli Incrementi $dW(t)$}
+Nel calcolo di Ito, gli incrementi infinitesimali $dW(t)$ hanno le seguenti proprietà fondamentali quando si considerano termini di ordini bassi in $dt$:
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA]
+\begin{equation} dW(t)^2 = dt \end{equation}
+\end{tcolorbox}
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA]
+\begin{equation} dW(t)^{N} = 0 \quad \text{per} \; N>2\end{equation}
+\end{tcolorbox}
+Più formalmente, per una funzione non anticipante $G(s)$:
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA]
+\begin{equation}
+\int_{t_0}^{t} G(s) [dW(s)]^{N+2} = \begin{cases} \int_{t_0}^{t} G(s) ds & \text{se } N=0 \\ 0 & \text{se } N>0 \end{cases}
+\end{equation}
+\end{tcolorbox}
+\subsubsection{Idea della dimostrazione per $N=0$:}
+Dobbiamo mostrare che:
+\begin{equation}
+\text{ms}-\lim_{n\rightarrow\infty} \sum_i G_{i-1}[\Delta W_i]^2 = \text{ms}-\lim_{n\rightarrow\infty} \sum_i G_{i-1}\Delta t_i \,
+\end{equation}
+Per provarlo, si parte dal seguente oggetto:
+\begin{equation}
+I \equiv \lim_{n\rightarrow\infty} \langle I_n \rangle
+\end{equation}
+\begin{equation}
+I_n \equiv \left[ \sum_{i=1}^n G_{i-1}(\Delta W_i^2 - \Delta t_i) \right]^2 \,
+\end{equation}
+Poiché le $\Delta W_i$ sono variabili casuali Gaussiane con varianza $\Delta t_i$, si ha:
+\begin{equation}
+\langle \Delta W_i^2 \rangle = \Delta t_i
+\end{equation}
+\begin{equation} 
+\begin{aligned}
+\langle (\Delta W_i^2 - \Delta t_i)^2 \rangle &= \langle \Delta W_i^4 + \Delta t_i^2 - 2\Delta t_i \Delta W_i^2 \rangle \\ &= 3\Delta t_i^2 + \Delta t_i^2 - 2\Delta t_i^2 = 2\Delta t_i^2 \end{aligned}
+\end{equation}
+una volta che dividiamo $I_n$ in:
+\begin{equation}
+I_n = \sum_i A_i + 2 \sum_{i<j} B_{ij}
+\end{equation}
+Con:
+$A_i \equiv G_{i-1}^2 (\Delta W_i^2 - \Delta t_i)^2$
+$B_{ij} \equiv G_{i-1}G_{j-1}(\Delta W_i^2 - \Delta t_i)(\Delta W_j^2 - \Delta t_j) \,$
+Poiché $G_{i-1}$ è una funzione non anticipante, il che significa che non dipende da $\Delta W_i$, otteniamo che:
+\begin{equation}
+I = 2 \lim_{n\rightarrow\infty} \sum_{i=1}^n \langle G_{i-1}^2 \rangle \Delta t_i^2 = 0
+\end{equation}
+dove l'ultima uguaglianza segue dal fatto che eseguiamo il limite $n\rightarrow\infty$ con $\Delta t_i  = t - t_0$ fissato e quindi $\Delta t_i^2 \rightarrow 0$.
+
+\section{Lemma di Ito}
+Sia $x(t)$ un processo stocastico che soddisfa l'equazione differenziale stocastica di Ito:
+\begin{equation}
+dx(t) = a(x)dt + b(x)dW(t)
+\end{equation}
+Sia $f(x)$ una funzione scalare differenziabile almeno due volte rispetto a $x$.
+Il lemma di Ito fornisce l'SDE per $f(x(t))$.
+Si espande $df = f(x+dx) - f(x)$ in serie di Taylor:
+\begin{equation}
+df = \frac{\partial f}{\partial x}dx + \frac{1}{2}\frac{\partial^{2}f}{\partial x^{2}}(dx)^{2} + O((dx)^3)
+\end{equation}
+Si calcola $(dx)^2$:
+\begin{equation} 
+\begin{aligned}
+(dx)^2 &= (a \;dt + b \;dW)^2 \\ &= a^2(dt)^2 + 2 \;a \; b \; dt \; dW + b^2(dW)^2 \end{aligned}
+\end{equation}
+Utilizzando la regola del calcolo di Ito $(dW)^2=dt$, i termini $dt^2$ e $dt \cdot dW$ sono di ordine superiore a $dt$. Tenendo solo termini lineari si ha:
+\begin{equation}
+(dx)^2 = b^2(x)dt + o(dt)
+\end{equation}
+Sostituendo $dx$ e $(dx)^2$ nell'espansione di $df$:
+\begin{equation}
+df = \frac{\partial f}{\partial x}[a(x)dt + b(x)dW(t)] + \frac{1}{2}\frac{\partial^{2}f}{\partial x^{2}}b^2(x)dt
+\end{equation}
+Raggruppando i termini in $dt$ e $dW(t)$, si ottiene:
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA, title=Lemma di Ito]
+\begin{equation}
+df = A(x,t)dt + B(x,t)dW(t)
+\end{equation}
+\end{tcolorbox}
+Questa è ancora un'SDE di Ito, dove:
+\begin{equation}
+A(x,t) = a(x,t)\frac{\partial f}{\partial x} + \frac{1}{2}b^2(x,t)\frac{\partial^{2}f}{\partial x^{2}}
+\end{equation}
+\begin{equation}
+B(x,t) = b(x,t)\frac{\partial f}{\partial x}
+\end{equation}
+Questa formula è cruciale perché mostra che la regola di differenziazione per funzioni di processi stocastici differisce da quella del calcolo ordinario a causa del termine di secondo ordine $\frac{1}{2}b^2 \frac{\partial^2 f}{\partial x^2}$ noto come "correzione di Itô".
+Il valore atteso di $df$ è quindi:
+\begin{equation}
+\langle df \rangle = \langle A \rangle dt
+\end{equation}
+da cui si ottiene l'evoluzione del valore atteso di $f$:
+\begin{equation}
+\frac{d}{dt}\langle f \rangle = \left\langle a(x)\frac{\partial f}{\partial x} + \frac{b^2(x)}{2}\frac{\partial^2 f}{\partial x^2} \right\rangle = \langle A \rangle
+\end{equation}
+
+\section{Equazione di Fokker-Planck}
+L'equazione di Fokker-Planck descrive l'evoluzione temporale della densità di probabilità $P(x,t|x_0,t_0)$ di trovare la particella in $x$ al tempo $t$, data la condizione iniziale $x_0$ al tempo $t_0$.
+La condizione iniziale è:
+\begin{equation}
+P(x,t_0|x_0,t_0) = \delta(x-x_0)
+\end{equation}
+La probabilità è normalizzata:
+\begin{equation}
+\int dx P(x,t|x_0,t_0) = 1 \quad \forall t
+\end{equation}
+Consideriamo un generico osservabile $O(x)$. Il suo valore medio al tempo $t$ è:
+\begin{equation}
+\langle O \rangle (t) = \int dx P(x,t|x_0,t_0) O(x)
+\end{equation}
+La derivata temporale del valore medio è:
+\begin{equation}
+\frac{d}{dt}\langle O \rangle = \int dx \; ( \partial_t P(x,t)) O(x)
+\end{equation}
+Utilizzando la formula per $\frac{d}{dt}\langle f \rangle$ con $f=O(x)$, abbiamo:
+\begin{equation} 
+\begin{aligned}
+\frac{d}{dt}\langle O \rangle &= \left\langle a(x)\frac{\partial O}{\partial x} + \frac{b^2(x)}{2}\frac{\partial^2 O}{\partial x^2} \right\rangle \\ &= \int dx P(x,t) \left[ a(x)\frac{\partial O}{\partial x} + \frac{b^2(x)}{2}\frac{\partial^2 O}{\partial x^2} \right] \end{aligned}
+\end{equation}
+Calcoliamo i due contributi separatamente:
+\begin{enumerate}
+    \item Integrando per parti (assumendo che i termini di bordo svaniscano):
+\begin{equation}
+\begin{aligned}
+\int dx P(x,t) a(x)\frac{\partial O}{\partial x} &= [P(x,t)a(x)O(x)]_{\text{bordo}} - \int dx \frac{\partial}{\partial x}[a(x)P(x,t)]O(x) \\
+&= - \int dx \frac{\partial}{\partial x}[a(x)P(x,t)]O(x)
+\end{aligned}
+\end{equation}
+\item In modo analogo per il secondo termine:
+\begin{equation}
+\begin{aligned}
+\int dx P(x,t) \frac{b^2(x)}{2}\frac{\partial^2 O}{\partial x^2} &= \dots + \int dx \frac{\partial^2}{\partial x^2}\left[\frac{b^2(x)}{2}P(x,t)\right]O(x) \\
+&= \int dx \frac{\partial^2}{\partial x^2}\left[\frac{b^2(x)}{2}P(x,t)\right]O(x)
+\end{aligned}
+\end{equation}
+Sostituendo nell'espressione per $\frac{d}{dt}\langle O \rangle$, otteniamo:
+\begin{equation}
+\frac{d}{dt}\langle O \rangle = \int dx \left\{ \frac{\partial^2}{\partial x^2}\left[\frac{b^2(x)}{2}P(x,t)\right] - \frac{\partial}{\partial x}[a(x)P(x,t)] \right\} O(x)
+\end{equation}
+\end{enumerate}
+Confrontando con $\int dx (\partial_t P(x,t)) O(x)$, si ottiene l'equazione di Fokker-Planck:
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA]
+\begin{equation}
+\partial_t P(x,t|x_0,t_0) = \frac{\partial^2}{\partial x^2}\left[\frac{b^2}{2}P(x,t|x_0,t_0)\right] - \frac{\partial}{\partial x}[a \;P(x,t|x_0,t_0)]
+\end{equation}
+\end{tcolorbox}
+Un caso particolare è il processo di Wiener, dove $a(x)=0$ e $b(x)=1$ e l'equazione diventa l'equazione di diffusione:
+\begin{equation}
+\partial_t P = \frac{1}{2} \partial_x^2 P
+\end{equation}
+Per la soluzione stazionaria $\partial_t P = 0$, si ha:
+\begin{equation}
+\frac{\partial}{\partial x} \left\{ \frac{\partial}{\partial x}\left[\frac{b^2(x)}{2}P_{\text{staz}}(x)\right] - a(x)P_{\text{staz}}(x) \right\} = 0
+\end{equation}
+Questo implica che la quantità tra parentesi graffe è una costante (la corrente di probabilità $J$).
+
+\section{Relazione tra Itô e Stratonovich}
+Consideriamo un'SDE interpretata secondo Itô e una interpretata secondo Stratonovich:
+\begin{equation}
+dx(t) = a(x)dt + b(x)dW(t) \quad \text{(Itô)}
+\end{equation}
+\begin{equation}
+dx(t) = \alpha(x)dt + \beta(x) \circ dW(t) \quad \text{(Stratonovich)}
+\end{equation}
+
+Per passare da una forma all'altra, è cruciale la relazione tra l'integrale di Stratonovich e quello di Itô. Vogliamo quindi trovare la relazione tra $(a,b)$ e $(\alpha, \beta)$ affinché le due equazioni descrivano lo stesso processo $x(t)$.
+
+Si parte dalla definizione discretizzata dell'integrale di Stratonovich:
+
+
+\begin{equation}
+\int_{t_0}^{t} \beta(x(s)) \circ dW(s) \approx \sum_{j} \beta \left(\frac{x_j+x_{j-1}}{2}\right)\Delta W_{j-1}
+\end{equation}
+
+
+Vale l'identità $x_i = x_{i-1} + \Delta x_i$ , quindi:
+
+
+\begin{equation}
+\frac{1}{2}(x_i + x_{i-1}) = x_{i-1} + \frac{\Delta x_i}{2}
+\end{equation}
+
+
+Dall'equazione di Itô alle differenze finite, abbiamo:
+
+
+\begin{equation}
+\Delta x_i = a_{i-1}\Delta t_{i-1} + b_{i-1}\Delta W_{i-1} 
+\end{equation}
+
+
+Applichiamo ora il lemma di Itô:
+
+
+\begin{equation}
+\beta[x_{i-1} + \Delta x_i/2] = \beta_{i-1} + \frac{1}{2}(a_i \partial_x \beta_{i-1} + \frac{1}{4}b_{i-1}^2)\Delta t_{i-1} + \frac{1}{2}b_{i-1}\partial_x \beta_{i-1} \Delta W_{i-1} 
+\end{equation}
+
+
+Inseriamo la $(44)$ nella $(41)$  e mantenendo solo i termini lineari:
+
+
+\begin{align}
+\sum_{i=1}^n \beta\left[\frac{1}{2}(x_i + x_{i-1})\right] \Delta W_{i-1} &= \sum_{i=1}^n \beta_{i-1} \Delta W_{i-1} + \frac{1}{2} \sum_{i=1}^n b_{i-1} \partial_x \beta_{i-1} (\Delta W_{i-1})^2 \nonumber \\
+&= \sum_{i=1}^n \beta_{i-1} \Delta W_{i-1} + \frac{1}{2} \sum_{i=1}^n b_{i-1} \partial_x \beta_{i-1} \Delta t_{i-1} 
+\end{align}
+
+
+Prendendo il limite $n \rightarrow \infty$ e $\Delta t_i \rightarrow 0$ con $n\Delta t_i = (t - t_0)$ arriviamo a:
+
+
+\begin{equation}
+\underbrace{ \int_{t_0}^t dW(s) \circ \beta[x(s)]}_{\text{Stratonovich}} = \underbrace{ \int_{t_0}^t dW(s) \beta[x(s)] + \frac{1}{2} \int_{t_0}^t ds \, b[x(s)] \partial_x \beta[x(s)] \quad }_{\text{Itô}}
+\end{equation}
+
+
+e quindi abbiamo la seguente corrispondenza tra le due interpretazioni della SDE di Langevin:
+
+
+\begin{equation}
+\alpha(x) = a(x) - \frac{1}{2} b(x) \partial_x b(x) 
+\end{equation}
+
+
+
+\begin{equation}
+\beta(x) = b(x) 
+\end{equation}
+
+
+Nel caso di rumore additivo, cioè $a(x)=a=\text{cost.}$, $\beta(x)=\beta=\text{cost.}$, si ha $\partial_x \beta = \partial_x b = 0$ e quindi qualsiasi differenza scompare.
+
+
+\section{Processi Stocastici}
+
+Un processo stocastico può essere visto come una famiglia di variabili casuali $Y(t)$ indicizzate dal tempo $t$. Più formalmente, si può considerare una variabile casuale $x$ con densità di probabilità $P(x)$ (con $\int P(x)dx=1$) e una funzione $y_x(t) = f(x,t)$. Per ogni $x$ fissato, $y_x(t)$ è una traiettoria deterministica, ma poiché $x$ è casuale, $y_x(t)$ diventa una funzione casuale (un processo stocastico).
+
+Si possono definire i momenti del processo.
+
+\begin{itemize}
+    \item Il valore atteso di $Y(t)$ è:
+
+
+\begin{equation}
+\langle Y(t) \rangle = \int dx P(x) y_x(t)
+\end{equation}
+
+
+\item Le funzioni di correlazione a $m$-punti (= momenti di ordine superiore) sono definite come:
+
+
+\begin{equation}
+\langle Y(t_1) \dots Y(t_m) \rangle = \int dx P(x) y_x(t_1) \dots y_x(t_m)
+\end{equation}
+\end{itemize}
+
+Una caratterizzazione completa del processo è data dalla gerarchia delle funzioni di densità di probabilità congiunta $P_n(y_1,t_1; y_2,t_2; \dots; y_n,t_n)$, che definisce la probabilità che il processo assuma il valore $y_1$ al tempo $t_1$, $y_2$ al tempo $t_2$, ecc. Queste sono definite come:
+
+
+\begin{equation}
+P_n(y_1,t_1; \dots; y_n,t_n) = \int dx P(x) \delta[y_1-y_x(t_1)] \dots \delta[y_n-y_x(t_n)]
+\end{equation}
+
+
+Con queste, i momenti possono essere calcolati come:
+
+
+\begin{equation}
+\langle y(t_1)\dots y(t_n) \rangle = \int \dots \int dy_1 \dots dy_n (y_1 \dots y_n) P_n(y_1,t_1; \dots; y_n,t_n)
+\end{equation}
+
+\begin{itemize}
+    \item La funzione di autocorrelazione è un momento del secondo ordine particolarmente importante:
+
+\begin{equation}
+C(t_1, t_2) = \langle Y(t_1)Y(t_2) \rangle - \langle Y(t_1) \rangle \langle Y(t_2) \rangle
+\end{equation}
+
+
+\item Un processo stocastico è stazionario se le sue proprietà statistiche sono invarianti per traslazioni temporali:
+    
+
+    \begin{equation}
+    \langle Y(t_1+\tau) \dots Y(t_m+\tau) \rangle = \langle Y(t_1) \dots Y(t_m) \rangle
+    \end{equation}
+
+    
+    Per un processo stazionario, la funzione di autocorrelazione dipende solo dalla differenza dei tempi $C(t_1, t_2) = C(t_1-t_2) = c(\tau)$
+    
+\end{itemize}
+
+Queste funzioni di distribuzione devono soddisfare le condizioni di consistenza:
+
+\begin{itemize}
+    \item $P_n(y_1,t_1; \dots; y_n,t_n) \ge 0$ (non-negatività)
+\item $P_n$ è simmetrica rispetto allo scambio di qualsiasi coppia di argomenti $(y_j,t_j)$ e $(y_k,t_k)$
+\item condizione di Chapman-Kolmogorov generalizzata o di marginalizzazione:
+    
+    $\int dy_n P_n(y_1,t_1; \dots; y_n,t_n) = P_{n-1}(y_1,t_1; \dots; y_{n-1},t_{n-1})$ 
+    
+\item  $\int dy_1 P_1(y_1,t_1) = 1$
+\end{itemize}
+
+La probabilità condizionata $P_{1|1}(y_2,t_2|y_1,t_1)$ è  la probabilità che $y_x(t)$ sia $y_2$ al tempo $t_2$, dato che $y_x(t)$ è $y_1$ al tempo $t_1$.
+
+Questa soddisfa la normalizzazione $\int dy_2 P_{1|1}(y_2,t_2|y_1,t_1) = 1$
+
+Usando la regola di Bayes per cui $P(A|B)= \frac{P(A \cap B)}{P(B)}$ , si ha:
+
+
+\begin{equation}
+P_{1|1}(y_2,t_2|y_1,t_1) = \frac{P_2(y_1,t_1;y_2,t_2)}{P_1(y_1,t_1)}
+\end{equation}
+
+
+
+Generalizzando si ha: $P_{k|l}(y_{k+1},t_{k+1};\dots;y_{l+k},t_{l+k} | y_1,t_1;\dots;y_l,t_l)$ 
+
+
+\begin{equation}
+P_{k|l}(\dots|\dots) = \frac{P_{l+k}(y_1,t_1;\dots;y_{l+k},t_{l+k})}{P_l(y_1,t_1;\dots;y_l,t_l)}
+\end{equation}

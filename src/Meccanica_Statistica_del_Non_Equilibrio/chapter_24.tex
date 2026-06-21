@@ -1,0 +1,216 @@
+\chapter{Lezione 24}
+\label{chap:lezione_24} % Etichetta per riferirsi al capitolo
+
+
+\section{Teorema di Fluttuazione-Dissipazione}
+
+L'obiettivo è trovare una relazione tra la funzione di correlazione non perturbata e la risposta del sistema a una perturbazione. Questa relazione è nota come teorema di fluttuazione-dissipazione.
+
+Consideriamo la funzione di correlazione connessa:
+\begin{equation}
+ G_{ij} = \langle S_iS_j \rangle - \langle S_i \rangle\langle S_j \rangle
+\end{equation}
+
+Supponiamo di avere un'Hamiltoniana del tipo:
+\begin{equation}
+ H = H_0[S] + \sum_i h_iS_i
+\end{equation}
+
+La risposta del sistema a una perturbazione, ad esempio un campo esterno $h_j$, è data dalla variazione del valore medio di un'osservabile $S_i$. La suscettività $\chi_{ij}$ è definita come:
+\begin{equation}
+ \chi_{ij} = \frac{\partial \langle S_i \rangle}{\partial h_j} \bigg|_{h=0}
+\end{equation}
+
+\section{Risposta a una Perturbazione}
+
+Consideriamo un sistema descritto da un insieme di configurazioni $\{c\}$. L'Hamiltoniana del sistema non perturbato sia $H_0[c]$. La probabilità di una data configurazione in assenza di perturbazione è data dalla distribuzione di Boltzmann:
+\begin{equation}
+ P_0[c] = \frac{1}{Z_\beta} e^{-\beta H_0[c]}
+\end{equation}
+dove $Z_\beta$ è la funzione di partizione:
+\begin{equation}
+ Z_\beta = \int d[c] e^{-\beta H_0[c]}
+\end{equation}
+
+Introduciamo una perturbazione tramite un termine aggiuntivo all'Hamiltoniana, controllato dal parametro $\epsilon$:
+\begin{equation}
+ H[c] = H_0[c] - \epsilon A[c]
+\end{equation}
+
+La nuova densità di probabilità per il sistema perturbato è:
+\begin{equation}
+ P_\epsilon[c] = \frac{1}{Z_\beta^\epsilon} e^{-\beta H[c]}
+\end{equation}
+con la nuova funzione di partizione:
+\begin{equation}
+ Z_\beta^\epsilon = \int d[c] e^{-\beta H[c]}
+\end{equation}
+
+Sia $B[c]$ un'osservabile arbitraria. Vogliamo calcolare la variazione del suo valore di aspettazione dovuto alla perturbazione:
+\begin{equation}
+ \langle \Delta B \rangle_\epsilon \equiv \langle B \rangle_\epsilon - \langle B \rangle_0
+\end{equation}
+
+Per valori piccoli di $\epsilon$, possiamo sviluppare l'esponenziale al primo ordine:
+\begin{equation}
+ e^{-\beta H_0 + \beta \epsilon A[c]} \simeq e^{-\beta H_0} (1 + \beta \epsilon A[c]) + O(\epsilon^2)
+\end{equation}
+
+La funzione di partizione perturbata diventa:
+\begin{equation}
+ Z_\beta^\epsilon = \int d[c] e^{-\beta H_0} (1 + \beta \epsilon A[c]) = Z_\beta (1 + \beta \epsilon \langle A \rangle_0)
+\end{equation}
+
+La densità di probabilità perturbata può essere approssimata come:
+\begin{equation}
+ P_\epsilon[c] \approx \frac{e^{-\beta H_0[c]} (1 + \beta \epsilon A[c])}{Z_\beta (1 + \beta \epsilon \langle A \rangle_0)} \simeq P_0[c] (1 + \beta \epsilon [A[c] - \langle A \rangle_0]) + O(\epsilon^2)
+\end{equation}
+
+Calcoliamo ora il valore di aspettazione di $B$ con la densità di probabilità perturbata:
+\begin{equation}
+ \langle B \rangle_\epsilon = \int d[c] P_\epsilon[c] B[c] \simeq \int d[c] P_0[c] \{1 + \beta \epsilon [A[c] - \langle A \rangle_0]\} B[c]
+\end{equation}
+\begin{equation}
+ \langle B \rangle_\epsilon \simeq \langle B \rangle_0 + \beta \epsilon \langle AB \rangle_0 - \beta \epsilon \langle A \rangle_0 \langle B \rangle_0
+\end{equation}
+
+Da cui si ottiene la relazione fondamentale:
+\begin{equation}
+ \frac{1}{\epsilon} [\langle B \rangle_\epsilon - \langle B \rangle_0] = \beta \{ \langle AB \rangle_0 - \langle A \rangle_0 \langle B \rangle_0 \}
+\end{equation}
+
+Questa equazione lega la risposta media di un'osservabile $B$ a una perturbazione $A$ (lato sinistro) alla funzione di correlazione tra $A$ e $B$ nel sistema non perturbato (lato destro).
+
+\subsection{Funzione di Risposta Lineare}
+In un contesto dinamico, la risposta di un'osservabile $\langle v(t) \rangle$ a una forza esterna $\epsilon F(t)$ può essere scritta come:
+\begin{equation}
+ \langle v(t) \rangle_\epsilon = \epsilon \int ds F(s) R(t,s)
+\end{equation}
+dove $R(t,s)$ è la funzione di risposta, definita come:
+\begin{equation}
+ R(t,s) = \frac{\delta \langle v(t) \rangle}{\delta h(s)} \bigg|_{h=0}
+\end{equation}
+Consideriamo il caso di una forza impulsiva $F(t) = F_0 \delta(t)$. Nel limite di tempi lunghi ($t \rightarrow \infty$), per un sistema con smorzamento, la velocità media raggiunge un valore di equilibrio:
+\begin{equation}
+ \lim_{t \to \infty} \langle v(t) \rangle = \tau F_0
+\end{equation}
+Questa può essere scritta in termini di mobilità $\mu$ come $\langle v(\infty) \rangle = \mu F_0$. Confrontando le espressioni, si ha un'analogia con la legge di Ohm, $J = \sigma E$, dove la corrente $J$ corrisponde a $\langle v(\infty) \rangle$ e il campo elettrico $E$ alla forza $F_0$. Dalla relazione di Einstein $D = \mu k_B T$, si può esprimere la mobilità in termini del coefficiente di diffusione $D$ e della temperatura $T$.
+
+\section{Relazioni di Green-Kubo}
+Le relazioni di Green-Kubo generalizzano questo concetto, legando i coefficienti di trasporto (proprietà di non equilibrio) a integrali temporali di funzioni di correlazione a tempo (calcolate all'equilibrio). Per i coefficienti di Onsager $L_{ij}$, la relazione è:
+\begin{equation}
+ L_{ij} = \beta \int_0^{+\infty} dt \langle j_i(t) j_j(0) \rangle_0
+\end{equation}
+dove $j_i$ è la corrente istantanea.
+
+\subsection{Generalizzazione a Processi Lineari}
+Consideriamo un processo stocastico lineare descritto dall'equazione di Langevin matriciale:
+\begin{equation}
+ d\underline{x} = -M\underline{x} dt + B d\underline{w}
+\end{equation}
+La soluzione formale è:
+\begin{equation}
+ \underline{x}(t) = G(t)\underline{x}(0) + \int_0^t ds G(t-s) B d\underline{w}(s)
+\end{equation}
+dove $G(t) = \exp(-Mt)$ è la matrice di Green.
+
+La risposta media a una perturbazione dello stato iniziale $\delta\underline{x}(0)$ è:
+\begin{equation}
+ \langle \delta\underline{x}(t) \rangle = G(t) \delta\underline{x}(0)
+\end{equation}
+La funzione di risposta è quindi $R_{ij}(t) = G_{ij}(t)$.
+Calcoliamo ora la matrice di correlazione $C(t) = \langle \underline{x}(t) \underline{x}^T(0) \rangle$. Utilizzando la soluzione dell'equazione di Langevin e assumendo che il rumore non sia correlato con lo stato iniziale:
+\begin{equation}
+ C_{ij}(t) = \langle [G_{ik}(t)x_k(0) + \dots] x_j(0) \rangle = G_{ik}(t) \langle x_k(0) x_j(0) \rangle = G_{ik}(t) C_{kj}(0)
+\end{equation}
+In forma matriciale:
+\begin{equation}
+ C(t) = G(t)C(0)
+\end{equation}
+Da questa relazione, possiamo esprimere la funzione di risposta (matrice di Green) in termini delle matrici di correlazione (quantità del sistema non perturbato):
+\begin{equation}
+ G(t) = C(t)C^{-1}(0)
+\end{equation}
+Questa è la generalizzazione del teorema di fluttuazione-dissipazione per processi stocastici lineari.
+
+\section{Termodinamica Stocastica}
+
+Consideriamo una particella browniana in un regime "overdamped" a contatto con un bagno termico. L'equazione di Langevin è:
+\begin{equation}
+ \dot{x}(t) = \mu F(x, \lambda) + \eta(t)
+\end{equation}
+con $\langle \eta(t) \eta(s) \rangle = 2D \delta(t-s)$ e $D = \mu k_B T$.
+L'evoluzione della densità di probabilità $P(x,t)$ è descritta dall'equazione di Fokker-Planck:
+\begin{equation}
+ \partial_t P(x,t) = - \partial_x J(x,t)
+\end{equation}
+dove la corrente di probabilità è:
+\begin{equation}
+ J(x,t) = \mu F(x, \lambda) P(x,t) - D \partial_x P(x,t)
+\end{equation}
+La probabilità di una traiettoria $x(t)$ può essere calcolata tramite l'approccio dei path-integral:
+\begin{equation}
+ P[x(t)] = N e^{-A[x(t)]}
+\end{equation}
+dove $A[x(t)]$ è l'azione di Onsager-Machlup:
+\begin{equation}
+ A[x(t)] = \int dt \left( \frac{[\dot{x}(s) - \mu F(x,s)]^2}{4D} + \frac{\mu}{2} \partial_x F \right)
+\end{equation}
+La forma esatta del secondo termine dipende dalla convenzione utilizzata (Ito o Stratonovich).
+
+\subsection{Primo Principio e Definizioni Termodinamiche}
+La forza $F$ può essere decomposta in una parte conservativa e una non conservativa:
+\begin{equation}
+ F(x, \lambda) = -\frac{\partial V}{\partial x} + f(x, \lambda)
+\end{equation}
+dove $\lambda$ è un parametro di controllo che può dipendere dal tempo.
+Il primo principio della termodinamica per una traiettoria stocastica è $dU = \delta W - \delta q$.
+Il lavoro fatto sul sistema lungo una traiettoria è:
+\begin{equation}
+ \delta W = \frac{\partial V}{\partial \lambda} d\lambda + f(x,\lambda) \circ dx = \frac{\partial V}{\partial \lambda} \dot{\lambda} dt + f(x,\lambda) \circ dx
+\end{equation}
+Il calore trasferito al bagno termico è:
+\begin{equation}
+ \delta q = (-\frac{\partial V}{\partial x} + f(x,\lambda)) \circ dx = F(x,\lambda) \circ dx
+\end{equation}
+Lungo una traiettoria finita, il calore totale trasferito è:
+\begin{equation}
+ q[x(t)] = \int_0^t F(x(s),\lambda(s)) \circ \dot{x}(s) ds
+\end{equation}
+
+\subsection{Simmetria per Inversione Temporale e Produzione di Entropia}
+Consideriamo il rapporto tra la probabilità della traiettoria diretta, $P[x(t)]$, e quella della traiettoria inversa, $P_R[x_R(t)]$, dove $x_R(s) = x(t-s)$. Si può dimostrare che:
+\begin{equation}
+ \frac{P[x(t)]}{P_R[x_R(t)]} = \exp \left( \frac{\mu}{D} \int_0^t ds F(x(s)) \dot{x}(s) \right) = \exp \left( \frac{q[x(t)]}{k_B T} \right)
+\end{equation}
+Questo risultato è noto come teorema di fluttuazione di Crooks.
+
+Definiamo l'entropia del mezzo (bagno termico) come:
+\begin{equation}
+ \Delta S^m [x(t)] = \frac{q[x(t)]}{T}
+\end{equation}
+Definiamo inoltre l'entropia stocastica del sistema, dipendente dallo stato:
+\begin{equation}
+ s(x,t) = -k_B \ln P(x,t)
+\end{equation}
+L'entropia media del sistema è l'entropia di Shannon:
+\begin{equation}
+ S(t) = \langle s(x,t) \rangle = -k_B \int dx P(x,t) \ln P(x,t)
+\end{equation}
+La variazione nel tempo dell'entropia del sistema, $\dot{S}(t)$, può essere decomposta in due contributi:
+\begin{equation}
+ \dot{S}(t) = \Pi(t) - \Phi(t)
+\end{equation}
+dove $\Pi(t)$ è il tasso di produzione di entropia e $\Phi(t)$ è il flusso di entropia. Essi sono dati da:
+\begin{equation}
+ \Pi(t) = k_B \int dx \frac{J(x,t)^2}{D P(x,t)} \ge 0
+\end{equation}
+\begin{equation}
+ \Phi(t) = k_B \int dx J(x,t) \frac{\mu F(x,\lambda)}{D}
+\end{equation}
+Nello stato stazionario ($t \rightarrow \infty$), la derivata dell'entropia del sistema si annulla, $\dot{S}(\infty)=0$, e quindi si ha:
+\begin{equation}
+ \Pi_\infty = \Phi_\infty
+\end{equation}
+Se la corrente stazionaria $J_\infty(x)$ è nulla, allora la produzione di entropia è zero, $\Pi_\infty=0$. Questo corrisponde a uno stato di equilibrio, dove la dinamica è reversibile (vale la simmetria per inversione temporale). Se invece $J_\infty(x) \neq 0$, allora $\Pi_\infty > 0$, il sistema si trova in uno stato stazionario di non equilibrio e la simmetria per inversione temporale è rotta.
+

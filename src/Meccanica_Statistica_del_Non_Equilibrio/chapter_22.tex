@@ -1,0 +1,423 @@
+\chapter{Lezione 22}
+\label{chap:lezione_22} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 26/05/2025}
+\end{flushright}
+\textit{Bibliografia: 
+Path integral solution of the Ornstein-Uhlenbeck process. Optimal trajectories and Instantons through Martin-Siggia-Rose and Onsager-Machlup.}
+
+\section{Formalismo dell'Azione dinamica}
+
+Consideriamo un generico processo stocastico descritto dall'equazione di Langevin:
+\begin{equation}
+\dot{\varphi}=f(\varphi)+\eta(t)
+\end{equation}
+dove $\varphi(t)$ è il nostro grado di libertà, $f(\varphi)$ è una forza deterministica e $\eta(t)$ è un rumore bianco Gaussiano con le seguenti proprietà:
+\begin{equation}
+\langle\eta(t)\rangle=0
+\end{equation}
+\begin{equation}
+\langle\eta(t)\eta(s)\rangle=2D\delta(t-s)
+\end{equation}
+$D$ è il coefficiente di diffusione che quantifica l'intensità del rumore.
+
+Per studiare le proprietà statistiche di $\varphi(t)$, si introduce un formalismo basato sugli integrali di cammino, simile a quello usato in teoria dei campi.
+Si definisce un'azione dinamica $S[\varphi,\hat{\varphi}]$, dove $\hat{\varphi}$ è un campo ausiliario (campo di risposta).
+Il valore medio di un osservabile $O(\varphi)$ è dato da:
+\begin{equation}
+\langle O(\varphi)\rangle =\int \mathcal{D}\varphi(t)\mathcal{D}\hat{\varphi}(t) O(\varphi) e^{S[\varphi,\hat{\varphi}]}
+\end{equation}
+L'azione è l'integrale temporale di una Lagrangiana $\mathcal{L}[\varphi,\hat{\varphi}]$:
+\begin{equation}
+S[\varphi,\hat{\varphi}]=\int dt \; \mathcal{L}[\varphi,\hat{\varphi}]
+\end{equation}
+Questa formulazione assume una discretizzazione temporale secondo la convenzione di Ito.
+Se la forza deriva da un potenziale, $f(\varphi)=-V^{\prime}(\varphi)$.
+La Lagrangiana per un rumore delta-correlato (locale nel tempo) è:
+\begin{equation}
+\mathcal{L}[\varphi,\hat{\varphi}]\equiv-D\hat{\varphi}^{2}(t)+\hat{\varphi}(t)[\partial_{t}\varphi(t)+V^{\prime}(\varphi(t))]
+\end{equation}
+Se il rumore non fosse stato delta-correlato (cioè con una memoria temporale), la Lagrangiana non sarebbe stata locale nel tempo e avrebbe coinvolto integrali doppi nel tempo.
+
+\section{Funzionale Generatore}
+Per calcolare le funzioni di correlazione e di risposta, si introduce il funzionale generatore:
+\begin{equation}
+Z[J(t),\hat{J}(t)]= \left \langle \exp \left\{\int dt[J(t)\varphi(t)+\hat{J}(t)\hat{\varphi}(t)] \right\} \right\rangle
+\end{equation}
+dove $J(t)$ e $\hat{J}(t)$ sono sorgenti esterne.
+Le derivate funzionali di $Z$ rispetto alle sorgenti danno le funzioni desiderate:
+
+\begin{itemize}
+    \item La funzione di correlazione a due punti $C(t,s)$:
+    \begin{equation}
+    C(t,s)=\langle\varphi(t)\varphi(s)\rangle=\frac{\delta^{2}Z}{\delta J(t)\delta J(s)}\Big|_{J=\hat{J}=0}
+    \end{equation}
+    
+    \item La funzione di risposta $R(t,s)$ (che correla $\varphi$ con il campo ausiliario $\hat{\varphi}$):
+    \begin{equation}
+    R(t,s)=\frac{\delta\langle\varphi(t)\rangle}{\delta h(s)}\Big|_{h=0}=\frac{\delta^{2}Z}{\delta J(t)\delta\hat{J}(s)}\Big|_{J=\hat{J}=0}=\langle\varphi(t)\hat{\varphi}(s)\rangle
+    \end{equation}
+\end{itemize}
+dove $h(s)$ è una perturbazione esterna accoppiata a $f(\varphi)$ nell'equazione di Langevin.
+
+Il campo $\hat{\varphi}$ è chiamato campo di risposta proprio perché le sue funzioni di correlazione con $\varphi$ forniscono le funzioni di risposta del sistema.
+Per il principio di causalità, $R(t,s)$ è nulla per $s > t$.
+
+Una proprietà importante è che $Z[J=0,\hat{J}=0]=\langle1\rangle=1$, il che significa che la teoria è normalizzata. Questo differisce dalla meccanica statistica di equilibrio, dove la funzione di partizione $Z_{\beta}[h=0]=\text{Tr}\{e^{-\beta H}\}$ non è generalmente uguale a 1.
+
+\section{Processo di Ornstein-Uhlenbeck (O-U)}
+Un caso paradigmatico è il processo di Ornstein-Uhlenbeck, dove il potenziale è quadratico:
+\begin{equation}
+V(\varphi)=\frac{K}{2}\varphi^{2} \implies V'(\varphi)=K\varphi
+\end{equation}
+La Lagrangiana (secondo Ito) diventa:
+\begin{equation}
+\mathcal{L}[\varphi,\hat{\varphi}]=-D\hat{\varphi}^{2}(t)+\hat{\varphi}(t)[\partial_{t}\varphi(t)+K\varphi(t)]
+\end{equation}
+Poiché l'azione è quadratica nei campi, il modello è esattamente risolvibile.
+Per rendere manifesta la struttura quadratica, si può simmetrizzare il termine $\hat{\varphi}\partial_t\varphi$.
+Utilizzando l'integrazione per parti:
+\begin{equation*} 
+\int dt\hat{\varphi}\partial_{t}\varphi = [\hat{\varphi}\varphi]_{\text{boundary}} - \int dt~\varphi\partial_{t}\hat{\varphi} 
+\end{equation*}
+Trascurando i termini di bordo, si può scrivere una Lagrangiana simmetrizzata:
+\begin{equation}
+\mathcal{L}_{\text{sym}}[\varphi,\hat{\varphi}]=\frac{1}{2}\{-2D\hat{\varphi}^{2}(t)+\hat{\varphi}(t)\partial_{t}\varphi(t)-\varphi(t)\partial_{t}\hat{\varphi}(t)+K\varphi\hat{\varphi}+K\hat{\varphi} \varphi\}
+\end{equation}
+Introduciamo una notazione vettoriale per i campi e le sorgenti:
+\begin{equation}
+\underline{\Phi}(t)=\begin{pmatrix}\hat{\varphi}(t)\\ \varphi(t)\end{pmatrix}, \quad \underline{\Phi}^{T}(t)=(\hat{\varphi}(t),\varphi(t)), \quad \underline{J}(t)=\begin{pmatrix}\hat{J}(t)\\ J(t)\end{pmatrix}
+\end{equation}
+L'azione può essere scritta come:
+\begin{equation}
+S[\underline{\Phi}]=\frac{1}{2}\int dt ds \underline{\Phi}^{T}(t) A(t,s) \underline{\Phi}(s)
+\end{equation}
+dove $A(t,s)$ è un operatore matriciale:
+\begin{equation}
+-A(t,s)=\begin{pmatrix}-2D & \partial_{t}+K\\ -\partial_{t}+K & 0\end{pmatrix}\delta(t-s)
+\end{equation}
+Il funzionale generatore per un'azione quadratica è una Gaussiana nelle sorgenti:
+\begin{equation}
+Z[\underline{J}]=\exp\left\{\frac{1}{2}\int dt ds \underline{J}^{T}(t)A^{-1}(t,s)\underline{J}(s)\right\}
+\end{equation}
+La matrice $A^{-1}(t,s)$ è la matrice delle funzioni di correlazione (le funzioni di Green):
+\begin{equation}
+G(t,s)=\begin{pmatrix}\frac{\delta^{2}Z}{\delta \hat{J}(t)\delta\hat{J}(s)} & \frac{\delta^{2}Z}{\delta \hat{J}(t)\delta J(s)} \\ \frac{\delta^{2}Z}{\delta J(t)\delta\hat{J}(s)} & \frac{\delta^{2}Z}{\delta J(t)\delta J(s)} \end{pmatrix} =\begin{pmatrix}\langle\hat{\varphi}(t)\hat{\varphi}(s)\rangle & \langle\hat{\varphi}(t)\varphi(s)\rangle\\ \langle\varphi(t)\hat{\varphi}(s)\rangle & \langle\varphi(t)\varphi(s)\rangle\end{pmatrix}
+\end{equation}
+Definiamo:
+\begin{itemize}
+    \item $\hat{C}(t,s) = \langle\hat{\varphi}(t)\hat{\varphi}(s)\rangle$
+    \item $C(t,s) = \langle\varphi(t)\varphi(s)\rangle$
+    \item $R_1(t,s) = \langle\varphi(t)\hat{\varphi}(s)\rangle$ (funzione di risposta ritardata $G_R(t,s)$)
+    \item $R_2(t,s) = \langle\hat{\varphi}(t)\varphi(s)\rangle$ (funzione di risposta avanzata $G_A(t,s)$).
+\end{itemize}
+L'inversa $A^{-1}$ si ottiene risolvendo $A A^{-1} = I$, cioè $\int dw A(t,w)A^{-1}(w,s)=I \delta(t-s)$.
+Questo porta a un sistema di equazioni per le componenti di $A^{-1}$:
+\begin{equation}
+\begin{pmatrix}-2D&\partial_{t}+K\\ -\partial_{t}+K&0\end{pmatrix}\begin{pmatrix}\hat{C}(t,s)&R_{2}(t,s)\\ R_{1}(t,s)&C(t,s)\end{pmatrix}=\begin{pmatrix}\delta(t-s)&0\\ 0&\delta(t-s)\end{pmatrix}
+\end{equation}
+Le equazioni risultanti sono:
+\begin{equation}
+\begin{cases}
+-2D\hat{C}(t,s)+(\partial_{t}+K)R_{1}(t,s)=\delta(t-s) \quad \quad  (i) \\
+-2DR_{2}(t,s)+(\partial_{t}+K)C(t,s)=0 \quad \quad (ii)  \\
+(-\partial_{t}+K)\hat{C}(t,s)=0 \quad \quad  (iii) \label{eq:sys_iii} \\
+(-\partial_{t}+K)R_{2}(t,s)=\delta(t-s) \quad \quad  (iv) 
+\end{cases}
+\end{equation}
+Dall'equazione (\ref{eq:sys_iii}), si deduce che $\hat{C}(t,s)=0$. Sostituendo $\hat{C}=0$, otteniamo:
+\begin{equation*}
+\begin{cases}
+(\partial_{t}+K)R_{1}(t,s)=\delta(t-s) & (i) \\
+-2DR_{2}(t,s)+(\partial_{t}+K)C(t,s)=0 & (ii) \\
+(-\partial_{t}+K)R_{2}(t,s)=\delta(t-s) & (iv)
+\end{cases}
+\end{equation*}
+Possiamo manipolare la $(ii)$, scrivendola in forma matriciale:
+\begin{equation}
+\begin{pmatrix}A_{00} & A_{01} \\ A_{10}  & A_{11}\end{pmatrix}\begin{pmatrix}A_{00}^{-1}&A_{01}^{-1}\\ A_{10}^{-1}&A_{11}^{-1}\end{pmatrix}=\begin{pmatrix}1&0\\ 0&1\end{pmatrix}
+\end{equation}
+\begin{equation} 
+(ii) \longrightarrow A_{00}A_{01}^{-1} + A_{01}A_{11}^{-1} = 0
+\end{equation}
+\begin{equation}
+A_{10}^{-1}A_{01}A_{11}^{-1} =- A_{10}^{-1}A_{00}A_{01}^{-1}
+\end{equation}
+e usando il fatto che $A_{11}^{-1} = C(t,s)$, si ha:
+\begin{equation}
+C(t,s) = - \int dw dz A_{10}^{-1}(t,w)A_{00}(w,z)A_{01}^{-1}(z,s)
+\end{equation}
+una volta inserito $A_{10}^{-1} = R_1(t,w)$, $A_{01}^{-1} = R_2(w,z)$, e $A_{00} = -2D\delta(w-z)$, otteniamo:
+\begin{equation}
+C(t,s) = 2D \int dw R_1(t,w)R_2(w,s) \label{eq:C_R1_R2}
+\end{equation}
+Iniziamo risolvendo l'equazione per $R_1(t,s)$. Poiché $R_1(t,s)$ è la funzione di risposta, per la condizione di causalità, è diversa da zero solo per $t > s$. $R_1$ è usualmente chiamata risposta ritardata. Cerchiamo soluzioni della forma:
+\begin{equation}
+\Delta V R_1(t,s) = G_0(t,s)\theta(t-s)
+\end{equation}
+poiché:
+\begin{equation}
+\partial_t R_1(t,s) = \partial_t G_0(t,s)\theta(t-s) + G_0(t,s)\delta(t-s)
+\end{equation}
+arriviamo a:
+\begin{equation}
+\partial_t R_1 + KR_1 = \partial_t G_0\theta(t-s) + G_0\delta(t-s) + KG_0\theta(t-s) = \delta(t-s)
+\end{equation}
+e quindi:
+\begin{equation}
+\delta(t-s)[G_0(t,s)-1] + \theta(t-s)[\partial_t G_0(t,s) + KG_0(t,s)] = 0
+\end{equation}
+Il primo termine proporzionale a $\delta(t-s)$ fornisce la condizione iniziale su $G_0(t,s)$; risolvendo $\partial_t G_0(t,s) + KG_0(t,s) = 0$ con $G_0(t,t) = 1$ si ottiene:
+
+\begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+R_1(t,s) = R_1(t-s) = e^{-K(t-s)}\theta(t-s)
+\end{equation}
+\end{tcolorbox}
+
+Questa è la funzione di Green ritardata: $R_1(t,s) = \langle\varphi(t)\hat{\varphi}(s)\rangle =G_R(t,s)$.
+Allo stesso modo, possiamo risolvere la ($iv$) notando che l'operatore $-\partial_t$ è l'inverso temporale di $\partial_t$ e quindi:
+
+\begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+R_2(t,s)= e^{-K(s-t)}\theta(s-t)
+\end{equation}
+\end{tcolorbox}
+
+Questa è la funzione di Green avanzata: $R_2(t,s) = \langle\hat{\varphi}(t)\varphi(s)\rangle = G_A (t,s)$.
+
+
+Ora risolviamo l'equazione per $C(t,s)$ (\ref{eq:C_R1_R2}):
+\begin{align}
+C(t,s) &= 2D \int dw G_R(t,w)G_A(w,s) \nonumber \\ 
+&= 2D \int dw \, \theta(t-w)\theta(s-w) e^{-K(t+s-2w)} \nonumber \\ 
+&= 2De^{-K(t+s)} \int_{t_0}^{\min(t,s)} dw \, e^{2Kw} \nonumber \\ 
+&= \frac{D}{K} \left[ e^{-K|t-s|} - e^{-K(t+s) + K t_0} \right]
+\end{align}
+Per $t_0 \to -\infty$ il processo stocastico diventa stazionario e quindi invariante per traslazione temporale:
+\begin{equation} 
+\lim_{t_0 \to -\infty} C(t,s) = \frac{D}{K} e^{-K|t-s|} 
+\end{equation}
+Infine, il funzionale generatore assume la forma:
+
+\begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation*} 
+Z = \exp\left[\frac{1}{2} \int ds dt \left( \hat{J}(t)G_R(t,s)J(s) + J(t)G_A(t,s)\hat{J}(s) + J(t)C(t,s)J(s) \right) \right] 
+\end{equation*}
+\end{tcolorbox}
+
+\subsection{Trasformata di Fourier}
+Spostandoci nel dominio delle frequenze:
+\begin{equation*}
+f(\omega) = \int_{-\infty}^{+\infty} dt \, e^{-i\omega t} f(t)
+\end{equation*}
+la matrice $A(\omega)$ è:
+\begin{equation} 
+A(\omega) = -\begin{bmatrix} -2D & -i\omega+k \\ i\omega+k & 0 \end{bmatrix} 
+\end{equation}
+L'inversa è data da:
+\begin{align} 
+A^{-1}(\omega) &= \frac{1}{\det A(\omega)} \begin{bmatrix} 0 & -i\omega+k \\ i\omega+k & 2D \end{bmatrix} \nonumber \\ 
+&= \frac{1}{\omega^2+k^2} \begin{bmatrix} 0 & -i\omega+k \\ i\omega+k & 2D \end{bmatrix} = \begin{bmatrix} \hat{C}(\omega) & G_A(\omega) \\ G_R(\omega) & C(\omega) \end{bmatrix} 
+\end{align}
+Se scriviamo $G_R(\omega) = \text{Re}[G_R(\omega)] + i\; \text{Im}[G_R(\omega)]$ otteniamo:
+
+\begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation} 
+\text{Im}[G_R(\omega)] = \frac{\omega}{2D} C(\omega) 
+\end{equation}
+\end{tcolorbox}
+che è un altro modo per scrivere il Teorema di Fluttuazione-Dissipazione.
+
+\section{Traiettorie Ottimali}
+Consideriamo la seguente equazione di Langevin:
+\begin{equation} 
+\dot{\varphi}=-V'(\varphi)+\eta 
+\end{equation}
+con le due condizioni al contorno:
+\begin{equation}
+\varphi_{0}=\varphi(t_{0})
+\end{equation}
+\begin{equation}
+\varphi_{1}=\varphi(t_{1})
+\end{equation}
+vogliamo calcolare il percorso ottimale che collega questi due punti.
+Poiché stiamo lavorando con un'equazione differenziale stocastica, la soluzione generica $\varphi(t)_{\eta}$ è una traiettoria casuale che dipende dalla realizzazione del rumore $\eta(t)$.
+
+L'azione dinamica corrispondente è:
+\begin{equation}
+S[\varphi,\hat{\varphi}]=\int_{t_{0}}^{t_{1}}ds\mathcal{L}[\varphi,\hat{\varphi}]
+\end{equation}
+Dove:
+\begin{equation}
+\mathcal{L}[\varphi,\hat{\varphi}]=-D\hat{\varphi}^{2}+\hat{\varphi}[\partial_{t}\varphi+V^{\prime}(\varphi)]
+\end{equation}
+Ciò che vogliamo stimare, quindi, è la seguente probabilità condizionata:
+\begin{equation}
+P[\varphi_{1},t_{1}|\varphi_{0},t_{0}]=\int_{\varphi_{0}=\varphi(t_{0})}^{\varphi_{1}=\varphi(t_{1})}\mathcal{D}\varphi\mathcal{D}\hat{\varphi}e^{-S[\varphi,\hat{\varphi}]}
+\end{equation}
+Lo Jacobiano non è presente nell’equazione, poiché è pari a 1 nel calcolo di Ito.
+Riscaliamo i campi di risposta $\hat{\varphi}\rightarrow\hat{\varphi}/D$ in modo da poter scrivere:
+\begin{equation}
+P[\varphi_{1},t_{1}|\varphi_{0},t_{0}]=\int_{\varphi_{0}=\varphi(t_{0})}^{\varphi_{1}=\varphi(t_{1})}\mathcal{D}\varphi\mathcal{D}\hat{\varphi}e^{-S[\varphi,\hat{\varphi}]/D}
+\end{equation}
+dove (riassorbendo la costante $1/D$ ) abbiamo:
+\begin{equation}
+\mathcal{L}[\varphi,\hat{\varphi}]=-\hat{\varphi}^{2}+\hat{\varphi}[\partial_{t}\varphi+V^{\prime}(\varphi)]
+\end{equation}
+Consideriamo il caso di una doppia buca:
+\begin{equation}
+V(\varphi)=-\frac{a}{2}\varphi^{2}+\frac{b}{4}\varphi^{4}
+\end{equation}
+con le costanti $a, b>0$.
+Possiamo distinguere tre casi:
+\begin{itemize}
+    \item Nel caso $D=0$ il sistema rilassa verso i minimi del potenziale.
+    \item Per $D>0$, la presenza di fluttuazioni termiche apre la possibilità di osservare salti da un minimo all'altro. Il processo di salto può essere diviso in due fasi:
+    \begin{itemize}
+        \item prima il sistema deve scalare la barriera energetica $\longrightarrow$ uphill path
+        \item poi rilassa verso il secondo minimo $\longrightarrow$ downhill path
+    \end{itemize}
+\end{itemize}
+
+Le traiettorie più probabili che collegano i due minimi (ovvero quelle che massimizzano la probabilità) possono essere calcolate nel limite $D\rightarrow0$ così che $D^{-1}\rightarrow\infty$ e quindi l'integrale di cammino può essere valutato usando il metodo del punto sella.
+Chiamiamo queste traiettorie "classiche" (perché sono quelle che minimizzano l'azione) $\varphi_{SP}$ e $\hat{\varphi}_{SP}$.
+In questo limite otteniamo:
+\begin{equation}
+P[\varphi_{1},t_{1}|\varphi_{0},t_{0}]\propto e^{-S[\varphi_{SP},\hat{\varphi}_{SP}]/D}
+\end{equation}
+Imponiamo:
+\begin{equation} 
+\begin{cases}
+\frac{\delta S}{\delta\varphi(t)}\Big|_{SP}=0 \\ \\
+\frac{\delta S}{\delta\hat{\varphi}(t)}\Big|_{SP}=0
+\end{cases} 
+\end{equation}
+Integrando per parti il termine misto nell’integrale per $S$ , e ponendo uguale a 0 il termine al bordo si ha:
+\begin{equation}
+\int ds \; \hat{\varphi}\partial_{s}\varphi = -\int ds \; \varphi \partial_{s} \hat{\varphi}
+\end{equation}
+Sfruttando questa relazione si ha:
+\begin{align}
+\frac{\delta S}{\delta\varphi(t)} \Big|_{SP} = 0 &\implies \frac{\delta }{\delta\varphi(t)} \Biggl\{ \int ds \Big[-\hat{\varphi}^{2}- \varphi \partial_{s} \hat{\varphi} + \hat{\varphi} V^{\prime}(\varphi) \Big] \Biggr\} =0 \nonumber \\ 
+&\implies \int ds \; \delta(t-s) \Big[ -\partial_{s} \hat{\varphi} + \hat{\varphi} V^{\prime\prime}(\varphi) \Big] =0 \nonumber \\ 
+&\longrightarrow \partial_{t} \hat{\varphi} = \hat{\varphi} V^{\prime\prime}(\varphi)
+\end{align}
+In modo analogo:
+\begin{align}
+\frac{\delta S}{\delta \hat{\varphi}(t)} \Big|_{SP} = 0 &\implies \int ds \; \delta(t-s) \Big[ -2 \hat{\varphi} + \partial_{s} \varphi+ V^{\prime}(\varphi) \Big] =0 \nonumber \\ 
+&\longrightarrow \partial_{t} \varphi = - V^{\prime}(\varphi) +2 \hat{\varphi}
+\end{align}
+Le traiettorie quindi sono:
+
+\begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+\begin{cases} 
+\partial_{t} \hat{\varphi}_{SP} &= \hat{\varphi}_{SP} V^{\prime\prime}(\varphi_{SP}) \quad \quad  \quad \quad(i) \\ 
+\partial_{t} \varphi_{SP} &= - V^{\prime}(\varphi_{SP}) +2 \hat{\varphi}_{SP}  \quad \quad(ii) \label{eq:traj_ii} 
+\end{cases}
+\end{equation}
+\end{tcolorbox}
+che sono completate dalle due condizioni al contorno $\varphi_{0}=\varphi(t_{0})$, e $\varphi_{1}=\varphi(t_{1})$.
+Lungo le traiettorie di punto sella l'azione dinamica è:
+\begin{align}
+S_{SP}&=\int_{t_{0}}^{t_{1}}ds[-\hat{\varphi}_{SP}^{2}+\hat{\varphi}_{SP}(\partial_{t}\varphi_{SP}+V^{\prime}(\varphi_{SP}))]\nonumber \\ 
+&=\int_{t_{0}}^{t_{1}}ds[-\hat{\varphi}_{SP}^{2}+2\hat{\varphi}_{SP}^{2}] \nonumber \\ 
+&=\int_{t_{0}}^{t_{1}}ds\hat{\varphi}^{2}
+\end{align}
+Analizziamo le soluzioni di punto sella:
+
+\begin{itemize}
+    \item \textbf{Downhill Path (Rilassamento):} $\hat{\varphi}=0$ è una soluzione, sostituendo nella (\ref{eq:traj_ii}) si ha:
+    \begin{equation}
+    \partial_{t}\varphi=-V^{\prime}(\varphi) \label{eq:down_traj}
+    \end{equation}
+    Corrisponde al caso con azione nulla $S_{SP}=0$ e quindi $P[\varphi_{1},t_{1}|\varphi_{0},t_{0}]=1$.
+    Questa è la soluzione a rumore nullo che otteniamo per $D=0$.
+    Corrisponde al downhill path, ovvero al rilassamento del sistema verso il minimo locale più vicino del potenziale $V(\varphi)$.
+    
+    \item \textbf{Uphill Path (Risalita di Potenziale):} $\partial_{t}\varphi=\hat{\varphi}$ è un’altra soluzione, sostituendo nella (\ref{eq:traj_ii}) si ha:
+    \begin{equation}
+    \partial_{t}\varphi=-V^{\prime}(\varphi)+2\partial_{t}\varphi
+    \end{equation}
+    e quindi:
+    \begin{tcolorbox}[colback=colorA!5, colframe=colorA, arc=3mm, boxrule=1.2pt]
+    \begin{equation}
+    \partial_{t}\varphi=V^{\prime}(\varphi) \label{eq:up_traj}
+    \end{equation}
+    \end{tcolorbox}
+    una volta inserita nell'equazione per $\hat{\varphi}$, possiamo verificare che è soluzione, in quanto si ritrova la ($i$):
+    \begin{equation}
+    \partial_{t}\hat{\varphi}=\partial_{t}(\partial_{t}\varphi)=\partial_{t}V^{\prime}=\partial_{t}\varphi V^{\prime\prime}=\hat{\varphi}V^{\prime\prime}
+    \end{equation}
+\end{itemize}
+La soluzione (\ref{eq:up_traj}) è l'inversione temporale di (\ref{eq:down_traj}) e rappresenta il sistema che si allontana da un minimo scalando barriere energetiche, cioè uphill path.
+Possiamo verificare che questa è una soluzione ad azione non nulla:
+\begin{align}
+S_{SP}&=\int_{t_{0}}^{t_{1}}ds\dot{\varphi}^{2}(s)=\int_{\varphi_{0}}^{\varphi_{1}}\frac{d\varphi}{\dot{\varphi}}(\dot{\varphi})^{2}=\int_{\varphi_{0}}^{\varphi_{1}}\frac{d\varphi}{V^{\prime}}(V^{\prime})^{2} \nonumber \\ 
+&=V(\varphi_{1})-V(\varphi_{0}) \equiv \Delta V
+\end{align}
+le traiettorie classiche con un'azione non nulla sono chiamate istantoni.
+La probabilità diventa:
+\begin{equation}
+P[\varphi_{1},t_{1}|\varphi_{0},t_{0}]\propto e^{-\Delta V/D}
+\end{equation}
+Oteniamo quindi il fattore esponenziale dell'equazione di Arrhenius:
+\begin{equation}
+\tau= \frac{1}{P}\propto e^{\Delta V/D}
+\end{equation}
+il tempo di transizione tipico cresce esponenzialmente nella barriera energetica ( $D=T$ poiché stiamo lavorando in unità $\mu=k_{B}=1$).
+
+\section{Azione di Onsager-Machlup}
+La traiettoria classica $\varphi(t)$ può essere calcolata anche usando l'integrale di cammino di Onsager-Machlup che si ottiene eseguendo l'integrale Gaussiano sul campo di risposta.
+Per fare ciò, partiamo da:
+\begin{equation}
+\frac{\delta\mathcal{L}}{\delta\hat{\varphi}}=-2\hat{\varphi}+\partial_{t}\varphi+V^{\prime}=0
+\end{equation}
+da cui segue:
+\begin{equation}
+\hat{\varphi}=\frac{1}{2}[\dot{\varphi}+V^{\prime}]
+\end{equation}
+una volta inserita questa espressione in $S[\varphi,\hat{\varphi}(\varphi)]$ otteniamo:
+\begin{equation}
+A[\varphi]\equiv S[\varphi,\hat{\varphi}(\varphi)]=\frac{1}{4}\int_{t_{0}}^{t_{1}}ds[\dot{\varphi}+V^{\prime}]^{2}
+\end{equation}
+e ora la probabilità di un cammino è:
+\begin{equation}
+P[\varphi]\propto e^{-\frac{1}{D}A[\varphi]}
+\end{equation}
+e quindi la probabilità condizionata per la traiettoria che collega $\varphi_{0}$ con $\varphi_{1}$ è:
+\begin{equation}
+P[\varphi_{1}|\varphi_{0}]=\int_{\varphi_{0}}^{\varphi_{1}}\mathcal{D}\varphi~e^{-\frac{1}{4D}\int ds[\dot{\varphi}+V^{\prime}]^{2}}
+\end{equation}
+nel limite $D \to 0$ possiamo calcolare la traiettoria usando l'approssimazione del punto sella:
+\begin{equation}
+P[\varphi_{1}|\varphi_{0}]\simeq e^{-A[\varphi_{SP}]/D}
+\end{equation}
+con $\varphi_{SP}$ dato:
+\begin{align}
+\frac{\delta A}{\delta\varphi}\Big|_{SP}&=(\dot{\varphi}+V'(\varphi))(\partial_t+V''(\varphi)) \nonumber \\
+&= -\ddot{\varphi} - \dot{\varphi} V'' + \dot{\varphi} V'' + V'V''\nonumber \\
+&=-\ddot{\varphi}_{SP}+V^{\prime}({\varphi}_{SP})V^{\prime\prime}({\varphi}_{SP})=0
+\end{align}
+Possiamo riformulare questa equazione como segue:
+\begin{equation}
+(\dot{\varphi}_{SP})^{2}=(V^{\prime})^{2}
+\end{equation}
+e quindi abbiamo le due traiettorie:
+\begin{equation}
+\dot{\varphi}=-V^{\prime}(\varphi) \quad \text{[Downhill]}
+\end{equation}
+\begin{equation}
+\dot{\varphi}=V^{\prime}(\varphi) \quad \text{[Uphill]}
+\end{equation}
+una è l'inversione temporale dell'altra.
+Per le due traiettorie vale:
+\begin{equation}
+A[\varphi]=\frac{1}{4}\int_{t_{0}}^{t_{1}}ds[\dot{\varphi}+V^{\prime}]^{2} = \begin{cases} 0 \quad \quad \quad \quad \quad\text{se } \dot{\varphi}=-V^{\prime}\\ \Delta V \quad \quad \quad \quad \text{se } \dot{\varphi}=V^{\prime}\end{cases}
+\end{equation}
+Verifichiamo questa relazione nel secondo caso:
+\begin{equation*}
+\int_{t_0}^{t_1} ds (\dot{\varphi} + V')^2 = \int_{\varphi_0}^{\varphi_1} \frac{d\varphi}{\dot{\varphi}} [\dot{\varphi} + \dot{\varphi}]^2 = 4 \int_{\varphi_0}^{\varphi_1} \frac{d\varphi}{\dot{\varphi}} \dot{\varphi}^2 = 4 \int_{\varphi_0}^{\varphi_1} d\varphi V'(\varphi) = 4 [V(\varphi_1) - V(\varphi_0)] 
+\end{equation*}

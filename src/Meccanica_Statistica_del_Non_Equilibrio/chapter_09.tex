@@ -1,0 +1,556 @@
+\chapter{Lezione 9}
+\label{chap:lezione_09} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 31/03/2025}
+\end{flushright}
+\textit{Bibliografia: 
+Brownian motion. Einstein, Smoluchoswki, and Langevin equation. Velocity correlation function and mean-squared displacement. Experimental measure of the Avogadro number. Einstein-Stokes relation: Fluctuation-Dissipation relation. Overdamped Langevin equation: the harmonic case.  Diffusion equation and Wiener process. Introduction to stochastic differential equations. [Gardiner ch 1.2,  Gardiner 3.8.1, Gardiner 4.1, Zwanzig ch 1.1, Boffetta Vulpiani ch 4]}
+
+
+\section{Il Moto Browniano: Contesto Storico}
+Il fenomeno del moto Browniano prende il nome dal botanico Robert Brown che, nel 1827, osservò il moto incessante e irregolare di granelli di polline sospesi in acqua. Esperimenti successivi con polveri inerti (vetro) mostrarono che il fenomeno non era legato a processi biologici attivi, ma sembrava essere una proprietà intrinseca di particelle microscopiche immerse in un fluido.
+
+Questo fenomeno rimase una curiosità per quasi 80 anni, fino all'inizio del '900. Nel suo annus mirabilis (1905), Albert Einstein dedicò uno dei suoi lavori fondamentali proprio al moto Browniano. Il suo lavoro sul moto Browniano fu cruciale per:
+
+\begin{itemize}
+    \item Fornire una prova sperimentale dell'esistenza degli atomi e delle molecole.
+    \item Validare i fondamenti della meccanica statistica e della teoria cinetica.
+    \item Stabilire che il numero di Avogadro era una costante fisica misurabile.
+    \item Dimostrare come la termodinamica potesse emergere da considerazioni statistiche microscopiche.
+\end{itemize}
+
+Il lavoro teorico di Einstein (e indipendentemente di Marian Smoluchowski) fornì predizioni quantitative che furono poi verificate sperimentalmente da Jean Perrin (che vinse il Nobel per questo nel 1926). Anche Paul Langevin diede un contributo fondamentale introducendo un'equazione differenziale stocastica per descrivere il moto.
+
+\subsection{Prototipo di Equazioni Differenziali Stocastiche (SDE)}
+Consideriamo il caso più semplice di un sistema con un singolo grado di libertà $x(t)$. Un prototipo di equazione differenziale stocastica del primo ordine (detta anche equazione di Langevin nel limite overdamped) è:
+
+\begin{equation}
+\label{eq:sde_1}
+\frac{dx}{dt} = \dot{x}(t) = F(x) + \eta(t)
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item $F(x)$: è una forza deterministica, che può derivare da un potenziale: $F(x) = -\frac{dV}{dx}$
+    \item $\eta(t)$: è un termine stocastico, una "forza" randomica o rumore, che rappresenta le fluttuazioni rapide e imprevedibili dovute all'ambiente (es. urti con le molecole del fluido).
+\end{itemize}
+
+A differenza delle equazioni differenziali ordinarie, fissare una condizione iniziale $x(t_0) = x_0$ non determina univocamente la traiettoria futura $x(t)$. Ogni possibile realizzazione del rumore $\eta(t)$ genererà una traiettoria diversa.
+Indicheremo la soluzione come $x_\eta(t)$ per sottolineare questa dipendenza.
+Questo tipo di equazione del primo ordine è particolarmente rilevante per sistemi su scale micrometriche e tempi lunghi, dove l'inerzia ($\propto \ddot{x}$) diventa trascurabile (limite overdamped o Aristotelico, dove la velocità è proporzionale alla forza).
+
+\subsubsection{Proprietà Statistiche del Rumore}
+Per poter fare predizioni, dobbiamo specificare le proprietà statistiche del rumore $\eta(t)$. Le assunzioni standard per il rumore bianco Gaussiano sono:
+
+\begin{itemize}
+    \item Media nulla: Il rumore non introduce una deriva sistematica.
+\end{itemize}
+\begin{equation}
+\langle \eta(t) \rangle = 0
+\end{equation}
+Le parentesi $\langle \cdot \rangle$ indicano una media sull'insieme di tutte le possibili realizzazioni del rumore $\eta$ (non è una media temporale). Se la media non fosse nulla, potrebbe comunque sempre essere incorporata nella forza deterministica $F(x)$.
+
+\begin{itemize}
+    \item Delta-correlazione (Assenza di memoria): Il rumore a tempi diversi è scorrelato.
+\end{itemize}
+\begin{equation}
+\label{eq:delta_corr}
+\langle \eta(t) \eta(s) \rangle = 2B \delta(t-s)
+\end{equation}
+dove $B$ è una costante che misura l'intensità del rumore e $\delta(t-s)$ è la delta di Dirac. Questa forma implica un processo Markoviano (il futuro dipende solo dal presente, non dal passato).
+
+\begin{tcolorbox}[colback=colorF!5,colframe=colorF,title=\textbf{!! Attenzione !!}, fonttitle=\bfseries\sffamily, arc=3mm, boxrule=1.2pt]
+La delta di Dirac nell'equazione (\ref{eq:delta_corr}) introduce una difficoltà matematica: per $t=s$, la varianza è infinita. Questo indica che $\eta(t)$ non è una funzione ordinaria, ma una distribuzione. L'integrale che compare nella soluzione formale delle SDE richiederà una definizione più attenta (es. integrale di Itō o Stratonovich).
+\end{tcolorbox}
+
+\subsection{Esempio: Oscillatore Armonico Smorzato}
+Consideriamo un potenziale armonico $V(x) = \frac{1}{2} k x^2$, che genera una forza $F(x) = -k x$.
+L'SDE diventa:
+\begin{equation}
+\dot{x}(t) = -k x(t) + \eta(t)
+\end{equation}
+
+Questa è un'equazione differenziale lineare del primo ordine. La sua soluzione formale, data la condizione iniziale $x(0)=x_0$, è:
+\begin{equation}
+x_\eta(t) = x_0 e^{-kt} + \int_0^t ds \, e^{-k(t-s)} \eta(s)
+\end{equation}
+
+Calcoliamo il valore medio della posizione:
+\begin{equation}
+\begin{aligned}
+\langle x(t) \rangle &= \langle x_0 e^{-kt} \rangle + \left\langle \int_0^t ds \, e^{-k(t-s)} \eta(s) \right\rangle \\
+&= x_0 e^{-kt} + \int_0^t ds \, e^{-k(t-s)} \langle \eta(s) \rangle \quad \quad \quad  (\text{poiché } x_0 \text{ è deterministico}) \\
+&= x_0 e^{-kt} \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \; \;(\text{poiché } \langle \eta(s) \rangle = 0)
+\end{aligned}
+\end{equation}
+
+La posizione media decade esponenzialmente verso $0$ (il minimo del potenziale), proprio come nel caso senza rumore. Il rumore, tuttavia, causa fluttuazioni attorno a questa media. Se non ci fosse rumore, la particella rilasserebbe semplicemente verso il fondo della buca di potenziale $x=0$. Il rumore $\eta(t)$ aggiunge "agitazione", che vedremo essere legata all'agitazione termica, permettendo alla particella di fluttuare attorno al minimo.
+
+\begin{tcolorbox}[colback=colorF!5,colframe=colorF,title=\textbf{!! Attenzione !!}, fonttitle=\bfseries\sffamily, arc=3mm, boxrule=1.2pt]
+L'integrale stocastico $I(t) = \int_0^t ds \, g(s) \eta(s)$ (nel nostro caso $g(s) = e^{-k(t-s)}$) è problematico a causa della natura di $\eta(s)$. La sua definizione rigorosa è un aspetto tecnico ma importante della teoria.
+\end{tcolorbox}
+
+\subsection{L'Approccio di Einstein: Equazione di Diffusione}
+Einstein affrontò il problema non scrivendo direttamente un'equazione per la traiettoria della singola particella (come Langevin), ma concentrandosi sull'evoluzione della distribuzione di probabilità delle posizioni delle particelle. Questo approccio è più simile a quello della teoria cinetica e aggira le difficoltà matematiche immediate dell'SDE.
+
+\begin{itemize}
+    \item \textbf{Setup Fisico:} Una particella macroscopica (colloide) immersa in un fluido composto da molecole molto più piccole a temperatura $T > 0$ (bagno termico). Il moto Browniano osservato è dovuto agli urti incessanti e casuali delle molecole del fluido sulla particella grande.
+    \item \textbf{Idea Chiave:} Il moto non dipende dalla natura specifica della particella, ma dalle proprietà del bagno termico.
+    \item \textbf{Osservabile Cruciale:} Einstein si concentrò sullo spostamento quadratico medio (Mean Squared Displacement, MSD). Se $x(t)$ è la posizione e assumiamo $x(0)=0$, l'osservabile è $\langle x^2(t) \rangle$.
+\end{itemize}
+
+Per tempi lunghi ($t \gg 1$) si ha:
+\begin{equation}
+\langle x^2(t) \rangle = 2Dt
+\end{equation}
+dove $D$ è il coefficiente di diffusione. Questa crescita lineare nel tempo è una caratteristica distintiva del moto diffusivo, diverso dal moto balistico ($\propto t^2$) o dal confinamento ($\propto \text{cost}$).
+
+\subsection{Derivazione dell'Equazione di Diffusione}
+\begin{itemize}
+    \item \textbf{Scala di tempo:} Si introduce una scala temporale $\tau$ che è:
+    \begin{itemize}
+        \item Piccola rispetto ai tempi di osservazione macroscopici.
+        \item Grande rispetto ai tempi microscopici delle collisioni, tale che gli spostamenti casuali $\Delta$ subiti dalla particella in intervalli di tempo $\tau$ successivi possano essere considerati statisticamente indipendenti (Markovianità).
+    \end{itemize}
+    \item \textbf{Distribuzione degli spostamenti:} Si assume che esista una funzione di densità di probabilità $\phi(\Delta)$ che descrive lo spostamento $\Delta$ della particella durante l'intervallo $\tau$. Si assume:
+    \begin{itemize}
+        \item Normalizzazione: $\int_{-\infty}^{+\infty} d\Delta \, \phi(\Delta) = 1$
+        \item Parità (Isotropia): Non c'è una direzione privilegiata per gli spostamenti, $\phi(\Delta) = \phi(-\Delta)$
+    \end{itemize}
+    Questo implica che lo spostamento medio in un intervallo $\tau$ è nullo:
+    $\langle \Delta \rangle = \int d\Delta \; \; \Delta \; \; \phi(\Delta) = 0$.
+    \item \textbf{Equazione per la densità:} Sia $P(x,t)$ la densità di probabilità di trovare la particella in posizione $x$ al tempo $t$. La probabilità di trovarsi in $x$ al tempo $t+\tau$ è data dalla somma (integrale) delle probabilità di trovarsi in una posizione $x-\Delta$ al tempo $t$ e subire uno spostamento $\Delta$ nell'intervallo $\tau$:
+
+
+\begin{equation}
+\label{eq:eq_7}
+P(x, t+\tau) = \int_{-\infty}^{+\infty} d\Delta \; \; \phi(\Delta) \; \; P(x-\Delta, t)
+\end{equation}
+
+\item \textbf{Espansione di Taylor}: Assumendo $\tau$ e gli spostamenti tipici $\Delta$ piccoli, si espande in serie di Taylor:
+$P(x, t+\tau) \approx P(x,t) + \tau \frac{\partial P}{\partial t}(x,t)$
+
+$P(x-\Delta, t) \approx P(x,t) - \Delta \frac{\partial P}{\partial x}(x,t) + \frac{\Delta^2}{2} \frac{\partial^2 P}{\partial x^2}(x,t) + \dots$
+
+Sostituendo nell'equazione (\ref{eq:eq_7}):
+\begin{equation}
+\begin{aligned}
+P(x,t) + \tau \frac{\partial P}{\partial t} &\approx \int d\Delta \, \phi(\Delta) \left[ P(x,t) - \Delta \frac{\partial P}{\partial x} + \frac{\Delta^2}{2} \frac{\partial^2 P}{\partial x^2} \right] \\
+&= P(x,t) \underbrace{\int d\Delta \; \; \phi(\Delta)}_{=1} - \frac{\partial P}{\partial x} \underbrace{\int d\Delta \; \; \Delta \; \;\phi(\Delta)}_{=\langle \Delta \rangle = 0} \\ &+ \frac{1}{2} \frac{\partial^2 P}{\partial x^2} \underbrace{\int d\Delta \; \; \Delta^2 \; \; \phi(\Delta)}_{=\langle \Delta^2 \rangle}
+\end{aligned}
+\end{equation}
+
+Semplificando $P(x,t)$ e riarrangiando:
+\begin{equation}
+\tau \frac{\partial P}{\partial t} \approx \frac{\langle \Delta^2 \rangle}{2} \frac{\partial^2 P}{\partial x^2}
+\end{equation}
+
+\item \textbf{Equazione di Diffusione:} Dividendo per $\tau$ e definendo il coefficiente di diffusione come:
+\end{itemize}
+\begin{equation} 
+D = \frac{\langle \Delta^2 \rangle}{2\tau} = \frac{1}{2\tau} \int d\Delta \; \; \Delta^2 \; \; \phi(\Delta) 
+\end{equation}
+si ottiene l’equazione di diffusione (caso particolare dell'equazione di Fokker-Planck):
+
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+\frac{\partial P(x,t)}{\partial t} = D \frac{\partial^2 P(x,t)}{\partial x^2}
+\end{equation}
+\end{tcolorbox}
+
+Questa equazione è molto più regolare dell'SDE (\ref{eq:sde_1}). Einstein riuscì a derivarla basandosi su ipotesi statistiche minimali sul processo microscopico, senza dover affrontare direttamente il termine di rumore $\eta(t)$.
+
+\subsection{Soluzione dell'Equazione di Diffusione}
+Vogliamo risolvere l'equazione di diffusione unidimensionale:
+\begin{equation}
+\frac{\partial P(x,t)}{\partial t} = D \frac{\partial^2 P(x,t)}{\partial x^2}
+\end{equation}
+
+con la condizione iniziale che la particella si trovi in $x_0$ al tempo $t_0$:
+\begin{equation}
+P(x, t_0) = \delta(x-x_0)
+\end{equation}
+
+Utilizziamo il metodo della trasformata di Fourier. Definiamo la trasformata di Fourier $\tilde{P}(k,t)$ di $P(x,t)$ rispetto alla variabile $x$ e la sua antitrasformata:
+\begin{equation}
+\begin{aligned}
+\tilde{P}(k,t) &= \mathcal{F}P(x,t) =\int_{-\infty}^{+\infty} dx \, e^{ikx} P(x,t)  \\
+P(x,t) &= \mathcal{F}^{-1}\tilde{P}(k,t) = \frac{1}{2\pi} \int_{-\infty}^{+\infty} dk \, e^{-ikx} \tilde{P}(k,t)
+\end{aligned}
+\end{equation}
+
+Applichiamo la trasformata di Fourier all'equazione di diffusione.
+
+Trasformata del termine temporale:
+\begin{equation}
+\mathcal{F} \left[ \frac{\partial P(x,t)}{\partial t} \right] = \int_{-\infty}^{+\infty} dx \, e^{ikx}  \frac{\partial P(x,t)}{\partial t} = \frac{\partial}{\partial t} \int_{-\infty}^{+\infty} dx \, e^{ikx} P(x,t) =  \frac{\partial \tilde{P}(k,t)}{\partial t}
+\end{equation}
+
+Trasformata del termine spaziale: Usiamo la proprietà della trasformata di Fourier per le derivate:  $\mathcal{F} \left( \frac{d^n f}{dx^n} \right) = (-ik)^n \; \mathcal{F}(f)$
+\begin{equation}
+\mathcal{F} \left[ D \frac{\partial^2 P(x,t)}{\partial x^2} \right] = D \cdot \mathcal{F} \left[\frac{\partial^2 P(x,t)}{\partial x^2} \right] = D \; (-ik)^2 \tilde{P}(k,t) = -D\;  k^2 \; \tilde{P}(k,t)
+\end{equation}
+
+L'equazione differenziale alle derivate parziali per $P(x,t)$ si trasforma quindi in un'equazione differenziale ordinaria per $\tilde{P}(k,t)$:
+\begin{equation}
+\label{eq:eq_14}
+\frac{\partial \tilde{P}(k,t)}{\partial t} = -D \; k^2 \; \tilde{P}(k,t)
+\end{equation}
+
+Trasformiamo la condizione iniziale $P(x,t_0) = \delta(x-x_0)$:
+\begin{equation}
+\tilde{P}(k, t_0) = \int_{-\infty}^{+\infty} dx \, e^{ikx} \delta(x-x_0) = e^{ikx_0}
+\end{equation}
+
+La soluzione dell'equazione lineare del primo ordine (\ref{eq:eq_14}) è:
+\begin{equation} 
+\tilde{P}(k,t) = e^{ikx_0} \; e^{-D k^2 (t-t_0)}
+\end{equation}
+
+Ora dobbiamo antitrasformare $\tilde{P}(k,t)$ per trovare $P(x,t)$:
+\begin{equation}
+P(x,t) = \frac{1}{2\pi} \int_{-\infty}^{+\infty} dk \, e^{-ikx} \tilde{P}(k,t) = \frac{1}{2\pi} \int_{-\infty}^{+\infty} dk \, e^{-D k^2 (t-t_0)} \; e^{-ik (x-x_0)}  \;
+\end{equation}
+
+L'integrale è un integrale Gaussiano del tipo:
+\begin{equation} 
+\int dx \; \exp (-A^2x^2 + Bx) = \frac{\sqrt{\pi}}{A} \;  \exp \left(\frac{B^2}{4A^2} \right) 
+\end{equation}
+
+In questo caso specifico $A^2 = D(t-t_0)$ e $B = -i(x-x_0)$. Quindi si ha:
+
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+P(x, t | x_0, t_0) = \frac{1}{\sqrt{4\pi D(t-t_0)}} \exp\left( -\frac{(x-x_0)^2}{4D(t-t_0)} \right)
+\end{equation}
+\end{tcolorbox}
+
+Questa è una distribuzione Gaussiana con:
+\begin{itemize}
+    \item media:  $\langle x(t) \rangle = x_0$
+    \item varianza:  $\langle (x(t)-x_0)^2 \rangle = 2D (t-t_0)$.
+\end{itemize}
+Se $x_0=0$,  ritroviamo che la varianza cresce linearmente nel tempo $\langle x^2(t) \rangle = 2Dt$, coerentemente con l'osservazione sperimentale.
+
+\section{L'Approccio di Langevin}
+Per descrivere il moto di un colloide immerso in un bagno termico, Langevin propose un approccio diverso, partendo dall'equazione del moto di Newton:
+\begin{equation}
+m \frac{dv}{dt} = F_{tot}(t)
+\end{equation}
+
+Le forze agenti sulla particella immersa nel fluido sono principalmente due:
+\begin{itemize}
+    \item \textbf{Forza Viscosa:} La particella si muove in un fluido viscoso, quindi, la prima forza da considerare è la forza di attrito viscoso, che si oppone al moto. Per una particella sferica di raggio $a$ in un fluido con viscosità $\eta$, la legge di Stokes fornisce:
+
+\begin{equation}
+F_{visc} = -\zeta v
+\end{equation}
+dove $\zeta = 6\pi \eta a$ è il coefficiente di attrito.
+
+Se consideriamo solo questa forza, l'equazione del moto diventa:
+\begin{equation}
+m \frac{dv}{dt} = -\zeta v
+\end{equation}
+
+Questa è un'equazione differenziale lineare del primo ordine. Definendo la scala di tempo caratteristica $\tau = m/\zeta$, la soluzione con condizione iniziale $v(t=0)=v_0$ è:
+\begin{equation}
+\label{eq:eq_21}
+v(t) = v_0 e^{-t/\tau}
+\end{equation}
+
+Per tempi lunghi ($t \to \infty$), la velocità tende a zero: $v(t) \to 0$. Questo risultato è in contraddizione con l'evidenza sperimentale del moto Browniano e con il teorema di equipartizione dell'energia della meccanica statistica. All'equilibrio termico a temperatura $T$, l'energia cinetica media della particella dovrebbe essere:
+\begin{equation}
+\frac{1}{2} m \langle v^2 \rangle_{eq} = \frac{1}{2} k_B T
+\end{equation}
+dove $k_B$ è la costante di Boltzmann. Quindi, $\langle v^2 \rangle_{eq} = \frac{k_B T}{m}$, che è diverso da zero. L'equazione (\ref{eq:eq_21}) non descrive correttamente il sistema all'equilibrio termico.
+
+\item \textbf{Introduzione della forza stocastica:} Per riconciliare il modello con la termodinamica, dobbiamo includere l'effetto delle collisioni casuali delle molecole del fluido sulla particella. Queste collisioni generano una forza fluttuante $\delta F(t)$, detta forza stocastica o rumore termico. L'equazione del moto diventa così l'equazione di Langevin:
+\begin{equation}
+m \frac{dv}{dt} = -\zeta v + \delta F(t)
+\end{equation}
+
+\end{itemize}
+
+Riscrivendola usando $\tau = m/\zeta$:
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+\label{eq:eq_25}
+\frac{dv}{dt} = -\frac{1}{\tau} v(t) + \frac{\delta F(t)}{m}
+\end{equation}
+\end{tcolorbox}
+
+Questa è un'equazione differenziale stocastica. La forza $\delta F(t)$ è un processo stocastico con media nulla e delta-correlato nel tempo.
+La soluzione dell'equazione (\ref{eq:eq_25}) con condizione iniziale $v(t=0)=v_0$ è:
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+v(t) = v_0 e^{-t/\tau} + \frac{1}{m} \int_{0}^{t} ds \, e^{-(t-s)/\tau} \delta F(s)
+\end{equation}
+\end{tcolorbox}
+
+\subsection{Velocità media}
+Calcoliamo la media di $v(t)$ sull'ensemble delle realizzazioni del rumore $\delta F(t)$:
+\begin{equation}
+\langle v(t) \rangle = \langle v_0 e^{-t/\tau} \rangle + \frac{1}{m} \int_{0}^{t} ds \, e^{-(t-s)/\tau} \langle \delta F(s) \rangle
+\end{equation}
+
+Poiché $\langle \delta F(s) \rangle = 0$, otteniamo:
+\begin{equation}
+\langle v(t) \rangle = v_0 e^{-t/\tau}
+\end{equation}
+Per tempi lunghi ($t \gg \tau$), la velocità media tende a zero: $\langle v(t) \rangle \to 0$
+
+\subsection{Velocità quadratica media e Teorema di Fluttuazione-Dissipazione}
+Calcoliamo ora la velocità quadratica media $\langle v^2(t) \rangle$:
+\begin{equation}
+\begin{aligned}
+\langle v^2(t) \rangle &= \left\langle \left( v_0 e^{-t/\tau} + \frac{1}{m} \int_{0}^{t} ds \, e^{-(t-s)/\tau} \delta F(s) \right)^2 \right\rangle \\
+&= v_0^2 e^{-2t/\tau} + \frac{2v_0 e^{-t/\tau}}{m} \int_{0}^{t} ds \, e^{-(t-s)/\tau} \langle \delta F(s) \rangle \nonumber \\
+&\quad + \frac{1}{m^2} \int_{0}^{t} ds_1 \int_{0}^{t} ds_2 \, e^{-(t-s_1)/\tau} e^{-(t-s_2)/\tau} \langle \delta F(s_1) \delta F(s_2) \rangle
+\end{aligned}
+\end{equation}
+
+Il termine misto è nullo perché $\langle \delta F(s) \rangle = 0$.
+Usando $\langle \delta F(s_1) \delta F(s_2) \rangle = 2B \delta(s_1-s_2)$:
+\begin{equation}
+\begin{aligned}
+\langle v^2(t) \rangle &= v_0^2 e^{-2t/\tau} + \frac{2B}{m^2} \int_{0}^{t} ds_1 \int_{0}^{t} ds_2 \, e^{-2t/\tau} e^{(s_1+s_2)/\tau} \delta(s_1-s_2) \\
+&= v_0^2 e^{-2t/\tau} + \frac{2B}{m^2} e^{-2t/\tau} \int_{0}^{t} ds \, e^{2s/\tau} \\
+&= v_0^2 e^{-2t/\tau} + \frac{2B}{m^2} e^{-2t/\tau} \left[ \frac{\tau}{2} e^{2s/\tau} \right]_0^t \\
+&= v_0^2 e^{-2t/\tau} + \frac{B\tau}{m^2} e^{-2t/\tau} (e^{2t/\tau} - 1) \\
+&= v_0^2 e^{-2t/\tau} + \frac{B\tau}{m^2} (1 - e^{-2t/\tau})
+\end{aligned}
+\end{equation}
+
+Consideriamo il limite per tempi lunghi ($t \to \infty$):
+\begin{equation}
+\lim_{t\to\infty} \langle v^2(t) \rangle = \frac{B\tau}{m^2}   = \frac{B}{m \zeta}
+\end{equation}
+
+Affinché questo risultato sia consistente con il teorema di equipartizione, $\langle v^2 \rangle_{eq} = \frac{k_B T}{m}$, dobbiamo imporre:
+\begin{equation}
+\frac{B}{m \zeta} = \frac{k_B T}{m}
+\end{equation}
+
+Da cui si ottiene la relazione tra l'intensità del rumore $B$ e il coefficiente di attrito $\zeta$:
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA, arc=3mm, boxrule=1.2pt]
+\begin{equation}
+B =  \zeta k_B T
+\end{equation}
+\end{tcolorbox}
+Questa è una forma del Teorema di Fluttuazione-Dissipazione. Esso collega l'intensità delle fluttuazioni termiche (rappresentata da $B$) alla dissipazione di energia dovuta all'attrito (rappresentata da $\zeta$). Affinché il sistema raggiunga l'equilibrio termodinamico, questi due termini non possono essere indipendenti.
+
+\subsection{Spostamento Quadratico Medio (MSD)}
+Vogliamo calcolare lo spostamento quadratico medio $\langle x^2(t) \rangle$ (assumendo $x(0)=0$).  Consideriamo l'equazione del moto:
+\begin{equation}
+\label{eq:eq_39}
+\frac{d^2x}{dt^2}  =- \frac{1}{\tau} \frac{dx}{dt}  + \frac{\delta F(t)}{m}
+\end{equation}
+
+Consideriamo la quantità:
+\begin{equation} 
+\label{eq:eq_40}
+\frac{d}{dt} x^2  = 2  x \frac{dx}{dt} 
+\end{equation}
+
+La sua derivata seconda è:
+\begin{equation}
+\frac{1}{2} \frac{d^2}{dt^2}  x^2  = \left( \frac{dx}{dt} \right)^2 + x \frac{d^2x}{dt^2} = v^2 + x \frac{d^2x}{dt^2}
+\end{equation}
+
+Segue che:
+\begin{equation}
+x \frac{d^2x}{dt^2} = \frac{1}{2} \frac{d^2}{dt^2}  x^2  - v^2
+\end{equation}
+
+Sostituendo $\frac{d^2x}{dt^2}$ dall'equazione (\ref{eq:eq_39}):
+\begin{equation}
+x \left( - \frac{1}{\tau} \frac{dx}{dt}  + \frac{\delta F(t)}{m}\right) = - \frac{x}{\tau} \frac{dx}{dt}  + x \frac{\delta F(t)}{m}= \frac{1}{2} \frac{d^2}{dt^2}  x^2  - v^2
+\end{equation}
+
+Usando l'equazione (\ref{eq:eq_40}), sostituiamo $\frac{x}{\tau} \frac{dx}{dt}$ con  $\frac{1}{2 \tau} \frac{d}{dt} x^2$ :
+\begin{equation}
+\frac{1}{2} \frac{d^2}{dt^2}  x^2  - v^2  = - \frac{1}{2 \tau} \frac{d}{dt} x^2  + x \frac{\delta F}{m}
+\end{equation}
+
+Passiamo ai valori medi:
+\begin{equation}
+\frac{1}{2} \frac{d^2}{dt^2} \langle x^2 \rangle - \langle v^2 \rangle = - \frac{1}{2 \tau} \frac{d}{dt} \langle x^2 \rangle +  \frac{\langle x \;\delta F \rangle}{m}
+\end{equation}
+
+L'ultimo termine $\langle x(t) \delta F(t) \rangle$ è la correlazione tra la posizione all'istante $t$ e la forza stocastica allo stesso istante $t$. Poiché $x(t)$ dipende dalle realizzazioni della forza $\delta F(s)$ per tempi $s < t$, si assume che non ci sia correlazione tra $x(t)$ e $\delta F(t)$: $\langle x(t) \delta F(t) \rangle = 0$
+Sostituiamo $\langle v^2(t) \rangle$ con il valore dato dal teorema dell’equipartizione $v_0^2=k_B T/m$:
+\begin{equation}
+\label{eq:eq_46}
+\frac{1}{2}  \frac{d^2}{dt^2} \langle x^2 \rangle - \frac{k_B T}{m} =- \frac{1}{2 \:\tau} \frac{d}{dt} \langle x^2 \rangle
+\end{equation}
+
+Definiamo:
+\begin{equation} 
+Y(t) = \frac{d}{dt} \langle x^2 \rangle 
+\end{equation}
+
+L'equazione (\ref{eq:eq_46}) diventa:
+\begin{equation} 
+\frac{dY}{dt} + \frac{1}{\tau} Y(t) = \frac{2 k_B T}{m} 
+\end{equation}
+
+Definiamo $A=\frac{2 k_B T}{m}$ e:
+\begin{equation} 
+\label{eq:eq_48}
+Z(t) \equiv \frac{1}{\tau} Y(t) - A 
+\end{equation}
+
+Segue che:
+\begin{equation} 
+\frac{dZ}{dt} = \frac{1}{\tau} \frac{dY}{dt}  
+\end{equation}
+
+Riscriviamo la (\ref{eq:eq_48}) in funzione di $Z(t)$:
+\begin{equation} 
+\label{eq:eq_49}
+\tau \frac{dZ}{dt} = - Z(t)  \quad \rightarrow \quad Z(t)=Z(0) e^{-\frac{t}{\tau}}
+\end{equation}
+
+Nella soluzione sostituiamo $Z(t)$ con l'espressione nell'equazione (\ref{eq:eq_49}):
+\begin{equation} 
+\frac{1}{\tau} Y(t) - A = \left( \frac{1}{\tau} Y(0) - A \right) e^{-\frac{t}{\tau}} 
+\end{equation}
+
+Dunque:
+\begin{equation} 
+Y(t) = \frac{m}{\zeta} \frac{2 k_B T}{m} \left( 1-e^{-\frac{t}{\tau}}\right)+ Y(0) e^{-\frac{t}{\tau}}
+\end{equation}
+
+Nel limite $t \to \infty$ :
+\begin{equation} 
+\lim_{t \to \infty} Y(t) = \lim_{t \to \infty} \frac{d}{dt} \langle x^2 \rangle  = \frac{2 k_B T}{\zeta} 
+\end{equation}
+
+Nel limite in cui $t \gg \tau$ il MSD può essere scritto come:
+\begin{equation}  
+\langle x^2 \rangle  \approx \frac{2 k_B T}{\zeta} t
+\end{equation}
+
+Sostituiamo $\zeta = 6\pi \eta a$ :
+\begin{equation}  
+\langle x^2 \rangle  \approx \frac{ k_B T}{ 3 \pi \eta a} t
+\end{equation}
+Sfruttando la relazione $k_B = \frac{R}{N_A}$  è possibile trovare sperimentalmente il valore del numero di Avogadro a partire dal MSD per tempi sufficientemente grandi.
+
+\subsection{Limite Sovrasmorzato (Overdamped Limit)}
+Per molte particelle colloidali $\tau$ è molto piccolo. Se siamo interessati alla dinamica su scale temporali $t \gg \tau$, possiamo trascurare il termine inerziale $m \ddot{x}$ nell'equazione di Langevin, ottenendo:
+\begin{equation}
+0 = -\zeta v + F_{ext}(x) + \delta F(t) \quad \Rightarrow \quad \zeta v = F_{ext}(x) + \delta F(t)
+\end{equation}
+dove $F_{ext}(x)$ è una forza esterna deterministica (potrebbe essere zero).
+
+Introducendo la mobilità $\mu = 1/\zeta$:
+\begin{equation}
+\dot{x} = \mu F_{ext}(x) + \mu \delta F(t)
+\end{equation}
+
+Definiamo un nuovo rumore $\eta(t) = \mu \delta F(t)$. Le sue proprietà sono:
+\begin{itemize}
+    \item $\langle \eta(t) \rangle =  0$
+    \item $\langle \eta(t) \eta(s) \rangle = 2 \mu K_b T \; \delta(t-s)= 2 D \; \delta(t-s)$
+\end{itemize}
+Dove è stata usata la relazione di Einstein : $D = k_B T / \zeta$
+
+Quindi, l'equazione di Langevin sovrasmorzata è:
+\begin{equation}
+\dot{x}(t) = \mu F_{ext}(x) + \eta(t)
+\end{equation}
+
+Consideriamo il caso specifico di un potenziale armonico $V(x) = \frac{1}{2} k x^2$.
+La forza esterna è $F_{ext}(x) = -\frac{dV}{dx} = -kx$.
+Ponendo $\mu=1$ , l'equazione di Langevin sovrasmorzata diventa:
+\begin{equation}
+\dot{x} = - k x + \eta(t)
+\end{equation}
+
+Questa equazione definisce il processo di Ornstein-Uhlenbeck. La soluzione formale con condizione iniziale $x(t=0)=x_0$ è:
+\begin{equation}
+x(t) = x_0 e^{-k t} + \int_0^t ds \, e^{-k(t-s)} \eta(s)
+\end{equation}
+
+Calcoliamo la funzione di correlazione $C(t_1, t_2)=\langle x(t_1) x(t_2) \rangle$  per $t_1, t_2 \ge 0$.
+\begin{equation}
+\begin{aligned}
+C(t_1, t_2) &= \left\langle \left( x_0 e^{-k t_1} + \int_0^{t_1} ds_1 e^{-k(t_1-s_1)} \eta(s_1) \right) \left( x_0 e^{-k t_2} + \int_0^{t_2} ds_2 e^{-k(t_2-s_2)} \eta(s_2) \right) \right\rangle
+\end{aligned}
+\end{equation}
+
+I termini misti con $x_0$ sono nulli perchè $\langle\eta\rangle = 0$, quindi si ha:
+\begin{equation}
+\begin{aligned}
+\langle x(t_1) x(t_2) \rangle &= x_0^2  e^{-k(t_1+t_2)} + I(t_1, t_2)
+\end{aligned}
+\end{equation}
+
+Dove $I(t_1, t_2)$ è definito come segue:
+\begin{equation} 
+I(t_1, t_2)= 2D \int_0^{t_1} ds_1 \int_0^{t_2} dw \, e^{-k(t_1+t_2)} e^{k s} e^{k w} \; \delta(s-w) 
+\end{equation}
+
+L'integrale interno $\int_0^{t_2} dw \, \delta(s-w)$ è $1$ se $0 < s < t_2$, e $0$ altrimenti. Quindi l'integrale su $ds$ va da $0$ a $\min(t_1, t_2)$.
+\begin{equation}
+\begin{aligned}
+I(t_1, t_2) &= 2D e^{-k(t_1+t_2)} \int_0^{\min(t_1, t_2)} ds \, e^{2k s}
+\end{aligned}
+\end{equation}
+
+Studiamo separatamente i due casi:
+\begin{itemize}
+    \item $t_1>t_2$
+\begin{equation}
+\begin{aligned}
+J=\frac{1}{2k} (e^{2k t_2} -1 )
+\end{aligned}
+\end{equation}
+\begin{equation}
+\begin{aligned}
+I(t_1, t_2) = \frac{2D}{2k} e^{-k(t_1+t_2)} (e^{2k t_2} -1 )=\frac{D}{k}  (e^{-k(t_1-t_2)} - e^{-k( t_1+t_2)} )
+\end{aligned}
+\end{equation}
+
+\item $t_1<t_2$
+\begin{equation}
+\begin{aligned}
+J=\frac{1}{2k} (e^{2k t_1} -1 )
+\end{aligned}
+\end{equation}
+\begin{equation}
+\begin{aligned}
+I(t_1, t_2) = \frac{D}{k}  (e^{-k(-t_1+t_2)} - e^{-k( t_1+t_2)}  )
+\end{aligned}
+\end{equation}
+\end{itemize}
+
+Unendo i due risultati si ha:
+\begin{equation}
+\begin{aligned}
+I(t_1, t_2) &= \frac{D}{k}  (e^{-k|t_1-t_2|} - e^{-k( t_1+t_2)}  )
+\end{aligned}
+\end{equation}
+
+Quindi:
+\begin{equation}
+\begin{aligned}
+\langle x(t_1) x(t_2) \rangle &= x_0^2  e^{-k(t_1+t_2)} + \frac{D}{k}  (e^{-k|t_1-t_2|} - e^{-k( t_1+t_2)}  ) 
+\end{aligned}
+\end{equation}
+
+Questa è la funzione di correlazione per il processo di Ornstein-Uhlenbeck.
+Per ottenere il MSD, poniamo $t_1=t_2=t$ :
+\begin{equation}
+\begin{aligned}
+\langle x^2(t) \rangle &=   x_0^2  e^{-2k t} + \frac{D}{k} \left( 1 - e^{-2kt} \right)
+\end{aligned}
+\end{equation}
+
+Consideriamo il limite per tempi lunghi ($t \to \infty$):
+\begin{equation}
+\lim_{t\to\infty} \langle x^2(t) \rangle = \frac{D}{k}
+\end{equation}
+Questo valore di saturazione è l'aspettazione di $x^2$ all'equilibrio.

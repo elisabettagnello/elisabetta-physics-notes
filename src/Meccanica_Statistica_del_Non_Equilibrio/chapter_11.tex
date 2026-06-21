@@ -1,0 +1,518 @@
+\chapter{Lezione 11}
+\label{chap:lezione_11} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 08/04/2025}
+\end{flushright}
+\textit{Bibliografia: 
+The Wiener Process: independence of increment, autocorrelation functions [Gardiner 3.8.1]. Limits of sequences of random variables [Gardiner 2.9]. Stochastic integration: definition, Ito and Stratonovich stochastic integrals [Gardiner 4.2]. Ito SDE and Ito's Formula [Gardiner 4.3].}
+
+\section{Integrali Stocastici e Processi di Wiener}
+
+\subsection{Introduzione e Contesto}
+Riprendiamo la discussione sugli integrali stocastici. La necessità di definire questi oggetti nasce dallo studio del moto Browniano e dei processi stocastici in generale.
+Storicamente, il moto Browniano è stato descritto tramite due approcci principali:
+
+\begin{itemize}
+    \item \textbf{Approccio di Einstein:}
+    Basato su un'equazione di diffusione per la densità di probabilità $P(x,t)$:
+    \begin{equation}
+    \frac{\partial P(x,t)}{\partial t} = D \frac{\partial^2 P(x,t)}{\partial x^2}
+    \end{equation}
+    dove $D$ è il coefficiente di diffusione. Questo approccio (tipo Fokker-Planck) permette di calcolare quantità come il mean square displacement. La soluzione per una particella che parte da $x_0$ al tempo $t_0$, assumendo $D=1/2$ per semplicità, è una distribuzione Gaussiana:
+    \begin{equation}
+    P(x,t|x_0, t_0) = \frac{1}{\sqrt{2\pi(t-t_0)}} e^{-\frac{(x-x_0)^2}{2(t-t_0)}}
+    \end{equation}
+    con la condizione iniziale $P(x,t_0|x_0,t_0) = \delta(x-x_0)$.
+
+    \item \textbf{Approccio di Langevin:}
+    Parte dall'equazione del moto (Newton) per una particella:
+    \begin{equation}
+    m \frac{d^2x}{dt^2} = F_{tot}(t)
+    \end{equation}
+    La forza totale include tipicamente una parte deterministica (es. viscosità, forze esterne) e una parte stocastica (rumore termico):
+    \begin{equation}
+    F_{tot}(t) = F_{det}(x, \dot{x}, t) + \delta F(t)
+    \end{equation}
+    dove $\delta F(t)$ (o $\xi(t)$) è la forza stocastica.
+\end{itemize}
+
+\subsection{Equazione di Langevin Sovrasmorzata}
+In molti sistemi microscopici ci si trova in regime di alta viscosità (overdamped regime), dove la parte inerziale ($m \ddot{x}$) è trascurabile rispetto ai termini viscosi. Questo avviene perché i tempi caratteristici della viscosità dominano sui tempi inerziali. L'equazione si semplifica:
+\begin{equation}
+\dot{x}(t) = a(x(t), t) + b(x(t), t) \xi(t)
+\end{equation}
+dove $a(x,t)$ è il termine di drift (deterministico) e $b(x,t)$ modula l'intensità del rumore stocastico $\xi(t)$. Spesso ci si restringe a sistemi autonomi dove $a$ e $b$ non dipendono esplicitamente da $t$:
+\begin{equation}
+\begin{cases}
+a[x(t),t] = a[x(t)] = a(x) \\
+b[x(t),t] = b[x(t)] = b(x)
+\end{cases}
+\end{equation}
+In questo caso, l'equazione diventa:
+\begin{equation}
+\dot{x} = a(x) + b(x) \xi(t)
+\end{equation}
+Il rumore $\xi(t)$ è tipicamente assunto essere un rumore bianco Gaussiano (delta-correlato):
+\begin{equation}
+\begin{aligned}
+\langle \xi(t) \rangle &= 0 \\
+\langle \xi(t) \xi(t') \rangle &= \delta(t-t')
+\end{aligned}
+\end{equation}
+Qualsiasi componente con media non nulla può essere inglobata nel termine di drift $a(x)$. In questa formulazione, l'intensità del rumore può essere assorbita nella definizione della funzione $b(x)$.
+
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA, title=Nota]
+È importante sottolineare che la scrittura con la delta di Dirac è puramente formale, poiché $\delta(t-t')$ diverge per $t=t'$. È quindi necessario fornire un significato matematico rigoroso a queste equazioni.
+\end{tcolorbox}
+
+\section{Processi di Wiener}
+L'equazione di diffusione descrive l'evoluzione della probabilità per un processo di Wiener $W(t)$. Questo processo è la formalizzazione matematica del moto Browniano.
+Formalmente, l'incremento infinitesimo $dW(t)$ del processo di Wiener può essere messo in relazione con il rumore $\xi(t)$ tramite:
+\begin{equation}
+dW(t) = \xi(t)dt
+\end{equation}
+Considerando un'equazione di Langevin semplice del tipo $\dot{x}(t) = \xi(t)$, questa può essere riscritta in termini di differenze finite come $\Delta x = \Delta W$.
+La distribuzione di probabilità per un incremento $\Delta W$ su un intervallo di tempo $\Delta t$ è:
+\begin{equation}
+P(\Delta W) = \frac{1}{\sqrt{2\pi \Delta t}} e^{-\frac{(\Delta W)^2}{2\Delta t}}
+\end{equation}
+Un processo di Wiener $W(t)$, che inizia da $W(t_0)=W_0$, possiede le seguenti proprietà fondamentali:
+
+\begin{itemize}
+    \item È un processo Gaussiano.
+    \item Media:
+    \begin{equation}
+    \langle W(t) \rangle = W_0
+    \end{equation}
+    \item Varianza:
+    \begin{equation}
+    \langle (W(t) - W_0)^2 \rangle = t - t_0
+    \end{equation}
+    Assumendo $D=1/2$, altrimenti $2D(t-t_0)$.
+    Questa corrisponde alla varianza $\sigma^2 = t-t_0$ della Gaussiana $P(x,t|x_0,t_0)$ vista precedentemente.
+    \item Incrementi indipendenti: Gli incrementi $\Delta W_k = W(t_{k+1}) - W(t_k)$ su intervalli di tempo disgiunti $[t_k, t_{k+1})$ di durata $\Delta t_k = t_{k+1}-t_k$ sono variabili aleatorie Gaussiane indipendenti.
+    \item La distribuzione di probabilità congiunta degli incrementi si fattorizza:
+    \begin{equation}
+    P(\{\Delta W_k, \Delta t_k\}_{k=0}^{N-1} | W_0, t_0) = \left( \prod_k P(\Delta W_k, \Delta t_k) \right) P(W_0, t_0)
+    \end{equation}
+    \item Per ogni incremento $\Delta W_k$:
+    \begin{equation}
+    \begin{aligned}
+    \langle \Delta W_k \rangle &= 0 \\
+    \langle \Delta W_k \Delta W_l \rangle &= \Delta t_k \delta_{kl}
+    \end{aligned}
+    \end{equation}
+    \item Covarianza: Dalle proprietà precedenti si può derivare la funzione di covarianza (supponendo $t \ge s \ge t_0$):
+    \begin{equation}
+    \langle W(t)W(s) \rangle = \min(t-t_0, s-t_0) + W_0^2
+    \end{equation}
+\end{itemize}
+
+\subsubsection{Dimostrazione} (per $t \ge s$):
+Consideriamo: $W(t) = W(s) + (W(t)-W(s))$
+\begin{equation}
+\begin{aligned}
+\langle {W(t)W(s)} \rangle &= \langle  {[W(s) + (W(t)-W(s))] \;W(s)}\rangle \\
+&=  \langle {(W(t)-W(s))W(s)}\rangle + \langle {W(s)^2} \rangle
+\end{aligned}
+\end{equation}
+Poiché $W(s)$ dipende solo dagli incrementi fino a $s$, e $W(t)-W(s)$ è un incremento successivo, i due sono indipendenti. Inoltre $\langle {W(t)-W(s)}\rangle = 0$.
+Quindi:
+\begin{equation}
+\begin{aligned}
+\langle W(t)W(s) \rangle &= 0  + \langle (W(s)-W_0+W_0)^2 \rangle \\
+&= \langle (W(s)-W_0)^2 \rangle + 2W_0\langle W(s)-W_0 \rangle + W_0^2 \\
+&= (s-t_0) + 0 + W_0^2 = (s-t_0) + W_0^2
+\end{aligned}
+\end{equation}
+Se $s \ge t$, analogamente si ottiene $(t-t_0) + W_0^2$. Combinando i due casi, si ha la formula generale.
+Un caso particolare importante è:
+\begin{equation}
+\langle W^2(t) \rangle = (t-t_0) + W_0^2
+\end{equation}
+
+\section{L'Integrale Stocastico}
+L'equazione di Langevin può essere scritta formalmente in forma differenziale, utilizzando la relazione $dW(t) = \xi(t)dt$:
+\begin{equation}
+dx = a(x) dt + b(x) dW(t)
+\end{equation}
+Integrando entrambi i membri tra $t_0$ e $t$, con $x_0=x(t_0)$:
+\begin{equation}
+x(t) - x(t_0) = \int_{t_0}^{t} a(x(s))\; ds + \int_{t_0}^{t} b(x(s)) \; dW(s)
+\end{equation}
+Il primo integrale è un integrale standard (di Riemann o Lebesgue). Il secondo termine è l'integrale stocastico, che richiede una definizione precisa.
+Consideriamo l'integrale:
+\begin{equation}
+I=\int_{t_0}^{t} W(s) dW(s)
+\end{equation}
+Se applicassimo ingenuamente le regole del calcolo differenziale standard (come per $\int x dx = x^2/2$), otterremmo:
+\begin{equation}
+\int_{t_0}^{t} W(s) dW(s) \stackrel{?}{=} \frac{1}{2} [W(t)^2 - W(t_0)^2]
+\end{equation}
+Calcolando il valore atteso di questa espressione ipotetica:
+\begin{equation}
+\begin{aligned}
+\left\langle \frac{1}{2}[W(t)^2 - W(t_0)^2] \right\rangle &= \frac{1}{2}[\langle W(t)^2 \rangle - \langle W(t_0)^2 \rangle] \\
+&= \frac{1}{2}[((t-t_0)+W_0^2) - W_0^2] \\
+&= \frac{1}{2}(t-t_0)
+\end{aligned}
+\end{equation}
+
+\begin{tcolorbox}[colback=colorF!5,colframe=colorF, title=Attenzione]
+Questo risultato, sebbene sembri plausibile, deriva da un procedimento non giustificato, perché $W(t)$ non è una funzione regolare e $dW(t)$ non è un differenziale ordinario. È necessario definire l'integrale stocastico attraverso un processo al limite, basato su somme parziali (analoghe alle somme di Riemann-Stieltjes).
+\end{tcolorbox}
+
+\subsection{Somme di Riemann-Stieltjes Stocastiche}
+Consideriamo la definizione dell'integrale stocastico generico di una funzione (o processo) $G(t')$ rispetto al processo di Wiener $W(t')$:
+\begin{equation}
+I[G] = \int_{t_0}^t G(t')dW(t')
+\end{equation}
+Suddividiamo l'intervallo temporale $[t_0, t]$ in $m$ sottointervalli tramite i punti $t_0 \le t_1 \le \dots \le t_m = t$.
+In ciascun sottointervallo $[t_{i-1}, t_i]$, scegliamo un punto di valutazione intermedio $\tau_i$ tale che $t_{i-1} \le \tau_i \le t_i$.
+L'integrale viene approssimato dalla somma parziale $S_m$:
+\begin{equation}
+S_m = \sum_{i=1}^m G(\tau_i)[W(t_i) - W(t_{i-1})] = \sum_{i=1}^m G(\tau_i)\Delta W_i
+\end{equation}
+La scelta del punto $\tau_i$ all'interno dell'intervallo $[t_{i-1}, t_i]$ è cruciale. Parametrizziamo questa scelta con $\alpha \in [0, 1]$:
+\begin{equation}
+\tau_i = \alpha t_i + (1-\alpha) t_{i-1}
+\end{equation}
+
+Calcoliamo il valore atteso della somma parziale per $G(t')=W(t')$, assumendo per semplicità $W(t_0)=0$ (cosicché $\langle W(t) \rangle = 0$ per ogni $t>t_0$, e $\langle W(t)W(s) \rangle = \min(t,s)$ se $t_0=0$).
+
+
+\begin{align}
+\langle S_m \rangle &= \sum_{i=1}^m \langle W(\tau_i)[W(t_i) - W(t_{i-1})] \rangle \nonumber \\
+&= \sum_{i=1}^m [\langle W(\tau_i)W(t_i) \rangle - \langle W(\tau_i)W(t_{i-1}) \rangle]
+\end{align}
+
+
+Utilizzando $\langle W(x)W(y) \rangle = \min(x,y)$ (per $W_0=0, t_0=0$) e dato che $t_{i-1} \le \tau_i \le t_i$:
+
+$$
+\langle W(\tau_i)W(t_i) \rangle = \min(\tau_i, t_i) = \tau_i
+$$
+
+$$
+\langle W(\tau_i)W(t_{i-1}) \rangle =  t_{i-1}
+$$
+
+Quindi:
+
+
+\begin{align}
+\langle S_m \rangle &= \sum_{i=1}^m (\tau_i - t_{i-1}) \nonumber \\
+&= \sum_{i=1}^m [(\alpha t_i + (1-\alpha)t_{i-1}) - t_{i-1}] \nonumber \\
+&= \sum_{i=1}^m \alpha(t_i - t_{i-1}) = \alpha \sum_{i=1}^m (t_i - t_{i-1})
+\end{align}
+
+
+Poiché $\sum_{i=1}^m (t_i - t_{i-1}) = t_m - t_0 = t - t_0$, otteniamo:
+
+
+\begin{equation}
+\langle S_m \rangle = \alpha (t-t_0)
+\end{equation}
+
+
+
+
+\begin{tcolorbox}[colback=colorF!5,colframe=colorF, title=Attenzione]
+Questo risultato mostra che il valore atteso della somma parziale (e quindi dell'integrale nel limite) dipende dalla scelta di $\alpha$.
+\end{tcolorbox}
+
+Consideriamo i due casi principali per $\alpha$:
+\begin{itemize}
+    \item \textbf{Caso $\alpha = 1/2$ (Stratonovich):} Se $\tau_i = \frac{t_i + t_{i-1}}{2}$ è il punto medio, allora $\langle S_m \rangle = \frac{1}{2}(t-t_0)$. Nel limite, questo porta all'integrale di Stratonovich, il cui valore atteso è:       
+$$
+       \left \langle \int W dW \right \rangle= \frac{1}{2}(t-t_0) 
+$$
+Questo risultato coincide con quello ottenuto tramite l'applicazione ingenua delle regole del calcolo.
+    \item \textbf{Caso $\alpha = 0$ (Itô):} Se $\tau_i = t_{i-1}$ è il punto iniziale, allora $\langle S_m \rangle = 0$. Nel limite, questo porta all'integrale di Itô, il cui valore atteso é: 
+    $$
+\left \langle \int W dW \right \rangle= 0
+$$
+\end{itemize}
+Questo mostra che il risultato dell'integrale stocastico dipende dalla convenzione utilizzata per definirlo.
+
+
+\section{Limite in Media Quadratica}
+Quando definiamo l'integrale stocastico come limite di somme parziali $S_m = \sum_{i=1}^{m} G(\tau_i) \Delta W_i$, ci troviamo di fronte a una successione $S_m$ di variabili aleatorie. Questo perché ogni $S_m$ dipende dalla specifica realizzazione $\omega$ del processo di Wiener $W$. Dobbiamo quindi definire cosa significa il limite $\lim_{m\to\infty} S_m$.
+
+Consideriamo uno spazio di probabilità $(\Omega, \; \rho(\omega)\; d\omega)$, dove $\Omega$ è l'insieme di tutte le possibili realizzazioni (es. traiettorie del processo $W$) e  $\rho(\omega) d\omega$  è la probabilità di realizzazione. Una successione di variabili aleatorie è una successione di funzioni $X_m: \Omega \to \mathbb{R}$.
+
+Il concetto di limite appropriato in questo contesto è il Limite in Media Quadratica (Mean Square Limit).
+\begin{tcolorbox}[colback=colorA!5,colframe=colorA, title=Definizione]
+Una successione di variabili aleatorie $X_m(\omega)$ converge in media quadratica (m.s.) alla variabile aleatoria $X(\omega)$ se:
+
+
+\begin{equation} 
+\text{m.s.-}\lim_{m\to\infty} X_m = X \quad \iff \quad \lim_{m\to\infty} \langle{ (X_m - X)^2 } \rangle = 0
+\end{equation}
+
+
+dove la media è calcolata rispetto alla misura di probabilità  $\rho(\omega) d\omega$ :
+
+
+\begin{equation} 
+\langle { (X_m - X)^2 } \rangle = \int_{\Omega} |X_m(\omega) - X(\omega)|^2  \rho(\omega) d\omega 
+\end{equation}
+
+
+\end{tcolorbox}
+
+\section{L'Integrale di Itô }
+Adottiamo ora la convenzione di Itô, che corrisponde a scegliere $\alpha=0$ nella parametrizzazione 
+
+
+\begin{equation} \tau_i = \alpha t_i + (1-\alpha) t_{i-1} \end{equation}
+
+
+Questo significa che il punto di valutazione $\tau_i$ nell'integrando $G(\tau_i)$ è sempre l'estremo sinistro dell'intervallo $[t_{i-1}, t_i]$, ovvero:
+
+
+ \begin{equation} \tau_i = t_{i-1}  \end{equation}
+
+
+L'integrale di Itô di una funzione (o processo) $G(s) = G(W(s), s)$ è definito come il limite in media quadratica della somma parziale con $\tau_i = t_{i-1}$:
+
+
+\begin{equation} 
+I_{Ito} = \int_{t_0}^{t} dW(s) G(s) := \text{m.s.-}\lim_{m\to\infty} S_m  \quad \text{con } S_m = \sum_{i=1}^{m} G(t_{i-1}) [W(t_i) - W(t_{i-1})] 
+\end{equation}
+
+
+\subsection{Calcolo di $\int_{t_0}^{t} W(s) dW(s)$ }
+
+Applichiamo la definizione di Itô per calcolare l'integrale specifico 
+
+
+\begin{equation}  I = \int_{t_0}^{t} dW(s) W(s) \end{equation}
+
+
+La somma parziale corrispondente è:
+
+
+\begin{equation} 
+S_m = \sum_{i=1}^{m} W(t_{i-1}) [W(t_i) - W(t_{i-1})] = \sum_{i=1}^{m} W_{i-1} \Delta W_i
+\end{equation}
+
+
+dove abbiamo usato la notazione abbreviata $W_i = W(t_i)$ e $\Delta W_i = W_i - W_{i-1}$.
+
+Sfruttiamo l'identità algebrica (ottenuta completando il quadrato):
+
+$$
+W_{i-1}\Delta W_i = \frac{1}{2}[(W_{i-1}+\Delta W_i)^2 - (W_{i-1})^2 - (\Delta W_i)^2]
+$$
+
+Poiché $W_{i-1}+\Delta W_i = W_i$ :
+
+
+\begin{equation}
+W_{i-1}\Delta W_i = \frac{1}{2}[W_i^2 - W_{i-1}^2 - (\Delta W_i)^2]
+\end{equation}
+
+
+Sostituiamo questa espressione nella somma parziale $S_m$:
+
+
+\begin{align}
+S_m &= \sum_{i=1}^{m} \left\{ \frac{1}{2} [ W(t_i)^2 - W(t_{i-1})^2 ] - \frac{1}{2} (\Delta W_i)^2 \right\} \\
+&= \frac{1}{2} \sum_{i=1}^{m} [ W(t_i)^2 - W(t_{i-1})^2 ] - \frac{1}{2} \sum_{i=1}^{m} (\Delta W_i)^2 
+\end{align}
+
+
+Il primo termine è una somma telescopica:
+
+$$
+ \sum_{i=1}^{m} [ W(t_i)^2 - W(t_{i-1})^2 ] = W(t_m)^2 - W(t_0)^2 = W(t)^2 - W(t_0)^2 
+$$
+
+Quindi, la somma parziale diventa:
+
+
+\begin{equation} 
+S_m = \frac{1}{2} [W(t)^2 - W(t_0)^2] - \frac{1}{2} \sum_{i=1}^{m} (\Delta W_i)^2
+\end{equation}
+
+
+Ora, per trovare l'integrale di Itô, dobbiamo calcolare il limite in media quadratica di $S_m$ per $m \to \infty$. Poiché il primo termine $\frac{1}{2} [W(t)^2 - W(t_0)^2]$ non dipende da $m$, il problema si riduce a calcolare il limite in media quadratica della somma $\sum_{i=1}^{m} (\Delta W_i)^2$.
+
+Vogliamo dimostrare che $\sum_{i=1}^m (\Delta W_i)^2 \xrightarrow{m.s.} t-t_0$.
+
+Procediamo in tre passaggi:
+
+\begin{enumerate}
+    \item Calcolo del valore atteso:
+    
+    
+    \begin{equation}
+    \left\langle \sum_{i=1}^m (\Delta W_i)^2 \right\rangle = \sum_{i=1}^m \langle (\Delta W_i)^2 \rangle
+    \end{equation}
+    
+    
+    Poiché $\langle (\Delta W_i)^2 \rangle = (t_i - t_{i-1})$   :
+    
+    
+    \begin{equation}
+    \left\langle \sum_{i=1}^m (\Delta W_i)^2 \right\rangle = \sum_{i=1}^m (t_i - t_{i-1}) = t - t_0
+    \end{equation}
+    
+    
+\item Calcolo di $\left \langle \left( \sum_{i=1}^m (\Delta W_i)^2 - (t-t_0) \right)^2 \right \rangle$:
+Espandendo il quadrato e utilizzando il risultato del punto precedente:
+    
+ 
+    \begin{align}
+    &\left\langle \left( \sum_{i=1}^m (\Delta W_i)^2 - (t-t_0) \right)^2 \right\rangle \nonumber \\
+    &= \left\langle \left( \sum_{i}(\Delta W_{i})^{2} \right)^{2} \right\rangle - 2(t-t_0)\left\langle \sum_{i}(\Delta W_{i})^{2} \right\rangle + (t-t_0)^{2} \nonumber \\
+    &= \left\langle \left( \sum_{i}(\Delta W_{i})^{2} \right)^{2} \right\rangle - 2(t-t_0)(t-t_0) + (t-t_0)^{2} \nonumber \\
+    &= \left\langle \left( \sum_{i}(\Delta W_{i})^{2} \right)^{2} \right\rangle - (t-t_0)^{2}
+    \end{align}
+
+    
+    Calcoliamo ora: 
+    
+    $$
+    \left\langle \left( \sum_{i}(\Delta W_{i})^{2} \right)^{2} \right\rangle = \left\langle \sum_{i,j}(\Delta W_{i})^{2}(\Delta W_{j})^{2} \right\rangle
+    $$
+    
+    Separando i termini per $i=j$ e $i \neq j$:
+    
+
+    \begin{equation}
+    \left\langle \left( \sum_{i}(\Delta W_{i})^{2} \right)^{2} \right\rangle = \sum_{i}\langle(\Delta W_{i})^{4}\rangle + \sum_{i \neq j}\langle(\Delta W_{i})^{2}(\Delta W_{j})^{2}\rangle
+    \end{equation}
+
+    
+    Per incrementi indipendenti ($i \neq j$):
+    
+    $$
+    \sum_{i \neq j}\langle(\Delta W_{i})^{2}(\Delta W_{j})^{2}\rangle = \sum_{i \neq j}\langle(\Delta W_{i})^{2}\rangle \langle(\Delta W_{j})^{2}\rangle = \sum_{i \neq j}\Delta t_i \Delta t_j
+    $$
+    
+    Per un processo di Wiener Gaussiano, $\langle(\Delta W_{i})^{2}\rangle = \Delta t_i$ e il quarto momento è:
+    
+    $$
+     \langle(\Delta W_{i})^{4}\rangle = 3(\Delta t_i)^2
+    $$
+    
+    Quindi:
+    
+
+    \begin{equation}
+    \left\langle \left( \sum_{i}(\Delta W_{i})^{2} \right)^{2} \right\rangle = \sum_{i}3(\Delta t_i)^{2} + \sum_{i \neq j}\Delta t_i \Delta t_j
+    \end{equation}
+
+    
+    Riscrivendo: 
+    
+    $$
+    \sum_{i \neq j}\Delta t_i \Delta t_j = (\sum_{k}\Delta t_k)^2 - \sum_{k}(\Delta t_k)^2 = (t-t_0)^2 - \sum_k (\Delta t_k)^2
+    $$
+    
+
+    \begin{align}
+    \left\langle \left( \sum_{i}(\Delta W_{i})^{2} \right)^{2} \right\rangle &= 3\sum_{i}(\Delta t_i)^{2} + (t-t_0)^2 - \sum_{i}(\Delta t_i)^{2} \nonumber \\
+    &= 2\sum_{i}(\Delta t_i)^{2} + (t-t_0)^{2}
+    \end{align}
+
+    
+    Sostituendo questo nell'espressione per $\left\langle \left( \sum_{i=1}^m (\Delta W_i)^2 - (t-t_0) \right)^2 \right\rangle$:
+    
+
+    \begin{align}
+    \left\langle \left( \sum_{i=1}^m (\Delta W_i)^2 - (t-t_0) \right)^2 \right\rangle &= \left[ 2\sum_{i}(t_i-t_{i-1})^2 + (t-t_0)^2 \right] - (t-t_0)^2 \nonumber \\
+    &= 2\sum_{i}(t_i-t_{i-1})^2
+    \end{align}
+
+    
+\item Limite per $m \rightarrow \infty$ :
+    
+
+    \begin{align}
+    \lim_{m\rightarrow\infty} \sum_{i=1}^m (t_i-t_{i-1})^2 = 0
+    \end{align}
+
+    
+    Di conseguenza:
+    
+
+    \begin{equation}
+    \lim_{m\rightarrow\infty} \left\langle \left( \sum_{i=1}^m (\Delta W_i)^2 - (t-t_0) \right)^2 \right\rangle = \lim_{m\rightarrow\infty} 2\sum_{i}(t_i-t_{i-1})^2 = 0
+    \end{equation}
+
+    
+    Ciò dimostra che:
+    
+    $$
+    \text{ms-}\lim_{m\rightarrow\infty} \sum_{i=1}^m (\Delta W_i)^2 = t-t_0
+    $$
+\end{enumerate} 
+
+Ritornando all'espressione per $S_m$:
+
+
+\begin{equation}
+S_m = \frac{1}{2}[W(t)^2 - W(t_0)^2] - \frac{1}{2}\sum_{i=1}^m (\Delta W_i)^2
+\end{equation}
+
+
+Prendendo il limite in media quadratica:
+
+
+\begin{align}
+I_{It\hat{o}} = \int_{t_0}^t W(s)dW(s) &= \text{ms-}\lim_{m\rightarrow\infty} S_m \nonumber \\
+&= \frac{1}{2}[W(t)^2 - W(t_0)^2] - \frac{1}{2} \text{ms-}\lim_{m\rightarrow\infty} \sum_{i=1}^m (\Delta W_i)^2 \nonumber \\
+&= \frac{1}{2}\{W(t)^2 - W(t_0)^2 - (t-t_0)\}
+\end{align}
+
+
+Questo è il risultato dell'integrale di Itô $\int_{t_0}^t W(s)dW(s)$
+
+Calcoliamo il suo valore atteso:
+
+
+\begin{align}
+\left\langle \int_{t_0}^t W(s)dW(s) \right\rangle &= \left\langle \frac{1}{2}[W(t)^2 - W(t_0)^2 - (t-t_0)] \right\rangle \nonumber \\
+&= \frac{1}{2} \left[ \langle W(t)^2 - W(t_0)^2 \rangle - (t-t_0) \right] \nonumber \\
+&= \frac{1}{2} [ ((t-t_0)+W_0^2 - W_0^2) - (t-t_0) ] \nonumber \\
+&= \frac{1}{2} [(t-t_0) - (t-t_0)] = 0
+\end{align}
+
+
+Questo risultato è consistente con la derivazione generale $\langle S_m \rangle = \alpha(t-t_0)$ per $\alpha=0$
+
+
+\subsection{Confronto con l'Integrale di Stratonovich}
+L'integrale di Itô è definito (per $\alpha=0$):
+
+
+\begin{equation}
+\int_{t_0}^t G(s)dW(s) \equiv \text{ms-}\lim_{m\rightarrow\infty} \left\{ \sum_{i=1}^m G(t_{i-1})\Delta W_i \right\}
+\end{equation}
+
+
+L'integrale di Stratonovich, indicato con $\int G(s) \circ dW(s)$, utilizza $\alpha = 1/2$ :
+
+
+\begin{equation}
+\int_{t_0}^t G(s)\circ dW(s) \equiv \text{ms-}\lim_{m\rightarrow\infty} \left\{ \sum_{i=1}^m G\left(\frac{t_i+t_{i-1}}{2}\right)\Delta W_i \right\}
+\end{equation}
+
+
+Per l'integrale $\int_{t_0}^t W(s) \circ dW(s)$, si può dimostrare che il risultato è:
+
+
+\begin{equation}
+\int_{t_0}^t W(s) \circ dW(s) = \frac{1}{2}[W(t)^2 - W(t_0)^2]
+\end{equation}
+
+
+Il cui valore atteso è $\frac{1}{2}(t-t_0)$. Questo risultato coincide con le regole del calcolo differenziale ordinario.
+
+Se il rumore non è moltiplicativo (cioè $b(x)$ è una costante nell'equazione di Langevin), le prescrizioni di Itô e Stratonovich tendono a coincidere. Le differenze emergono chiaramente con rumore moltiplicativo.
+
+La scelta tra Itô e Stratonovich può dipendere dal modello fisico sottostante. Stratonovich è spesso considerato più naturale se il rumore "reale" ha un tempo di correlazione piccolo ma finito, e si prende poi il limite a zero di tale tempo.
