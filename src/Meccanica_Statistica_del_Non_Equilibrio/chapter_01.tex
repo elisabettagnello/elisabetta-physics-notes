@@ -1,0 +1,248 @@
+
+% File: lezione_01.tex
+\chapter{Lezione 1}
+\label{chap:lezione_01} % Etichetta per riferirsi al capitolo
+
+\begin{flushright}
+\textit{Data: 03/03/2025}
+\end{flushright}
+\textit{Bibliografia: Introduzione al corso. Presentazione del programma. Di cosa si occupa la Meccanica Statistica di non equilibrio. Richiami dei principi della Meccanica Statistica [Landau, ch 1].}
+
+\section{Sistemi Hamiltoniani}
+
+L'obiettivo del corso è lo studio della meccanica statistica del non equilibrio. Tuttavia, più che una teoria generale del non equilibrio, si affronterà lo studio della \textbf{dinamica verso stati stazionari} per sistemi che, per loro natura, richiedono una descrizione di tipo probabilistico.
+
+Il concetto di "non equilibrio" in questo contesto si riferisce al fatto di partire da uno stato iniziale arbitrario, scrivere le equazioni di evoluzione per il sistema e studiarne la dinamica per osservare verso quale stato finale essa tende. Si analizzerà l'esistenza di stati stazionari, ovvero soluzioni delle equazioni dinamiche che non evolvono nel tempo.
+
+È cruciale notare che questi stati stazionari non necessariamente coincidono con gli stati di equilibrio termodinamico descritti dalla statistica di Boltzmann. La dinamica stessa può essere intrinsecamente di non equilibrio, portando a stati stazionari la cui natura è differente. Per quantificare questa distanza dall'equilibrio, si introdurranno concetti come la produzione di entropia, un'osservabile che misura la differenza tra le traiettorie del sistema e le loro inverse temporali. All'equilibrio non vi è differenza, ma fuori dall'equilibrio questa simmetria temporale è rotta.
+
+In questo percorso, la dinamica sottostante ai sistemi studiati sarà sempre considerata \textbf{classica} e, in particolare, descritta da sistemi Hamiltoniani.
+
+\hspace{0.2 cm}
+
+Per comprendere il formalismo, è utile rivisitare le fondamenta della meccanica statistica, il cui obiettivo primario è la descrizione di un corpo macroscopico. Un corpo macroscopico è caratterizzato da:
+\begin{itemize}
+    \item Un numero di elementi costituenti $N$ molto grande ($N \gg 1$), tipicamente dell'ordine del numero di Avogadro ($N \sim N_A$).
+    \item \textbf{Interazioni locali} tra gli elementi, che avvengono su scale microscopiche caratteristiche di lunghezza $l$ e di tempo $\tau$.
+\end{itemize}
+
+Lo scopo della meccanica statistica è passare da queste regole microscopiche a una \textbf{descrizione su grande scala}, ovvero per lunghezze $L \gg l$ e tempi $t \gg \tau$. Un aspetto fondamentale è che lo stato macroscopico del sistema è descritto da un numero molto piccolo di parametri (ad esempio, per un gas: Temperatura, Pressione, Volume).
+
+Il principio cardine che collega i due livelli di descrizione è che a un \textbf{singolo stato macroscopico} corrispondono \textbf{moltissimi stati microscopici} compatibili con esso.
+
+\hspace{0.2 cm}
+
+Dal punto di vista microscopico, la dinamica del sistema è classicamente deterministica e descritta da sistemi Hamiltoniani. L'Hamiltoniana $H$ è una funzione delle coordinate e degli impulsi generalizzati di tutte le $N$ particelle, come definito nell'equazione \eqref{eq:hamiltoniana}.
+\begin{equation}
+    H(\mathbf{p},\mathbf{q})=\sum_{i}\frac{\mathbf{p}_{i}^{2}}{2m}+V(\mathbf{q})
+    \label{eq:hamiltoniana}
+\end{equation}
+
+Lo stato completo del sistema è un punto $\mathbf{x}$ nello spazio delle fasi, definito dall'insieme di tutte le coordinate $\{q_{i}\}$ e gli impulsi $\{p_{i}\}$, come mostrato in \eqref{eq:stato_fase}.
+\begin{equation}
+    (\mathbf{p},\mathbf{q})=(\{p_{i}\}_{i=1}^{N},\{q_{i}\}_{i=1}^{N})=\mathbf{x}
+    \label{eq:stato_fase}
+\end{equation}
+
+Questo spazio ha $2d \cdot N$ dimensioni (gradi di libertà), dove $d$ è la dimensione spaziale in cui si muove il sistema. L'evoluzione temporale di questo punto è governata dalle equazioni di Hamilton, date da \eqref{eq:hamilton_q} e \eqref{eq:hamilton_p}.
+\begin{equation}
+    \dot{q}_{i}=\frac{\partial H}{\partial \mathbf{p}_{i}}
+    \label{eq:hamilton_q}
+\end{equation}
+\begin{equation}
+    \dot{p}_{i}=-\frac{\partial H}{\partial \mathbf{q}_{i}}
+    \label{eq:hamilton_p}
+\end{equation}
+
+Dato uno stato iniziale $\mathbf{x}(t_0)$ al tempo $t_0$, la sua evoluzione futura $\mathbf{x}(t)$ è univocamente determinata da queste equazioni.
+
+\subsection*{Medie Temporali e i Limiti dell'Approccio Meccanico}
+
+Un approccio puramente meccanicistico per collegare la descrizione microscopica a quella macroscopica consisterebbe nel calcolare le proprietà macroscopiche come medie temporali delle corrispondenti osservabili microscopiche. Un'osservabile $O$ è una funzione dello stato microscopico $\mathbf{x}(t)$, e quindi dipende implicitamente dal tempo: $O(t) = O(\mathbf{x}(t))$. Si può definire il suo valor medio temporale $\overline{O(t)}$ come:
+\begin{equation}
+    \overline{O(t)}=\lim_{t_{F}\rightarrow+\infty}\frac{1}{t_{F}}\int_{t_{0}}^{t_{0}+t_{F}}dS~O(\mathbf{x}(t))
+    \label{eq:media_temporale}
+\end{equation}
+Questo approccio, sebbene concettualmente diretto, presenta problemi insormontabili:
+\begin{enumerate}
+    \item \textbf{Problema Operativo}: Richiederebbe la conoscenza esatta delle condizioni iniziali (posizioni e velocità) di un numero enorme di particelle ($\approx 10^{23}$), un'informazione impossibile da ottenere.
+    \item \textbf{Problema Concettuale}: Le dinamiche microscopiche, anche per sistemi con pochi gradi di libertà, possono essere estremamente irregolari e caotiche, mostrando una sensibilità critica alle condizioni iniziali. Questo contrasta nettamente con la regolarità e la riproducibilità delle proprietà macroscopiche osservate sperimentalmente.
+\end{enumerate}
+La regolarità che osserviamo su grande scala non è quindi di natura meccanica, ma di natura \textbf{statistica}.
+
+\subsection*{L'Approccio Statistico e la Densità di Probabilità}
+
+L'idea fondamentale è passare a una descrizione probabilistica del sistema. Si immagina di suddividere ("coarse-graining") lo spazio delle fasi in un gran numero di cellette di volume $\Delta\mathbf{p}\Delta\mathbf{q}$. La traiettoria del sistema, nel corso della sua evoluzione, visiterà queste cellette.
+
+
+Secondo un approccio frequentista, possiamo definire la probabilità $W$ che il sistema si trovi in una data celletta come la frazione di tempo $\Delta t$ che il sistema trascorre al suo interno su un tempo di osservazione totale $t_F$ molto lungo.
+\begin{equation}
+    W=\lim_{t_{F}\rightarrow+\infty}\frac{\Delta t}{t_{F}}
+    \label{eq:prob_frequentista}
+\end{equation}
+Si passa poi al limite di cellette infinitesimali ($\Delta\mathbf{p}\Delta\mathbf{q}\rightarrow d\mathbf{p}d\mathbf{q}$). In questo limite, è possibile definire una \textbf{densità di probabilità nello spazio delle fasi} $\rho(\mathbf{p},\mathbf{q})$.
+\begin{equation}
+    dw=\rho(\mathbf{p},\mathbf{q})d\mathbf{p}d\mathbf{q}
+    \label{eq:densita_prob}
+\end{equation}
+dove $dw$ è la probabilità infinitesima di trovare il sistema in un volume infinitesimo $d\mathbf{p}d\mathbf{q}$ dello spazio delle fasi. Essendo una densità di probabilità, deve soddisfare la condizione di normalizzazione \eqref{eq:normalizzazione}.
+\begin{equation}
+    \int d\mathbf{p}d\mathbf{q}\,\rho(\mathbf{p},\mathbf{q})=1
+    \label{eq:normalizzazione}
+\end{equation}
+La determinazione della forma di $\rho$ porta alla definizione dei diversi insiemi statistici (es. microcanonico, canonico).
+
+\subsection*{Media d'Insieme ed Ergodicità}
+
+L'introduzione della densità di probabilità $\rho$ permette di definire un nuovo modo per calcolare i valori medi, detto \textbf{media di insieme}, indicato con $\langle \dots \rangle$.
+\begin{equation}
+    \langle O(\mathbf{p},\mathbf{q})\rangle=\int d\mathbf{p}d\mathbf{q}\,O(\mathbf{p},\mathbf{q})\rho(\mathbf{p},\mathbf{q})
+    \label{eq:media_insieme}
+\end{equation}
+Un sistema si definisce \textbf{ergodico} se la media temporale di una qualsiasi osservabile coincide con la sua media di insieme, come espresso dalla relazione \eqref{eq:ergodicita}.
+\begin{equation}
+    \overline{O}=\langle O\rangle
+    \label{eq:ergodicita}
+\end{equation}
+L'ipotesi ergodica implica che, dato un tempo sufficientemente lungo, la traiettoria del sistema esplora l'intera regione dello spazio delle fasi accessibile (ad esempio, una superficie a energia costante nell'insieme microcanonico) in modo uniforme.
+
+Esistono sistemi in cui si ha la \textbf{rottura dell'ergodicità}. Questo accade quando il sistema, durante la sua evoluzione, rimane confinato in una porzione ristretta dello spazio delle fasi, senza poter accedere ad altre regioni. Esempi tipici sono:
+\begin{itemize}
+    \item \textbf{Vetri}: Sistemi che, raffreddati, rimangono "bloccati" in un minimo locale dell'energia, non riuscendo a raggiungere l'equilibrio termodinamico vero e proprio.
+    \item \textbf{Modello di Ising (sotto $T_c$)}: A bassa temperatura, il sistema ha due minimi di energia (magnetizzazione positiva e negativa). Una dinamica realistica potrebbe rimanere intrappolata in uno solo dei due minimi, non esplorando l'intero stato di equilibrio che prevede una simmetria tra i due.
+\end{itemize}
+
+\subsection*{Fluttuazioni e Legge dei Grandi Numeri}
+
+La ragione del successo della meccanica statistica risiede nel fatto che le fluttuazioni delle quantità macroscopiche attorno al loro valor medio sono estremamente piccole. Per dimostrarlo, si può considerare un sistema macroscopico $S$ come l'unione di $N$ sottosistemi macroscopici, con $N$ molto grande.
+
+L'ipotesi cruciale è che, per un sistema sufficientemente grande e lontano da criticità, questi sottosistemi possano essere considerati \textbf{statisticamente indipendenti}. L'indipendenza statistica implica che la densità di probabilità congiunta si fattorizza nel prodotto delle densità di probabilità individuali:
+\begin{equation}
+    \rho^{(12)}d{\mathbf{p}}^{(12)}d\mathbf{q}^{(12)}=\rho^{(1)}d{\mathbf{p}}^{(1)}d\mathbf{q}^{(1)}\rho^{(2)}d{\mathbf{p}}^{(2)}d\mathbf{q}^{(2)}
+    \label{eq:indip_stat}
+\end{equation}
+Di conseguenza, anche la media del prodotto di osservabili appartenenti a sottosistemi diversi si fattorizza.
+
+Consideriamo ora una grandezza estensiva $O$, che è la somma dei contributi $O_i$ di ogni sottosistema: $O = \sum_i O_i$. La fluttuazione è definita come lo scostamento dal valor medio: $\Delta O_i = O_i - \langle O_i \rangle$. La varianza, o fluttuazione quadratica media, di $O$ è:
+\begin{equation}
+    \langle(\Delta O)^{2}\rangle=\langle(\sum_{i}\Delta O_{i})^{2}\rangle=\sum_{i,j}\langle\Delta O_{i}\Delta O_{j}\rangle
+    \label{eq:varianza}
+\end{equation}
+A causa dell'indipendenza statistica, i termini incrociati ($i \neq j$) sono nulli, poiché $\langle\Delta O_i \Delta O_j\rangle = \langle\Delta O_i\rangle\langle\Delta O_j\rangle = 0$. Rimangono solo i termini diagonali:
+\begin{equation}
+    \langle(\Delta O)^{2}\rangle=\sum_{i}\langle(\Delta O_{i})^{2}\rangle
+    \label{eq:varianza_diag}
+\end{equation}
+Se i sottosistemi sono circa identici, $\langle(\Delta O_{i})^{2}\rangle$ è una costante, quindi la varianza totale è proporzionale a $N$: $\langle(\Delta O)^{2}\rangle \sim N$. D'altra parte, il valor medio di una quantità estensiva è anch'esso proporzionale a $N$: $\langle O \rangle \sim N$.
+
+La \textbf{fluttuazione relativa} è il rapporto tra la deviazione standard e la media, che indica l'ordine di grandezza delle fluttuazioni rispetto al valore stesso della grandezza.
+\begin{equation}
+    \frac{\sqrt{\langle(\Delta O)^{2}\rangle}}{\langle O\rangle} \sim \frac{\sqrt{N}}{N} = \frac{1}{\sqrt{N}}
+    \label{eq:fluttuazione_relativa}
+\end{equation}
+Dato che $N$ è dell'ordine di $10^{23}$, la fluttuazione relativa \eqref{eq:fluttuazione_relativa} è incredibilmente piccola ($\simeq 10^{-11.5}$), tendendo a zero nel limite termodinamico ($N \rightarrow \infty$). Questo è il motivo per cui le grandezze macroscopiche appaiono costanti e ben definite. Questa stabilità viene meno in prossimità di transizioni di fase del secondo ordine, dove le fluttuazioni divergono.
+
+\section{Potenziali Termodinamici}
+
+In termodinamica, i sistemi sono descritti da \textbf{potenziali termodinamici}. Questi sono:
+\begin{itemize}
+    \item differenziali esatti,
+    \item hanno le dimensioni di un'energia,
+    \item le loro derivate sono le variabili termodinamiche coniugate,
+    \item sono estensivi e additivi.
+\end{itemize}
+L'\textbf{energia interna} $U(S,V)$ è il potenziale le cui variabili naturali sono l'entropia $S$ e il volume $V$. Il suo differenziale è:
+\begin{equation}
+    dU=TdS-pdV
+    \label{eq:dU}
+\end{equation}
+Da cui si ottengono temperatura e pressione come in \eqref{eq:T_da_U} e \eqref{eq:p_da_U}.
+\begin{equation}
+    T=\left(\frac{\partial U}{\partial S}\right)\Big|_{V}
+    \label{eq:T_da_U}
+\end{equation}
+\begin{equation}
+    p=-\left(\frac{\partial U}{\partial V}\right)\Big|_{S}
+    \label{eq:p_da_U}
+\end{equation}
+L'\textbf{energia libera di Helmholtz} $F(T,V)$ si ottiene da $U$ tramite una trasformata di Legendre per cambiare la variabile $S$ con la sua coniugata $T$.
+\begin{equation}
+    F = U - TS
+    \label{eq:def_F}
+\end{equation}
+Il suo differenziale è:
+\begin{equation}
+    dF = dU - d(TS) = (TdS - pdV) - (TdS + SdT) = -SdT - pdV
+    \label{eq:dF}
+\end{equation}
+Da cui:
+\begin{equation}
+    -S=\left(\frac{\partial F}{\partial T}\right)\Big|_{V}
+    \label{eq:S_da_F}
+\end{equation}
+\begin{equation}
+    -p=\left(\frac{\partial F}{\partial V}\right)\Big|_{T}
+    \label{eq:p_da_F}
+\end{equation}
+Per un sistema a $T$ e $V$ costanti, la condizione di equilibrio corrisponde a un minimo dell'energia libera $F$.
+
+\section{Stabilità dell'Equilibrio Termodinamico}
+
+Consideriamo un sistema $S$ che può scambiare calore e lavoro con un bagno termico e barico $S_0$ (sorgente a $T_0$ e $P_0$). Se il sistema $S$ subisce una trasformazione spontanea, l'entropia totale dell'universo (sistema + bagno) deve aumentare.
+\begin{equation}
+    \Delta S_{TOT}=\Delta S+\Delta S_{0}>0
+\end{equation}
+La variazione di entropia del bagno è $\Delta S_0 = - \Delta Q / T_0$, dove $\Delta Q$ è il calore assorbito dal sistema. Dal primo principio, $\Delta Q = \Delta U + p_0 \Delta V$ (il lavoro è fatto contro la pressione esterna).
+Sostituendo si ottiene:
+\begin{equation}
+    0 < \Delta S_{TOT} = \Delta S - \frac{\Delta U + p_0 \Delta V}{T_0} = -\frac{1}{T_0}(\Delta U - T_0 \Delta S + p_0 \Delta V)
+\end{equation}
+Si definisce la funzione \textbf{disponibilità} $A$ come:
+\begin{equation}
+    \Delta A=\Delta U-T_{o}\Delta S+p_{o}\Delta V
+    \label{eq:disponibilita}
+\end{equation}
+La condizione per un processo spontaneo diventa quindi $\Delta A < 0$. L'equilibrio viene raggiunto quando $A$ è minima.
+
+La \textbf{stabilità} di un punto di equilibrio si verifica analizzando piccole fluttuazioni attorno a esso. Per verificare la condizione di minimo, si espande $\Delta U$ in serie di Taylor attorno allo stato di equilibrio (dove $T=T_0, p=p_0$):
+\begin{equation*}
+    \Delta U=\frac{\partial U}{\partial S}\Delta S+\frac{\partial U}{\partial V}\Delta V+\frac{1}{2}\left\{\frac{\partial^{2}U}{\partial S^{2}}(\Delta S)^{2}+2\frac{\partial^{2}U}{\partial S\partial V}\Delta S\Delta V+\frac{\partial^{2}U}{\partial V^{2}}(\Delta V)^{2}\right\}+\dots
+\end{equation*}
+Sostituendo questa espansione in $\Delta A$ (eq. \eqref{eq:disponibilita}), i termini del primo ordine si annullano. La stabilità dipende quindi dal segno del termine del secondo ordine:
+\begin{equation}
+    \Delta A=\frac{1}{2}\left\{\frac{\partial^{2}U}{\partial S^{2}}(\Delta S)^{2}+2\frac{\partial^{2}U}{\partial S\partial V}\Delta S\Delta V+\frac{\partial^{2}U}{\partial V^{2}}(\Delta V)^{2}\right\}
+    \label{eq:deltaA_secondo_ordine}
+\end{equation}
+Per la stabilità dell'equilibrio, la forma quadratica in \eqref{eq:deltaA_secondo_ordine} deve essere definita positiva. Ciò impone le seguenti condizioni sulle derivate seconde dell'energia interna, che rappresentano le condizioni di stabilità termodinamica:
+\begin{enumerate}
+    \item \textbf{Stabilità termica}:
+    \begin{equation}
+        \frac{\partial^{2}U}{\partial S^{2}} = \left(\frac{\partial T}{\partial S}\right)_V = \frac{T}{C_V} > 0 \implies C_V > 0
+    \end{equation}
+    La capacità termica a volume costante deve essere positiva.
+
+    \item \textbf{Stabilità meccanica}:
+    \begin{equation}
+        \frac{\partial^{2}U}{\partial V^{2}}\bigg|_{S} = -\left(\frac{\partial P}{\partial V}\right)_S = \frac{1}{V K_S} > 0 \implies K_S > 0
+    \end{equation}
+    La compressibilità adiabatica deve essere positiva.
+
+    \item \textbf{Condizione sul determinante Hessiano}:
+    \begin{equation}
+        \frac{\partial^{2}U}{\partial V^{2}}\bigg|_{S}\frac{\partial^{2}U}{\partial S^{2}}\bigg|_{V}-\left(\frac{\partial^{2}U}{\partial V\partial S}\right)^{2}>0
+    \end{equation}
+    Questa condizione, che lega le stabilità termica e meccanica, assicura che la forma quadratica sia complessivamente convessa.
+\end{enumerate}
+
+\section{Probabilità delle Fluttuazioni}
+
+Il principio di Boltzmann collega l'entropia $S$ di un macrostato al numero di microstati compatibili $\Gamma$. Questo può essere esteso per trovare la probabilità di una fluttuazione spontanea dall'equilibrio. La probabilità $P$ di una fluttuazione è proporzionale all'esponenziale della variazione di entropia totale che essa produce:
+\begin{equation}
+    P(\text{fluttuazione}) \propto e^{\Delta S_{TOT} / k_B}
+\end{equation}
+Poiché si è mostrato che $\Delta S_{TOT} = -\Delta A / T_0$, la probabilità può essere espressa in termini della disponibilità:
+\begin{equation}
+    P(\text{fluttuazione}) \propto e^{-\Delta A / (k_B T_0)}
+    \label{eq:prob_fluttuazione_A}
+\end{equation}
+Sostituendo l'espressione quadratica per $\Delta A$ (eq. \eqref{eq:deltaA_secondo_ordine}) valida per piccole fluttuazioni, si ottiene che la loro distribuzione di probabilità è una Gaussiana centrata sull'equilibrio, la cui larghezza è determinata dalle derivate seconde del potenziale termodinamico (ovvero da quantità come $C_V$ e $K_S$).
