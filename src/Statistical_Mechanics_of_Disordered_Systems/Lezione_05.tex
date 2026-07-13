@@ -44,40 +44,6 @@ Se $T<<1$ si ha:
 La lunghezza di correlazione $\xi$ diverge (indicando una transizione di fase) solo se $h=0$ e $T \to 0$. Se $h \neq 0$, la lunghezza di correlazione è sempre finita e dipende dal campo esterno. La presenza di un campo esterno pone un cut-off sulla correlazione: il sistema è meno correlato. 
 
 
-\subsection{Modello di Ising su una Striscia (2D)}
-
-Si può estendere il metodo della matrice di trasferimento a una striscia 2D di larghezza $L$, con condizioni periodiche al bordo. In questo caso, invece di imporre condizioni su un singolo spin, si condizionano intere colonne.
-
-\noindent Ogni colonna ha $2^L$ possibili configurazioni. La matrice di trasferimento $T$ è quindi una matrice $2^L \times 2^L$. Si definisce una "supervariabile" $\vec{\sigma} = (s_1, \dots, s_L)$ per ricondursi a un sistema 1D, le cui "variabili" (stati della colonna) hanno $L$ dimensioni.
-
-
-Nel limite $L \to \infty$, si ritrova la soluzione di Onsager per il 2D.
-
-
-\subsection{Modello con Campo Alternato (Staggered) DA RIVEDERE}
-
-Si considera un modello 1D con un campo magnetico alternato (staggered): $h_i = (-1)^i h$ 
-
-\noindent Questo è equivalente a un modello antiferromagnetico in un campo costante.
-
-\noindent La matrice di trasferimento è:
-
-\begin{equation}
-T = \begin{pmatrix}
-e^{-\beta J + \beta h} & e^{\beta J} \\
-e^{\beta J} & e^{-\beta J + \beta h}
-\end{pmatrix}
-\end{equation}
-
-Questo sistema presenta due punti singolari (in corrispondenza di $h = \pm 2J$) invece di uno solo come nel caso ferromagnetico con $h$ costante. Questo avviene perché in quei punti l'intensità del campo è esattamente uguale all'intensità dell'interazione tra spin.
-
-L'intera regione a $T=0$ con $-2J \le h \le 2J$ presenta correlazioni a lungo raggio. Se $|h| < 2J$, il campo non è abbastanza forte da contrastare le interazioni; mentre per $|h| > 2J$ gli spin si allineano lungo il campo (ovvero le correlazioni si annullano).
-
-A $T=0$, la probabilità di avere uno spin $S=\pm 1$ ha una forma a gradino in funzione di $h$, con il salto in corrispondenza di $h=0$:
-
-$P(+1)$ è 0 per $h < -2J$, 0.5 per $-2J < h < 2J$, e 1 per $h > 2J$.
-
-
 
 \newpage
 \section{Modello di Curie-Weiss}
