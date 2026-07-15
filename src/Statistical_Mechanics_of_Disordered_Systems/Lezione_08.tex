@@ -243,6 +243,26 @@ T_c(p) \le T_c^{homo}(p) = p \cdot T_c(p=1)
 \end{equation}
 \end{tcolorbox}
 
+\subsubsection*{Classificazione del Disordine: Modello Puro, Annealed e Quenched}
+
+Per comprendere l'origine di questo bound, è fondamentale distinguere come il disordine viene trattato statisticamente all'interno della funzione di partizione del sistema:
+\begin{itemize}
+    \item \textbf{Modello Puro ($p=1$):} Rappresenta il sistema ideale, perfettamente ordinato e traslazionalmente invariante. Tutti gli accoppiamenti sono presenti con la massima intensità ($J_{ij} = 1$). Le uniche fluttuazioni presenti nel sistema sono quelle di natura esclusivamente termica.
+    \item \textbf{Modello Quenched (Disordine Congelato):} Descrive il sistema fisico reale diluito. Le variabili di disordine $\{J_{ij}\}$ sono variabili casuali fisse nel tempo, i cui tempi di rilassamento sono infinitamente più lunghi di quelli degli spin. La media statistica viene effettuata sull'energia libera (ovvero sul logaritmo della funzione di partizione): $\overline{F} = -k_B T \overline{\ln Z(\{J_{ij}\})}$. Questo approccio preserva l'identità geometrica di ogni singola configurazione del disordine, mantenendo intatte le fluttuazioni spaziali.
+    \item \textbf{Modello Annealed (Omogeneizzato):} È un'approssimazione in cui si assume che le variabili di disordine $\{J_{ij}\}$ fluttuino liberamente sui medesimi tempi scala degli spin, adattandosi termodinamicamente ad essi. La media viene eseguita direttamente sulla funzione di partizione: $F_{ann} = -k_B T \ln \overline{Z(\{J_{ij}\})}$. Ciò equivale a trascurare ogni vincolo geometrico locale, riducendo microscopicamente il sistema a un modello omogeneo con accoppiamenti indeboliti ma uniformi, pari al valore medio $J_{homo} = p$.
+\end{itemize}
+
+\subsubsection*{Interpretazione Fisica e Geometrica del Bound}
+
+La disuguaglianza $T_c(p) \le T_c^{homo}(p)$ mostra che l'approssimazione omogenea (annealed) sovrastima sistematicamente la stabilità della fase ordinata. 
+
+Nel modello omogeneizzato, la rimozione delle fluttuazioni spaziali fa sì che il reticolo rimanga perfettamente connesso a qualsiasi valore di $p > 0$: le interazioni sono semplicemente indebolite uniformemente, consentendo la propagazione dell'ordine a lungo raggio fino a temperature positive, con una transizione lineare $T_c^{homo} \propto p$. 
+
+Nel modello reale (quenched), invece, la diluizione casuale introduce una forte disomogeneità spaziale. Si formano inevitabilmente regioni isolate ad alta densità di legami ("isole" ferromagnetiche) separate da ampi vuoti geometrici che agiscono come veri e propri colli di bottiglia termodinamici. Al diminuire di $p$, queste fluttuazioni geometriche frammentano il reticolo fino a raggiungere la soglia di percolazione $p_c$, al di sotto della quale la connettività globale svanisce e la temperatura critica crolla bruscamente a zero ($T_c = 0$ per $p < p_c$). 
+
+Le disomogeneità spaziali del disordine quenched offrono quindi alle fluttuazioni termiche delle "linee di frattura" preferenziali lungo cui rompere l'ordine globale, abbassando drasticamente la temperatura critica reale $T_c(p)$ rispetto al limite omogeneo. Dal punto di vista formale, la seconda disuguaglianza di Griffiths ($\partial \langle \sigma_i \sigma_j \rangle / \partial J_{kl} \ge 0$) garantisce matematicamente che qualsiasi fluttuazione locale che indebolisce o rimuove un legame non può che ridurre le correlazioni globali degli spin, traducendosi rigorosamente nel limite superiore espresso dal teorema.
+
+
 \subsection{Dimostrazione:}
 
 Vogliamo dimostrare che la magnetizzazione del modello disordinato è limitata superiormente da quella del modello omogeneo.
