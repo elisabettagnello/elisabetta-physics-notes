@@ -210,15 +210,21 @@ In questa fase non c'è ordine magnetico a lungo raggio ($m=0$), ma la dinamica 
 Per comprendere la natura matematica delle transizioni di fase, Lee e Yang proposero di analizzare gli zeri della funzione di partizione nel piano complesso.
 Consideriamo il modello di Ising con $N$ spin. L'Hamiltoniana generica è:
 \begin{equation}
-H(\vec{S}) = - J \sum S_i S_j - h \sum S_i
+H(\vec{S}) = - J \sum_{\langle i,j \rangle} S_i S_j - h \sum_i S_i
 \end{equation}
 
 \noindent La funzione di partizione è $\mathcal{Z} = \sum_{\vec{S}} e^{-\beta H(\vec{S})}$.
 Definendo le variabili $X = \exp(-2\beta J)$ e $z = \exp(-2\beta h)$ (\textbf{fugacità}), possiamo riscrivere il termine di campo:
 \begin{equation}
-e^{-\beta h S_i} = e^{\beta h} \begin{cases} 1 & \text{se } S_i = -1 \\ y & \text{se } S_i = +1 \end{cases}
+e^{\beta h S_i} = e^{\beta h} \cdot \begin{cases} z & \text{se } S_i = -1 \\ 1 & \text{se } S_i = +1 \end{cases}
 \end{equation}
-$\mathcal{Z}$ diventa un polinomio in $X$ di grado pari al numero di interazioni e in $z$ di grado $N$.
+
+\noindent Raggruppando le configurazioni in base al numero $n$ di spin orientati verso il basso ($S_i = -1$), l'intera funzione di partizione assume la forma esplicita:
+\begin{equation}
+\mathcal{Z}(X, z) = e^{\beta h N + \beta J N_B} \sum_{n=0}^N c_n(X) z^n
+\end{equation}
+
+\noindent dove $N_B$ è il numero totale di interazioni nel reticolo. I coefficienti $c_n(X)$ sono a loro volta polinomi in $X$ (con esponenti positivi) che tengono conto della configurazione spaziale dei legami. A meno del prefattore esponenziale, $\mathcal{Z}$ diventa quindi un puro polinomio nella variabile complessa $z$ di grado $N$.
 
 \hfill 
 
