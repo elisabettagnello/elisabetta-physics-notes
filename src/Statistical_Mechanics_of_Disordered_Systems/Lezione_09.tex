@@ -295,30 +295,31 @@ m_{\lambda} = \frac{1}{|\lambda|} \sum_{c} P_{\lambda,c} |c| m_c
 
 \noindent L'energia libera per spin del cluster $c$ è data da:
 \begin{equation}
-f_c = -\frac{1}{\beta |c|} \log \mathcal{Z}_c = \frac{\log \mathcal{Z}_c}{2\beta} - \frac{1}{\beta |c|} \sum_{a=1}^{|c|} \log(y - \zeta_a(c))
+f_c = -\frac{1}{\beta |c|} \log \mathcal{Z}_c = \frac{\log y}{2\beta} - \frac{1}{\beta |c|} \sum_{a=1}^{|c|} \log(y - \zeta_a(c))
 \end{equation}
 
-\noindent La magnetizzazione del singolo cluster $m_c$ si ottiene derivando l'energia libera rispetto al campo (o equivalentemente rispetto a $y$):
+\noindent La magnetizzazione del singolo cluster $m_c$ si ottiene derivando l'energia libera rispetto al campo (ricordando che $\frac{\partial}{\partial h} = -2\beta y \frac{\partial}{\partial y}$):
 \begin{equation}
-m_c = - \frac{\partial f_c}{\partial h} = -1 + \frac{2y}{|c|} \sum_{a=1}^{|c|} \frac{1}{y - \zeta_a(c)}
+m_c = - \frac{\partial f_c}{\partial h} = 1 - \frac{2y}{|c|} \sum_{a=1}^{|c|} \frac{1}{y - \zeta_a(c)}
 \end{equation}
 
 \noindent Sostituendo questa espressione nella formula della magnetizzazione totale $m_{\lambda}$:
-
 \begin{equation}
-m_{\lambda} = -p + \frac{2y}{|\lambda|} \sum_{c} P_{\lambda,c} \sum_{a=1}^{|c|} \frac{1}{y - \zeta_a(c)}
+m_{\lambda} = p - \frac{2y}{|\lambda|} \sum_{c} P_{\lambda,c} \sum_{a=1}^{|c|} \frac{1}{y - \zeta_a(c)}
 \end{equation}
 
-\noindent A questo punto, notiamo che cluster diversi possono avere zeri nella stessa posizione. Possiamo raggruppare i termini sommando sugli $N_A$ zeri \textit{distinti} possibili nel sistema. Definiamo un "peso" o densità spettrale degli zeri $\eta_a(\lambda)$:
+dove $p=\frac{1}{|\lambda|} \sum_{c} P_{\lambda,c} |c|$ è il numero medio di spin sul reticolo.
+
+\noindent A questo punto, notiamo che cluster diversi possono avere zeri nella stessa posizione. Possiamo raggruppare i termini sommando sugli $N_{\lambda}$ zeri \textit{distinti} possibili nel sistema. Definiamo un "peso" o densità spettrale degli zeri $\eta_a(\lambda)$:
 
 \begin{equation}
-m_{\lambda} = -p + \frac{2y}{|\lambda|} \sum_{a=1}^{N_A} \frac{\eta_a(\lambda)}{y - \zeta_a}
+m_{\lambda} = p - 2y \sum_{a=1}^{N_{\lambda}} \frac{\eta_a(\lambda)}{y - \zeta_a}
 \end{equation}
 
 \noindent dove il coefficiente $\eta_a(\lambda)$ raccoglie i contributi di tutti i cluster che possiedono uno zero in posizione $\zeta_a$, pesati dalla loro probabilità di occorrenza e dalla molteplicità $\mu_a(c)$ dello zero nel cluster:
 
 \begin{equation}
-\eta_a(\lambda) = \frac{1}{|\lambda|} \sum_{c \, :\, \zeta_a(c) = \zeta_a} \mu_a(c) P_{c,\lambda} > 0
+\eta_a(\lambda) = \frac{1}{|\lambda|} \sum_{c \, :\, \zeta_a(c) = \zeta_a} \mu_a(c) P_{\lambda,c} > 0
 \end{equation}
 
 \noindent Vale inoltre la regola di somma (poiché la somma delle probabilità deve essere normalizzata rispetto alla densità dei siti attivi):
@@ -334,15 +335,13 @@ L'espressione finale per $m_{\lambda}$ mostra che \textbf{la magnetizzazione è 
     \item I problemi sorgono quando gli zeri si avvicinano all'asse reale positivo ($y \to 1$).
 \end{itemize}
 
-\noindent Consideriamo un cluster molto grande e compatto, di taglia $|c| \approx bN$. Questo cluster avrà zeri molto vicini all'asse reale (gap $\sim 1/N$). Tuttavia, la probabilità $P_{c,\lambda}$ di trovare un tale cluster "puro" in un sistema diluito è esponenzialmente piccola rispetto alla sua taglia:
+\noindent Consideriamo un cluster molto grande e compatto, di taglia $|c| \approx b \cdot n$ (dove $n \gg 1$ è il numero di spin che lo compongono). Questo cluster avrà zeri molto vicini all'asse reale (gap $\sim 1/n$). Tuttavia, la probabilità $P_{\lambda,c}$ di trovare un tale cluster "puro" in un sistema diluito è esponenzialmente piccola rispetto alla sua taglia:
 
 \begin{equation}
-P_{c,\lambda} \propto p^{|c|} = p^{bN} = e^{-d N}  \quad \quad \text{con } d = b \log(1/p)
+P_{\lambda,c} \propto p^{|c|} = p^{bn} = e^{-d n}  \quad \quad \text{con } d = b \log(1/p)
 \end{equation}
 
-Di conseguenza, i poli che si avvicinano all'asse reale hanno un residuo $\eta_a$ che tende a zero esponenzialmente.
-Questo rende la funzione $C^\infty$ (liscia) sull'asse reale, ma \textbf{non analitica}. Queste sono le \textbf{Singolarità di Griffiths}: punti di non analiticità dovuti a configurazioni rare ma inevitabili nel limite termodinamico.
-
+\noindent Di conseguenza, i poli che si avvicinano all'asse reale hanno un residuo $\eta_a$ che tende a zero esponenzialmente. Questo rende la funzione $C^\infty$ (liscia) sull'asse reale, ma \textbf{non analitica}. Queste sono le \textbf{Singolarità di Griffiths}: punti di non analiticità dovuti a configurazioni rare ma inevitabili nel limite termodinamico.
 
 \subsection{Dinamica dei Sistemi Disordinati}
 L'effetto più evidente della Fase di Griffiths non è nella termodinamica statica, ma nella \textbf{dinamica}. Le regioni rare e dense (i cluster ferromagnetici locali) agiscono come trappole dinamiche, rallentando enormemente il rilassamento del sistema. Per studiare l'evoluzione temporale, introduciamo la \textbf{Dinamica di Glauber} (o equivalentemente un algoritmo Monte Carlo tipo Metropolis).
