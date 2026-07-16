@@ -329,19 +329,28 @@ p = \sum_a \eta_a(\lambda)
 
 \subsubsection*{Analisi della Singolarità}
 
-L'espressione finale per $m_{\lambda}$ mostra che \textbf{la magnetizzazione è una somma di poli nel piano complesso.}
+L'espressione finale per $m_{\lambda}$ mostra che \textbf{la magnetizzazione è una somma di poli nel piano complesso della fugacità.}
 \begin{itemize}
-    \item Se $|y| \neq 1$, la funzione è analitica (somma di termini regolari).
-    \item I problemi sorgono quando gli zeri si avvicinano all'asse reale positivo ($y \to 1$).
+    \item Se $|y| \neq 1$, i denominatori non si annullano e la funzione è analitica (somma di termini regolari).
+    \item I problemi sorgono per $y \to 1$ (limite di campo magnetico esterno nullo, $h \to 0$), dove gli zeri minacciano di far divergere la funzione.
 \end{itemize}
 
-\noindent Consideriamo un cluster molto grande e compatto, di taglia $|c| \approx b \cdot n$ (dove $n \gg 1$ è il numero di spin che lo compongono). Questo cluster avrà zeri molto vicini all'asse reale (gap $\sim 1/n$). Tuttavia, la probabilità $P_{\lambda,c}$ di trovare un tale cluster "puro" in un sistema diluito è esponenzialmente piccola rispetto alla sua taglia:
+\noindent La distanza (il gap) tra lo zero più vicino all'asse reale e il punto critico $y=1$ è inversamente proporzionale alla taglia del cluster. Consideriamo un'isola "pura" (ovvero priva di legami mancanti) molto grande e compatta, costituita da $n \gg 1$ spin: i suoi zeri disteranno dall'asse reale di un fattore $\sim 1/n$. Tuttavia, in un sistema diluito, la probabilità $P_{\lambda,c}$ di trovare una tale fluttuazione crolla in modo esponenziale al crescere della sua dimensione:
 
 \begin{equation}
 P_{\lambda,c} \propto p^{|c|} = p^{bn} = e^{-d n}  \quad \quad \text{con } d = b \log(1/p)
 \end{equation}
 
-\noindent Di conseguenza, i poli che si avvicinano all'asse reale hanno un residuo $\eta_a$ che tende a zero esponenzialmente. Questo rende la funzione $C^\infty$ (liscia) sull'asse reale, ma \textbf{non analitica}. Queste sono le \textbf{Singolarità di Griffiths}: punti di non analiticità dovuti a configurazioni rare ma inevitabili nel limite termodinamico.
+\noindent Nell'avvicinarsi a $h=0$, si innesca quindi una competizione matematica: da un lato il denominatore del polo tende a zero ($\sim 1/n$, spingendo per una divergenza algebrica), dall'altro il numeratore (il residuo $\eta_a$, proporzionale a $P_{\lambda,c}$) tende a zero in modo esponenzialmente veloce ($e^{-dn}$). 
+
+\noindent Poiché lo smorzamento esponenziale domina su qualsiasi divergenza, il contributo di queste fluttuazioni viene violentemente soppresso. La magnetizzazione non diverge e tutte le sue derivate rimangono finite, rendendo la funzione $C^\infty$ (completamente liscia) sull'asse reale. Ciononostante, la presenza di infiniti zeri spinti arbitrariamente vicini all'asse reale distrugge il raggio di convergenza della serie di Taylor. La funzione risulta perciò \textbf{liscia ma non analitica}.
+
+
+\noindent Queste deboli non-analiticità prendono il nome di \textbf{Singolarità di Griffiths}. Nel concreto, esse rappresentano l'impronta termodinamica di configurazioni spaziali rare ma statisticamente inevitabili nel limite termodinamico. 
+
+Nella \textit{Fase di Griffiths} il reticolo globale è termicamente disordinato (paramagnetico). Tuttavia, queste rare isole giganti si trovano localmente al di sotto della loro temperatura critica. Pur essendo troppo rare e disconnesse per innescare un ordine a lungo raggio (motivo per cui la funzione resta $C^\infty$ e non c'è una vera transizione di fase), esse si comportano localmente come enormi momenti magnetici dotati di un'inerzia colossale. 
+
+Il ruolo delle singolarità di Griffiths è proprio quello di governare la termodinamica e la dinamica in questa regione del diagramma di fase: esse dominano la suscettività a bassi campi e causano un rallentamento anomalo della dinamica di rilassamento del sistema, "ricordando" matematicamente l'esistenza della fase ordinata del modello puro.
 
 \subsection{Dinamica dei Sistemi Disordinati}
 L'effetto più evidente della Fase di Griffiths non è nella termodinamica statica, ma nella \textbf{dinamica}. Le regioni rare e dense (i cluster ferromagnetici locali) agiscono come trappole dinamiche, rallentando enormemente il rilassamento del sistema. Per studiare l'evoluzione temporale, introduciamo la \textbf{Dinamica di Glauber} (o equivalentemente un algoritmo Monte Carlo tipo Metropolis).
