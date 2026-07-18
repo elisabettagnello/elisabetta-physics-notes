@@ -1,0 +1,290 @@
+\chapter{Lezione 11} \label{chap:lezione_11}
+\begin{flushright}
+\textit{Data: 29/10/2025}
+\end{flushright}
+
+\section{Coarsening e Aging}
+Iniziamo tracciando una netta distinzione tra due concetti spesso confusi: \textbf{coarsening} e \textbf{aging}. 
+Il termine \textit{coarsening} (o crescita dei domini) si riferisce al processo in cui un sistema ordinato (come un ferromagnete puro) parte da una configurazione disordinata e, abbassando la temperatura, crea domini magnetici sempre più grandi e "morbidi". 
+Nei sistemi ordinati, questa dinamica è tipicamente molto veloce, tanto che sperimentalmente il sistema raggiunge l'equilibrio termodinamico quasi istantaneamente e non si ha il tempo di osservare la transizione su scale umane.
+
+L'\textit{aging} (invecchiamento), invece, indica che le proprietà fisiche del sistema dipendono dal tempo trascorso (la sua "età") dacché è stato preparato. Questo termine è storicamente riservato ai \textbf{sistemi disordinati} (come i vetri di spin), in cui i tempi di rilassamento sono talmente lunghi da superare la scala temporale dell'osservatore. In questi sistemi, la lunghezza di correlazione cresce in modo lentissimo, ad esempio come $t^{1/10}$ (anziché $t^{1/2}$), e il sistema non termalizza praticamente mai.
+
+\section{Modello $O(N)$ e Dinamica di Rilassamento}
+Per studiare analiticamente il limite al di sotto della temperatura critica ($T < T_c$), in cui vi è rottura spontanea di simmetria, possiamo introdurre il \textbf{Modello $O(N)$}. In questo modello, le variabili di spin $\vec{s}_i$ sono vettori a $N$ componenti: $\vec{s}_i \subset \mathbb{R}^N$ con il vincolo $|\vec{s}_i|^2 = N$.
+L'Hamiltoniana ferromagnetica è:
+\begin{equation}
+    H = - \sum_{\langle i, j \rangle} \vec{s}_i \cdot \vec{s}_j
+\end{equation}
+Passando al limite del continuo, sostituiamo le variabili discrete $\vec{s}_i$ con un campo vettoriale continuo $\vec{\phi}(\vec{x}, t)$. Per favorire la rottura di simmetria ($T < T_c$) passiamo da un vincolo \textit{hard} (imposto a forza) a un vincolo \textit{soft} tramite un potenziale quartico:
+\begin{equation}
+    V(\vec{\phi}) = \frac{1}{4N} \left( N - |\vec{\phi}|^2 \right)^2
+\end{equation}
+Questo potenziale ha una forma a "sombrero" in $N$ dimensioni, con i minimi per $|\vec{\phi}|^2 = N$.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[>=latex, scale=1.2]
+        \draw[->, thick] (-3,0) -- (3,0) node[right] {$\phi$};
+        \draw[->, thick] (0,-1.5) -- (0,3) node[above] {$V(\phi)$};
+        
+        % Sezione 1D del potenziale a sombrero: (x^2 - 1)^2 - 1
+        \draw[domain=-1.7:1.7, samples=100, ultra thick, colorE] plot (\x, {(\x*\x - 1)*(\x*\x - 1) - 1});
+        
+        \node[below] at (1, -1) {$\sqrt{N}$};
+        \node[below] at (-1, -1) {$-\sqrt{N}$};
+        
+        \draw[dashed, gray] (1,0) -- (1,-1);
+        \draw[dashed, gray] (-1,0) -- (-1,-1);
+    \end{tikzpicture}
+    \caption{Sezione monodimensionale del potenziale a "sombrero". Il vincolo soft favorisce le configurazioni che risiedono nei minimi degeneri $|\vec{\phi}|^2 = N$.}
+\end{figure}
+
+L'evoluzione temporale del sistema è descritta da un'equazione di Langevin-Ginzburg non lineare:
+\begin{equation}
+    \frac{\partial \vec{\phi}}{\partial t} = \nabla^2 \vec{\phi} + \vec{\phi} - \left( \frac{1}{N} |\vec{\phi}|^2 \right) \vec{\phi}
+\end{equation}
+In questa equazione distinguiamo:
+\begin{itemize}
+    \item $\nabla^2 \vec{\phi}$: Termine diffusivo, tende a omogeneizzare il campo.
+    \item $+ \vec{\phi}$: Termine che destabilizza il paramagnete e favorisce l'allontanamento dallo zero.
+    \item $- ( |\vec{\phi}|^2 / N ) \vec{\phi}$: Termine non lineare che limita la crescita esplosiva, confinando il sistema attorno al minimo del potenziale.
+\end{itemize}
+
+Nel limite in cui il numero di componenti diverga ($N \to \infty$), il termine $|\vec{\phi}|^2/N$ si concentra fortemente sul suo valore atteso grazie alla legge dei grandi numeri:
+\begin{equation}
+    \frac{1}{N} \sum_{a=1}^N \phi_a^2 \xrightarrow{N \to \infty} \langle |\vec{\phi}|^2 \rangle_t
+\end{equation}
+L'equazione diventa così formalmente lineare, ma con un parametro autoconsistente dipendente dal tempo, permettendone la soluzione esatta in ogni dimensione $d$.
+
+\subsection{Funzioni di Correlazione e Lunghezza Dinamica}
+Sotto questa approssimazione, la funzione di correlazione a due tempi e nello spazio $G(r, t, t') = \langle \vec{\phi}(\vec{x}, t) \vec{\phi}(\vec{x}+\vec{r}, t') \rangle$ risulta:
+\begin{equation}
+    G(r, t, t') \propto \left( \frac{4tt'}{(t+t')^2} \right)^{d/4} \exp\left\{ - \frac{r^2}{4(t+t')} \right\}
+\end{equation}
+
+\begin{itemize}
+    \item  Per analizzare le proprietà spaziali, poniamo $t = t'$:
+\begin{equation}
+    G(r, t) \propto \exp\left\{ - \frac{r^2}{8t} \right\} = \exp\left\{ - \frac{1}{2} \left( \frac{r}{L(t)} \right)^2 \right\}
+\end{equation}
+Questo definisce chiaramente una lunghezza di correlazione (o scala dei domini) che cresce in modo puramente diffusivo:
+\begin{equation}
+    L(t) = 2 \sqrt{2t} \propto t^{1/2} \implies z = 2
+\end{equation}
+Notiamo che la dipendenza spaziale è gaussiana. Vicino all'origine ($r=0$) la funzione parte orizzontalmente (con derivata nulla), in netto contrasto con la legge di Porod tipica del modello di Ising puro (dove la rottura netta ai bordi di dominio genera una pendenza iniziale). Questo è l'effetto dell'aver reso le pareti del dominio "sparpagliate" tramite il vincolo soft.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[>=latex, scale=1.2]
+        \draw[->, ultra thick] (0,0) -- (6,0) node[right] {$r$};
+        \draw[->, ultra thick] (0,0) -- (0,4) node[above] {$G(r, t)$};
+        \draw[thick, colorA] (0, 3.5) .. controls (1.5, 3.5) and (3, 2.5) .. (4.5, 0.5) .. controls (5, 0.2) and (5.5, 0.2) .. (5.8, 0.2);
+    \end{tikzpicture}
+    \caption{Correlazione spaziale gaussiana a tempo fissato. Si nota l'andamento iniziale a pendenza nulla dovuto al vincolo soft.}
+\end{figure}
+
+\item Per analizzare il rilassamento temporale, guardiamo l'autocorrelazione nello stesso punto ($r=0$). Selezioniamo un tempo di attesa $t'$ fissato e guardiamo a tempi successivi $t \gg t'$:
+\begin{equation}
+    C(t, t') \propto \left( \frac{4tt'}{(t+t')^2} \right)^{d/4} \xrightarrow{t \gg t'} \left( \frac{t}{t'} \right)^{-d/4}
+\end{equation}
+Il decadimento segue una legge a potenza il cui tempo di scala è controllato da $t'$ stesso. Se il sistema ha aspettato tanto (età $t'$ grande), decadrà sempre più lentamente. Questa è l'essenza dell'aging.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[>=latex, scale=1.2]
+        \draw[->, ultra thick] (0,0) -- (8,0) node[right] {$t$};
+        \draw[->, ultra thick] (0,0) -- (0,4) node[left] {$C(t, t')$};
+        
+        \draw[thick, colorA] (0.5, 3.5) .. controls (1.5, 3.5) and (2.5, 2) .. (3.5, 0.5) node[midway, left=0.5cm] {$t'$ piccolo};
+        \draw[thick, colorF] (0.5, 3.5) -- (2.5, 3.5) .. controls (4, 3.5) and (5, 2) .. (6, 0.5) node[midway, right=0.3cm] {$t'$ grande};
+        \draw[thick, colorC] (0.5, 3.5) -- (1.5, 3.5) .. controls (3, 3.5) and (4, 2) .. (5, 0.5);
+    \end{tikzpicture}
+    \caption{Comportamento di aging: al crescere dell'età $t'$, il sistema rilassa progressivamente più tardi nel tempo.}
+\end{figure}
+
+
+
+\begin{tcolorbox}[colback=colorC!10, colframe=colorC!80!black, title=\textbf{Richiami di Teoria dello Scaling}]
+La fisica dell'aging può essere riscritta manipolando la funzione di correlazione in forma di scaling. Data $L(t) \propto t^{1/z}$ e sapendo che una quantità cresce come una funzione $f(x)$, possiamo riscrivere:
+\begin{equation}
+    L(t) = t^{1/z} f\left(\frac{t}{\xi^z}\right) = t^{1/z} g\left(\frac{\xi^z}{t}\right) = L h\left(\frac{L}{t^{1/z}}\right)
+\end{equation}
+Sapendo derivare i regimi asintotici per argomento piccolo e argomento grande ($x \ll 1$ e $x \gg 1$), determiniamo analiticamente quando domina la variabile tempo rispetto alla variabile spaziale fissa e viceversa.
+\end{tcolorbox}
+In base alle definizioni, gli andamenti asintotici di queste funzioni sono esplicitati come:
+\begin{equation}
+    f(x) = \begin{cases} 
+    x & , x \ll 1 \\ 
+    \text{cost.} & , x \gg 1 
+    \end{cases} 
+    \qquad \qquad
+    g(x) = \begin{cases} 
+    x^{1/z} & , x \ll 1 \\ 
+    \text{cost.} & , x \gg 1 
+    \end{cases}
+\end{equation}
+\begin{equation}
+    h(x) = \frac{f(x)}{x}
+\end{equation}
+
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[>=latex, scale=1.2]
+        % Assi
+        \draw[->, ultra thick] (0,0) -- (5,0) node[right] {$x$};
+        \draw[->, ultra thick] (0,0) -- (0,3) node[above] {$f(x)$};
+        
+        % Curva
+        \draw[ultra thick, colorA] (0,0) .. controls (1.5, 1.5) and (2.5, 2.5) .. (3.5, 2.5) -- (4.5, 2.5);
+        
+        % Linee guida e label
+        \draw[dashed, gray] (0, 2.5) -- (3.5, 2.5);
+        \node[left] at (0, 2.5) {$\text{cost.}$};
+    \end{tikzpicture}
+    \caption{Andamento asintotico della funzione di scaling $f(x)$. Si nota il comportamento lineare per $x \ll 1$ e la saturazione a un valore costante per $x \gg 1$.}
+\end{figure}
+
+\newpage
+\section{Dinamica nel Ferromagnete Diluito}
+Abbandoniamo il sistema puro e torniamo al nostro modello di riferimento: il \textbf{Modello di Ising diluito}. Tracciamo prima il diagramma di fase:
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=1.2, >=latex]
+        % Assi
+        \draw[->, thick] (0,0) -- (6,0) node[right] {$p$};
+        \draw[->, thick] (0,0) -- (0,6) node[above] {$T$};
+        
+        % Linee guida
+        \draw[dashed, gray] (0,5) -- (5,5);
+        \node[right, colorF] at (5,5) {$T_c(p=1)$};
+        \draw[dashed, gray] (5,0) -- (5,5);
+        \node[below] at (5,0) {$1$};
+        
+        \node[below] at (2.5,0) {$p_c$};
+        \draw[thick] (2.5,-0.1) -- (2.5,0.1);
+        
+        % Curva Tc
+        \draw[ultra thick, colorE] (2.5,0) .. controls (2.5, 2.5) and (3.5, 3.5) .. (5,5);
+        
+        % Linea T(p) = p*Tc
+        \draw[dashed, line width=2pt, black] (0,0) -- (5,5);
+        \node[sloped, above, black] at (1.3, 2.5) {$T(p) = p \cdot T_c(1)$};
+        
+        % Assi colorati in basso
+        \draw[line width=4pt, colorG] (0,0) -- (2.5,0) node[midway, below=0.2cm] {\textbf{NON perc.}};
+        \draw[line width=4pt, colorC] (2.5,0) -- (5,0) node[midway, below=0.2cm] {\textbf{perc.}};
+        
+        % Labels
+        \node[colorA, font=\Large\bfseries] at (1.8, 1) {P};
+        \node[colorA, font=\Large\bfseries] at (1.5, 3.5) {P};
+        \node[colorE, font=\Large\bfseries] at (4, 1.5) {F};
+        
+    \end{tikzpicture}
+    \caption{Diagramma di Fase del ferromagnete diluito ($h=0$). Sopra $T_c(p=1)$ si estende la fase paramagnetica classica. Sotto $T_c(p=1)$, delimitata dalla curva critica e dalla zona di percolazione, emerge la Fase di Griffiths.}
+\end{figure}
+
+\noindent Per semplificare l'analisi, ci posizioniamo a sinistra della soglia di percolazione ($p < p_c$), dove il sistema è interamente formato da cluster disconnessi e finiti. La dinamica totale del sistema sarà la somma delle dinamiche \textit{indipendenti} dei singoli cluster.
+Ogni cluster è descritto da due parametri principali: la taglia $L$ e la densità locale $p'$. Ogni cluster rilassa indipendentemente con una costante di tempo caratteristica $\tau(L,p')$. Sotto queste assunzioni, il rilassamento del sistema è:
+\begin{equation}
+    C(t) = \sum_{L, p'} P(L, p') \exp\left( - \frac{t}{\tau(L, p')} \right)
+\end{equation}
+Essendo cluster finiti senza rottura di ergodicità termodinamica intrinseca, a tempi asintotici decadono in forma esponenziale in base a una catena di Markov su spazio finito di stati. Tuttavia, vedremo che la somma pesata di esponenziali genera andamenti macroscopici che \textit{non} sono esponenziali semplici.
+
+\subsection{Fase Paramagnetica ($T > T_c(p=1)$)}
+A temperature molto alte (sopra il $T_c$ del sistema puro), ci aspettiamo che i cluster più lenti a rilassare siano quelli completamente densi ($p' \simeq 1$), seppur molto rari. Fissando perciò $p' = 1$, la probabilità di trovare una regione di raggio $L$ senza alcun buco è esponenzialmente soppressa:
+\begin{equation}
+    P(L, 1) = p^{L^d} = e^{-c L^d} \qquad \text{dove} \quad c = \log(1/p)
+\end{equation}
+Il tempo di rilassamento per questi cluster pseudo-puri è governato dalla lunghezza di correlazione dinamica del sistema puro $\xi$, che non diverge:
+\begin{equation}
+    \tau(L, 1) = \xi^z f\left( \frac{L}{\xi} \right) = 
+    \begin{cases}
+        L^z & \text{se } \xi \gg L \\
+        \xi^z & \text{se } \xi \ll L
+    \end{cases}
+\end{equation}
+
+
+
+
+Per studiare il comportamento asintotico di $C(t)$, sostituiamo nell'integrale (sommatoria):
+
+\begin{equation}
+    C(t) = \sum_L \exp\left( - c L^d - \frac{t}{\tau(L,1)} \right) = \sum_L \exp\left( - c L^d - t \xi^{-z} f\left( \frac{L}{\xi} \right) \right)
+\end{equation}
+Questa espressione è dominata da un singolo valore di picco, calcolabile minimizzando l'esponente rispetto a $L$ (ponendo la derivata a zero):
+\begin{equation}
+    - c d L^{d-1} - t \xi^{-z-1} f'\left(\frac{L}{\xi}\right) = 0
+\end{equation}
+Riorganizzando i termini e isolando la parte dipendente da $L/\xi$:
+\begin{equation}
+    t \frac{\xi^{-z-1}}{L^{d-1}} f'\left(\frac{L}{\xi}\right) = \text{cost.} \implies t \xi^{-z-1+1-d} f'\left(\frac{L}{\xi}\right) = \text{cost.}
+\end{equation}
+Invertendo questa espressione, otteniamo per il cluster dominante $L^*$ una funzione in forma di scaling dipendente da $t/\xi^{z+d}$:
+\begin{equation}
+    L^* = \xi f\left( \frac{t}{\xi^{z+d}} \right) = 
+    \begin{cases}
+        t^{\frac{1}{z+d}} & , t \ll \xi^{z+d} \\
+        \xi & , t \gg \xi^{z+d}
+    \end{cases}
+\end{equation}
+Inserendo l'ottimo di $L$ di nuovo nell'equazione, otteniamo i due regimi per il logaritmo della correlazione:
+\begin{equation}
+    - \log C(t) \propto
+    \begin{cases}
+        t^{\frac{d}{d+z}} & , t \ll \xi^{z+d} \\
+        \frac{t}{\xi^z} & , t \gg \xi^{z+d}
+    \end{cases}
+\end{equation}
+In fase paramagnetica, anche un sistema disordinato decade esponenzialmente per $t \gg \xi^{z+d}$. Tuttavia, questo regime è visibile solo a tempi enormi, quando $C(t)$ è già diventata minuscola e dominata dal rumore numerico.
+Il regime che domina l'osservazione a tempi intermedi è il primo, dove la correlazione decade secondo una legge \textbf{Stretched Exponential} (esponenziale allungato), tipica nei sistemi disordinati:
+\begin{equation}
+    C(t) \propto \exp\left( - a t^b \right) \qquad \text{con } b = \frac{d}{d+z} < 1
+\end{equation}
+Se ci troviamo esattamente alla criticità del sistema puro, $T = T_c(p=1)$, si ha sempre un decadimento stretched che obbedisce alla forma:
+\begin{equation}
+    - \log C(t) = t^{\frac{d}{d+z}} f\left( \frac{t}{\xi^{d+z}} \right)
+\end{equation}
+
+
+\subsection{Fase di Griffiths ($T < T_c(p=1)$)}
+Mettiamoci ora al di sotto della temperatura critica del sistema puro. Gli unici cluster che dominano la fisica a tempi lunghi sono ancora quelli densi ($p' \simeq 1$), ma questa volta hanno rotto spontaneamente la simmetria. 
+Rilassare una configurazione ordinata costa uno sforzo proporzionale all'area della barriera energetica da superare (tensione superficiale $\sigma$). Seguiamo quindi una legge di attivazione termica tipo Arrhenius:
+\begin{equation}
+    \tau(L, 1) \sim \tau_0 \exp\left( \sigma L^{d-1} \right)
+\end{equation}
+dove $\tau_0$ è il tempo microscopico e $\sigma$ la tensione superficiale. Avvicinandosi alla temperatura critica del sistema puro, le due quantità scalano come:
+\begin{equation}
+    T \to T_c(p=1) : \quad \sigma \sim \xi^{-(d-1)} \qquad \tau_0 \sim \xi^z
+\end{equation}
+
+Andiamo a inserire il nuovo tempo di rilassamento $\tau$ nella funzione $C(t)$:
+\begin{equation}
+    C(t) = \sum_L \exp\left( - c L^d - \frac{t}{\tau_0} \exp\left( - \sigma L^{d-1} \right) \right)
+\end{equation}
+Ottimizzando l'esponente rispetto a $L$ (derivata uguale a zero) si giunge all'equazione:
+\begin{equation}
+    - c d L^{d-1} + \frac{t}{\tau_0} e^{-\sigma L^{d-1}} \sigma (d-1) L^{d-2} = 0
+\end{equation}
+Applicando il logaritmo per isolare l'esponente $\sigma L^{d-1}$, si ottiene:
+\begin{equation}
+    \sigma L^{d-1} = \log\left( \frac{(d-1)\sigma t}{c d \tau_0} \right) - \log L
+\end{equation}
+In prima approssimazione, ignorando il termine debole $\log L$ rispetto alla potenza, possiamo risolvere per $L$:
+\begin{equation}
+    L = \left( \frac{1}{\sigma} \log\left( \frac{(d-1)\sigma t}{c \tau_0} \right) \right)^{\frac{1}{d-1}} \propto \log(t)^{\frac{1}{d-1}}
+\end{equation}
+La taglia del cluster che sta dominando il rilassamento cresce con il tempo a velocità enormemente ridotta come potenza del logaritmo. Sostituendo questo valore di $L$ nell'espressione dell'esponente originario, ricaviamo il comportamento finale della funzione di correlazione in Fase di Griffiths:
+\begin{equation}
+    - \log C(t) \propto \log(t)^{\frac{d}{d-1}}
+\end{equation}
+
+Infine, calcolando il limite per l'avvicinamento al punto critico da sotto, la funzione assume un'espressione di scaling completa, mostrando che la dipendenza spaziale e temporale diverge ma la forma di scaling rimane invariata:
+\begin{equation}
+    T \to T_c^-(p=1) : \quad - \log C(t) = \xi^d \left[ \log\left( \frac{t}{\xi^{d+z}} \right) \right]^{\frac{d}{d-1}}
+\end{equation}
+
