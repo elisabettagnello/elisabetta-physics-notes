@@ -1102,8 +1102,92 @@ Lo spettro globale in funzione dell'energia del fotone $E=h\nu$ presenta due reg
     \item \textbf{Soglia interbanda ($E\ge E_g$):} si attiva l'assorbimento elettronico. Per gap \textbf{diretta} $\alpha$ sale come la DOS congiunta: $\bm{\alpha(E)\propto\sqrt{E-E_g}}$. Per gap \textbf{indiretta} occorre l'assistenza di un fonone e la soglia è più debole: $\alpha(E)\propto(E-E_g\pm\hbr\omega_{fon})^2$.
 \end{enumerate}
 
+\newpage
+\ricetta{Regole di selezione per l'assorbimento infrarosso (quale modo, e se esiste)}{
+\textbf{(1) Solo i rami OTTICI sono attivi.} I modi acustici a $q\approx0$ traslano
+rigidamente la cella senza generare momento di dipolo oscillante: non assorbono mai.
+\[ \bm{E_{assorbita} = \hbr\,\omega_{opt}(\Gamma)} \]
+\textbf{(2) Serve un dipole moment: atomi/ioni DIVERSI.} L'assorbimento IR esiste solo se
+i due atomi della base hanno \textbf{nuvole elettroniche diverse} (cariche opposte, cristallo
+polare: NaCl, CsCl, GaAs, Cu--O\dots).
+\attenzione{\textbf{Caso isotopi:} se la base è formata da due \emph{isotopi} dello stesso
+elemento (es.\ $^7$Be e $^{10}$Be), le masse sono diverse (quindi \emph{esistono} rami ottici
+e la dispersione si sdoppia) ma le nuvole elettroniche sono \textbf{identiche}: nella
+vibrazione \textbf{non si genera momento di dipolo} e \textbf{NON si osserva alcun
+assorbimento IR}, né sugli acustici né alla frequenza ottica $\omega_0$. È una domanda
+qualitativa ricorrente: la risposta è ``nessun assorbimento''.}
+\textbf{(3) Quale ramo ottico: lo decide la POLARIZZAZIONE $\mathbf{E}$, non $\mathbf{q}$.}
+Il fotone ha $q\approx0$, quindi si va sempre al centro zona; ma il campo elettrico
+trascina gli ioni lungo la propria direzione:
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \item $\mathbf{E}\parallel$ direzione di propagazione della catena/onda $\Rightarrow$ modo
+  \textbf{LO} (longitudinale ottico).
+  \item $\mathbf{E}\perp$ direzione della catena $\Rightarrow$ modo \textbf{TO}
+  (trasverso ottico).
+\end{itemize}
+\textit{Caso tipico d'esame:} radiazione con $\mathbf{q}$ \emph{ortogonale} al piano del
+reticolo e $\mathbf{E}$ nel piano lungo $(1,1)$, con catene biatomiche lungo le diagonali:
+$\mathbf{E}$ è nel piano ma la propagazione è fuori piano $\Rightarrow$ si eccita il
+\textbf{modo trasverso ottico TO a $K=0$}, alla frequenza
+$\omega_{ott}=\sqrt{2C\left(\frac1{M_1}+\frac1{M_2}\right)}$.
+Se i modi L e T hanno la stessa costante elastica $C$ (ipotesi quasi sempre dichiarata dal
+testo), LO e TO sono degeneri e la distinzione non cambia il numero.}
+
+\vspace{0.3cm}
+\attenzione{\textbf{$\omega_D$ dalla normalizzazione della DOS: contare CELLE o ATOMI?}
+Esistono due convenzioni, entrambe usate nei temi d'esame, e il testo \textbf{ti dice
+sempre quale}: leggi con attenzione la definizione di $N$ che ti forniscono.
+\begin{itemize}
+  \setlength{\itemsep}{2pt}
+  \item \textbf{Convenzione ``solo acustici'' (standard, §6.1).} La sfera/cerchio di Debye
+  contiene un numero di stati pari al numero di \textbf{celle primitive}:
+  $k_D=(6\pi^2n_{ret})^{1/3}$ in 3D, $k_D=2\sqrt\pi/a$ in 2D quadrato, $k_D=\pi/a$ in 1D.
+  Con base di 2 atomi \textbf{non} si moltiplica per 2 (i modi ottici sono trattati a parte
+  con Einstein).
+  \item \textbf{Convenzione ``tutti i modi'' (Debye esteso).} Se il testo scrive
+  esplicitamente $\displaystyle\int_0^{\omega_D}D(\omega)\dd\omega = N$ e precisa che
+  \emph{``$N$ è il numero totale di ATOMI del campione''}, allora tutti i $3p$ (o $d_{mov}\,p$)
+  rami vengono schiacciati nel modello di Debye e la normalizzazione va fatta con
+  $N = p\,N_{celle}$.
+\end{itemize}
+\textit{Esempio (2D quadrato, base di 2 atomi, $D(\omega)=\frac{L^2}{2\pi}\frac{\omega}{v_s^2}$,
+$N=2N_{celle}=2L^2/a^2$):}
+\[ \frac{1}{2\pi v_s^2}\frac{\omega_D^2}{2}=\frac{2}{a^2}
+   \qquad\Longrightarrow\qquad \bm{\omega_D = \sqrt{2\pi}\,\frac{2v_s}{a}} \]
+Con la convenzione ``solo acustici'' avresti ottenuto $\omega_D=v_sk_D=2\sqrt\pi v_s/a$:
+un fattore $\sqrt2$ di differenza. \textbf{Non sono errori: sono ipotesi diverse}, dichiara
+sempre quale stai usando.}
+
+\vspace{0.3cm}
+\subsubsection*{Calore specifico per unità di MASSA}
+Alcuni esercizi (metalli: Na, Be\dots) chiedono la \textbf{capacità termica per unità di
+massa} $[\text{J}/(\text{kg}\cdot\text{K})]$, non per unità di volume. Basta dividere per la
+densità di massa $\rho$, ovvero contare gli atomi per unità di massa:
+\[ \bm{c^{(massa)} = \frac{c_V^{(volume)}}{\rho} = \frac{C}{M_{tot}}} \]
+\noindent In particolare, nel limite classico di \textbf{Dulong--Petit} con un atomo per
+punto reticolare:
+\[ \bm{c^{(massa)}_{DP} = 3\frac{N}{M_{tot}}\kB = 3\frac{N/V}{M_{tot}/V}\kB
+   = 3\,\frac{n_{at}}{\rho}\,\kB = \frac{3\kB}{M_{atomo}}} \]
+dove $M_{atomo}=\rho/n_{at}$ è la massa del singolo atomo (utile anche come modo per
+\emph{ricavare} $M_{atomo}$, e da lì la massa atomica in u.m.a.).
+
+\ricetta{Energia interna data come $u(T)=AT^2+BT^4$ (metalli, per unità di massa)}{
+\textbf{(1) Deriva:} $\ \bm{c_v(T)=\dfrac{\dd u}{\dd T}=2AT+4BT^3}$.
+\textit{(Attenzione: i coefficienti di $c_v$ NON sono $A$ e $B$ ma $2A$ e $4B$!)}\\
+\textbf{(2) Sistema:} imponendo i due valori misurati a $T_1$ e $T_2$ si ottengono due
+equazioni lineari in $A,B$. Es.\ con $T_1=1$ K, $T_2=2$ K:
+$\ c_v(1)=2A+4B$, $\ c_v(2)=4A+32B$.\\
+\textbf{(3) Origine fisica dei due termini} (domanda sempre presente):
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \item il termine $AT^2$ in $u$ (cioè $\propto T$ in $c_v$) è l'\textbf{energia cinetica
+  degli elettroni di conduzione} (gas di Fermi degenere);
+  \item il termine $BT^4$ in $u$ (cioè $\propto T^3$ in $c_v$) è l'\textbf{energia
+  vibrazionale del reticolo} (fononi acustici, legge di Debye $T^3$).
+\end{itemize}
+\textbf{(4) Unità:} se $u$ è per unità di massa, $A$ è in J/(kg$\cdot$K$^2$) e $B$ in
+J/(kg$\cdot$K$^4$); per passare a per-volume moltiplica per $\rho$.}
+
 
 \newpage
-\thispagestyle{empty} \mbox{}
-\newpage
-
