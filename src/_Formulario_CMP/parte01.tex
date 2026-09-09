@@ -1,0 +1,1193 @@
+% =====================================================================
+%  PARTE I --- RETICOLO, RETICOLO RECIPROCO, DIFFRAZIONE, FONONI
+% =====================================================================
+\begin{landscape}
+\renewcommand{\arraystretch}{1.5}
+\begin{longtable}{
+    >{\raggedright\arraybackslash}p{5.2cm}
+    >{\raggedright\arraybackslash}p{7.4cm}
+    >{\raggedright\arraybackslash}p{4cm}
+    >{\raggedright\arraybackslash}p{4cm}
+    >{\raggedright\arraybackslash}p{4cm}
+}
+\toprule
+\textbf{Struttura / Base} & \textbf{Vettori Primitivi ($\mathbf{a}_i$) e Reciproci ($\mathbf{b}_i$)} & \textbf{Volumi / Aree} & \textbf{Proprietà ($N_c$, $N_{at}$, $n_{ret}$, $n_{at}$, $Z_1$, $d_1$)} & \textbf{Regole di Selezione (Diffrazione)} \\
+\midrule
+\endfirsthead
+
+\toprule
+\textbf{Struttura / Base} & \textbf{Vettori Primitivi ($\mathbf{a}_i$) e Reciproci ($\mathbf{b}_i$)} & \textbf{Volumi / Aree} & \textbf{Proprietà ($N_c$, $N_{at}$, $n_{ret}$, $n_{at}$, $Z_1$, $d_1$)} & \textbf{Regole di Selezione (Diffrazione)} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+% --- SISTEMA CUBICO ---
+\multicolumn{5}{c}{\textbf{Sistema Cubico ($a = b = c, \alpha = \beta = \gamma = 90^\circ$)}} \\ \midrule
+
+\textbf{Cubico Semplice (SC)} &
+$\mathbf{a}_1 = a(1, 0, 0)$ \newline $\mathbf{a}_2 = a(0, 1, 0)$ \newline $\mathbf{a}_3 = a(0, 0, 1)$ \vspace{0.2cm}\newline $\mathbf{b}_1 = \frac{2\pi}{a}(1, 0, 0)$ \newline $\mathbf{b}_2 = \frac{2\pi}{a}(0, 1, 0)$ \newline $\mathbf{b}_3 = \frac{2\pi}{a}(0, 0, 1)$ &
+$V_c = a^3$ \newline $V_p = a^3$ \newline $V_{rec} = \frac{8\pi^3}{a^3}$ &
+$N_c = 1$ \newline $N_{at} = 1$ \newline $n_{ret} = \frac{1}{a^3}$ \newline $n_{at} = \frac{1}{a^3}$ \newline $Z_1 = 6$ \newline $d_1 = a$ &
+Tutti i riflessi $(h, k, l)$ sono ammessi. \\ \midrule
+
+\textbf{Cubico a Corpo Centrato (BCC)} &
+$\mathbf{a}_1 = \frac{a}{2}(-1, 1, 1)$ \newline $\mathbf{a}_2 = \frac{a}{2}(1, -1, 1)$ \newline $\mathbf{a}_3 = \frac{a}{2}(1, 1, -1)$ \vspace{0.2cm}\newline $\mathbf{b}_1 = \frac{2\pi}{a}(0, 1, 1)$ \newline $\mathbf{b}_2 = \frac{2\pi}{a}(1, 0, 1)$ \newline $\mathbf{b}_3 = \frac{2\pi}{a}(1, 1, 0)$ &
+$V_c = a^3$ \newline $V_p = \frac{a^3}{2}$ \newline $V_{rec} = \frac{16\pi^3}{a^3}$ &
+$N_c = 2$ \newline $N_{at} = 2$ \newline $n_{ret} = \frac{2}{a^3}$ \newline $n_{at} = \frac{2}{a^3}$ \newline $Z_1 = 8$ \newline $d_1 = \frac{\sqrt{3}}{2}a$ &
+Riflessi ammessi solo se $h + k + l = 2n$ (pari). \newline \textit{Il reticolo reciproco del BCC è un FCC.} \\ \midrule
+
+\textbf{Cubico a Facce Centrate (FCC)} &
+$\mathbf{a}_1 = \frac{a}{2}(0, 1, 1)$ \newline $\mathbf{a}_2 = \frac{a}{2}(1, 0, 1)$ \newline $\mathbf{a}_3 = \frac{a}{2}(1, 1, 0)$ \vspace{0.2cm}\newline $\mathbf{b}_1 = \frac{2\pi}{a}(-1, 1, 1)$ \newline $\mathbf{b}_2 = \frac{2\pi}{a}(1, -1, 1)$ \newline $\mathbf{b}_3 = \frac{2\pi}{a}(1, 1, -1)$ &
+$V_c = a^3$ \newline $V_p = \frac{a^3}{4}$ \newline $V_{rec} = \frac{32\pi^3}{a^3}$ &
+$N_c = 4$ \newline $N_{at} = 4$ \newline $n_{ret} = \frac{4}{a^3}$ \newline $n_{at} = \frac{4}{a^3}$ \newline $Z_1 = 12$ \newline $d_1 = \frac{a}{\sqrt{2}}$ &
+Riflessi ammessi solo se $h, k, l$ hanno tutti la stessa parità (tutti pari o tutti dispari). \newline \textit{Il reticolo reciproco dell'FCC è un BCC.} \\ \midrule
+
+% --- SISTEMA ESAGONALE ---
+\multicolumn{5}{c}{\textbf{Sistema Esagonale ($a = b \neq c, \alpha = \beta = 90^\circ, \gamma = 120^\circ$)}} \\ \midrule
+
+\textbf{Esagonale Semplice (P)} \newline se $\mathbf{a}_2 = a(-\frac{1}{2}, \frac{\sqrt{3}}{2}, 0)$ allora \newline $\mathbf{b}_1 = \frac{2\pi}{a}(1, \frac{1}{\sqrt{3}}, 0)$ e $\mathbf{b}_2 = \frac{2\pi}{a}(0, \frac{2}{\sqrt{3}}, 0)$ &
+$\mathbf{a}_1 = a(1, 0, 0)$ \newline $\mathbf{a}_2 = a(\frac{1}{2}, \frac{\sqrt{3}}{2}, 0)$ \newline $\mathbf{a}_3 = c(0, 0, 1)$ \vspace{0.2cm}\newline $\mathbf{b}_1 = \frac{2\pi}{a}(1, -\frac{1}{\sqrt{3}}, 0)$ \newline $\mathbf{b}_2 = \frac{2\pi}{a}(0, \frac{2}{\sqrt{3}}, 0)$ \newline $\mathbf{b}_3 = \frac{2\pi}{c}(0, 0, 1)$ &
+$V_c = \frac{\sqrt{3}}{2}a^2c$ \newline $V_p = \frac{\sqrt{3}}{2}a^2c$ \newline $V_{rec} = \frac{16\pi^3}{\sqrt{3}a^2c}$ &
+$N_c = 1$ \newline $N_{at} = 1$ \newline $n_{ret} = \frac{2}{\sqrt{3}a^2c}$ \newline $n_{at} = \frac{2}{\sqrt{3}a^2c}$ \newline $Z_1 = $ Dipende da $c/a$ \newline $d_1 = \min(a, c)$ &
+Tutti ammessi. \newline $\frac{1}{d^2} = \frac{4}{3}\frac{h^2+hk+k^2}{a^2} + \frac{l^2}{c^2}$ \\ \midrule
+
+\pagebreak
+
+% --- STRUTTURE NOTEVOLI ---
+\multicolumn{5}{c}{\textbf{Strutture Cristalline Notevoli (Reticoli con Base)}} \\
+\multicolumn{5}{p{25cm}}{\textbf{Attenzione: per il calcolo del calore specifico o energia interna (modello di Debye, limite di alta $T$) usa $N_{at}$ o $n_{at}$ per contare correttamente i gradi di libertà vibrazionali!}} \\ \midrule
+
+\textbf{Diamante | Germanio} \newline \textit{Reticolo Sottostante:} FCC \newline \textit{Base:} 2 atomi uguali in $(0,0,0)$ e $\frac{a}{4}(1,1,1)$ &
+Identici all'FCC  &
+$V_c = a^3$ \newline $V_p = \frac{a^3}{4}$ (contiene 2 atomi) \newline $V_{rec} = \frac{32\pi^3}{a^3}$ &
+$N_c = 4$ \newline $N_{at} = 8$ \newline $n_{ret} = \frac{4}{a^3}$ \newline $n_{at} = \frac{8}{a^3}$ \newline $Z_1 = 4$ (coord. tetraedrica) \newline $d_1 = \frac{\sqrt{3}}{4}a$ &
+$h,k,l$ devono avere la stessa parità. Inoltre, se sono tutti pari, il riflesso è ammesso solo se $h+k+l=4n$. \newline Sequenza: \newline $111, 220, 311, 400,$ \newline $331, 422, 511/333, 440\dots$ \\ \midrule
+
+\textbf{Zincoblenda (Es. GaAs, InP, CuBr, $\beta$-SiC)} \newline \textit{Reticolo Sottostante:} FCC \newline \textit{Base:} 2 atomi \textbf{DIVERSI} in $(0,0,0)$ e $\frac{a}{4}(1,1,1)$ &
+Identici all'FCC  &
+$V_c = a^3$ \newline $V_p = \frac{a^3}{4}$ \newline $V_{rec} = \frac{32\pi^3}{a^3}$ &
+$N_c = 4$ \newline $N_{at} = 8$ ($4A + 4B$) \newline $n_{ret} = \frac{4}{a^3}$ \newline $n_{at} = \frac{8}{a^3}$ \newline $Z_1 = 4$ \newline $d_1 = \frac{\sqrt{3}}{4}a$ &
+\textbf{ATTENZIONE:} A differenza del Diamante, essendo $f_A \neq f_B$, i picchi con $h,k,l$ tutti pari tali che $h+k+l=4n+2$ (es. \textbf{200, 222, 420}) \textbf{NON scompaiono}! Segue le stesse identiche regole di parità dell'FCC ($111, 200, 220, 311, 222 \dots$). \\ \midrule
+
+\textbf{Cloruro di Sodio (NaCl)} \newline \textit{Reticolo Sottostante:} FCC \newline \textit{Base:} 1 ione $\text{Na}^+$ in $(0,0,0)$ e 1 ione $\text{Cl}^-$ in $\frac{a}{2}(1,1,1)$ \newline \textit{(equivalentemente in $\frac{a}{2}(1,0,0)$)} &
+Identici all'FCC &
+$V_c = a^3$ \newline $V_p = \frac{a^3}{4}$ (contiene 1 coppia Na-Cl) \newline $V_{rec} = \frac{32\pi^3}{a^3}$ &
+$N_c = 4$ \newline $N_{at} = 8$ ($4\text{Na}^+, 4\text{Cl}^-$) \newline $n_{ret} = \frac{4}{a^3}$ \newline $n_{at} = \frac{8}{a^3}$ \newline $Z_1 = 6$ (ottaedrica) \newline $d_1 = \frac{a}{2}$ &
+Come l'FCC ($h, k, l$ stessa parità). L'intensità del picco è proporzionale a $(f_{Na}+f_{Cl})^2$ se gli indici sono tutti pari, e a $(f_{Na}-f_{Cl})^2$ se tutti dispari. \\ \midrule
+
+\textbf{Cloruro di Cesio (CsCl)} \newline \textit{Reticolo Sottostante:} Cubico Semplice (SC) \newline \textit{Base:} 1 ione $\text{Cs}^+$ in $(0,0,0)$ e 1 ione $\text{Cl}^-$ in $\frac{a}{2}(1,1,1)$ &
+Identici allo SC &
+$V_c = a^3$ \newline $V_p = a^3$ \newline $V_{rec} = \frac{8\pi^3}{a^3}$ &
+$N_c = 1$ \newline $N_{at} = 2$ ($1\text{Cs}^+, 1\text{Cl}^-$) \newline $n_{ret} = \frac{1}{a^3}$ \newline $n_{at} = \frac{2}{a^3}$ \newline $Z_1 = 8$ (cubica) \newline $d_1 = \frac{\sqrt{3}}{2}a$ &
+Come l'SC (tutti ammessi). L'intensità è $\propto (f_{Cs}+f_{Cl})^2$ se $h+k+l$ è pari (alta intensità), e $\propto (f_{Cs}-f_{Cl})^2$ se $h+k+l$ è dispari (bassa intensità). Se $f_{Cs}=f_{Cl}$ il reticolo diventa BCC e i picchi dispari spariscono. \\ \midrule
+
+\textbf{Fluorite (Es. CaF$_2$)} \newline \textit{Reticolo Sottostante:} FCC \newline \textit{Base:} 3 atomi: $\text{Ca}(0,0,0)$, $\text{F}\,\frac{a}{4}(1,1,1)$, $\text{F}\,\frac{a}{4}(3,3,3)$ &
+Identici all'FCC &
+$V_c = a^3$ \newline $V_p = \frac{a^3}{4}$ (contiene 1 unità CaF$_2$) \newline $V_{rec} = \frac{32\pi^3}{a^3}$ &
+$N_c = 4$ \newline $N_{at} = 12$ ($4\text{Ca}, 8\text{F}$) \newline $n_{ret} = \frac{4}{a^3}$ \newline $n_{at} = \frac{12}{a^3}$ \newline $\rho = \frac{N_{at}\mu_{mol}}{N_A a^3}$ &
+Rami fononici: $p=3 \Rightarrow$ 3 acustici e $3p-3=6$ ottici. \\ \midrule
+
+\textbf{Titanato di Bario (BaTiO$_3$ - Fase Cubica)} \newline \textit{Reticolo Sottostante:} SC \newline \textit{Base:} 5 Atomi. $\text{Ba}(0,0,0)$, $\text{Ti}(a/2,a/2,a/2)$, 3 atomi di $\text{O}$ in $(a/2, a/2, 0)$, $(a/2, 0, a/2)$ e $(0, a/2, a/2)$ &
+Identici allo SC &
+$V_c = a^3$ \newline $V_p = a^3$ \newline $V_{rec} = \frac{8\pi^3}{a^3}$ &
+$N_c = 1$ \newline $N_{at} = 5$ ($1\text{Ba}, 1\text{Ti}, 3\text{O}$) \newline $n_{ret} = \frac{1}{a^3}$ \newline $n_{at} = \frac{5}{a^3}$ \newline $Z_1 = $ Ti ha $Z=6$ (ottaedro di O); Ba ha $Z=12$ rispetto agli O \newline $d_1 = \frac{a}{2}$ (legame Ti-O) &
+Rami fononici: $p=5\Rightarrow$ 3 acustici, 12 ottici. \\ \midrule
+
+\textbf{Esagonale Compatto (HCP)} \newline \textit{Reticolo Sottostante:} Esagonale Semplice (P) \newline Es. Zinco, Cadmio \newline \textit{Base:} 2 atomi uguali in $(0,0,0)$ e $(\frac{1}{3}, \frac{2}{3}, \frac{1}{2})$, ovvero $\mathbf{d}_2 = (0,\frac{a}{\sqrt{3}},\frac{c}{2})$ &
+Identici all'Esagonale Semplice &
+$V_c = \frac{\sqrt{3}}{2}a^2c$ \newline $V_p = \frac{\sqrt{3}}{2}a^2c$ (contiene 2 atomi) \newline $V_{rec} = \frac{16\pi^3}{\sqrt{3}a^2c}$ &
+$N_c = 1$ \newline $N_{at} = 2$ \newline $n_{ret} = \frac{2}{\sqrt{3}a^2c}$ \newline $n_{at} = \frac{4}{\sqrt{3}a^2c}$ \newline $Z_1 = 12$ (se $c/a$ ideale $=\sqrt{8/3} \approx 1.633$) \newline $d_1 = a$ (per $c/a$ ideale) &
+$S_{\Gvec} = 1 + e^{\,i2\pi\left[\frac{h+2k}{3} + \frac{l}{2}\right]}$ \newline Riflessi ammessi, tranne quando $h+2k=3n$ \textbf{e} $l$ è dispari (estinzione totale). \\ \midrule
+
+\textbf{Esagonale Wurtzite (Es. $\text{ZnS}$ fase wurtzite, $\text{GaN}$, $\text{ZnO}$)} \newline \textit{Reticolo Sottostante:} Esagonale Semplice (P) \newline \textit{Base:} 4 atomi (2 coppie di atomi diversi A e B). \newline Atomi A in: $(0,0,0)$ e $\frac{1}{3}\mathbf{a}_1 + \frac{2}{3}\mathbf{a}_2 + \frac{1}{2}\mathbf{a}_3$ \newline Atomi B in: $(0,0,u)$ e $\frac{1}{3}\mathbf{a}_1 + \frac{2}{3}\mathbf{a}_2 + (\frac{1}{2}+u)\mathbf{a}_3$ \newline \textit{(dove $u$ è il parametro interno, per la struttura ideale $u = \frac{3}{8} = 0.375$)} &
+Identici all'Esagonale Semplice &
+$V_c = \frac{\sqrt{3}}{2}a^2c$ \newline $V_p = \frac{\sqrt{3}}{2}a^2c$ (contiene le 2 coppie A-B) \newline $V_{rec} = \frac{16\pi^3}{\sqrt{3}a^2c}$ &
+$N_c = 1$ \newline $N_{at} = 4$ \newline $n_{ret} = \frac{2}{\sqrt{3}a^2c}$ \newline $n_{at} = \frac{8}{\sqrt{3}a^2c}$ \newline $Z_1 = 4$ (coord. tetraedrica) \newline $d_1 = \sqrt{\frac{3}{8}}a \approx 0.612a$ &
+$p=4$ atomi/cella $\Rightarrow$ \textbf{12 rami fononici} (3 acustici + 9 ottici): utile per contare gli atomi dal grafico dei fononi. \\ \midrule
+
+\textbf{Grafene (Bidimensionale - 2D)} \newline \textit{Reticolo Sottostante:} Esagonale/Triangolare 2D \newline \textit{Base:} 2 atomi di Carbonio in $\mathbf{d}_1 = (0,0,0)$ e $\mathbf{d}_2 = a\left(0, \frac{\sqrt{3}}{3}, 0\right)$ &
+$\mathbf{a}_1 = a\left(\frac{1}{2}, \frac{\sqrt{3}}{2}, 0\right)$ \newline $\mathbf{a}_2 = a\left(-\frac{1}{2}, \frac{\sqrt{3}}{2}, 0\right)$ \newline \textit{(con $a \approx 2.46$ \AA)} \vspace{0.2cm}\newline $\mathbf{b}_1 = \frac{2\pi}{a}\left(1, \frac{1}{\sqrt{3}}, 0\right)$ \newline $\mathbf{b}_2 = \frac{2\pi}{a}\left(-1, \frac{1}{\sqrt{3}}, 0\right)$ &
+$A_c = \frac{\sqrt{3}}{2}a^2$ \newline $A_p = \frac{\sqrt{3}}{2}a^2$ \newline $A_{rec} = \frac{8\pi^2}{\sqrt{3}a^2}$ &
+$N_c = 1$ \newline $N_{at} = 2$ \newline $n_{ret} = \frac{2}{\sqrt{3}a^2}$ \newline $n_{at} = \frac{4}{\sqrt{3}a^2}$ \newline $Z_1 = 3$ (nido d'ape) \newline $d_1 = \frac{a}{\sqrt{3}} \approx 1.42$ \AA &
+Semimetallo: gap nulla nei punti K di Dirac. \\ \midrule
+
+\textbf{Grafite (Tridimensionale - 3D, struttura Bernal AB)} \newline \textit{Reticolo Sottostante:} Esagonale Semplice (P) \newline \textit{Base:} 4 atomi di Carbonio su due piani sfalsati (A e B): \newline $\mathbf{d}_1=(0,0,0)$, \newline $\mathbf{d}_2=a\left(0, \frac{\sqrt{3}}{3}, 0\right)$, \newline $\mathbf{d}_3 = c \left(0, 0, \frac{1}{2}\right)$, \newline $\mathbf{d}_4=\left(0, a\frac{2\sqrt{3}}{3}, \frac{c}{2}\right)$ &
+$\mathbf{a}_1 = a\left(\frac{1}{2}, \frac{\sqrt{3}}{2}, 0\right)$ \newline $\mathbf{a}_2 = a\left(-\frac{1}{2}, \frac{\sqrt{3}}{2}, 0\right)$ \newline $\mathbf{a}_3 = c(0, 0, 1)$ \newline \textit{(con $a \approx 2.46$ \AA\ e $c \approx 6.70$ \AA)} \vspace{0.2cm}\newline $\mathbf{b}_1 = \frac{2\pi}{a}\left(1, \frac{1}{\sqrt{3}}, 0\right)$ \newline $\mathbf{b}_2 = \frac{2\pi}{a}\left(-1, \frac{1}{\sqrt{3}}, 0\right)$ \newline $\mathbf{b}_3 = \frac{2\pi}{c}(0, 0, 1)$ &
+$V_c = \frac{\sqrt{3}}{2}a^2c$ \newline $V_p = \frac{\sqrt{3}}{2}a^2c$ (contiene 4 atomi) \newline $V_{rec} = \frac{16\pi^3}{\sqrt{3}a^2c}$ &
+$N_c = 1$ \newline $N_{at} = 4$ \newline $n_{ret} = \frac{2}{\sqrt{3}a^2c}$ \newline $n_{at} = \frac{8}{\sqrt{3}a^2c}$ \newline $Z_1 = 3$ (intrapiano) \newline $d_1 = \frac{a}{\sqrt{3}} \approx 1.42$ \AA &
+$p=4 \Rightarrow$ 12 rami fononici. \\ \midrule
+
+\textbf{Quadrato (Bidimensionale - 2D)} \newline \textit{Reticolo Sottostante:} Quadrato ($a=b, \gamma=90^\circ$) &
+$\mathbf{a}_1 = a(1, 0)$ \newline $\mathbf{a}_2 = a(0, 1)$ \vspace{0.2cm}\newline $\mathbf{b}_1 = \frac{2\pi}{a}(1, 0)$ \newline $\mathbf{b}_2 = \frac{2\pi}{a}(0, 1)$ &
+$A_c = a^2$ \newline $A_p = a^2$ \newline $A_{rec} = \frac{4\pi^2}{a^2}$ &
+$N_c = 1$ \newline $N_{at} = 1$ \newline $n_{ret} = \frac{1}{a^2}$ \newline $n_{at} = \frac{1}{a^2}$ \newline $Z_1 = 4$ \newline $d_1 = a$ &
+Tutti i riflessi $(h, k)$ sono ammessi. \newline $\frac{1}{d^2}=\frac{h^2+k^2}{a^2}$ \\ \midrule
+
+\textbf{Rettangolare (2D)} \newline $a \neq b$, $\gamma = 90^\circ$ &
+$\mathbf{a}_1 = a(1, 0)$, $\mathbf{a}_2 = b(0, 1)$ \vspace{0.2cm}\newline $\mathbf{b}_1 = \frac{2\pi}{a}(1, 0)$, $\mathbf{b}_2 = \frac{2\pi}{b}(0, 1)$ &
+$A_c = ab$ \newline $A_p = ab$ \newline $A_{rec} = \frac{4\pi^2}{ab}$ &
+$N_c = 1$ \newline $N_{at} = 1$ \newline $n_{ret} = \frac{1}{ab}$ \newline $n_{at} = \frac{1}{ab}$ \newline $Z_1 = 2$ (lungo il lato corto) \newline $d_1 = \min(a,b)$ &
+$\frac{1}{d^2}=\frac{h^2}{a^2}+\frac{k^2}{b^2}$ \\ \midrule
+
+\textbf{Rettangolare Centrato (2D)} \newline (= rombico) &
+$\mathbf{a}_1 = \left(\frac{a}{2}, -\frac{b}{2}\right)$, $\mathbf{a}_2 = \left(\frac{a}{2}, \frac{b}{2}\right)$ \vspace{0.2cm}\newline $\mathbf{b}_1 = 2\pi\left(\frac{1}{a}, -\frac{1}{b}\right)$, $\mathbf{b}_2 = 2\pi\left(\frac{1}{a}, \frac{1}{b}\right)$ &
+$A_c = ab$ \newline $A_p = \frac{ab}{2}$ \newline $A_{rec} = \frac{8\pi^2}{ab}$ &
+$N_c = 2$ \newline $N_{at} = 2$ \newline $n_{ret} = \frac{2}{ab}$ \newline $n_{at} = \frac{2}{ab}$ \newline $Z_1 = 4$ (i 4 centri) \newline $d_1 = \frac{1}{2}\sqrt{a^2+b^2}$ &
+Visto come rettangolare con base $\mathbf{d}_2=(\frac{a}{2},\frac{b}{2})$: $S=1+e^{i\pi(h+k)}$ $\Rightarrow$ estinti i picchi con $h+k$ dispari. \\ \midrule
+
+\textbf{Rombico / Obliquo (2D)} \newline \textit{Reticolo Sottostante:} $a=b$ ma $\alpha \neq 90^\circ$ \newline $\mathbf{a}_1 = a(1, 0)$ \newline $\mathbf{a}_2 = a(\cos\alpha, \sin\alpha)$ &
+$\mathbf{b}_1 = \frac{2\pi}{a \sin\alpha}(\sin\alpha, -\cos\alpha)$ \newline $\mathbf{b}_2 = \frac{2\pi}{a \sin\alpha}(0, 1)$ \vspace{0.2cm}\newline $|\mathbf{b}_1| = |\mathbf{b}_2| = \frac{2\pi}{a\sin\alpha}$. Il vettore $\mathbf{b}_2$ è lungo $y$, mentre $\mathbf{b}_1$ è ruotato di $\pi/2-\alpha$ in senso orario rispetto a $x$ &
+$A_c = a^2 \sin\alpha$ \newline $A_p = a^2 \sin\alpha$ \newline $A_{rec} = \frac{4\pi^2}{a^2 \sin\alpha}$ &
+$N_c = 1$ \newline $N_{at} = 1$ \newline $n_{ret} = \frac{1}{a^2 \sin\alpha}$ \newline $n_{at} = \frac{1}{a^2 \sin\alpha}$ \newline $Z_1 = 4$ \newline $d_1 = a$ &
+Caso generale (lati $a\neq b$): Dens.\ $=\frac{1}{ab\sin\theta}$. \\ \midrule
+\midrule
+
+
+% --- SISTEMA TETRAGONALE ---
+\multicolumn{5}{c}{\textbf{Sistema Tetragonale ($a = b \neq c, \alpha = \beta = \gamma = 90^\circ$)}} \\ \midrule
+
+\textbf{Tetragonale Semplice (P)} &
+$\mathbf{a}_1 = a(1, 0, 0)$ \newline $\mathbf{a}_2 = a(0, 1, 0)$ \newline $\mathbf{a}_3 = c(0, 0, 1)$ \vspace{0.2cm}\newline $\mathbf{b}_1 = \frac{2\pi}{a}(1, 0, 0)$ \newline $\mathbf{b}_2 = \frac{2\pi}{a}(0, 1, 0)$ \newline $\mathbf{b}_3 = \frac{2\pi}{c}(0, 0, 1)$ &
+$V_c = a^2c$ \newline $V_p = a^2c$ \newline $V_{rec} = \frac{8\pi^3}{a^2c}$ &
+$N_c = 1$ \newline $N_{at} = 1$ \newline $n_{ret} = \frac{1}{a^2c}$ \newline $n_{at} = \frac{1}{a^2c}$ \newline $Z_1 = $ Dipende da $c/a$ ($4$ o $2$) \newline $d_1 = \min(a, c)$ &
+Tutti ammessi. \newline $\frac{1}{d^2}=\frac{h^2+k^2}{a^2}+\frac{l^2}{c^2}$ \\ \midrule
+
+\textbf{Tetragonale a Corpo Centrato (I)} &
+$\mathbf{a}_1 = (a, 0, 0)$ \newline $\mathbf{a}_2 = (0, a, 0)$ \newline $\mathbf{a}_3 = (\frac{a}{2}, \frac{a}{2}, \frac{c}{2})$ \vspace{0.2cm}\newline $\mathbf{b}_1 = 2\pi(\frac{1}{a}, 0, -\frac{1}{c})$ \newline $\mathbf{b}_2 = 2\pi(0, \frac{1}{a}, -\frac{1}{c})$ \newline $\mathbf{b}_3 = 2\pi(0, 0, \frac{2}{c})$ &
+$V_c = a^2c$ \newline $V_p = \frac{a^2c}{2}$ \newline $V_{rec} = \frac{16\pi^3}{a^2c}$ &
+$N_c = 2$ \newline $N_{at} = 2$ \newline $n_{ret} = \frac{2}{a^2c}$ \newline $n_{at} = \frac{2}{a^2c}$ \newline $Z_1 = 8$ (i vertici) \newline $d_1 = \frac{1}{2}\sqrt{2a^2+c^2}$ &
+Visto come tetragonale P con base $\mathbf{d}_2=(\frac{a}{2},\frac{a}{2},\frac{c}{2})$: $S=1+e^{i\pi(h+k+l)}$ $\Rightarrow$ ammessi solo $h+k+l$ pari. \\ \midrule
+
+
+% --- SISTEMA ORTOROMBICO ---
+\multicolumn{5}{c}{\textbf{Sistema Ortorombico ($a \neq b \neq c, \alpha = \beta = \gamma = 90^\circ$)}} \\ \midrule
+
+\textbf{Ortorombico Semplice (P)} &
+$\mathbf{a}_1 = (a, 0, 0)$ \newline $\mathbf{a}_2 = (0, b, 0)$ \newline $\mathbf{a}_3 = (0, 0, c)$ \vspace{0.2cm}\newline $\mathbf{b}_1 = \frac{2\pi}{a}(1, 0, 0)$ \newline $\mathbf{b}_2 = \frac{2\pi}{b}(0, 1, 0)$ \newline $\mathbf{b}_3 = \frac{2\pi}{c}(0, 0, 1)$ &
+$V_c = abc$ \newline $V_p = abc$ \newline $V_{rec} = \frac{8\pi^3}{abc}$ &
+$N_c = 1$ \newline $N_{at} = 1$ \newline $n_{ret} = \frac{1}{abc}$ \newline $n_{at} = \frac{1}{abc}$ \newline $Z_1 = 2$ (lungo l'asse più corto) \newline $d_1 = \min(a, b, c)$ &
+Tutti ammessi. \newline $\frac{1}{d^2}=\frac{h^2}{a^2}+\frac{k^2}{b^2}+\frac{l^2}{c^2}$ \\ \midrule
+
+\textbf{Ortorombico a Base Centrata (C)} &
+$\mathbf{a}_1 = (\frac{a}{2}, -\frac{b}{2}, 0)$ \newline $\mathbf{a}_2 = (\frac{a}{2}, \frac{b}{2}, 0)$ \newline $\mathbf{a}_3 = (0, 0, c)$ \vspace{0.2cm}\newline $\mathbf{b}_1 = 2\pi(\frac{1}{a}, -\frac{1}{b}, 0)$ \newline $\mathbf{b}_2 = 2\pi(\frac{1}{a}, \frac{1}{b}, 0)$ \newline $\mathbf{b}_3 = \frac{2\pi}{c}(0, 0, 1)$ &
+$V_c = abc$ \newline $V_p = \frac{abc}{2}$ \newline $V_{rec} = \frac{16\pi^3}{abc}$ &
+$N_c = 2$ \newline $N_{at} = 2$ \newline $n_{ret} = \frac{2}{abc}$ \newline $n_{at} = \frac{2}{abc}$ \newline $Z_1 = 4$ (diagonali di base) \newline $d_1 = \frac{1}{2}\sqrt{a^2+b^2}$ (se $<c$) &
+Visto come ortorombico P con base $\mathbf{d}_2=(\frac{a}{2},\frac{b}{2},0)$: $S=1+e^{i\pi(h+k)}$ $\Rightarrow$ estinti i picchi con $h+k$ dispari. \\ \midrule
+
+\textbf{Ortorombico a Corpo Centrato (I)} &
+$\mathbf{a}_1 = (\frac{a}{2}, \frac{b}{2}, -\frac{c}{2})$ \newline $\mathbf{a}_2 = (-\frac{a}{2}, \frac{b}{2}, \frac{c}{2})$ \newline $\mathbf{a}_3 = (\frac{a}{2}, -\frac{b}{2}, \frac{c}{2})$ \vspace{0.2cm}\newline $\mathbf{b}_1 = 2\pi(\frac{1}{a}, \frac{1}{b}, 0)$ \newline $\mathbf{b}_2 = 2\pi(0, \frac{1}{b}, \frac{1}{c})$ \newline $\mathbf{b}_3 = 2\pi(\frac{1}{a}, 0, \frac{1}{c})$ &
+$V_c = abc$ \newline $V_p = \frac{abc}{2}$ \newline $V_{rec} = \frac{16\pi^3}{abc}$ &
+$N_c = 2$ \newline $N_{at} = 2$ \newline $n_{ret} = \frac{2}{abc}$ \newline $n_{at} = \frac{2}{abc}$ \newline $Z_1 = 8$ \newline $d_1 = \frac{1}{2}\sqrt{a^2+b^2+c^2}$ &
+$S=1+e^{i\pi(h+k+l)}$ $\Rightarrow$ ammessi solo $h+k+l$ pari. \\ \midrule
+
+\textbf{Ortorombico a Facce Centrate (F)} &
+$\mathbf{a}_1 = (\frac{a}{2}, 0, \frac{c}{2})$ \newline $\mathbf{a}_2 = (\frac{a}{2}, \frac{b}{2}, 0)$ \newline $\mathbf{a}_3 = (0, \frac{b}{2}, \frac{c}{2})$ \vspace{0.2cm}\newline $\mathbf{b}_1 = 2\pi(\frac{1}{a}, -\frac{1}{b}, \frac{1}{c})$ \newline $\mathbf{b}_2 = 2\pi(\frac{1}{a}, \frac{1}{b}, -\frac{1}{c})$ \newline $\mathbf{b}_3 = 2\pi(-\frac{1}{a}, \frac{1}{b}, \frac{1}{c})$ &
+$V_c = abc$ \newline $V_p = \frac{abc}{4}$ \newline $V_{rec} = \frac{32\pi^3}{abc}$ &
+$N_c = 4$ \newline $N_{at} = 4$ \newline $n_{ret} = \frac{4}{abc}$ \newline $n_{at} = \frac{4}{abc}$ \newline $Z_1 = 4$ (nel piano più fitto) \newline $d_1 = $ min delle 3 semidiagonali di faccia &
+Indici $h,k,l$ tutti della stessa parità (come FCC). \\ \midrule
+
+% --- SISTEMA ROMBOEDRICO E MONOCLINO ---
+\multicolumn{5}{c}{\textbf{Sistema Romboedrico/Trigonale ($a = b = c, \alpha = \beta = \gamma \neq 90^\circ$)}} \\ \midrule
+
+\textbf{Romboedrico (R)} &
+$\mathbf{a}_1 = a(\sin\theta, 0, \cos\theta)$ \newline $\mathbf{a}_2 = a(-\frac{\sin\theta}{2}, \frac{\sqrt{3}\sin\theta}{2}, \cos\theta)$ \newline $\mathbf{a}_3 = a(-\frac{\sin\theta}{2}, -\frac{\sqrt{3}\sin\theta}{2}, \cos\theta)$ \vspace{0.2cm}\newline $\mathbf{b}_1 = \frac{2\pi}{V_p}(\mathbf{a}_2 \times \mathbf{a}_3)$, ecc. &
+$V_c = V_p$ \newline $V_p = a^3\sqrt{1 - 3\cos^2\alpha + 2\cos^3\alpha}$ \newline $V_{rec} = \frac{8\pi^3}{V_p}$ &
+$N_c = 1$ \newline $N_{at} = 1$ \newline $n_{ret} = \frac{1}{V_p}$ \newline $n_{at} = \frac{1}{V_p}$ \newline $Z_1 = 6$ \newline $d_1 = a$ &
+Vedi la formula di $1/d^2$ nella tabella delle distanze interplanari (§2.5). \\ \midrule
+
+\multicolumn{5}{c}{\textbf{Sistema Monoclino ($a \neq b \neq c, \alpha = \gamma = 90^\circ, \beta \neq 90^\circ$)}} \\ \midrule
+
+\textbf{Monoclino Semplice (P)} &
+$\mathbf{a}_1 = a(1, 0, 0)$ \newline $\mathbf{a}_2 = b(0, 1, 0)$ \newline $\mathbf{a}_3 = c(\cos\beta, 0, \sin\beta)$ \vspace{0.2cm}\newline $\mathbf{b}_1 = \frac{2\pi}{a\sin\beta}(\sin\beta, 0, -\cos\beta)$ \newline $\mathbf{b}_2 = \frac{2\pi}{b}(0, 1, 0)$ \newline $\mathbf{b}_3 = \frac{2\pi}{c\sin\beta}(0, 0, 1)$ &
+$V_c = abc\sin\beta$ \newline $V_p = abc\sin\beta$ \newline $V_{rec} = \frac{8\pi^3}{abc\sin\beta}$ &
+$N_c = 1$ \newline $N_{at} = 1$ \newline $n_{ret} = \frac{1}{abc\sin\beta}$ \newline $n_{at} = \frac{1}{abc\sin\beta}$ \newline $Z_1 = 2$ \newline $d_1 = \min(a,b,c)$ &
+$|\mathbf{b}_1| = \frac{2\pi}{a\sin\beta}$, \newline $|\mathbf{b}_3| = \frac{2\pi}{c\sin\beta}$. \newline Per $1/d^2$ vedi §2.5. \\ \midrule
+
+\textbf{Monoclino a Base Centrata (C)} &
+$\mathbf{a}_1 = (\frac{a}{2}, \frac{b}{2}, 0)$ \newline $\mathbf{a}_2 = (-\frac{a}{2}, \frac{b}{2}, 0)$ \newline $\mathbf{a}_3 = c(\cos\beta, 0, \sin\beta)$ \vspace{0.2cm}\newline $\mathbf{b}_1 = 2\pi(\frac{1}{a}, \frac{1}{b}, -\frac{1}{a\tan\beta})$ \newline $\mathbf{b}_2 = 2\pi(-\frac{1}{a}, \frac{1}{b}, \frac{1}{a\tan\beta})$ \newline $\mathbf{b}_3 = 2\pi(0, 0, \frac{1}{c\sin\beta})$ &
+$V_c = abc\sin\beta$ \newline $V_p = \frac{abc\sin\beta}{2}$ \newline $V_{rec} = \frac{16\pi^3}{abc\sin\beta}$ &
+$N_c = 2$ \newline $N_{at} = 2$ \newline $n_{ret} = \frac{2}{abc\sin\beta}$ \newline $n_{at} = \frac{2}{abc\sin\beta}$ \newline $Z_1 = 4$ \newline $d_1 = \frac{1}{2}\sqrt{a^2+b^2}$ &
+$S=1+e^{i\pi(h+k)}$ $\Rightarrow$ estinti i picchi con $h+k$ dispari. \\ \midrule
+
+% --- SISTEMA TRICLINO ---
+\multicolumn{5}{c}{\textbf{Sistema Triclino ($a \neq b \neq c, \alpha \neq \beta \neq \gamma \neq 90^\circ$)}} \\ \midrule
+
+\textbf{Triclino Semplice (P)} &
+$\mathbf{a}_1 = a(1, 0, 0)$ \newline $\mathbf{a}_2 = b(\cos\gamma, \sin\gamma, 0)$ \newline $\mathbf{a}_3 = (c_x, c_y, c_z)$ \newline con $c_x = c\cos\beta$, $c_y = c\frac{\cos\alpha-\cos\beta\cos\gamma}{\sin\gamma}$, $c_z=\sqrt{c^2-c_x^2-c_y^2}$ \vspace{0.2cm}\newline $\mathbf{b}_i = \frac{2\pi}{V_p}(\mathbf{a}_j \times \mathbf{a}_k)$ &
+$V_c = V_p$ \newline $V_p = abc\,\sqrt{K}$ \newline con $K = 1 - \cos^2\alpha - \cos^2\beta$ \newline $\quad - \cos^2\gamma + 2\cos\alpha\cos\beta\cos\gamma$ \newline $V_{rec} = \frac{8\pi^3}{V_p}$ &
+$N_c = 1$ \newline $N_{at} = 1$ \newline $n_{ret} = \frac{1}{V_p}$ \newline $n_{at} = \frac{1}{V_p}$ \newline $Z_1 = $ Parametrico \newline $d_1 = $ Parametrica &
+Nessuna regola generale: calcolare esplicitamente \newline $|\Gvec_{hkl}| = |h\mathbf{b}_1+k\mathbf{b}_2+l\mathbf{b}_3|$ e ordinare. \\
+\end{longtable}
+
+% --- LEGENDA DEI SIMBOLI ---
+\vspace{0.3cm}
+\begin{multicols}{2}
+    \begin{itemize}
+    \setlength{\itemsep}{3pt}
+        \item \textbf{$V_c$ / $A_c$}: Volume (o Area in 2D) della cella convenzionale.
+        \item \textbf{$V_p$ / $A_p$}: Volume (o Area in 2D) della cella primitiva (cella di Wigner--Seitz).
+        \item \textbf{$V_{rec}$ / $A_{rec}$}: Volume (o Area) della cella primitiva nello spazio reciproco (= volume della 1ZB).
+        \item \textbf{$N_c$}: Numero di nodi reticolari (punti di Bravais) nella cella convenzionale.
+        \item \textbf{$N_{at} =p$}: Numero totale di atomi/ioni contenuti nella cella convenzionale.
+        \item \textbf{$n_{ret}$}: Densità reticolare, ovvero il numero di celle primitive per unità di volume/area ($1/V_p$ oppure $N_c/V_c$).
+        \item \textbf{$n_{at}$}: Densità atomica, ovvero il numero totale di atomi/ioni effettivi per unità di volume/area ($N_{at}/V_c$).
+        \item \textbf{$Z_1$}: Numero di coordinazione (numero di primi vicini per un dato atomo).
+        \item \textbf{$d_1$}: Distanza di primo vicino (distanza minima tra due atomi interagenti).
+    \end{itemize}
+\end{multicols}
+\end{landscape}
+
+
+\newpage
+\part*{\centering PARTE I --- Reticolo, diffrazione}
+\addcontentsline{toc}{section}{PARTE I --- Reticolo, diffrazione}
+\vspace{-0.3cm}
+
+\section{Densità, parametro di cella, reticolo reciproco}
+
+\attenzione{In un cristallo con base di $r$ atomi per cella primitiva ci sono \textbf{due densità diverse}:
+\begin{itemize}
+  \item $n_{ret} = N_{celle}/V = 1/V_p$ \quad (densità di \textbf{punti reticolari} = celle primitive);
+  \item $n_{at} = r\,n_{ret}$ \quad (densità di \textbf{atomi}).
+\end{itemize}
+Si usa $n_{ret}$ per: vettore di Debye, temperatura di Debye, calore specifico a bassa $T$ (solo rami acustici).\\
+Si usa $n_{at}$ per: legge di Dulong--Petit ad alta $T$, densità di massa, calcolo di $a$ dalla densità.\\
+\textit{Esempio (Silicio, struttura a diamante):} $n_{at}=8/a^3$ ma $n_{ret}=4/a^3$.}
+
+\subsection{Parametro di cella da densità di massa}
+Data la densità di massa $\rho$ [kg/m$^3$] e le masse atomiche della base ($m_A, m_B,\dots$ in u.m.a., con $1\text{ u.m.a.} = 1.66054 \times 10^{-27}\text{ kg}$):
+\[ \rho = \frac{\text{massa contenuta nella cella}}{V_{cella}} \quad\Longrightarrow\quad V_{cella} = \frac{\sum_i m_i}{\rho} \]
+\[ \rho = \frac{N^{(c)} \cdot (m_A + m_B)}{a^3} \implies \bm{a = \left[ \frac{N^{(c)} \cdot (m_A + m_B)}{\rho} \right]^{1/3}} \]
+dove $N^{(c)}$ è il numero di \textbf{punti reticolari} (cioè di ``molecole''/unità di base) per cella convenzionale: $N^{(c)}=1$ per SC e CsCl, $N^{(c)}=2$ per BCC, $N^{(c)}=4$ per FCC / Diamante / Zincoblenda / NaCl / Fluorite.
+
+\subsubsection*{Variante con Massa Molare $\mu_{mol}$ e Numero di Avogadro}
+Se il testo fornisce la densità di massa macroscopica $\rho$ [kg/m$^3$] e la massa molare del composto $\mu_{mol}$ [kg/mol]:
+\[ \rho = \frac{N^{(c)} \cdot \mu_{mol}}{N_A \cdot a^3} \implies \bm{a = \left[ \frac{N^{(c)} \cdot \mu_{mol}}{N_A \cdot \rho} \right]^{1/3}} \]
+Se invece è data la massa atomica $\mu$ in u.m.a.\ di un elemento monoatomico:
+$\rho_{at} = \rho/\mu$ [atomi/m$^3$], poi $a=(n_{at}^{(c)}/\rho_{at})^{1/3}$.
+
+\ricetta{Dal numero di elettroni di valenza al passo reticolare}{
+Se il testo dà la densità \emph{elettronica} $n_{el}$ e la valenza $z$ di ciascun atomo, con $p$ (o $N_{at}$) atomi per cella:
+\[ n_{el} = \frac{z\,p}{V_{cella}} \qquad\Longrightarrow\qquad V_{cella} = \frac{z\,p}{n_{el}} \]
+\textit{Esempi:} monostrato quadrato 2D con base A--B bivalente ($z=2$, $p=2$): $n_{el}=4/a^2 \Rightarrow a = 2/\sqrt{n_{el}}$. Metallo cubico di valenza 3 con 1 atomo/cella: $n_{el}=3/a^3 \Rightarrow a=(3/n_{el})^{1/3}$. Monoclino 2D con lati $a$ e $b$ e angolo $\theta$, 1 elettrone per atomo:  $n_{el}=\frac{1}{ab \sin\theta}$}
+
+\subsubsection*{Da densità atomica a parametro di cella (riassunto)}
+\begin{itemize}
+  \item \textbf{Diamante / Zincoblenda} (8 atomi per cella convenzionale): $n = \frac{8}{a^3} \implies \bm{a = \left(\frac{8}{n}\right)^{1/3} = \frac{2}{\sqrt[3]{n}}}$
+  \item \textbf{FCC} (4 atomi): $a = (4/n)^{1/3}$; \quad \textbf{BCC} (2 atomi): $a = (2/n)^{1/3}$; \quad \textbf{SC} (1 atomo): $a = (1/n)^{1/3}$.
+\end{itemize}
+
+\subsection{Costruzione del reticolo reciproco}
+\subsubsection*{Caso 3D}
+Dati i vettori base del reticolo diretto $\mathbf{a}_1, \mathbf{a}_2, \mathbf{a}_3$, si calcola prima il volume della cella primitiva:
+\[ V_p = \mathbf{a}_1 \cdot (\mathbf{a}_2 \times \mathbf{a}_3), \qquad  \mathbf{b}_1 = \frac{2\pi}{V_p} (\mathbf{a}_2 \times \mathbf{a}_3), \qquad
+   \mathbf{b}_2 = \frac{2\pi}{V_p} (\mathbf{a}_3 \times \mathbf{a}_1), \qquad
+   \mathbf{b}_3 = \frac{2\pi}{V_p} (\mathbf{a}_1 \times \mathbf{a}_2) \]
+Proprietà fondamentale: $\mathbf{a}_i \cdot \mathbf{b}_j = 2\pi\delta_{ij}$. Volume della 1ZB: $V_{rec} = (2\pi)^3/V_p$.
+
+\subsubsection*{Caso 2D}
+Con $\mathbf{a}_1, \mathbf{a}_2$ nel piano $xy$ e $\hat z$ versore normale, posto $A_p = |\mathbf{a}_1 \times \mathbf{a}_2|$:
+\[ \mathbf{b}_1 = \frac{2\pi}{A_p} (\mathbf{a}_2 \times \hat z), \qquad
+   \mathbf{b}_2 = \frac{2\pi}{A_p} (\hat z \times \mathbf{a}_1), \qquad A_{rec} = \frac{(2\pi)^2}{A_p} \]
+\textit{Trucco pratico:} se $\mathbf{a}=(a_x,a_y,0)$ allora $\mathbf{a}\times\hat z = (a_y, -a_x)$ e $\hat z \times \mathbf{a} = (-a_y, a_x)$.
+
+\subsubsection*{Vettore generico del reticolo reciproco}
+\[ \boxed{\Gvec_{hkl} = h\,\mathbf{b}_1 + k\,\mathbf{b}_2 + l\,\mathbf{b}_3}, \qquad
+   |\Gvec_{hkl}| = \frac{2\pi}{d_{hkl}} \]
+dove $d_{hkl}$ è la distanza tra piani adiacenti della famiglia $(hkl)$. Da qui derivano tutte le formule delle distanze interplanari.
+
+\subsection{Distanze interplanari $1/d^2_{hkl}$ per tutti i sistemi cristallini}
+\begin{center}
+\renewcommand{\arraystretch}{1.9}
+\begin{tabular}{l l}
+\toprule
+\textbf{Sistema} & $\bm{1/d^2_{hkl}}$ \\
+\midrule
+Cubico & $\dfrac{h^2+k^2+l^2}{a^2}$ \\
+Tetragonale & $\dfrac{h^2+k^2}{a^2} + \dfrac{l^2}{c^2}$ \\
+Ortorombico & $\dfrac{h^2}{a^2} + \dfrac{k^2}{b^2} + \dfrac{l^2}{c^2}$ \\
+\textbf{Esagonale} & $\dfrac{4}{3}\cdot\dfrac{h^2+hk+k^2}{a^2} + \dfrac{l^2}{c^2}$ \\
+Romboedrico & $\dfrac{(h^2+k^2+l^2)\sin^2\!\alpha + 2(hk+kl+hl)(\cos^2\!\alpha-\cos\alpha)}{a^2\left(1-3\cos^2\!\alpha+2\cos^3\!\alpha\right)}$ \\
+Monoclino ($\beta\neq90^\circ$) & $\dfrac{1}{\sin^2\!\beta}\left[\dfrac{h^2}{a^2} + \dfrac{k^2\sin^2\!\beta}{b^2} + \dfrac{l^2}{c^2} - \dfrac{2hl\cos\beta}{ac}\right]$ \\
+Triclino & Calcolare direttamente $|\Gvec_{hkl}|^2/(4\pi^2)$ con i $\mathbf{b}_i$ espliciti \\[2pt]
+Quadrato 2D & $\dfrac{h^2+k^2}{a^2}$ \qquad Rettangolare 2D: $\dfrac{h^2}{a^2}+\dfrac{k^2}{b^2}$ \\
+Obliquo 2D (angolo $\theta$) & $\dfrac{1}{\sin^2\!\theta}\left[\dfrac{h^2}{a^2}+\dfrac{k^2}{b^2}-\dfrac{2hk\cos\theta}{ab}\right]$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\attenzione{Nella formula esagonale compare il \textbf{termine misto $+hk$}: $h^2+hk+k^2$ (NON $h^2+k^2$).}
+
+
+
+\section{Diffrazione di raggi X, neutroni ed elettroni}
+
+
+\begin{itemize}
+  \item \textbf{Laue:} $\kvec' - \kvec = \Gvec_{hkl}$ con $|\kvec'|=|\kvec|=2\pi/\lambda$ (scattering elastico).
+  \item \textbf{Bragg:} $\bm{2 d_{hkl} \sin\vartheta = n\lambda}$ \ (all'esame si usa sempre $n=1$, assorbendo l'ordine negli indici di Miller).
+  \item \textbf{Debye--Scherrer (polveri):} l'angolo di \emph{deviazione} misurato è $\phi = 2\vartheta$ e
+  \[ 2\kappa \sin\!\left(\frac{\phi}{2}\right) = |\Gvec_{hkl}| \quad\text{con}\quad \kappa=\frac{2\pi}{\lambda}
+     \qquad\Longrightarrow\qquad
+     \boxed{\sin\!\left(\frac{\phi}{2}\right) = \frac{\lambda\,|\Gvec_{hkl}|}{4\pi} = \frac{\lambda}{2 d_{hkl}}} \]
+\end{itemize}
+
+\attenzione{Leggi bene il testo: quasi sempre viene fornito $\bm{2\vartheta}$ (``scattering angle'', ``diffusion angle'', ``deflection angle'', $\phi$). Se il testo dice ``at angles $\vartheta$ (namely those entering the Bragg condition)'' allora quello è già $\vartheta$ e NON va diviso per 2.}
+
+\subsection{Formula operativa per il sistema cubico}
+\[ \sin^2\vartheta = \frac{\lambda^2}{4 d_{hkl}^2} = \frac{\lambda^2}{4a^2}(h^2+k^2+l^2)
+   \qquad\Longrightarrow\qquad
+   \bm{a = \frac{\lambda}{2\sin\vartheta}\sqrt{h^2+k^2+l^2}} \]
+Estensione a reticoli ortogonali non cubici:
+\[ \bm{\sin^2\vartheta = \frac{\lambda^2}{4}\left[\left(\frac{h}{a}\right)^2+\left(\frac{k}{b}\right)^2+\left(\frac{l}{c}\right)^2\right]} \]
+
+\subsection{Riconoscere il reticolo cubico dai rapporti degli angoli}
+Si calcolano i rapporti rispetto al \textbf{primo} picco:
+\[ r_N = \frac{\sin^2\vartheta_N}{\sin^2\vartheta_1} = \frac{d_1^2}{d_N^2}
+      = \frac{(h^2+k^2+l^2)_N}{(h^2+k^2+l^2)_1} \]
+oppure, equivalentemente, i rapporti \emph{tra picchi consecutivi} $\left(\frac{\sin\vartheta_{i+1}}{\sin\vartheta_i}\right)^2$.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{l l l}
+\toprule
+\textbf{Reticolo} & \textbf{Valori di $N=h^2+k^2+l^2$} & \textbf{Rapporti $r_N$ (rispetto al 1° picco)} \\
+\midrule
+\textbf{SC} & 1, 2, 3, 4, 5, 6, \textbf{8}, 9, 10, 11, 12, 13, 14, \textbf{16}\dots
+            & $1 : 2 : 3 : 4 : 5 : 6 : 8 : 9\dots$ \\
+\textbf{BCC} & 2, 4, 6, 8, 10, 12, 14, 16, 18, 20\dots
+            & $1 : 2 : 3 : 4 : 5 : 6 : 7 : 8\dots$ \\
+\textbf{FCC} & 3, 4, 8, 11, 12, 16, 19, 20, 24, 27\dots
+            & $1 : 1.333 : 2.667 : 3.667 : 4 : 5.333 : 6.333 : 6.667\dots$ \\
+\textbf{Diamante} & 3, 8, 11, 16, 19, 24, 27, 32\dots
+            & $1 : 2.667 : 3.667 : 5.333 : 6.333 : 8 : 9 : 10.667\dots$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\attenzione{\textbf{SC e BCC hanno gli stessi rapporti fino al 6° picco!} ($1:2:3:4:5:6$). Si distinguono solo al \textbf{7° picco}: SC dà $8$ (manca il $7$, perché $7$ non è somma di tre quadrati), BCC dà $7$. Se il testo fornisce meno di 7 picchi, entrambe le assegnazioni sono corrette e vanno discusse (in tal caso $a_{BCC} = \sqrt{2}\,a_{SC}$).}
+
+\subsubsection*{Tabella completa dei riflessi permessi (sistema cubico)}
+\begin{center}
+{\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{c c c c c c | c}
+\toprule
+$N$ & $(hkl)$ & SC & BCC & FCC & Diam. & Molteplicità $M$ \\
+\midrule
+1 & 100 & \checkmark & & & & 6 \\
+2 & 110 & \checkmark & \checkmark & & & 12 \\
+3 & 111 & \checkmark & & \checkmark & \checkmark & 8 \\
+4 & 200 & \checkmark & \checkmark & \checkmark & & 6 \\
+5 & 210 & \checkmark & & & & 24 \\
+6 & 211 & \checkmark & \checkmark & & & 24 \\
+7 & --- & \multicolumn{5}{l}{\textit{impossibile: 7 non è somma di 3 quadrati}} \\
+8 & 220 & \checkmark & \checkmark & \checkmark & \checkmark & 12 \\
+9 & 300 / 221 & \checkmark & & & & 6 / 24 \\
+10 & 310 & \checkmark & \checkmark & & & 24 \\
+11 & 311 & \checkmark & & \checkmark & \checkmark & 24 \\
+12 & 222 & \checkmark & \checkmark & \checkmark & & 8 \\
+13 & 320 & \checkmark & & & & 24 \\
+14 & 321 & \checkmark & \checkmark & & & 48 \\
+15 & --- & \multicolumn{5}{l}{\textit{impossibile}} \\
+16 & 400 & \checkmark & \checkmark & \checkmark & \checkmark & 6 \\
+17 & 410 / 322 & \checkmark & & & & 24 / 24 \\
+18 & 411 / 330 & \checkmark & \checkmark & & & 24 / 12 \\
+19 & 331 & \checkmark & & \checkmark & \checkmark & 24 \\
+20 & 420 & \checkmark & \checkmark & \checkmark & & 24 \\
+21 & 421 & \checkmark & & & & 48 \\
+22 & 332 & \checkmark & \checkmark & & & 24 \\
+23 & --- & \multicolumn{5}{l}{\textit{impossibile}} \\
+24 & 422 & \checkmark & \checkmark & \checkmark & \checkmark & 24 \\
+25 & 500 / 430 & \checkmark & & & & 6 / 24 \\
+26 & 510 / 431 & \checkmark & \checkmark & & & 24 / 48 \\
+27 & 511 / 333 & \checkmark & & \checkmark & \checkmark & 24 / 8 \\
+32 & 440 & \checkmark & \checkmark & \checkmark & \checkmark & 12 \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
+\subsubsection*{Regola per la molteplicità $M$ (numero di piani equivalenti, sistema cubico)}
+\begin{center}
+\begin{tabular}{l c l c}
+\toprule
+Tipo di indici & $M$ & Tipo di indici & $M$ \\
+\midrule
+$\{h00\}$ (due nulli) & 6 & $\{hhh\}$ (tutti uguali) & 8 \\
+$\{hh0\}$ & 12 & $\{hk0\}$ con $h\neq k$ & 24 \\
+$\{hhl\}$ con $l\neq h$, tutti $\neq0$ & 24 & $\{hkl\}$ tutti diversi e $\neq0$ & 48 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Reticoli NON cubici: metodo dell'intero $N_{hkl}$}
+\ricetta{Debye--Scherrer per tetragonale / ortorombico / esagonale}{
+\textbf{(1)} Scrivi $\Gvec_{hkl}=h\mathbf{b}_1+k\mathbf{b}_2+l\mathbf{b}_3$ con i $\mathbf{b}_i$ espliciti.\\
+\textbf{(2)} Metti in evidenza un fattore comune in modo che sotto radice resti un \textbf{intero} $N_{hkl}$. Esempi:
+\begin{itemize}
+\item Tetragonale con $c=2a$: $\ \Gvec = \frac{\pi}{a}(2h,2k,l) \Rightarrow |\Gvec|=\frac{\pi}{a}\sqrt{4(h^2+k^2)+l^2}$, \ $N=4(h^2+k^2)+l^2$.
+\item Ortorombico con $b=2a$, $c=3a$: $\ \Gvec = \frac{\pi}{3a}(6h,3k,2l) \Rightarrow N = 36h^2+9k^2+4l^2$.
+\item Ortorombico con $a=\frac{2}{3}s,\ b=s,\ c=\frac{3}{2}s$: $\ \Gvec = \frac{\pi}{3s}(9h,6k,4l) \Rightarrow N = 81h^2+36k^2+16l^2$.
+\item Ortorombico con $b=\frac{3}{4}a$, $c=2a$: riporta tutto a denominatore comune allo stesso modo.
+\end{itemize}
+\textbf{(3)} Ordina in ordine crescente di $N_{hkl}$: questo è l'ordine dei picchi.\\
+\textbf{(4)} $\sin\frac{\phi}{2} = \frac{\lambda}{4\pi}|\Gvec| = (\text{prefattore})\sqrt{N_{hkl}}$, quindi $\phi = 2\arcsin(\dots)$.\\
+\textbf{(5)} Famiglie \emph{diverse} con lo \emph{stesso} $N$ danno lo \textbf{stesso picco} (indistinguibili con le polveri): es.\ $(100),(010),(002)$ se $c=2a$.}
+
+\attenzione{Nei reticoli non cubici NON esiste una regola universale sull'ordine dei picchi: dipende dai rapporti $a:b:c$. Bisogna sempre costruire la tabella dei $N_{hkl}$.}
+
+\subsection{Fattore di struttura ed estinzioni sistematiche}
+\[ \boxed{S(\Gvec) = \sum_{j\in\text{base}} f_j\, \ee^{-\ii \Gvec\cdot\mathbf{d}_j}}
+   \qquad\qquad I_{hkl} \propto M_{hkl}\,|S(\Gvec_{hkl})|^2 \]
+dove $f_j$ è il fattore di forma atomico (all'esame quasi sempre $f_j \simeq Z_j$, numero atomico) e $\mathbf{d}_j$ le posizioni della base. Il segno all'esponente è irrilevante per il modulo quadro. Se gli atomi della base sono \textbf{identici} ($f_j=f$), il fattore si fattorizza:
+\[ S_{tot} = S_{ret}\cdot S_{base}, \qquad S_{base} = \sum_j \ee^{\,\ii 2\pi (h u_j + k v_j + l w_j)} \]
+con $\mathbf{d}_j = u_j\mathbf{a}_1+v_j\mathbf{a}_2+w_j\mathbf{a}_3$.
+
+\subsubsection*{Regola di estinzione per base di 2 atomi identici}
+Con $\mathbf{d}_1=0$ e $\mathbf{d}_2 = a(u,v,w)$:
+\[ S_{base}= 1 + \ee^{\,\ii 2\pi (hu+kv+lw)} \qquad\Longrightarrow\qquad
+   S_{base}=0 \iff \bm{hu+kv+lw = \frac{2m+1}{2}} \ \ (m\in\mathbb{Z}) \]
+cioè quando l'esponente è un multiplo \emph{dispari} di $\pi$.
+
+Se il testo fornisce un vettore $\mathbf{d}_2$ in coordinate cartesiane assolute, ad esempio $\mathbf{d}_2 = (\frac{a}{2}, \frac{a}{2}, \frac{a}{2})$, esso va normalizzato per le costanti reticolari!
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item \textbf{Reticolo cubico} ($a=b=c$): $u=\frac{1}{2}, v=\frac{1}{2}, w=\frac{1}{2} \implies S_{base} = 1 + \ee^{\ii\pi(h+k+l)}$. (Estinzione per $h+k+l$ dispari).
+    \item \textbf{Reticolo tetragonale} ($a=b\neq c$): $u=\frac{1}{2}, v=\frac{1}{2}, \bm{w=\frac{a}{2c}} \implies S_{base} = 1 + \ee^{\ii\pi\left(h+k+l\frac{a}{c}\right)}$.\\
+    \textit{(Esempio: se $c = \frac{3}{2}a \implies \frac{a}{c} = \frac{2}{3}$, l'estinzione si verifica quando $h+k+\frac{2}{3}l$ è dispari!)}
+\end{itemize}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+{\small
+\begin{tabular}{p{4.8cm} p{3.7cm} p{5.5cm}}
+\toprule
+\textbf{Base aggiunta $\mathbf{d}_2 = (u,v,w)$} & $\bm{S_{base}}$ & \textbf{Estinzione ($f_1=f_2$)} \\
+\midrule
+$\left(\frac{1}{2}, \frac{1}{2}, \frac{1}{2}\right)$ \newline \textit{(es. BCC, o $\frac{a}{2}(1,1,1)$ cubico)} & $1+\ee^{\ii\pi(h+k+l)}$ & $h+k+l$ \textbf{dispari} \\
+$\left(\frac{1}{4}, \frac{1}{4}, \frac{1}{4}\right)$ \newline \textit{(es. diamante)} & $1+\ee^{\ii\frac{\pi}{2}(h+k+l)}$ & $h+k+l = 2(2m+1) = 2,6,10\dots$ \newline \textit{(se dispari, l'intensità non è nulla ma va col modulo quadro $|1\pm \ii|^2=2$)} \\
+$\left(\frac{1}{2}, \frac{1}{2}, 0\right)$ \newline \textit{(base C centrata in $xy$)} & $1+\ee^{\ii\pi(h+k)}$ & $h+k$ \textbf{dispari} (per ogni $l$) \\
+$\left(\frac{1}{2}, \frac{1}{2}, w\right)$ \newline \textit{(generico asse z scalato)} & $1+\ee^{\ii2\pi\left(\frac{h+k}{2} + lw\right)}$ & La fase $\frac{h+k}{2} + lw$ deve essere un semi-intero: $\frac{2n+1}{2}$ \\
+$\left(\frac{1}{3}, \frac{2}{3}, \frac{1}{2}\right)$ \newline \textit{(HCP convenzionale)} & $1+\ee^{\ii2\pi\left(\frac{h+2k}{3}+\frac{l}{2}\right)}$ & $h+2k=3n$ \textbf{e contemporaneamente} $l$ dispari \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
+\ricetta{Estinzioni parziali e Degenerazione Accidentale (Polveri)}{
+Nei reticoli non cubici, famiglie di piani non equivalenti per simmetria possono avere casualmente lo stesso $N_{hkl}$ e finire nello \textbf{stesso picco} del diffrattogramma (es. ortorombico $b=2a, c=3a$: il picco con $N=36$ è dato da 100, 020 e 003). 
+Se aggiungi una base che impone una regola di estinzione (es. corpo centrato $\to h+k+l$ pari), devi controllare \textbf{ogni singola famiglia} che compone quel picco. Se alcune si estinguono (100, 003) ma almeno una sopravvive (020), il picco sul grafico \textbf{non scompare, ma si indebolisce} (intensità ridotta).
+}
+
+\subsubsection*{Combinazioni notevoli reticolo + base}
+\begin{itemize}
+  \item \textbf{SC + atomo in $\frac{a}{2}(1,1,1)$} $\to$ diventa un \textbf{BCC}: spariscono tutti i picchi con $h+k+l$ dispari ($100,111,210,300,221\dots$).
+  \item \textbf{FCC + atomo in $\frac{a}{2}(1,1,1)$}: nell'FCC gli indici sono già tutti pari o tutti dispari. Se tutti dispari, la somma è necessariamente dispari $\Rightarrow$ \textbf{spariscono TUTTI i picchi a indici dispari} ($111,311,331,333\dots$). Sopravvivono solo quelli a indici tutti pari ($200,220,222,400\dots$).
+  \item \textbf{FCC + atomo in $\frac{a}{4}(1,1,1)$} $\to$ \textbf{DIAMANTE}: spariscono i picchi con $h+k+l=4n+2$, cioè $200$, $222$, $420$, $600/442$\dots\ (restano $111,220,311,400,331,422,511/333,440$).
+  \item \textbf{BCC + atomo in $\frac{a}{4}(1,1,1)$}: nel BCC $h+k+l=2n$, quindi $S_{base}=1+\ee^{\ii\pi n}$: spariscono i picchi con $n$ dispari, cioè $h+k+l=2,6,10\dots$ $\Rightarrow$ spariscono $110,200,222,321\dots$
+  \item \textbf{SC + 4 atomi in $0,\frac a4(1,1,1),\frac a2(1,1,1),\frac{3a}{4}(1,1,1)$}:
+  $S=\left[1+\ee^{\ii\pi(h+k+l)}\right]\left[1+\ee^{\ii\frac\pi2(h+k+l)}\right] = S_{BCC}\cdot S_{base}$: sopravvivono solo i picchi con $h+k+l$ pari \emph{e} $h+k+l\neq 2(2m+1)$, cioè $h+k+l = 4n$.
+\end{itemize}
+
+\subsection{Intensità dei picchi}
+\[ I_{hkl}\propto M_{hkl}\,\left|S(\Gvec_{hkl})\right|^2, \qquad f_j \simeq Z_j \]
+\begin{itemize}
+  \item \textbf{CsCl} (SC, base Cs$(0,0,0)$ + Cl$\frac a2(1,1,1)$):
+  \[ S = f_{Cs} + f_{Cl}\,(-1)^{h+k+l}
+     \Rightarrow \begin{cases} |S|=f_{Cs}+f_{Cl} & h+k+l \text{ pari (picchi INTENSI)}\\
+                               |S|=|f_{Cs}-f_{Cl}| & h+k+l \text{ dispari (picchi DEBOLI)}\end{cases}\]
+  Se $f_{Cs}=f_{Cl}$ il reticolo diventa BCC e i picchi dispari spariscono del tutto.
+  \item \textbf{NaCl} (FCC, base Na$(0,0,0)$ + Cl$\frac a2(1,1,1)$):
+  \[ S = \underbrace{\left[1+\ee^{-\ii\pi(h+k)}+\ee^{-\ii\pi(h+l)}+\ee^{-\ii\pi(k+l)}\right]}_{=4 \text{ se } h,k,l \text{ stessa parità}}
+      \cdot\left[f_{Na}+f_{Cl}\,\ee^{-\ii\pi(h+k+l)}\right] \]
+  \[ I = 16A\,(f_{Na}+f_{Cl})^2 \ \ (h,k,l \text{ tutti PARI, forte}); \qquad
+     I = 16A\,(f_{Na}-f_{Cl})^2 \ \ (\text{tutti DISPARI, debole}) \]
+  \item \textbf{Zincoblenda} (FCC, base A$(0,0,0)$ + B$\frac a4(1,1,1)$):
+  \[ |S|^2 \propto \begin{cases} (f_A+f_B)^2 & h+k+l=4n \\ (f_A-f_B)^2 & h+k+l=4n+2 \\ f_A^2+f_B^2 & h,k,l \text{ tutti dispari}\end{cases}\]
+\end{itemize}
+
+\subsection{Leggere gli indici di Miller da un disegno}
+\ricetta{Dal piano disegnato agli indici $(hkl)$}{
+\textbf{(1)} Trova le \textbf{intercette} del piano con i tre assi cristallografici, misurate in unità dei parametri di cella $a,b,c$: siano $p,q,r$ (se il piano è parallelo a un asse, l'intercetta è $\infty$).\\
+\textbf{(2)} Prendi i \textbf{reciproci}: $\left(\frac1p,\frac1q,\frac1r\right)$ (il reciproco di $\infty$ è 0).\\
+\textbf{(3)} Moltiplica per il minimo comune multiplo per ottenere i tre \textbf{interi} più piccoli $(hkl)$. Un'intercetta negativa si indica con la barra: $\bar h$.\\
+\textbf{(4)} Controllo: $\Gvec_{hkl}$ è \textbf{perpendicolare} al piano $(hkl)$ e $d_{hkl}=2\pi/|\Gvec_{hkl}|$.\\
+\textit{Esempi:} piano parallelo a $y,z$ che taglia $x$ in $a$ $\to$ $(100)$; piano che taglia in $(a,b,c)$ $\to$ $(111)$; piano che taglia in $(a/2,b,\infty)$ $\to$ $(210)$.\\
+\textbf{(5)} Per dire se il piano dà un picco: applica le regole di selezione del reticolo \emph{e} il fattore di struttura della base.}
+
+\subsection{Cella di Wigner--Seitz e prima zona di Brillouin}
+\begin{itemize}
+  \item \textbf{Cella di Wigner--Seitz:} si congiunge un punto reticolare a tutti i suoi vicini, si tracciano i piani bisettori perpendicolari e si prende il volume racchiuso più piccolo. È una cella \textbf{primitiva} (contiene esattamente 1 punto reticolare) e ha il volume $V_p$ della cella primitiva.
+  \item \textbf{Prima zona di Brillouin (1ZB):} è la cella di Wigner--Seitz del \textbf{reticolo reciproco}. Volume $V_{rec}=(2\pi)^3/V_p$ (in 2D: $A_{rec}=(2\pi)^2/A_p$).
+  \item Contiene esattamente $N$ vettori $\kvec$ permessi ($N$ = numero di celle del cristallo), da cui derivano tutte le regole di conteggio (Debye, riempimento delle bande).
+\end{itemize}
+
+\subsection{Stesso reticolo, due descrizioni equivalenti}
+\ricetta{Reticolo centrato: base + reticolo semplice \ \textbf{oppure} \ reticolo di Bravais fondamentale}{
+Un reticolo centrato (base centrata, corpo centrato, facce centrate) può sempre essere trattato in due modi, che danno lo stesso risultato:
+\begin{itemize}
+\item[\textbf{A}] \textbf{Reticolo semplice + base.} Usi i $\mathbf{b}_i$ del reticolo semplice (tutti gli $(hkl)$ interi ammessi) e applichi il fattore di struttura $S_\Gvec = 1+\ee^{\ii\Gvec\cdot\mathbf{d}_2}$, che \emph{estingue} parte dei riflessi.
+\item[\textbf{B}] \textbf{Reticolo di Bravais fondamentale.} Usi i vettori primitivi del reticolo centrato (con $V_p$ dimezzato/quartato) e i corrispondenti $\mathbf{b}_i$: \emph{nessuna} restrizione sugli indici, ma i $\Gvec$ generati sono già solo quelli permessi.
+\end{itemize}
+Gli \textbf{angoli osservati} sono identici; cambiano solo le etichette $(hkl)$. Se il testo chiede ``quali picchi scompaiono'', conviene l'approccio \textbf{A}.}
+
+\subsection{Calcolo dei parametri con Debye-Scherrer} 
+\ricetta{Debye-Scherrer: calcolo dei parametri reticolari tetragono}{
+Per un reticolo tetragonale con base ($a=b\neq c$), il vettore del reticolo reciproco generico è $\mathbf{K} = h\mathbf{b}_1 + k\mathbf{b}_2 + l\mathbf{b}_3 = \frac{2\pi}{a}(h\hat{x} + k\hat{y}) + \frac{2\pi}{c}l\hat{z}$. Il suo modulo è: $K = \frac{2\pi}{a}\sqrt{h^2 + k^2 + \left(\frac{a}{c}\right)^2 l^2}$
+
+Quindi la formula operativa diventa: $ \sin\left(\frac{\phi}{2}\right) = \frac{\lambda}{2a}\sqrt{h^2 + k^2 + \left(\frac{a}{c}\right)^2 l^2}$
+
+
+Prima di associare i picchi, calcola il fattore di struttura $\mathcal{S}_K$ della base. Per un reticolo a corpo centrato (I), $\mathbf{d}_2 = \frac{a}{2}(\hat{x}+\hat{y}) + \frac{c}{2}\hat{z}$ (in frazionarie: $u=1/2, v=1/2, w=1/2$), da cui $\mathcal{S}_K = 1 + \ee^{\ii\pi(h+k+l)}$.
+I picchi sono visibili solo se la somma degli indici di Miller $h+k+l$ è pari
+
+\textbf{Strategia per trovare $a$ e $c$:}
+Quando l'indice $l=0$, la dipendenza da $c$ scompare e la formula si riduce a quella del reticolo quadrato bidimensionale: $ \sin\left(\frac{\phi_{hk0}}{2}\right) = \frac{\lambda}{2a}\sqrt{h^2+k^2}$. 
+
+Le famiglie di piani $hk0$ permesse (con $h+k$ pari) sono: (110) con $\sqrt{h^2+k^2}=\sqrt{2}$, poi (200)/(020) con $\sqrt{h^2+k^2}=2$, ecc.
+
+Il trucco è cercare nella lista degli angoli due valori $\phi_A$ e $\phi_B$ tali che il rapporto dei loro $\sin(\phi/2)$ sia circa $\frac{2}{\sqrt{2}} = \sqrt{2}$. 
+Una volta identificati, associa l'angolo minore al piano (110) per calcolare $a = \frac{\lambda\sqrt{2}}{2\sin(\phi_{110}/2)}$
+
+
+Se l'angolo identificato come (110) non è il primo della lista, significa che ci sono piani con $l\neq0$ che compaiono prima. I candidati per i primissimi picchi in un tetragonale I sono solitamente il (002) (perché $h+k+l$ deve essere pari) oppure i misti (101)/(011).
+Prova l'ipotesi che il primo picco in assoluto sia il (002). In questo caso $K = \frac{4\pi}{c}$: $c = \frac{\lambda}{\sin(\phi_{002}/2)}$
+
+Verifica poi che i valori di $a$ e $c$ ottenuti riproducano correttamente tutti gli altri angoli (es. il picco (101) inserendo $h=1, k=0, l=1$ nella formula generale)
+}
+
+\subsection{Diffrazione con neutroni ed elettroni}
+Per ottenere gli \emph{stessi angoli} dei raggi X serve la \textbf{stessa lunghezza d'onda}. Con la relazione di de Broglie (limite non relativistico):
+\[ \lambda = \frac{h}{p} = \frac{h}{m v} \qquad\Longrightarrow\qquad
+   \bm{v = \frac{h}{m\lambda} = \frac{2\pi\hbr}{m\lambda}} \]
+\begin{itemize}
+  \item Neutroni: $m_n = 1.675\times10^{-27}$ kg. Esempio: $\lambda = 1.476$ \AA\ $\Rightarrow v = 2.68\times10^3$ m/s.
+  \item Elettroni: $m_0 = 9.109\times10^{-31}$ kg. Energia cinetica: $E = \frac{p^2}{2m} = \frac{h^2}{2m\lambda^2}$.
+  \item Fotoni: $E = hc/\lambda$ (relazione diversa! non confonderla con quella dei neutroni).
+\end{itemize}
+
+\newpage
+
+\section{Vibrazioni reticolari: catene 1D e fononi}
+
+\subsection{Conteggio dei rami fononici}
+\begin{itemize}
+  \item Se gli atomi oscillano in $d_{mov}$ dimensioni spaziali, ci sono $d_{mov}$ rami \textbf{acustici}.
+  \item Se la cella primitiva contiene $p$ atomi, ci sono in totale $d_{mov}\times p$ rami:
+  \[ \bm{d_{mov}\ \text{acustici} \qquad + \qquad d_{mov}(p-1)\ \text{ottici}} \]
+  \item In 3D: 3 acustici e $3p-3$ ottici (di cui, lungo direzioni di alta simmetria, 1 longitudinale e 2 trasversali per gruppo, spesso i due T sono degeneri).
+\end{itemize}
+
+\ricetta{Contare gli atomi della base dal grafico dei fononi}{Conta il numero di rami visibili $N_{rami}$ nello spettro. Allora $p = N_{rami}/d_{mov}$.\\
+Esempi d'esame: 12 rami in 3D $\Rightarrow p=4$ (wurtzite GaN); 6 rami in un reticolo 2D con moto nel piano $\Rightarrow p=3$; 6 rami in 3D $\Rightarrow p=2$ (Si, Ge, NaCl, GaAs).\\
+\textbf{Degenerazioni:} lungo direzioni ad alta simmetria i due modi trasversali possono essere degeneri, quindi si vedono \emph{meno} curve del previsto: TA doppiamente degenere, LA singola, TO doppiamente degenere, LO singola.}
+
+\subsection{Leggere un grafico di dispersione fononica sperimentale}
+\label{sec:leggigrafico}
+
+\ricetta{Riconoscere i rami a colpo d'occhio}{
+\begin{itemize}
+  \item \textbf{ACUSTICI} $=$ le curve che partono da $E=0$ in $q=0$ e salgono linearmente. Sono \emph{sempre} esattamente $d_{mov}$ (2 se il moto è confinato nel piano, 3 in 3D, 1 in una catena 1D). Non ce ne sono mai di più né di meno: se ne ``vedi'' meno, due sono degeneri e sovrapposte.
+  \item \textbf{OTTICI} $=$ tutte le altre, cioè quelle che in $q=0$ partono da un'energia finita $E\neq0$. Tipicamente sono quasi piatte (poco disperse) e stanno in alto.
+  \item Il numero \emph{totale} di curve è $N_{rami}=d_{mov}\cdot p$: da lì si ricava $p$. 
+  \item L'energia dei rami ottici in $q=0$ è $\hbr\omega_{opt}(0)$: è la frequenza di \textbf{assorbimento IR}.
+  \item Il valore massimo di $q$ del grafico è il \textbf{bordo zona}: usalo come \emph{verifica} del passo reticolare ($q_{max}=\pi/a$ lungo la direzione mostrata). Es.: $a=0.5$ nm $\Rightarrow \pi/a = 6.28$ nm$^{-1}$, e infatti il grafico arriva a $\sim6$ nm$^{-1}$.
+\end{itemize}}
+\attenzione{Nei grafici sperimentali i rami ottici possono \textbf{scendere} sotto il loro valore in $q=0$ e in certi casi \emph{incrociare} i rami acustici. Il criterio è \textbf{solo} il valore in $q=0$: parte da zero $\Rightarrow$ acustico. Non ``la curva più bassa''.}
+
+\subsubsection*{Passo 1 --- Base}
+\[ \boxed{\ p=\frac{N_{rami}}{d_{mov}}\ } \qquad\text{e la base esiste se } p>1 \]
+\textit{Es.:} 6 rami, moto solo nel piano $\Rightarrow d_{mov}=2 \Rightarrow p=3$ atomi nella base (2 acustici $+$ 4 ottici)
+
+\subsubsection*{Passo 2 --- Quali punti leggere per le velocità del suono}
+Serve una velocità per ogni ramo acustico (in 2D nel piano $v_L$ e $v_T$; in 3D $v_\ell$ e i due $v_t$, spesso degeneri).
+\ricetta{Lettura delle pendenze}{
+\begin{enumerate}
+  \item Usa il \textbf{pannello ingrandito a basso $q$} 
+  \item Su \emph{ciascun} ramo acustico scegli l'ultimo punto in cui la curva è ancora visibilmente una retta.
+  \item Leggi le sue coordinate $(q, E)$ e applica $ v=\frac{E}{\hbr q}=1518.5\,\frac{E[\text{meV}]}{q[\text{nm}^{-1}]}\ \ \text{m/s}$
+  (equivalentemente $v=\frac{1}{\hbr}\frac{\Delta E}{\Delta q}$ fra due punti sulla retta).
+  \item \textbf{Verifica obbligatoria:} la retta che passa per il punto scelto \emph{e per l'origine} deve sovrapporsi ai dati. Se non ci passa, hai preso un punto fuori dal tratto lineare $\Rightarrow$ scegline uno più vicino a $q=0$.
+  \item Il ramo più \textbf{ripido} è il \textbf{longitudinale} ($v_L$), quello meno ripido è il \textbf{trasversale} ($v_T$): sempre $v_L>v_T$.
+\end{enumerate}}
+
+\attenzione{Se i due rami acustici sono \textbf{sovrapposti} (degeneri) leggi \emph{una} velocità ma nelle somme sotto contala \textbf{due volte}. In 3D lungo direzioni di alta simmetria è il caso normale: $2\times v_t$ (degeneri) $+\ 1\times v_\ell$.}
+
+\subsubsection*{Passo 3 --- Giustificare \emph{quantitativamente} quale limite usare}
+Il testo chiede quasi sempre ``justify quantitatively''. La giustificazione è il confronto di $\kB T$ con le scale di energia \emph{lette sul grafico}:
+\[ \boxed{\ \kB T\,[\text{meV}] = 0.08617\cdot T[\text{K}]\ } \]
+\begin{itemize}
+  \item \textbf{Limite di bassa $T$ (Debye, $\propto T^{d}$):} $\kB T \ll$ energia massima dei rami \emph{acustici} \ \emph{e} \ $\kB T\ll \hbr\omega_{opt}(0)$. Allora: sono popolati solo i fononi acustici nel tratto \textbf{lineare} (l'approssimazione di Debye è esatta lì),  i rami ottici sono \textbf{congelati}, il loro peso è $\sim\ee^{-\hbr\omega_{opt}/\kB T}$, trascurabile. Equivalentemente $T\ll\Theta_D$.
+  \item \textbf{Limite di alta $T$ (Dulong--Petit, $c_V$ costante):} $\kB T\gg$ energia \emph{massima} di \emph{tutto} lo spettro (cioè il ramo ottico più alto). Allora \emph{tutti} i modi, acustici e ottici, sono classici.
+  \item \textbf{Regione intermedia:} nessuna delle due formule vale, serve Einstein per gli ottici $+$ Debye per gli acustici.
+\end{itemize}
+\textit{Es.:} a $T=10$ K, $\kB T=0.86$ meV, contro $\sim5$ meV di cima dei rami acustici e $\sim8$ meV di gap ottico $\Rightarrow$ bassa $T$ pura. A $T=1000$ K, $\kB T=86$ meV contro $\sim28$ meV di massimo dello spettro $\Rightarrow$ Dulong--Petit.
+
+\newpage
+\section{Catena 1D}
+
+\subsection{Catena monoatomica 1D}
+Equazione del moto: $M\ddot u_n = -K(2u_n - u_{n+1} - u_{n-1})$. Con $u_n = A\,\ee^{\ii(qna-\omega t)}$:
+\[ \bm{\omega(q) = \sqrt{\frac{4K}{M}}\;\left|\sin\!\left(\frac{qa}{2}\right)\right|} \]
+\begin{itemize}
+  \item Velocità del suono: $\bm{\vs = \left.\frac{\dd\omega}{\dd q}\right|_{q\to0} = a\sqrt{K/M}}$ \quad(da cui $\bm{K = M(\vs/a)^2}$).
+  \item Bordo zona $q=\pi/a$: $\omega_{max}=\sqrt{4K/M}=2\sqrt{K/M}$, velocità di gruppo nulla.
+  \item 1ZB: $q\in[-\pi/a,\pi/a]$, contiene $N$ stati $\Rightarrow$ in 1D $q_D = \pi/a$ \emph{esattamente}.
+\end{itemize}
+
+\subsection{Catena biatomica 1D --- $M_1 \neq M_2, K_1 \neq K_2$}
+Cella di passo $a$ con due atomi di massa $M_1, M_2$; costanti elastiche alternate $K_1, K_2$ (legami corto/lungo).
+
+Equazioni del moto: 
+\begin{equation*}
+    \begin{cases}
+M_1 \ddot{u}_n = -K_1(u_n - v_n) - K_2(u_n - v_{n-1}) \\
+M_2 \ddot{v}_n = -K_1(v_n - u_n) - K_2(v_n - u_{n+1})
+\end{cases} 
+\end{equation*}
+dove $u_n$ indica lo spostamento della massa $M_1$ e $v_n$ lo spostamento della massa $M_2$ nella cella $n$-esima. 
+
+Le equazioni del moto, con onde piane $\ee^{\ii(qna-\omega t)}$, danno il sistema secolare
+\[ \begin{cases} (K_1+K_2 - M_1\omega^2)A - (K_1 + K_2\ee^{-\ii qa})B = 0\\[2pt]
+                 -(K_1 + K_2\ee^{+\ii qa})A + (K_1+K_2 - M_2\omega^2)B = 0 \end{cases} \]
+il cui determinante nullo fornisce l'\textbf{equazione di dispersione maestra}:
+\[ \bm{M_1 M_2\,\omega^4 - (M_1+M_2)(K_1+K_2)\,\omega^2 + 4K_1K_2\sin^2\!\left(\frac{qa}{2}\right) = 0} \]
+\[ \bm{\omega^2_{\pm}(q) = \frac{K_1+K_2}{2}\left(\frac{1}{M_1}+\frac{1}{M_2}\right)
+   \pm \sqrt{\frac{(K_1+K_2)^2}{4}\left(\frac{1}{M_1}+\frac{1}{M_2}\right)^{\!2} - \frac{4K_1K_2}{M_1M_2}\sin^2\!\left(\frac{qa}{2}\right)}} \]
+con $\omega_+ = \omega_{ottico}$ e $\omega_- = \omega_{acustico}$.
+
+
+Definendo la scala di frequenza $\Omega$ e il parametro adimensionale $\lambda$:
+\[ \Omega^2 \equiv \frac{(K_1+K_2)(M_1+M_2)}{2M_1M_2}, \qquad
+   \lambda \equiv \frac{8K_1K_2 M_1M_2}{(K_1+K_2)^2(M_1+M_2)^2} \]
+\[ \omega^2_\pm(q) = \Omega^2\left(1\pm\sqrt{1-2\lambda\sin^2\frac{qa}{2}}\right),
+   \qquad \omega_{ac}(q\to0)\simeq \vs|q|, \quad \bm{\vs = \frac{\sqrt{\lambda}}{2}\,\Omega\,a},  \quad   \bm{\vs = a \sqrt{\frac{K_1 K_2}{(K_1+K_2)(M_1+M_2)}}}  \]
+\textit{(Utile quando il testo dà masse e molle ``strane'' del tipo $M=4m$, $K_S=3K$: si calcola $\Omega$ e $\lambda$ e si sostituisce.)}
+
+\subsubsection*{Caso 1 --- Masse diverse ($M_1\neq M_2$), stessa molla ($K_1=K_2=K$)}
+\[ \omega^2_{\pm}(q) = K\left(\frac{M_1+M_2}{M_1 M_2}\right) \pm K \sqrt{\left(\frac{M_1+M_2}{M_1 M_2}\right)^2 - \frac{4}{M_1 M_2}\sin^2\!\left(\frac{qa}{2}\right)} \]
+\begin{itemize}
+  \item \textbf{Ramo ottico al centro zona ($q=0$)} --- è la frequenza misurata in assorbimento IR:
+  \[ \bm{\Omega_{IR} = \omega_{op}(0) = \sqrt{2K\left(\frac{1}{M_1}+\frac{1}{M_2}\right)}}
+     \qquad\Longrightarrow\qquad \bm{K = \frac{\Omega_{IR}^2}{2}\,\frac{M_1M_2}{M_1+M_2}} \]
+  \item \textbf{Bordo zona ($q=\pi/a$):} si apre la gap; le due frequenze sono $\sqrt{2K/M_1}$ (ramo basso, massa grande) e $\sqrt{2K/M_2}$ (ramo alto, massa piccola).
+  \item \textbf{Velocità del suono:}
+  \[ \bm{\vs = a\sqrt{\frac{K}{2(M_1+M_2)}}} \]
+\end{itemize}
+
+\attenzione{$\vs = a\sqrt{K/[2(M_1+M_2)]}$ vale se $a$ è il passo della \textbf{cella} (che contiene 2 atomi). Se il testo definisce $a$ come la distanza tra atomi \emph{primi vicini} (cioè cella $=2a$), la velocità cambia di un fattore 2. Controlla sempre la geometria del disegno.}
+
+\subsubsection*{Caso 2 --- Masse uguali ($M_1=M_2=M$), molle diverse ($K_1\neq K_2$)}
+\[ \omega^2_{\pm}(q) = \frac{K_1+K_2}{M} \pm \frac{1}{M}\sqrt{(K_1+K_2)^2 - 4K_1 K_2 \sin^2\!\left(\frac{qa}{2}\right)} \]
+\begin{itemize}
+  \item \textbf{Ramo ottico a $q=0$:}
+  \[ \bm{\Omega_{IR}=\omega_{op}(0) = \sqrt{\frac{2(K_1+K_2)}{M}}} \qquad\Longrightarrow\qquad \bm{M = \frac{2(K_1+K_2)}{\Omega_{IR}^2}} \]
+  \item \textbf{Bordo zona ($q=\pi/a$):} le frequenze sono $\sqrt{2K_1/M}$ e $\sqrt{2K_2/M}$.
+  \item \textbf{Velocità del suono:}
+  \[ \bm{\vs = a\sqrt{\frac{K_1K_2}{2M(K_1+K_2)}}} \]
+\end{itemize}
+
+\subsubsection*{Caso 3 --- Catena monoatomica come limite ($M_1=M_2=M,\ K_1=K_2=K$)}
+Il ramo ottico si ricongiunge all'acustico (gap chiusa: ``band folding''), e si ritrova
+$\omega(q) = \sqrt{4K/M}\,|\sin(qa/2)|$ con $\vs=a\sqrt{K/M}$ ($a$ = passo reticolare).
+
+
+\subsubsection*{Riassunto operativo:}
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{l l l l}
+\toprule
+& $\omega_{op}(0)$ & $\omega$ al bordo zona & $\vs$ \\
+\midrule
+$M_1\neq M_2$, $K$ uguale & $\sqrt{2K\left(\frac{1}{M_1}+\frac{1}{M_2}\right)}$ & $\sqrt{\frac{2K}{M_1}},\ \sqrt{\frac{2K}{M_2}}$ & $a\sqrt{\frac{K}{2(M_1+M_2)}}$ \\
+$M$ uguale, $K_1\neq K_2$ & $\sqrt{\frac{2(K_1+K_2)}{M}}$ & $\sqrt{\frac{2K_1}{M}},\ \sqrt{\frac{2K_2}{M}}$ & $a\sqrt{\frac{K_1K_2}{2M(K_1+K_2)}}$ \\
+Monoatomica & --- & $2\sqrt{K/M}$ & $a\sqrt{K/M}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Catena biatomica lungo le diagonali di un reticolo quadrato 2D}
+Se un reticolo quadrato di passo $a$ ha ioni positivi e negativi alternati,
+equispaziati, \textbf{lungo le diagonali} delle celle quadrate (in modo da formare
+catene biatomiche 1D), il passo reticolare \emph{effettivo} della catena biatomica
+NON è $a$ ma la diagonale della cella:
+\[ \bm{a' = a\sqrt{2}} \]
+Tutte le formule della catena biatomica lineare (in $K a'$) vanno quindi valutate con
+questo $a'$:
+\[ \omega_{ac}(K\sim0) = \sqrt{\frac{C}{2(M_1+M_2)}}\;K a' = \sqrt{\frac{C}{2(M_1+M_2)}}\;K a\sqrt2 \]
+\[ \bm{v_s = \left.\frac{d\omega_{ac}}{dK}\right|_{K=0} = \sqrt{\frac{C}{2(M_1+M_2)}}\;a\sqrt2} \]
+da cui, nota $v_s$ (es.\ da dati sperimentali), si ricava la costante elastica:
+\[ \bm{C = 2(M_1+M_2)\,\frac{v_s^{\,2}}{2a^2} = (M_1+M_2)\frac{v_s^{\,2}}{a^2}} \]
+La frequenza ottica a centro zona $\omega_{opt}(K\sim0)=\sqrt{2C\!\left(\frac1{M_1}+\frac1{M_2}\right)}$
+\textbf{non dipende da $a'$} (è indipendente dal passo), quindi resta invariata.
+\attenzione{Non confondere $a'$ (passo della catena, usato in $\omega_{ac}(Ka')$) con $a$
+(costante del reticolo 2D quadrato, usato per calcolare la temperatura di Debye 2D
+tramite $k_D=2\sqrt\pi/a$ o l'area della cella $A_c=a^2$): sono due lunghezze diverse
+nello stesso problema!}
+
+
+\subsection{Costanti elastiche efficaci dalle velocità del suono}
+Per un reticolo con massa $M$ per punto reticolare e passo $a$:
+\[ \bm{K_s = M\left(\frac{v_s}{a}\right)^{\!2}} \qquad (s=\ell,\,t) \]
+\textit{Attenzione:} se il reticolo può essere interpretato sia come BCC con lato $a$ sia come SC con lato $a'=a/\sqrt2$, le costanti elastiche cambiano di conseguenza.
+
+
+\newpage 
+\section{Velocità del suono}
+
+\textbf{Definizione:} Per i fononi acustici, vicino al centro zona ($k\to0$) la dispersione è lineare; $\vs$ è la velocità di gruppo:
+\[ \bm{\vs = \left.\frac{\dd\omega}{\dd k}\right|_{k=0}} \]
+Nel modello di Debye tale approssimazione lineare ($\omega=\vs k$) viene estesa a tutta la 1ZB fino al taglio $k_D$.
+
+\subsection{Da una legge di dispersione trigonometrica (sviluppo in serie)}
+Espandere per piccoli argomenti: $\sin x \approx x$, $\ \sqrt{1-\epsilon}\approx 1-\epsilon/2$, $\ \cos x \approx 1-x^2/2$.
+
+\textit{Esempio:} data $\tilde\nu = 78\,|\sin(ka/2)|\ \text{cm}^{-1}$. Prima si converte l'ampiezza in unità SI: $78\ \text{cm}^{-1} = 7800\ \text{m}^{-1}$. La pulsazione è $\omega = 2\pi c\,\tilde\nu$ (con $c$ in m/s):
+\[ \omega = 2\pi c\cdot 7800\,\left|\sin\frac{ka}{2}\right| \approx 2\pi c\cdot 7800\cdot\frac{ka}{2} = 7800\,\pi\,c\,a\,k
+   \qquad\Longrightarrow\qquad \bm{\vs = 7800\,\pi\,c\,a} \]
+
+\subsection{Da un grafico di dispersione $E$ [meV] vs $q$ [nm$^{-1}$]}
+Nel tratto lineare iniziale, $E=\hbr\omega = \hbr v q$, quindi: $\bm{v = \frac{E}{\hbr q} = \frac{1}{\hbr}\frac{\Delta E}{\Delta q}}$
+
+Si legge un punto $(q,E)$ sul tratto lineare per \emph{ciascun} ramo acustico (2 trasversali + 1 longitudinale), poi si fa la media di Debye (sotto).
+
+Quali punti prendere, come distinguere acustici e ottici e l'esercizio-tipo completo: vedi paragrafo \ref{sec:leggigrafico}. 
+
+
+\subsection{Da $\Theta_D$ e $q_D$}
+\[ \bm{\vs = \frac{\kB\Theta_D}{\hbr\,q_D}} \qquad\text{con }  \]
+
+\subsection{Dalla DOS totale $\mathcal{D}$ in 1D}
+\[\mathcal{D} = L/(\pi \vs) \Rightarrow \bm{\vs = L/(\pi\mathcal{D})}\] 
+vedi paragrafo \ref{sec:dosfononi}
+
+\subsection{MEDIA DI DEBYE delle velocità}
+La velocità media $v_D$ \textbf{non} è una semplice media aritmetica.
+\begin{itemize}
+    \item  \textbf{Caso 3D (media armonica cubica):}
+\[ \bm{\langle v\rangle = v_D = \left[\frac{1}{3}\left(\frac{1}{v_\ell^3}+\frac{1}{v_{t1}^3}+\frac{1}{v_{t2}^3}\right)\right]^{-1/3}} \]
+Se i due trasversali sono degeneri: $\displaystyle v_D=\left[\frac13\left(\frac{1}{v_\ell^3}+\frac{2}{v_t^3}\right)\right]^{-1/3}$.
+\\ Problema inverso (dato $v_D$ e $v_t$, trovare $v_\ell$):
+$\displaystyle v_\ell = \left(\frac{3}{v_D^3}-\frac{2}{v_t^3}\right)^{-1/3}$.
+
+\item \textbf{Caso 2D (media armonica quadratica):}
+\[ \bm{v_D = \left[\frac{1}{2}\left(\frac{1}{v_\ell^2}+\frac{1}{v_t^2}\right)\right]^{-1/2}} \]
+
+\item \textbf{Caso 1D:}
+\\ In una catena lineare ideale c'è 1 solo modo longitudinale ($v_\ell$). Non essendoci rami trasversali, la media coincide banalmente con l'unica velocità di propagazione:
+\[ \bm{v_D = v_\ell} \]
+\end{itemize}
+\vspace{0.3cm}
+\noindent \textbf{Nota metodologica sulle direzioni:}
+\\ Se le velocità sono misurate o date lungo più direzioni cristallografiche, prima si fa la \emph{media aritmetica} sulle direzioni per ogni singolo ramo di polarizzazione, e solo successivamente si applica la media di Debye sui rami.
+
+
+\newpage
+
+
+\section{Densità degli stati fononici $g(\omega)$}
+\label{sec:dosfononi}
+La densità degli stati $G(\omega)$ rappresenta il numero di stati vibrazionali permessi tra $\omega$ e $\omega+\dd\omega$. Per un cristallo di volume $V$ (o Area $A$, o Lunghezza $L$) in $d$ dimensioni, ogni stato occupa nello spazio $k$ un ``volume'' $(2\pi)^d/V$. Passando dal discreto al continuo tramite la delta di Dirac, l'integrale sul volume diventa un integrale sulla superficie $S(\omega)$:
+\[ G(\omega) = \frac{V}{(2\pi)^d} \int_{S(\omega)} \frac{\dd S}{|\nabla_{\kvec}\, \omega(\kvec)|} \]
+\begin{itemize}
+    \item $\dd S$: elemento infinitesimo della superficie a $\omega$ costante.
+    \item $|\nabla_{\kvec} \omega(\kvec)|$: modulo del gradiente della relazione di dispersione (fisicamente la velocità di gruppo del fonone, $v_g$).
+\end{itemize}
+Molto spesso viene richiesta la \textbf{densità degli stati per unità di volume}: $g(\omega)=G(\omega)/V$.
+
+\subsubsection*{Ipotesi di Debye}
+\begin{enumerate}
+    \item \textbf{Dispersione lineare:} $\omega(\kvec) = \vs|\kvec|$, con $\vs$ costante.
+    \item \textbf{Velocità di gruppo costante:} $|\nabla_{\kvec}\omega| = \vs$.
+    \item \textbf{Superfici isofrequenziali isotrope:} sfere (3D), cerchi (2D), coppie di punti (1D) di raggio $k=\omega/\vs$.
+    \item Se il sistema possiede $p$ rami acustici degeneri, si moltiplica per $p$.
+\end{enumerate}
+
+\[g(\omega) = \frac{p}{(2\pi)^d}\int_{S(\omega)}\frac{\dd S}{\vs}\]
+
+\vspace{0.3cm}
+
+\begin{itemize}
+    \item \textbf{Caso 3D:} Superficie: sfera, $\int \dd S = 4\pi k^2$; sostituendo $k=\omega/\vs$:
+\[ g_{3D}(\omega) = \frac{p}{(2\pi)^3}\frac{1}{\vs}\,4\pi k^2 = \frac{p}{8\pi^3 \vs}4\pi\left(\frac{\omega}{\vs}\right)^2
+   \implies \bm{g_{3D}(\omega) = \frac{p}{2\pi^2}\frac{\omega^2}{\vs^3}} \]
+\item \textbf{Caso 2D:} Circonferenza, $\int\dd S = 2\pi k$:
+\[ g_{2D}(\omega) = \frac{p}{(2\pi)^2}\frac{1}{\vs}(2\pi k)
+   \implies \bm{g_{2D}(\omega) = \frac{p}{2\pi}\frac{\omega}{\vs^2}} \]
+\item \textbf{Caso 1D:} La ``superficie'' a energia costante sono i due punti $\pm k$, $\int\dd S = 2$:
+\[ g_{1D}(\omega) = \frac{p}{(2\pi)^1}\frac{1}{\vs}(2) \implies \bm{g_{1D}(\omega) = \frac{p}{\pi \vs}} \quad(\text{costante!}) \]
+\end{itemize}
+
+\subsection{Normalizzazione: da $g(\omega)$ alla densità $n$}
+Integrando la DOS fino a $\omega_D$ si riottiene il numero di celle per unità di volume:
+\[ \int_0^{\omega_D} \frac{\omega^2}{2\pi^2 v^3}\,\dd\omega = \frac{\omega_D^3}{6\pi^2 v^3} = \frac{q_D^3}{6\pi^2} = n \]
+(per un \emph{singolo} ramo; con $p$ rami degeneri si divide per $p$).
+\ricetta{Problema inverso: da $g(\omega_D)$ a $\omega_D$, $q_D$, $n$, $a$}{
+\textbf{(1)} Se $g(\omega)$ è di \emph{un solo ramo}: $g(\omega_D)=\frac{\omega_D^2}{2\pi^2v^3} \Rightarrow \omega_D = \sqrt{2\pi^2 v^3 g(\omega_D)}$.\\
+\textbf{(1')} Se $g$ è \emph{cumulativa} sui 3 rami: $g(\omega_D)=\frac{3\omega_D^2}{2\pi^2v^3} \Rightarrow \omega_D = \sqrt{2\pi^2 v^3 g(\omega_D)/3}$.\\
+\textbf{(2)} $q_D = \omega_D/v$. \quad \textbf{(3)} $n = q_D^3/(6\pi^2)$. \quad \textbf{(4)} $a$ da $n$ secondo il tipo di reticolo.\\
+\textit{Se il testo è ambiguo, dichiara quale convenzione stai usando: entrambe sono accettate.}}
+
+\subsection{Problema inverso 1D (dalla DOS alla costante elastica $C$)}
+Se il testo fornisce la densità degli stati totale (estensiva) costante $\mathcal{D} = G(\omega)$ in [stati/(rad/s)] per una catena lineare di lunghezza $L$ con $N$ atomi di massa $m = M_{tot}/N$ e passo $a = L/N$:
+\[ \mathcal{D} = \frac{L}{\pi \vs} \implies \bm{\vs = \frac{L}{\pi \mathcal{D}}} \]
+Sapendo che nel limite acustico 1D $\vs = a\sqrt{C/m}$, si ricava direttamente $C$:
+\[ \bm{C = m \left( \frac{\vs}{a} \right)^2 = \frac{M_{tot}}{N} \left( \frac{N}{\pi \mathcal{D}} \right)^2 = \frac{M_{tot}\,N}{\pi^2 \mathcal{D}^2}} \]
+Inoltre, il numero di atomi si ottiene da \[ \bm{N = \int_0^{\omega_D}\mathcal{D}\,\dd\omega = \mathcal{D}\,\omega_D}\]
+
+\newpage
+
+\section{Termodinamica del reticolo: modello di Debye}
+
+\begin{itemize}
+    \item \textbf{Energia Interna ($U$):} somma delle energie di tutti i modi vibrazionali (fononi) occupati termicamente, con statistica di Bose--Einstein $n_B(\omega)=\left[\ee^{\hbr\omega/\kB T}-1\right]^{-1}$.
+    \item \textbf{Calore Specifico ($C$):} $C = \dfrac{\partial U}{\partial T}$.
+    \item \textbf{Attenzione alle densità:} il testo può chiedere il calore specifico totale ($C$), per unità di volume ($C_V = C/V$), per unità di superficie/area ($c_v = C/A$), per unità di lunghezza ($c_L = C/L$) o per cella unitaria. \textbf{Guarda sempre le unità di misura richieste!}
+    \item \textbf{Numero di rami ($p$):} se gli atomi oscillano in $d$ dimensioni spaziali ci sono $d$ rami acustici; se ci sono $r$ atomi per cella unitaria ci sono in totale $d\times r$ rami ($d$ acustici e $d(r-1)$ ottici).
+\end{itemize}
+
+\subsection{Il vettore d'onda di Debye}
+Il modello di Debye si applica ai fononi acustici ($\omega = \vs k$). Approssima la Zona di Brillouin a una sfera (3D), cerchio (2D) o segmento (1D) contenente lo stesso numero di stati $N_{celle}$ (numero di \textbf{celle unitarie}, non di atomi).
+
+\vspace{0.15cm}
+\noindent\textbf{Raggio di Debye ($k_D$ o $q_D$):} si ricava imponendo: $ \text{Volume nello spazio } k = N_{celle} \times (\text{volume di un singolo stato})$
+
+\begin{itemize}
+    \item \textit{Reticolo 3D (Sfera):}
+    \[ \frac{4}{3}\pi k_D^3 = N_{celle} \frac{8\pi^3}{V} \implies \bm{k_D = \left( 6\pi^2 \frac{N_{celle}}{V} \right)^{1/3} = (6\pi^2 n_{ret})^{1/3}} \]
+
+    \item \textit{Reticolo 2D (Cerchio):}
+    \[ \pi k_D^2 = N_{celle} \frac{4\pi^2}{A} \implies \bm{k_D = \left( 4\pi \frac{N_{celle}}{A} \right)^{1/2}} \]
+    quadrato $A = N_{celle} a^2 \implies k_D = \frac{2\sqrt{\pi}}{a}$
+
+    \item \textit{Reticolo 1D (Segmento):}
+    \[ 2 k_D = N_{celle} \frac{2\pi}{L} \implies \bm{k_D = \frac{\pi N_{celle}}{L}} \]
+    per reticolo lineare $L = N_{celle} a \implies k_D = \frac{\pi}{a}$, che coincide \emph{esattamente} con il bordo della 1ZB
+\end{itemize}
+
+\subsubsection*{Nota fondamentale sui cristalli con base (es.\ Zincoblenda, NaCl, Si)}
+Se un cristallo possiede $r$ atomi per cella primitiva (es.\ $r=2$ in GaAs, Si, NaCl), il sistema possiede in totale $3r$ rami fononici: $3$ acustici e $3(r-1)$ ottici. Quando il modello di Debye viene applicato \textbf{esclusivamente ai modi acustici}, la sfera di Debye deve contenere esattamente un numero di stati pari al numero di \textbf{celle primitive} $N_{celle}$ e non al numero totale di atomi!
+Pertanto, in $k_D = (6\pi^2 n)^{1/3}$ la densità $n$ è quella delle celle primitive $n = N_{celle}/V = 1/V_p$. \textbf{Con una base di 2 atomi NON si moltiplica per 2.}
+\begin{itemize}
+    \item Reticolo sottostante \textbf{FCC} (zincoblenda, diamante, NaCl, fluorite): $n = \frac{4}{a^3} \Rightarrow k_D = \frac{(24\pi^2)^{1/3}}{a}$
+    \item Reticolo sottostante \textbf{BCC}: $n = \frac{2}{a^3} \Rightarrow k_D = \frac{(12\pi^2)^{1/3}}{a}$
+    \item Reticolo sottostante \textbf{SC} (CsCl, BaTiO$_3$): $n = \frac{1}{a^3} \implies k_D = \frac{(6\pi^2)^{1/3}}{a} $
+    \item Reticolo \textbf{esagonale} (Wurtzite, GaN, ZnO, HCP): $V_p = \frac{\sqrt3}{2}a^2c \implies n = \frac{2}{\sqrt3 a^2 c}$.
+   
+\end{itemize}
+
+\subsection{Temperatura di Debye}
+\[ \kB T_D = \hbr\omega_D = \hbr \vs k_D \qquad\Longrightarrow\qquad \bm{\Theta_D = T_D = \frac{\hbr \vs k_D}{\kB}} \]
+Forme pronte:
+\[ \Theta_D^{SC} = \frac{\hbr v_D (6\pi^2)^{1/3}}{a\kB}, \qquad
+   \Theta_D^{BCC} = \frac{\hbr v_D (12\pi^2)^{1/3}}{a\kB}, \qquad
+   \Theta_D^{FCC/dia} = \frac{\hbr v_D (24\pi^2)^{1/3}}{a\kB} \]
+Se i rami hanno velocità diverse si possono definire \textbf{temperature di Debye separate} per ciascun ramo:
+
+$\Theta_D^{\ell} = \hbr v_\ell q_D/\kB$, $\Theta_D^{t}=\hbr v_t q_D/\kB$ .
+
+\newpage
+
+\section{Energia interna}
+\[ U = \sum_{s}\sum_{\kvec} \frac{\hbr\omega_s(\kvec)}{\ee^{\hbr\omega_s(\kvec)/\kB T}-1}
+   \qquad\text{oppure}\qquad
+   \bm{U = \int_0^{\omega_{max}} G(\omega)\,\frac{\hbr\omega}{\ee^{\hbr\omega/\kB T}-1}\,\dd\omega} \]
+\[ \bm{u = \frac{U}{V} = \int_0^{\omega_{max}} g(\omega)\,\frac{\hbr\omega}{\ee^{\hbr\omega/\kB T}-1}\,\dd\omega} \]
+Nel modello di Debye $\omega_{max}=\omega_D$. Se ci sono rami ottici (Einstein) si aggiungono i contributi discreti centrati in $\omega_E$.
+
+\vspace{0.3cm}
+
+\textbf{Passaggio al continuo nello spazio $k$:} Si integra sui domini cartesiani esatti (da $-\pi/a$ a $\pi/a$); sfruttando la parità di $\omega(k)=\vs|k|$ e approssimando la 1ZB a forme isotrope di raggio $k_D$, si passa all'integrazione radiale da $0$ a $k_D$:
+\begin{itemize}
+    \item \textbf{1D:} lo spazio $k$ è un segmento; si sfrutta la parità dimezzando il dominio e raddoppiando:
+    \[ \sum_{k} f(k) \longrightarrow \frac{L}{2\pi}\int_{-\pi/a}^{\pi/a} f(k)\,\dd k
+       = \frac{L}{2\pi}\left(2\int_0^{\pi/a} f(k)\,\dd k\right) = \frac{L}{\pi}\int_0^{k_D} f(k)\,\dd k \]
+    \item \textbf{2D:} l'integrale esatto è sul quadrato della 1ZB, approssimato a un cerchio di raggio $k_D$. In coordinate polari ($\dd k_x\dd k_y \to k\,\dd k\,\dd\theta$), l'integrazione azimutale dà $2\pi$:
+    \[ \sum_{\kvec} f(|\kvec|) \longrightarrow \frac{A}{(2\pi)^2}\int_{-\pi/a}^{\pi/a}\!\dd k_x \int_{-\pi/a}^{\pi/a}\!\dd k_y\, f(|\kvec|)
+       \approx \frac{A}{(2\pi)^2}\int_0^{2\pi}\!\dd\theta\int_0^{k_D} f(k)\,k\,\dd k = \frac{A}{2\pi}\int_0^{k_D} f(k)\,k\,\dd k \]
+    \item \textbf{3D:} l'integrale esatto è sul cubo della 1ZB, approssimato a una sfera di raggio $k_D$. In coordinate sferiche l'integrazione sull'angolo solido dà $4\pi$:
+    \[ \sum_{\kvec} f(|\kvec|) \longrightarrow \frac{V}{(2\pi)^3}\!\int\!\!\int\!\!\int \dd^3k\, f(|\kvec|)
+       \approx \frac{V}{(2\pi)^3}(4\pi)\int_0^{k_D} f(k)\,k^2\,\dd k = \frac{V}{2\pi^2}\int_0^{k_D} f(k)\,k^2\,\dd k \]
+\end{itemize}
+
+\noindent\textbf{Sostituzione adimensionale:} 
+\[ x = \frac{\hbr \vs k}{\kB T} \implies k = \frac{\kB T}{\hbr \vs}x \implies \dd k = \frac{\kB T}{\hbr \vs}\dd x, \qquad
+   x_{max} = \frac{\hbr\vs k_D}{\kB T} = \frac{\Theta_D}{T} \]
+Per $T \ll \Theta_D$ il limite superiore $\Theta_D/T$ può essere esteso a $+\infty$ con errore trascurabile.
+
+\begin{center}
+\renewcommand{\arraystretch}{2.0}
+\begin{tabular}{l l l}
+\toprule
+Integrale & Valore & Dove serve \\
+\midrule
+$\displaystyle\int_0^\infty \frac{x}{\ee^x-1}\dd x$ & $\dfrac{\pi^2}{6}\approx 1.6449$ & $U$ in 1D \\
+$\displaystyle\int_0^\infty \frac{x^2}{\ee^x-1}\dd x$ & $2\zeta(3)\approx 2.4041$ & $U$ in 2D \\
+$\displaystyle\int_0^\infty \frac{x^3}{\ee^x-1}\dd x$ & $\dfrac{\pi^4}{15}\approx 6.4939$ & $U$ in 3D \\
+$\displaystyle\int_0^\infty \frac{x^2\ee^x}{(\ee^x-1)^2}\dd x$ & $\dfrac{\pi^2}{3}\approx 3.2899$ & $c_V$ in 1D (derivata diretta) \\
+$\displaystyle\int_0^\infty \frac{x^3\ee^x}{(\ee^x-1)^2}\dd x$ & $3\cdot 2\zeta(3)\approx 7.212$ & $c_V$ in 2D \\
+$\displaystyle\int_0^\infty \frac{x^4\ee^x}{(\ee^x-1)^2}\dd x$ & $\dfrac{4\pi^4}{15}\approx 25.976$ & $c_V$ in 3D \\
+$\displaystyle\int_0^\infty x^{-1/2}\ee^{-x}\dd x$ & $\sqrt{\pi}$ & portatori in 1D \\
+$\displaystyle\int_0^\infty x^{1/2}\ee^{-x}\dd x$ & $\dfrac{\sqrt{\pi}}{2}$ & portatori in 3D \\
+\bottomrule
+\end{tabular}
+\end{center}
+\attenzione{Il testo spesso fornisce \emph{uno solo} di questi integrali e dice ``only one of these should be used''. Se ti danno $\int \frac{x}{\ee^x-1}$ devi calcolare prima $u(T)$ e poi derivare; se ti danno $\int\frac{x^2\ee^x}{(\ee^x-1)^2}$ puoi derivare sotto il segno di integrale e ottenere $c_V$ direttamente. Il risultato è lo stesso.\\
+A volte l'estremo superiore è finito (es.\ $\int_0^{64}$) e il testo fornisce il valore numerico ($=1.64$): usalo tale e quale.}
+
+\newpage
+\section{Calore specifico a bassa temperatura ($T \ll \Theta_D$)}
+A basse $T$ l'energia termica $\kB T$ è largamente insufficiente per eccitare i fononi ottici: il contributo ottico è esponenzialmente soppresso ($\propto \ee^{-\Theta_E/T}$) e viene trascurato. Sopravvivono solo i fononi acustici vicino al centro zona ($\omega=\vs k$). \textbf{Nel calcolo dell'energia interna si contano esclusivamente i rami acustici.}
+\[ U = (\text{n}^\circ\ \text{rami acustici}) \times \int_{\text{spazio } k} \frac{\hbr \vs k}{\ee^{\frac{\hbr \vs k}{\kB T}} - 1}\, \frac{\dd^D k}{(2\pi)^D / V} \]
+
+
+\begin{itemize}
+    \item \textbf{Caso 3D Puro} (reticolo 3D, oscillazioni 3D $\to$ 3 rami acustici degeneri). L'integrale porta a $\pi^4/15$:
+    \[ \bm{c_V = \frac{2\pi^2}{5}\kB\left(\frac{\kB T}{\hbr \vs}\right)^{3}}
+       \quad\equiv\quad
+       \bm{c_V = \frac{12\pi^4}{5}\,n\,\kB\left(\frac{T}{\Theta_D}\right)^{3} \approx 234\, n\,\kB\left(\frac{T}{\Theta_D}\right)^{3}} \]
+    $n = N/V$ è la densità delle \textbf{celle}
+    
+    Le due forme sono identiche: la seconda si ottiene sostituendo $\Theta_D = \hbr \vs (6\pi^2 n)^{1/3}/\kB$.
+    \[ U = \frac{V(\kB T)^4}{2\pi^2(\hbr \vs)^3}\cdot 3\cdot\frac{\pi^4}{15}
+       \qquad\Longrightarrow\qquad u = \frac{\pi^2}{10}\frac{(\kB T)^4}{(\hbr \vs)^3} \]
+
+    \item \textbf{Caso 3D con velocità distinte} (1 ramo L con $v_L$ e 2 rami T con $v_T$). La somma sui rami modifica il fattore cinematico:
+    \[ U = \frac{V (\kB T)^4}{2\pi^2 \hbr^3}\left(\frac{1}{v_L^3}+\frac{2}{v_T^3}\right)\int_0^\infty\frac{x^3}{\ee^x-1}\dd x
+       \implies \bm{C_V = \frac{2\pi^2}{5}\,\kB^4\left(\frac{1}{v_L^3}+\frac{2}{v_T^3}\right)\frac{T^3}{\hbr^3}} \]
+    Equivalentemente, sommando i contributi ramo per ramo con le rispettive $\Theta_D^{s}$:
+    \[ \bm{c_V = \frac{4\pi^4}{5}n\kB\left[\left(\frac{T}{\Theta_D^{L}}\right)^3 + 2\left(\frac{T}{\Theta_D^{T}}\right)^3\right]} \]
+    \textit{la formula standard $234\,n\kB(T/\Theta_D)^3$ è il caso particolare con tutte e tre le $\Theta$ uguali; nota $234 = 3\times 4\pi^4/5$}.
+
+    \item \textbf{Caso 2D Puro} (reticolo 2D, oscillazioni 2D $\to$ 2 rami acustici degeneri). Integrazione su area (fattore $k\,\dd k$), moltiplicata per 2 rami:
+    \[ U = \frac{2 A (\kB T)^3}{2\pi (\hbr \vs)^2}\underbrace{\int_0^\infty \frac{x^2}{\ee^x - 1}\dd x}_{\equiv\,A_{int}\,\approx\,2.404}
+       \implies \bm{c_v = \frac{1}{A}\frac{\partial U}{\partial T} = \frac{3\,\kB^3 A_{int}}{\pi(\hbr \vs)^2}\,T^2} \]
+
+    \item \textbf{Caso 2D Misto} (reticolo 2D, oscillazioni 3D $\to$ \textbf{3} rami acustici degeneri). Integrazione su area, moltiplicata per 3 rami:
+    \[ U = \frac{3 A (\kB T)^3}{2\pi (\hbr \vs)^2}\underbrace{\int_0^\infty \frac{x^2}{\ee^x - 1}\dd x}_{A_{int}}
+       \implies \bm{c_v = \frac{1}{A}\frac{\partial U}{\partial T} = \frac{9\,\kB^3 A_{int}}{2\pi(\hbr \vs)^2}\,T^2} \]
+
+
+    \item \textbf{Caso 1D Puro} (reticolo 1D, oscillazioni 1D $\to$ 1 ramo acustico). Integrazione su linea (fattore $\dd k$):
+    \[ U = \frac{L (\kB T)^2}{\pi \hbr \vs}\underbrace{\int_0^\infty \frac{x}{\ee^x - 1}\dd x}_{\equiv\,A\,=\,\pi^2/6}
+       \implies \bm{c_L = \frac{1}{L}\frac{\partial U}{\partial T} = \frac{2\,\kB^2 A}{\pi \hbr \vs}\,T
+                  = \frac{\pi \kB^2 T}{3\hbr \vs}} \]
+    Forma equivalente:
+    \[ u \approx \frac{\pi^2\hbr\omega_D}{6a}\left(\frac{\kB T}{\hbr\omega_D}\right)^2
+       \implies \bm{c_L = \frac{\pi^2 \kB}{3a}\left(\frac{\kB T}{\hbr\omega_D}\right)
+                   = \frac{\kB^2 T}{\hbr\omega_D}\frac{\pi^2}{3a}} \]
+
+    \item \textbf{Caso 1D Misto} (reticolo 1D, oscillazioni 3D $\to$ 3 rami acustici degeneri):
+    \[ U = \frac{3 L (\kB T)^2}{\pi \hbr \vs}\underbrace{\int_0^\infty \frac{x}{\ee^x - 1}\dd x}_{A}
+       \implies \bm{c_L = \frac{1}{L}\frac{\partial U}{\partial T} = \frac{6\,\kB^2 A}{\pi \hbr \vs}\,T = \frac{\pi\kB^2 T}{\hbr \vs}} \]
+\end{itemize}
+
+\ricetta{Schema mnemonico universale per $c$ a bassa $T$}{
+$\displaystyle U = \underbrace{p}_{\text{n}^\circ\text{ rami acustici}} \times \underbrace{\frac{V}{(2\pi)^d}\,S_d}_{\text{fattore geometrico}} \times \left(\frac{\kB T}{\hbr \vs}\right)^{d}\!\kB T \times \underbrace{\int_0^\infty\frac{x^{d}}{\ee^x-1}\dd x}_{\text{integrale}}$
+\\[4pt] con $S_1 = 2$, $S_2 = 2\pi$, $S_3 = 4\pi$. Poi $c = \frac{1}{V}\frac{\partial U}{\partial T} = (d+1)\times\frac{U}{VT}$.}
+
+\subsection{$c_V$ a bassa $T$ con velocità \emph{diverse}}
+\begin{center}
+\renewcommand{\arraystretch}{2.0}
+\begin{tabular}{c c c}
+\toprule
+$d$ & $u$  & $c_V$ \\
+\midrule
+1D & $\dfrac{\pi}{6}\dfrac{(\kB T)^2}{\hbr}\displaystyle\sum_i\frac{1}{v_i}$ &
+     $\dfrac{\pi}{3}\,\kB\dfrac{\kB T}{\hbr}\displaystyle\sum_i\frac{1}{v_i}$ \\
+2D & $\dfrac{\zeta(3)}{\pi}\dfrac{(\kB T)^3}{\hbr^2}\displaystyle\sum_i\frac{1}{v_i^2}$ &
+     $\dfrac{3\zeta(3)}{\pi}\,\kB\left(\dfrac{\kB T}{\hbr}\right)^{\!2}\displaystyle\sum_i\frac{1}{v_i^2}$ \\
+3D & $\dfrac{\pi^2}{30}\dfrac{(\kB T)^4}{\hbr^3}\displaystyle\sum_i\frac{1}{v_i^3}$ &
+     $\dfrac{2\pi^2}{15}\,\kB\left(\dfrac{\kB T}{\hbr}\right)^{\!3}\displaystyle\sum_i\frac{1}{v_i^3}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+
+\section{Legge di Dulong--Petit -- Alta Temperatura}
+A temperature molto alte tutti i modi fononici (acustici e ottici) sono eccitati. Si usa l'equipartizione dell'energia: ogni grado di libertà vibrazionale contribuisce con $\frac{1}{2}\kB T$ per l'energia cinetica e $\frac{1}{2}\kB T$ per quella potenziale $\implies \bm{1\,\kB}$ al calore specifico.
+
+\begin{enumerate}
+    \item Conta il numero di atomi per cella unitaria ($n_{at}$).
+    \item Identifica in quante dimensioni spaziali si muovono ($d_{mov}$).
+    
+    \textit{Nota: un reticolo può essere 2D ma gli atomi possono muoversi in 3D!}
+    \item Il calore specifico per cella unitaria è:
+    \[ \bm{C_{cella} = d_{mov}\cdot n_{at}\cdot \kB} \qquad\Longrightarrow\qquad
+       \bm{c = \frac{d_{mov}\,n_{at}\,\kB}{V_{cella}} } \]
+\end{enumerate}
+
+\begin{itemize}
+  \item 3D, 1 atomo/cella: $c_V = 3n\kB$. \quad 3D, $p$ atomi/cella: $c_V = 3pn_{ret}\kB = 3 n_{at}\kB$.
+  \item Reticolo 2D, 2 atomi per cella, moto in 3D: $C_{cella}=3\cdot2\cdot\kB = 6\kB$, quindi $c_v = 6\kB/a^2$.
+  \item Catena 1D con 2 atomi per cella, moto longitudinale: $c_L = 2\kB/a$.
+  \item Catena 1D con 2 atomi per cella, moto in 3D: $c_L = 6\kB/a$.
+\end{itemize}
+\noindent\textbf{Energia interna ad alta $T$}:
+\[ \bm{u \approx \frac{d_{mov}\,n_{at}\,\kB T}{V_{cella}}}\qquad\text{es. 1D monoatomica: } u=\frac{\kB T}{a};
+   \quad\text{1D biatomica: } u = \frac{2\kB T}{a} \]
+
+\ricetta{Dal $c_V$ classico alla struttura del cristallo}{
+\textbf{(1)} $c_V^{DP} = 3n_{at}\kB \Rightarrow n_{at} = \dfrac{c_V^{DP}}{3\kB}$.\\
+\textbf{(1-bis) Se la cella contiene $p$ atomi} il legame con il passo reticolare è diretto:
+$c_V^{DP} = \dfrac{3p\,\kB}{V_{cella}}$, quindi per un cubico biatomico $c_V^{DP}=\dfrac{6\kB}{a^3}\Rightarrow a=\left(\dfrac{6\kB}{c_V^{DP}}\right)^{1/3}$; per un reticolo 2D biatomico con moto 3D, $c_v^{DP}=\dfrac{6\kB}{a^2}$.\\
+\textbf{(2)} Dal tipo di reticolo: $a = (n_c^{(conv)}/n_{at})^{1/3}$ (con $n_c^{(conv)}=1,2,4,8$ per SC, BCC, FCC, diamante).\\
+\textbf{(3)} Distanza di primo vicino: $d_1 = a$ (SC), $\frac{\sqrt3}{2}a$ (BCC), $\frac{a}{\sqrt2}$ (FCC), $\frac{\sqrt3}{4}a$ (diamante).\\
+\textbf{(4)} $q_D = (6\pi^2 n_{ret})^{1/3}$ e $v_s = \kB\Theta_D/(\hbr q_D)$.\\
+\textbf{(5)} Se ogni punto reticolare ospitasse invece $r$ atomi: $c_V^{DP}$ si moltiplica per $r$; i rami diventano 3 acustici $+\,3(r-1)$ ottici, ma il $c_V$ a bassa $T$ \textbf{non cambia} (i modi ottici sono congelati).}
+
+\subsection{Cristallo con rami acustici + ottici: schema completo}
+\[ u = \underbrace{\int_0^{\omega_D}\!\! g_{ac}(\omega)\frac{\hbr\omega}{\ee^{\beta\hbr\omega}-1}\dd\omega}_{\text{Debye}}
+     + \underbrace{\frac{n^\circ\ \text{rami ottici}}{V_{cella}}\cdot\frac{\hbr\omega_E}{\ee^{\beta\hbr\omega_E}-1}}_{\text{Einstein}} \]
+\begin{itemize}
+  \item $T\ll\Theta_D,\Theta_E$: solo Debye $\Rightarrow$ $c\propto T^d$.
+  \item $T\gg\Theta_D,\Theta_E$: equipartizione totale $\Rightarrow$ Dulong--Petit, $c = d_{mov}n_{at}\kB/V_{cella}$.
+  \item $\Theta_E \gg T \gg \Theta_D$: solo gli acustici saturano; $c \approx d_{mov}\,n_{ret}\kB/V_{cella}$.
+\end{itemize}
+
+
+\newpage
+\section{Modello di Einstein (fononi ottici)}
+I fononi ottici hanno dispersione quasi piatta $\omega(\kvec)\approx\omega_E = $ costante. Vengono eccitati assorbendo energia $E=\hbr\omega_E$ (spesso fornita negli spettri di assorbimento infrarosso a $k\approx0$).
+
+\noindent\textbf{Temperatura di Einstein:}
+\[ \bm{\Theta_E = \frac{\hbr\omega_E}{\kB} = \frac{E_{assorbimento}}{\kB}} \]
+
+\noindent\textbf{Densità degli stati:} la velocità di gruppo è nulla, quindi tutti gli $N$ stati del ramo collassano su un'unica frequenza:
+\[ G_{ottico}(\omega) = N\,p_{ottici}\,\delta(\omega-\omega_E) \]
+
+\noindent\textbf{Energia interna e calore specifico (formula ESATTA, per cella unitaria e per ramo):}
+\[ u_E = \frac{1}{V_{cella}}\,\frac{\hbr\omega_E}{\ee^{\hbr\omega_E/\kB T}-1}
+   \qquad\Longrightarrow\qquad
+   \bm{c_E = \frac{\kB}{V_{cella}}\left(\frac{\Theta_E}{T}\right)^{\!2}
+        \frac{\ee^{\Theta_E/T}}{\left(\ee^{\Theta_E/T}-1\right)^{2}}} \]
+moltiplicare per il numero di rami ottici $3(p-1)$ in 3D
+\begin{itemize}
+  \item \textbf{Limite $T\gg\Theta_E$:} $c_E \to \kB/V_{cella}$ per ramo (si ritrova Dulong--Petit).
+  \item \textbf{Limite $T\ll\Theta_E$:} $c_E \approx \frac{\kB}{V_{cella}}\left(\frac{\Theta_E}{T}\right)^2\ee^{-\Theta_E/T}$ \textbf{esponenzialmente soppresso}, per questo si trascura e domina Debye.
+\end{itemize}
+
+\ricetta{``Intorno a quale temperatura $T_E$ i modi ottici cominciano a contare?''}{
+Risposta: quando $\kB T \sim \hbr\omega_{ott}$, cioè per $\bm{T \gtrsim \Theta_E = \hbr\omega_{ott}/\kB}$.\\
+\textit{Esempio:} $\tilde\nu_{ott}=95$ cm$^{-1}$ $\Rightarrow \omega=2\pi c\tilde\nu = 2\pi(3\times10^{10})(95)=1.79\times10^{13}$ rad/s $\Rightarrow \Theta_E=136$ K.\\
+Conversione utile: $\bm{1\ \text{cm}^{-1} \leftrightarrow 1.4388\ \text{K}}$.}
+
+
+\subsection{Fononi ottici e assorbimento infrarosso}
+I fotoni IR hanno vettore d'onda trascurabile ($q\approx0$): l'assorbimento avviene alla frequenza del centro zona ($\Gamma$) del ramo ottico. Per un cristallo con base di 2 atomi ($m_A, m_B$) e costante elastica $C$:
+\[ \bm{\Omega_{IR} = \omega_{op}(q=0) = \sqrt{2C\left(\frac{1}{m_A}+\frac{1}{m_B}\right)}}
+   \qquad\Longrightarrow\qquad
+   \bm{C = \frac{\Omega_{IR}^2}{2}\left(\frac{m_A m_B}{m_A+m_B}\right)} \]
+
+\ricetta{Leggere il grafico $\alpha(E)$: due energie, due informazioni diverse}{
+Il testo mostra uno spettro con un \textbf{picco stretto} a $E_1$ (decine di meV) e una \textbf{soglia} a $E_2$ (qualche eV). Allora:
+\begin{itemize}
+\item $E_1 = \hbr\omega_{opt}(\Gamma)$ è il \textbf{fonone ottico} al centro zona. Da qui:
+  \[ \Theta_E = \frac{E_1}{\kB} \qquad\text{e, per una base biatomica,}\quad C = \frac{\omega_{opt}^2}{2}\frac{m_Am_B}{m_A+m_B}\ \ \text{oppure}\ \ M=\frac{2(c_A+c_B)}{\omega_{opt}^2} \]
+\item $E_2$ è la \textbf{soglia di assorbimento interbanda}, cioè $\min_\kvec\left[E_c(\kvec)-E_v(\kvec)\right]$. Da qui si ricava il parametro incognito della struttura a bande (tipicamente $E^0_s$ o la gap).
+\item Fra $E_1$ ed $E_2$ c'è la \textbf{finestra di trasparenza}.
+\end{itemize}
+}
+
+\vspace{0.3cm}
+
+\textbf{Panoramica dello spettro di assorbimento ottico $\alpha(E)$ in un semiconduttore:} 
+Lo spettro globale in funzione dell'energia del fotone $E=h\nu$ presenta due regioni di attività separate da una finestra di trasparenza:
+\begin{enumerate}
+    \item \textbf{Regione IR lontano (fononi ottici, $E\sim10-80$ meV):} l'assorbimento di fotoni a onda lunga eccita direttamente le oscillazioni degli ioni di carica opposta (cristalli biatomici polari: CsCl, GaAs, NaCl\dots). Appare come un \textbf{picco di risonanza stretto (delta-like)} esattamente alla frequenza del fonone ottico al centro zona: $\bm{E_{IR}=\hbr\omega_{opt}(\Gamma)}$.
+    \item \textbf{Finestra di trasparenza ($E_{IR}<E<E_g$):} l'assorbimento scende quasi a zero perché i fotoni non hanno energia sufficiente a promuovere elettroni in banda di conduzione.
+    \item \textbf{Soglia interbanda ($E\ge E_g$):} si attiva l'assorbimento elettronico. Per gap \textbf{diretta} $\alpha$ sale come la DOS congiunta: $\bm{\alpha(E)\propto\sqrt{E-E_g}}$. Per gap \textbf{indiretta} occorre l'assistenza di un fonone e la soglia è più debole: $\alpha(E)\propto(E-E_g\pm\hbr\omega_{fon})^2$.
+\end{enumerate}
+
+\newpage
+\ricetta{Regole di selezione per l'assorbimento infrarosso (quale modo, e se esiste)}{
+\textbf{(1) Solo i rami OTTICI sono attivi.} I modi acustici a $q\approx0$ traslano
+rigidamente la cella senza generare momento di dipolo oscillante: non assorbono mai.
+\[ \bm{E_{assorbita} = \hbr\,\omega_{opt}(\Gamma)} \]
+\textbf{(2) Serve un dipole moment: atomi/ioni DIVERSI.} L'assorbimento IR esiste solo se
+i due atomi della base hanno \textbf{nuvole elettroniche diverse} (cariche opposte, cristallo
+polare: NaCl, CsCl, GaAs, Cu--O\dots).
+\attenzione{\textbf{Caso isotopi:} se la base è formata da due \emph{isotopi} dello stesso
+elemento (es.\ $^7$Be e $^{10}$Be), le masse sono diverse (quindi \emph{esistono} rami ottici
+e la dispersione si sdoppia) ma le nuvole elettroniche sono \textbf{identiche}: nella
+vibrazione \textbf{non si genera momento di dipolo} e \textbf{NON si osserva alcun
+assorbimento IR}, né sugli acustici né alla frequenza ottica $\omega_0$. È una domanda
+qualitativa ricorrente: la risposta è ``nessun assorbimento''.}
+\textbf{(3) Quale ramo ottico: lo decide la POLARIZZAZIONE $\mathbf{E}$, non $\mathbf{q}$.}
+Il fotone ha $q\approx0$, quindi si va sempre al centro zona; ma il campo elettrico
+trascina gli ioni lungo la propria direzione:
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \item $\mathbf{E}\parallel$ direzione di propagazione della catena/onda $\Rightarrow$ modo
+  \textbf{LO} (longitudinale ottico).
+  \item $\mathbf{E}\perp$ direzione della catena $\Rightarrow$ modo \textbf{TO}
+  (trasverso ottico).
+\end{itemize}
+\textit{Caso tipico d'esame:} radiazione con $\mathbf{q}$ \emph{ortogonale} al piano del
+reticolo e $\mathbf{E}$ nel piano lungo $(1,1)$, con catene biatomiche lungo le diagonali:
+$\mathbf{E}$ è nel piano ma la propagazione è fuori piano $\Rightarrow$ si eccita il
+\textbf{modo trasverso ottico TO a $K=0$}, alla frequenza
+$\omega_{ott}=\sqrt{2C\left(\frac1{M_1}+\frac1{M_2}\right)}$.
+Se i modi L e T hanno la stessa costante elastica $C$ (ipotesi quasi sempre dichiarata dal
+testo), LO e TO sono degeneri e la distinzione non cambia il numero.}
+
+\vspace{0.3cm}
+\attenzione{\textbf{$\omega_D$ dalla normalizzazione della DOS: contare CELLE o ATOMI?}
+Esistono due convenzioni, entrambe usate nei temi d'esame, e il testo \textbf{ti dice
+sempre quale}: leggi con attenzione la definizione di $N$ che ti forniscono.
+\begin{itemize}
+  \setlength{\itemsep}{2pt}
+  \item \textbf{Convenzione ``solo acustici'' (standard, §6.1).} La sfera/cerchio di Debye
+  contiene un numero di stati pari al numero di \textbf{celle primitive}:
+  $k_D=(6\pi^2n_{ret})^{1/3}$ in 3D, $k_D=2\sqrt\pi/a$ in 2D quadrato, $k_D=\pi/a$ in 1D.
+  Con base di 2 atomi \textbf{non} si moltiplica per 2 (i modi ottici sono trattati a parte
+  con Einstein).
+  \item \textbf{Convenzione ``tutti i modi'' (Debye esteso).} Se il testo scrive
+  esplicitamente $\displaystyle\int_0^{\omega_D}D(\omega)\dd\omega = N$ e precisa che
+  \emph{``$N$ è il numero totale di ATOMI del campione''}, allora tutti i $3p$ (o $d_{mov}\,p$)
+  rami vengono schiacciati nel modello di Debye e la normalizzazione va fatta con
+  $N = p\,N_{celle}$.
+\end{itemize}
+\textit{Esempio (2D quadrato, base di 2 atomi, $D(\omega)=\frac{L^2}{2\pi}\frac{\omega}{v_s^2}$,
+$N=2N_{celle}=2L^2/a^2$):}
+\[ \frac{1}{2\pi v_s^2}\frac{\omega_D^2}{2}=\frac{2}{a^2}
+   \qquad\Longrightarrow\qquad \bm{\omega_D = \sqrt{2\pi}\,\frac{2v_s}{a}} \]
+Con la convenzione ``solo acustici'' avresti ottenuto $\omega_D=v_sk_D=2\sqrt\pi v_s/a$:
+un fattore $\sqrt2$ di differenza. \textbf{Non sono errori: sono ipotesi diverse}, dichiara
+sempre quale stai usando.}
+
+\vspace{0.3cm}
+\subsubsection*{Calore specifico per unità di MASSA}
+Alcuni esercizi (metalli: Na, Be\dots) chiedono la \textbf{capacità termica per unità di
+massa} $[\text{J}/(\text{kg}\cdot\text{K})]$, non per unità di volume. Basta dividere per la
+densità di massa $\rho$, ovvero contare gli atomi per unità di massa:
+\[ \bm{c^{(massa)} = \frac{c_V^{(volume)}}{\rho} = \frac{C}{M_{tot}}} \]
+\noindent In particolare, nel limite classico di \textbf{Dulong--Petit} con un atomo per
+punto reticolare:
+\[ \bm{c^{(massa)}_{DP} = 3\frac{N}{M_{tot}}\kB = 3\frac{N/V}{M_{tot}/V}\kB
+   = 3\,\frac{n_{at}}{\rho}\,\kB = \frac{3\kB}{M_{atomo}}} \]
+dove $M_{atomo}=\rho/n_{at}$ è la massa del singolo atomo (utile anche come modo per
+\emph{ricavare} $M_{atomo}$, e da lì la massa atomica in u.m.a.).
+
+\ricetta{Energia interna data come $u(T)=AT^2+BT^4$ (metalli, per unità di massa)}{
+\textbf{(1) Deriva:} $\ \bm{c_v(T)} = \dfrac{\dd u}{\dd T} = \bm{2AT+4BT^3}$.
+\textit{(Attenzione: i coefficienti di $c_v$ NON sono $A$ e $B$ ma $2A$ e $4B$!)}\\
+\textbf{(2) Sistema:} imponendo i due valori misurati a $T_1$ e $T_2$ si ottengono due
+equazioni lineari in $A,B$. Es.\ con $T_1=1$ K, $T_2=2$ K:
+$\ c_v(1)=2A+4B$, $\ c_v(2)=4A+32B$.\\
+\textbf{(3) Origine fisica dei due termini} (domanda sempre presente):
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \item il termine $AT^2$ in $u$ (cioè $\propto T$ in $c_v$) è l'\textbf{energia cinetica
+  degli elettroni di conduzione} (gas di Fermi degenere);
+  \item il termine $BT^4$ in $u$ (cioè $\propto T^3$ in $c_v$) è l'\textbf{energia
+  vibrazionale del reticolo} (fononi acustici, legge di Debye $T^3$).
+\end{itemize}
+\textbf{(4) Unità:} se $u$ è per unità di massa, $A$ è in J/(kg$\cdot$K$^2$) e $B$ in
+J/(kg$\cdot$K$^4$); per passare a per-volume moltiplica per $\rho$.}
+
+
+\newpage

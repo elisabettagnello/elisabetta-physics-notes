@@ -1,0 +1,1863 @@
+% =====================================================================
+%  PARTE II --- ELETTRONI DI BLOCH, BANDE, SEMICONDUTTORI
+% =====================================================================
+\part*{\centering PARTE II --- Bloch e semiconduttori}
+\addcontentsline{toc}{section}{PARTE II -- Bloch e semiconduttori}
+\vspace{-0.3cm}
+
+\section{Tight-binding}
+
+L'integrale di trasferimento è definito come $\gamma_{ij}(\Rvec) = -\int \phi_i^*(\mathbf{r})\,\Delta U(\mathbf{r})\,\phi_j(\mathbf{r}-\Rvec)\,\dd^3 r$
+
+Poiché il potenziale cristallino è \textbf{attrattivo} ($\Delta U < 0$, caso standard), il segno di $\gamma$ è governato esclusivamente dalla fase dei lobi sovrapposti:
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item \textbf{Lobi concordi ($++$ oppure $--$):} sovrapposizione in fase $\implies \bm{\gamma > 0}$.
+    \item \textbf{Lobi discordi ($+-$):} sovrapposizione in controfase $\implies \bm{\gamma < 0}$.
+    \item \textbf{Ortogonalità / piani nodali:} simmetria opposta rispetto all'asse di legame $\implies \bm{\gamma = 0}$.
+\end{itemize}
+
+\attenzione{Se il testo dice che il potenziale cristallino è \textbf{REPULSIVO} ($\Delta U > 0$), \textbf{tutti i segni si invertono}: lobi concordi $\Rightarrow \gamma<0$, lobi discordi $\Rightarrow\gamma>0$.}
+
+\vspace{0.15cm}
+\noindent Altri elementi del metodo tight-binding:
+\begin{itemize}
+  \item $\beta \equiv \gamma(\Rvec=0) = -\int|\phi(\mathbf{r})|^2\Delta U(\mathbf{r})\,\dd^3r$: \textbf{shift} rigido del livello atomico. 
+  
+  Si definisce il ``livello orbitale efficace'' $\tilde E^0 = E_{at} - \beta$.
+  \item $\alpha(\Rvec)=\int\phi^*(\mathbf{r})\phi(\mathbf{r}-\Rvec)\,\dd^3r$: integrale di sovrapposizione, all'esame sempre trascurato ($\alpha=0$).
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.5, every node/.style={scale=0.8}]
+    % Orbitale s
+    \begin{scope}[xshift=0cm]
+        \draw[->] (-1.5,0) -- (1.5,0) node[right] {$x$};
+        \draw[->] (0,-1.5) -- (0,1.5) node[above] {$y$};
+        \draw[fill=blue!30, opacity=0.8] (0,0) circle (0.8);
+        \node at (0,0) {\textbf{+}};
+        \node[below] at (0,-1.8) {\textbf{Orbitale $s$}};
+    \end{scope}
+
+    % Orbitale px
+    \begin{scope}[xshift=4.5cm]
+        \draw[->] (-1.5,0) -- (1.5,0) node[right] {$x$};
+        \draw[->] (0,-1.5) -- (0,1.5) node[above] {$y$};
+        \draw[fill=blue!30, opacity=0.8] (0.6,0) ellipse (0.6 and 0.4);
+        \draw[fill=red!30, opacity=0.8] (-0.6,0) ellipse (0.6 and 0.4);
+        \node at (0.6,0) {\textbf{+}};
+        \node at (-0.6,0) {\textbf{--}};
+        \node[below] at (0,-1.8) {\textbf{Orbitale $p_x$}};
+    \end{scope}
+
+    % Orbitale py
+    \begin{scope}[xshift=9cm]
+        \draw[->] (-1.5,0) -- (1.5,0) node[right] {$x$};
+        \draw[->] (0,-1.5) -- (0,1.5) node[above] {$y$};
+        \draw[fill=blue!30, opacity=0.8] (0,0.6) ellipse (0.4 and 0.6);
+        \draw[fill=red!30, opacity=0.8] (0,-0.6) ellipse (0.4 and 0.6);
+        \node at (0,0.6) {\textbf{+}};
+        \node at (0,-0.6) {\textbf{--}};
+        \node[below] at (0,-1.8) {\textbf{Orbitale $p_y$}};
+    \end{scope}
+
+    % Orbitale pz (pseudo-3D)
+    \begin{scope}[xshift=13.5cm]
+        \draw[->] (-1.5,0) -- (1.5,0) node[right] {$y$};
+        \draw[->] (0,-1.5) -- (0,1.5) node[above] {$z$};
+        \draw[->] (-1,-1) -- (1,1) node[right] {$x$};
+        \draw[fill=blue!30, opacity=0.8] (0,0.6) ellipse (0.35 and 0.6);
+        \draw[fill=red!30, opacity=0.8] (0,-0.6) ellipse (0.35 and 0.6);
+        \node at (0,0.6) {\textbf{+}};
+        \node at (0,-0.6) {\textbf{--}};
+        \node[below] at (0,-1.8) {\textbf{Orbitale $p_z$}};
+    \end{scope}
+
+    % Orbitale dx^2-y^2
+    \begin{scope}[xshift=18.5cm]
+        \draw[->] (-2,0) -- (2,0) node[right] {$x$};
+        \draw[->] (0,-2) -- (0,2) node[above] {$y$};
+        \draw[dashed, gray] (-1.5,-1.5) -- (1.5,1.5);
+        \draw[dashed, gray] (-1.5,1.5) -- (1.5,-1.5);
+        \draw[fill=blue!30, opacity=0.8] (0.8,0) ellipse (0.8 and 0.35);
+        \draw[fill=blue!30, opacity=0.8] (-0.8,0) ellipse (0.8 and 0.35);
+        \draw[fill=red!30, opacity=0.8] (0,0.8) ellipse (0.35 and 0.8);
+        \draw[fill=red!30, opacity=0.8] (0,-0.8) ellipse (0.35 and 0.8);
+        \node at (1.2,0) {\textbf{+}}; \node at (-1.2,0) {\textbf{+}};
+        \node at (0,1.2) {\textbf{--}}; \node at (0,-1.2) {\textbf{--}};
+        \node[below] at (0,-2.2) {\textbf{Orbitale $d_{x^2-y^2}$}};
+    \end{scope}
+
+    % Orbitale dxy
+    \begin{scope}[xshift=24.5cm]
+        \draw[->] (-2,0) -- (2,0) node[right] {$x$};
+        \draw[->] (0,-2) -- (0,2) node[above] {$y$};
+        \begin{scope}[rotate=45]
+            \draw[fill=blue!30, opacity=0.8] (0.8,0) ellipse (0.8 and 0.35);
+            \draw[fill=blue!30, opacity=0.8] (-0.8,0) ellipse (0.8 and 0.35);
+            \draw[fill=red!30, opacity=0.8] (0,0.8) ellipse (0.35 and 0.8);
+            \draw[fill=red!30, opacity=0.8] (0,-0.8) ellipse (0.35 and 0.8);
+            \node at (1.2,0) {\textbf{+}}; \node at (-1.2,0) {\textbf{+}};
+            \node at (0,1.2) {\textbf{--}}; \node at (0,-1.2) {\textbf{--}};
+        \end{scope}
+        \node[below] at (0,-2.2) {\textbf{Orbitale $d_{xy}$}};
+    \end{scope}
+
+    % Orbitale d_z^2
+    \begin{scope}[xshift=30.5cm]
+        \draw[->] (-2,0) -- (2,0) node[right] {$y$};
+        \draw[->] (0,-2) -- (0,2) node[above] {$z$};
+        \draw[->] (-1,-1) -- (1,1) node[right] {$x$};
+        \draw[fill=blue!30, opacity=0.8] (0,0.8) ellipse (0.35 and 0.8);
+        \draw[fill=blue!30, opacity=0.8] (0,-0.8) ellipse (0.35 and 0.8);
+        \draw[fill=red!30, opacity=0.8] (0,0) ellipse (0.9 and 0.25);
+        \node at (0,1.2) {\textbf{+}};
+        \node at (0,-1.2) {\textbf{+}};
+        \node at (0.6,0) {\textbf{--}};
+        \node at (-0.6,0) {\textbf{--}};
+        \node[below] at (0,-2.2) {\textbf{Orbitale $d_{3z^2-r^2}$}};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\vspace{-0.2cm}
+% --- TABELLA UNIVERSALE SEGNI DI HOPPING ---
+\begin{table}[htpb]
+\centering
+\renewcommand{\arraystretch}{1.3}
+{\small
+\begin{tabular}{l c c c l}
+\toprule
+Orbitali & $\gamma^x$ & $\gamma^y$ & $\gamma^z$ &  Tipo di Legame \\
+\midrule
+$\bm{s - s}$ & $\bm{> 0}$ & $\bm{> 0}$ & $\bm{> 0}$ & Sferica isotropa (lobo $+$ con $+$). \\
+$\bm{p_x - p_x}$ & $\bm{< 0}$ & $\bm{> 0}$ & $\bm{> 0}$ & Lungo $x$: testa-coda ($\sigma$). Lungo $y,z$: binari ($\pi$). \\
+$\bm{p_y - p_y}$ & $\bm{> 0}$ & $\bm{< 0}$ & $\bm{> 0}$ & Lungo $y$: testa-coda ($\sigma$). Lungo $x,z$: binari ($\pi$). \\
+$\bm{p_z - p_z}$ & $\bm{> 0}$ & $\bm{> 0}$ & $\bm{< 0}$ & Lungo $z$: testa-coda ($\sigma$). Lungo $x,y$: binari ($\pi$). \\
+$\bm{d_{x^2-y^2} - d_{x^2-y^2}}$ & $\bm{> 0}$ & $\bm{> 0}$ & $\bm{> 0}$ & Lungo $x,y$: lobi uguali ($++$ o $--$). Lungo $z$: faccia a faccia ($\delta$). \\
+$\bm{d_{xy} - d_{xy}}$ & $\bm{< 0}$ & $\bm{< 0}$ & $\bm{> 0}$ & Lungo $x,y$: lobi discordi si affiancano ($+-$). Lungo $z$: impilati ($\pi/\delta$). \\
+$\bm{d_{xz} - d_{xz}}$ & $\bm{< 0}$ & $\bm{> 0}$ & $\bm{< 0}$ & Lungo $x,z$: lobi discordi ($\pi$). Lungo $y$: impilati faccia a faccia ($\delta$). \\
+$\bm{d_{yz} - d_{yz}}$ & $\bm{> 0}$ & $\bm{< 0}$ & $\bm{< 0}$ & Lungo $y,z$: lobi discordi ($\pi$). Lungo $x$: impilati faccia a faccia ($\delta$). \\
+$\bm{d_{3z^2-r^2} - d_{3z^2-r^2}}$ & $\bm{> 0}$ & $\bm{> 0}$ & $\bm{> 0}$ & Lungo $x,y$: anelli toroidali ($--$). Lungo $z$: lobi lungo asse ($++$). \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+
+\subsection{Annullamenti per simmetria (orbitali diversi, primi vicini)}
+Un integrale $\gamma_{ij}(\Rvec)$ si annulla ogni volta che, \emph{lungo la direzione} $\Rvec$, i due orbitali hanno \textbf{parità opposta} rispetto a un piano che contiene $\Rvec$: i contributi positivi e negativi si cancellano esattamente.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+{\small
+\begin{tabular}{p{5.6cm} p{3.2cm} p{7.6cm}}
+\toprule
+\textbf{Coppia di orbitali} & \textbf{Direzione} & \textbf{Perché $\gamma=0$} \\
+\midrule
+$s$ -- $p_x$ & lungo $y$, $z$ & il piano nodale di $p_x$ contiene la direzione di legame \\
+$p_x$ -- $p_y$ & lungo $x,y,z$ & parità opposta rispetto al piano di legame \\
+$s$ -- $d_{xy}$ & lungo $x,y,z$ & i 4 lobi di $d_{xy}$ danno contributi a due a due opposti \\
+$s$ -- $d_{x^2-y^2}$ & lungo la \textbf{diagonale} $(1,1)$ o $(1,1,1)$ & sulla diagonale i lobi $+$ (su $x$) e $-$ (su $y$) distano ugualmente dall'orbitale $s$ \\
+$d_{xy}$ -- $d_{x^2-y^2}$ & lungo $x,y,z$ \textbf{e} lungo $(1,1,1)$ & le due funzioni sono ruotate di $45^\circ$ l'una rispetto all'altra \\
+$d_{xy}$ -- $d_{3z^2-r^2}$ & lungo $x,y,z$ & \\
+$d_{xz}$ -- $p_y$ & lungo gli assi & \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
+\attenzione{\textbf{Questa è la domanda ricorrente numero 1.} Se il testo mette due orbitali \emph{diversi} sui due atomi della base (tipicamente $s$ su A e $d_{x^2-y^2}$ o $d_{xy}$ su B, con B al centro della cella), quasi sempre $\gamma_{AB}=0$ per simmetria. Conseguenza: \textbf{le bande NON si ibridizzano}, non serve nessuna matrice $2\times2$, e si trattano come due bande indipendenti, ciascuna con i propri hopping $\gamma_{AA}$ e $\gamma_{BB}$ tra atomi \emph{della stessa specie} (che sono secondi vicini!). La gap si trova poi come $\min_\kvec\left[E_B(\kvec)-E_A(\kvec)\right]$ sui punti ad alta simmetria.}
+
+\vspace{0.3cm}
+
+\textbf{Casi in cui $\gamma\neq0$ tra orbitali diversi:}
+\begin{itemize}
+  \item $s - p_x$ \textbf{lungo $x$}: $\gamma\neq0$, ed è \textbf{antisimmetrico}: $\gamma_{sp}(+a\hat x) = -\gamma_{sp}(-a\hat x)$. Questo produce dispersioni con \textbf{seni} anziché coseni (vedi paragrafo \ref{sec:sp}).
+  \item $d_{x^2-y^2} - s$ lungo $x$ e lungo $y$: $\gamma\neq0$ ma con \textbf{segno opposto} nelle due direzioni (i lobi di $d_{x^2-y^2}$ sono $+$ lungo $x$ e $-$ lungo $y$).
+  \item $p_x - p_y$ lungo la \textbf{diagonale} $\hat x+\hat y$: $\gamma\neq0$.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\noindent \textbf{Secondi vicini (lungo le diagonali):}
+Lungo le direzioni diagonali $\Rvec=(a,a,0)$ o simili, la simmetria si rompe e gli integrali misti possono accoppiarsi:
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item $\bm{p_x - p_y}$ lungo la diagonale $\hat x+\hat y \implies \bm{\gamma \neq 0}$.
+    \item Nel tight-binding, i secondi vicini portano termini del tipo $\bm{-4\gamma_{diag}\cos(k_x a)\cos(k_y a)}$.
+    \item Spesso il testo specifica $\gamma_{2nd}\ll\gamma_{1st}$: servono solo a determinare la curvatura fine o a rimuovere degenerazioni.
+\end{itemize}
+
+
+
+
+\subsection{Ordinare e assegnare i valori numerici dei $\gamma$}
+
+\ricetta{Gerarchia degli integrali di trasferimento}{
+\textbf{(1) Tipo di sovrapposizione} (a parità di distanza): $|\gamma^{\sigma}| \;>\; |\gamma^{\pi}| \;>\; |\gamma^{\delta}| $
+\begin{itemize}
+\item $\sigma$ = \emph{testa-coda}: i lobi si affacciano lungo l'asse di legame (es.\ $p_x$--$p_x$ lungo $x$; $d_{x^2-y^2}$--$d_{x^2-y^2}$ lungo $x$ o $y$). Sovrapposizione massima.
+\item $\pi$ = \emph{fianco a fianco}: gli assi degli orbitali sono paralleli e perpendicolari al legame (es.\ $p_x$--$p_x$ lungo $y$).
+\item $\delta$ = \emph{faccia a faccia}: orbitali $d$ impilati (es.\ $d_{x^2-y^2}$ lungo $z$). Sovrapposizione minima.
+\end{itemize}
+\textbf{(2)} $|\gamma|$ decresce (esponenzialmente) con la distanza. In un reticolo con $a<c<b$ si ha $|\gamma_x|>|\gamma_z|>|\gamma_y|$; i secondi vicini hanno sempre $|\gamma|$ minore dei primi.\\
+\textbf{(3)} il testo spesso dice ``gli altri sono minori/maggiori del $20\%$ ($40\%$) in valore assoluto''. \textbf{Attenzione all'ambiguità}: ``smaller by $40\%$'' significa $0.6\times\gamma_{nn}$.}
+
+\subsubsection*{Esempi svolti di assegnazione}
+\begin{itemize}
+\item \textbf{Tetragonale, orbitali $p_x$ e $p_y$, $b>a$}: \
+$\gamma^x_{xx}=\gamma^y_{yy}=-\gamma_1$ ($\sigma$, il più grande, negativo);
+$\gamma^y_{xx}=\gamma^x_{yy}=+\gamma_2$ ($\pi$ nel piano, positivo);
+$\gamma^z_{xx}=\gamma^z_{yy}=+\gamma_3$ ($\pi$ lungo $z$, ma $b>a$ quindi il più piccolo);
+$\gamma_{xy}^\alpha = 0$ per simmetria. Ordine: $\gamma_1>\gamma_2>\gamma_3$.
+\item \textbf{Quadrato 2D, orbitali $p_y$ e $p_z$}: $p_z$ esce dal piano, quindi \emph{tutti} i suoi legami nel piano sono di tipo $\pi$ e uguali ($\gamma^x_{zz}=\gamma^y_{zz}=+\gamma_2>0$); per $p_y$ il legame lungo $y$ è $\sigma$ (negativo e grande) e lungo $x$ è $\pi$ ($+\gamma_2$). Le due bande non si mescolano ($\gamma_{yz}=0$).
+\item \textbf{Ortorombico, orbitale $d_{xz}$, $b>c>a$}: $\gamma_x,\gamma_z<0$ (lobi discordi, $\pi$); $\gamma_y>0$ (impilati, $\delta$); e per le distanze $|\gamma_x|>|\gamma_z|>\gamma_y$.
+\end{itemize}
+
+\subsection{Calcolo rapido di $\gamma$ dalla larghezza di banda}
+Se il testo fornisce la differenza di energia tra il centro zona ($\Gamma$) e il bordo zona lungo una specifica direzione cartesiana (es.\ da $(0,0,0)$ a $(0,0,\pi/c)$), tutti i coseni lungo le altre direzioni rimangono invariati e si elidono:
+\[ \bm{\Delta E_z = E\!\left(0,0,\frac{\pi}{c}\right) - E(0,0,0) = \pm 4\gamma_z} \]
+\textit{Regola empirica:} muovendosi da $k=0$ ($\cos=1$) a $k=\pi/a$ ($\cos=-1$), il singolo termine $-2\gamma\cos(ka)$ subisce un salto di ampiezza pari esattamente a $\mathbf{4\gamma}$.
+
+\newpage
+\section{Dispersione tight-binding}
+
+\[ \boxed{E(\kvec) = E_{at} - \beta - \sum_{\Rvec\,\in\,\text{vicini}} \gamma(\Rvec)\,\ee^{\ii\kvec\cdot\Rvec}
+   \;\equiv\; \tilde E^0 - \sum_{\Rvec}\gamma(\Rvec)\,\ee^{\ii\kvec\cdot\Rvec}} \]
+Poiché per ogni vicino $\Rvec$ esiste anche $-\Rvec$ con lo stesso $\gamma$ (reticolo di Bravais), gli esponenziali si combinano in coseni:
+$\ \ee^{\ii\kvec\cdot\Rvec}+\ee^{-\ii\kvec\cdot\Rvec} = 2\cos(\kvec\cdot\Rvec)$.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.7}
+{\small
+\begin{tabular}{p{6.2cm} c p{8.4cm}}
+\toprule
+\textbf{Posizioni dei vicini $\Rvec$} & \textbf{n$^\circ$} & \textbf{Contributo a $E(\kvec)$} \\
+\midrule
+$(\pm a,0,0)$ & 2 & $-2\gamma\cos(k_x a)$ \\
+$(\pm a,0,0),(0,\pm a,0)$ & 4 & $-2\gamma\left[\cos(k_xa)+\cos(k_ya)\right]$ \\
+$(\pm a,0,0),(0,\pm a,0),(0,0,\pm c)$ & 6 & $-2\gamma\left[\cos(k_xa)+\cos(k_ya)\right]-2\gamma_z\cos(k_zc)$ \\
+$(\pm a,\pm a,0)$ (diagonali 2D, 2$^\circ$ vic.) & 4 & $-4\gamma_2\cos(k_xa)\cos(k_ya)$ \\
+$(\pm a,\pm b,0)$ (rettangolo, diagonali) & 4 & $-4\gamma_2\cos(k_xa)\cos(k_yb)$ \\
+$\left(\pm\frac a2,\pm\frac b2,0\right)$ (base centrata 2D/3D) & 4 & $-4\gamma\cos\!\left(\frac{k_xa}{2}\right)\cos\!\left(\frac{k_yb}{2}\right)$ \\
+$\left(\pm\frac a2,\pm\frac a2,\pm\frac a2\right)$ (BCC cubico) & 8 & $-8\gamma\cos\!\left(\frac{k_xa}{2}\right)\cos\!\left(\frac{k_ya}{2}\right)\cos\!\left(\frac{k_za}{2}\right)$ \\
+$\left(\pm\frac a2,\pm\frac b2,\pm\frac c2\right)$ \newline (BCT o Ortorombico I a corpo centrato) & 8 & $-8\gamma\cos\!\left(\frac{k_xa}{2}\right)\cos\!\left(\frac{k_yb}{2}\right)\cos\!\left(\frac{k_zc}{2}\right)$ \\
+$\left(\pm\frac a2,\pm\frac a2,0\right)$ e perm.\ (FCC) & 12 & $-4\gamma\left[c_xc_y+c_yc_z+c_xc_z\right]$, \newline con $c_\alpha\equiv\cos\!\left(\frac{k_\alpha a}{2}\right)$ \\
+Esagonale piano: \newline $\pm(a,0)$, $\pm\left(\frac a2,\pm\frac{\sqrt3 a}{2}\right)$ & 6 & $-2\gamma_a\left[\cos(k_xa)+2\cos\!\left(\frac{k_xa}{2}\right)\cos\!\left(\frac{\sqrt3 k_ya}{2}\right)\right]$ \\
+Esagonale piano (asse lungo $y$): \newline $\pm(0,a)$, $\pm\left(\frac{\sqrt3a}{2},\pm\frac a2\right)$ & 6 & $-2\gamma\cos(k_ya)-4\gamma\cos\!\left(\frac{k_ya}{2}\right)\cos\!\left(\frac{\sqrt3k_xa}{2}\right)$ \\
+Obliquo/monoclino 2D: \newline $\pm\Rvec_1=\pm(a,0)$, \newline $\pm\Rvec_2=\pm b(\cos\theta,\sin\theta)$ & 4 & $-2\gamma_1\cos(ak_x)$ \newline $\;-2\gamma_2\cos\!\left(b\cos\theta\,k_x + b\sin\theta\,k_y\right)$ \\
+Rombico 2D ($|\mathbf{a}_1|=|\mathbf{a}_2|=a$, angolo $\alpha$): 2$^\circ$ vicini lungo la \textbf{bisettrice}, a distanza $b=2a\sin\frac{\alpha}{2}$ & 2 & $-2\gamma_3\cos\!\left(b k_x\sin\frac{\alpha}{2} - b k_y\cos\frac{\alpha}{2}\right)$ \newline \textit{(l'altra diagonale ha lunghezza $2a\cos\frac{\alpha}{2}$)} \\
+\textbf{Ortorombico C (base centrata 3D):} \newline $\left(\pm\frac a2,\pm\frac b2,0\right)$ e $(0,0,\pm c)$ & $4+2$ & $-4\gamma_{xy}\cos\!\left(\frac{k_xa}{2}\right)\cos\!\left(\frac{k_yb}{2}\right) - 2\gamma_z\cos(k_zc)$ \\
+\textbf{Ortorombico F (facce centrate):} \newline $\left(\pm\frac a2,\pm\frac b2,0\right)$, $\left(\pm\frac a2,0,\pm\frac c2\right)$, $\left(0,\pm\frac b2,\pm\frac c2\right)$ & 12 & $-4\gamma_{xy}\cos\!\left(\frac{k_xa}{2}\right)\cos\!\left(\frac{k_yb}{2}\right) - 4\gamma_{xz}\cos\!\left(\frac{k_xa}{2}\right)\cos\!\left(\frac{k_zc}{2}\right)$ \newline $\;- 4\gamma_{yz}\cos\!\left(\frac{k_yb}{2}\right)\cos\!\left(\frac{k_zc}{2}\right)$ \\
+\textbf{Esagonale 3D (con asse $c$):} \newline 6 vicini nel piano e $(0,0,\pm c)$ & $6+2$ & $-2\gamma_a\left[\cos(k_xa)+2\cos\!\left(\frac{k_xa}{2}\right)\cos\!\left(\frac{\sqrt3 k_ya}{2}\right)\right]$ \newline $\;- 2\gamma_c\cos(k_zc)$ \\
+\textbf{Quadrato 2D (1$^\circ$ e 2$^\circ$ vicini):} \newline $(\pm a,0,0),(0,\pm a,0)$ e $(\pm a,\pm a,0)$ & 4+4 & $-2\gamma_1[\cos(k_xa)+\cos(k_ya)] - 4\gamma_2\cos(k_xa)\cos(k_ya)$ \\
+\textbf{Rombico 2D (3 set di vicini):} \newline Asse $x$ $\pm(a,0)$, lato obliquo $\pm a(\cos\alpha, \sin\alpha)$, \newline e diag. corta ($b=2a\sin\frac{\alpha}{2}$) & 2+2+2 & $-2\gamma_1\cos(a k_x) - 2\gamma_2\cos(a k_x\cos\alpha + a k_y\sin\alpha)$ \newline $\;- 2\gamma_3\cos\left(b k_x\sin\frac{\alpha}{2} - b k_y\cos\frac{\alpha}{2}\right)$ \\
+\textbf{Ortorombico Semplice 3D:} \newline $(\pm a,0,0)$, $(0,\pm b,0)$ e $(0,0,\pm c)$ & 2+2+2 & $-2\gamma_x\cos(k_xa) - 2\gamma_y\cos(k_yb) - 2\gamma_z\cos(k_zc)$ \\
+\textbf{Tetragonale Semplice 3D (es. orbitali $p_x, p_y$):} \newline $(\pm a,0,0)$, $(0,\pm a,0)$ e $(0,0,\pm b)$ & 2+2+2 & $E_{p_x} \sim -2\gamma_1\cos(k_xa) - 2\gamma_2\cos(k_ya) - 2\gamma_3\cos(k_zb)$ \newline $E_{p_y} \sim -2\gamma_2\cos(k_xa) - 2\gamma_1\cos(k_ya) - 2\gamma_3\cos(k_zb)$ \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
+\pagebreak
+
+\subsection{Estremi di banda, larghezza di banda, punti di sella}
+Si annulla il gradiente $\nabla_\kvec E(\kvec)=0$. Con dispersioni a coseni le derivate producono \emph{seni}, che si annullano per $k_\alpha = 0$ oppure $k_\alpha = \pi/a_\alpha$.
+\begin{itemize}
+  \item \textbf{Analisi direzione per direzione:} ogni termine $\mp 2\gamma_\alpha\cos(k_\alpha a_\alpha)$ è indipendente dagli altri. Se $\gamma_\alpha>0$ il termine $-2\gamma_\alpha\cos$ è \emph{minimo} in $k_\alpha=0$ e \emph{massimo} in $k_\alpha=\pi/a_\alpha$; se $\gamma_\alpha<0$ è il contrario.
+  \item \textbf{Minimo assoluto} (tutti $\gamma>0$): $\Gamma=(0,0,0)$, dove i coseni valgono 1:
+  $E_{min}=\tilde E^0 - 4\gamma_{xy}^{(1)}-2\gamma_z-4\gamma_{diag}^{(2)}$.
+  \item \textbf{Massimo assoluto} (tutti $\gamma>0$): bordo zona $M=\left(\frac{\pi}{a},\frac{\pi}{a},\frac{\pi}{c}\right)$, dove i coseni valgono $-1$ (nel termine diagonale il \emph{prodotto} di due coseni torna $+1$, ma il segno $-4\gamma$ davanti lo rende positivo).
+  \item \textbf{Punti di sella:} punti con gradiente nullo ma curvature di segno opposto lungo direzioni diverse, tipicamente $X=(\pm\pi/a,0)$, $(0,\pm\pi/a)$, oppure $\Gamma$ quando alcuni $\gamma$ hanno segno opposto agli altri.
+  \item \textbf{Larghezza di banda:} $\bm{W = E_{max}-E_{min}}$. Per una banda cubica a primi vicini, $W = 4\gamma_x+4\gamma_y+4\gamma_z$ (in generale $W=\sum_\alpha 4|\gamma_\alpha|$ per i vicini sugli assi).
+\end{itemize}
+
+\attenzione{\textbf{Estremi in 3D con prodotti di coseni (es. BCC / Ortorombico I):} \\
+Quando la dispersione contiene un termine del tipo $-8\gamma\cos(\frac{k_xa}{2})\cos(\frac{k_yb}{2})\cos(\frac{k_zc}{2})$, gli estremi si trovano nei punti in cui il prodotto dei tre coseni vale $\pm 1$.
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item Il prodotto vale $\mathbf{+1}$ quando i coseni sono tutti positivi $(0,0,0)$ oppure due negativi e uno positivo.
+    \item Il prodotto vale $\mathbf{-1}$ quando un coseno è negativo e due positivi ( $k_x=\frac{2\pi}{a}, k_y=0, k_z=0$),  ( $k_x=0, k_y=\frac{2\pi}{b}, k_z=0$), ( $k_x=0, k_y=0, k_z=\frac{2\pi}{c}$) oppure tutti e tre negativi $(k_x=\frac{2\pi}{a}, k_y=\frac{2\pi}{b},  k_z=\frac{2\pi}{c})$.
+\end{itemize}
+}
+
+
+\subsection{Importanza del rapporto tra primi e secondi vicini}
+Uguagliando a zero il gradiente $\nabla_{\kvec}E(\kvec)=0$, le equazioni per le componenti $k_i$ contengono termini del tipo
+\[ \sin(k_x a)\left[\gamma_{1} \pm 2\gamma_{2}\cos(k_y a)\right] = 0 \]
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item Affinché il minimo e il massimo assoluti restino bloccati nei punti ad alta simmetria $\Gamma=(0,0)$ e $M=(\pm\pi/a,\pm\pi/a)$, l'equazione interna $\gamma_{1}\pm2\gamma_{2}\cos(k_ya)=0$ \textbf{non deve ammettere soluzioni reali}.
+    \item Poiché il coseno è limitato in $[-1,1]$, ciò è garantito solo se $\bm{|\gamma_{1}| > 2|\gamma_{2}|}$. Se i secondi vicini superano questa soglia critica, si formano nuovi minimi/massimi locali all'interno della zona di Brillouin (deformazione della topologia della banda).
+    \item I \textbf{punti di sella} si trovano invece sempre nelle posizioni di tipo $X=(\pm\pi/a,0)$ e $(0,\pm\pi/a)$.
+\end{itemize}
+\ricetta{Domanda tipica: ``perché è rilevante $|\gamma_1|/(2\gamma_2)$?''}{
+Perché $\cos(k_ya) = \dfrac{|\gamma_1|}{2\gamma_2}$ ha soluzione reale solo se $\dfrac{|\gamma_1|}{2\gamma_2}\le1$. Finché $|\gamma_1|>2\gamma_2$ gli unici estremi sono nei punti ad alta simmetria e le formule ``da manuale'' per masse efficaci e riempimenti restano valide.}
+
+\section{Analisi delle simmetrie di $E(\kvec)$}
+Lo studio delle simmetrie della relazione di dispersione $E(\kvec)$ permette di dedurre la famiglia cristallina a cui appartiene il reticolo reale.
+\begin{itemize}
+    \item \textbf{Simmetria speculare (assi ortogonali):} se $E(k_x,k_y)=E(-k_x,k_y)$ e $E(k_x,-k_y)=E(k_x,k_y)$, i vettori di base del reticolo reale sono ortogonali tra loro. Esempi: reticoli Ortorombici, Tetragonali o Cubici. Il monoclino è escluso (in 2D l'angolo è $\theta\neq90^\circ$ e comparirebbero termini misti $\cos(\alpha k_x+\beta k_y)$).
+    \item \textbf{Simmetria di scambio (assi equivalenti):} se vale $E(k_x,k_y)=E(k_y,k_x)$ (invarianza per riflessione rispetto alla diagonale o rotazione di $90^\circ$), i passi reticolari sono uguali ($a=b$). Esempi: Tetragonale (in 2D: quadrato), Cubico (in 3D).
+    \item Se \textbf{non} è presente la simmetria di scambio ma sono presenti assi ortogonali $\implies$ \textbf{Ortorombico} (in 2D: rettangolare).
+    \item \textbf{Rotazione di $60^\circ$ o $120^\circ$:} invarianza caratteristica esclusiva della famiglia \textbf{Esagonale}.
+    \item \textbf{Presenza di derivate miste $\partial^2E/\partial k_x\partial k_y \neq 0$ in $\Gamma$} $\implies$ assi non ortogonali (monoclino/obliquo).
+\end{itemize}
+\ricetta{Esempio d'esame}{$E_c = A - B\left[\cos(ak_x)+\cos(bk_y)-\frac15\cos(ak_x)\cos(bk_y)\right]$ con $a\neq b$:\\
+è pari separatamente in $k_x$ e in $k_y$ (assi ortogonali) ma NON simmetrica per $k_x\leftrightarrow k_y$ (perché $a\neq b$), e non ha simmetria a $60^\circ$ $\Rightarrow$ \textbf{ortorombico} (rettangolare in 2D).}
+
+
+\subsection{Tight-binding 2D/3D con primi, secondi vicini}
+\begin{enumerate}
+    \item \textbf{Primi vicini lungo gli assi cartesiani (distanza $a$ o $c$):}
+    \begin{itemize}
+        \item Lungo $x$ ($\pm a,0,0$) e $y$ ($0,\pm a,0$): $\rightarrow \bm{-2\gamma[\cos(k_x a)+\cos(k_y a)]}$
+        \item Lungo $z$ ($0,0,\pm c$): $\rightarrow \bm{-2\gamma_z\cos(k_z c)}$
+    \end{itemize}
+    \item \textbf{Secondi vicini lungo le diagonali del piano $xy$} (distanza $\sqrt2 a$, posizioni $(\pm a,\pm a,0)$): 
+    \[ \sum_{\text{4 diag}}\ee^{\ii(\pm k_xa\pm k_ya)} \longrightarrow \bm{-4\gamma_{diag}\cos(k_xa)\cos(k_ya)} \]
+    Formulazione equivalente spesso usata: $-2\gamma_2\left[\cos(k_xa+k_ya)+\cos(k_xa-k_ya)\right]$
+
+\end{enumerate}
+
+\subsection{Reticolo rettangolare \textit{centrato} 2D con primi, secondi e terzi vicini}
+In un reticolo rettangolare centrato bidimensionale, i cui parametri della cella convenzionale sono $a$ (lungo l'asse $x$) e $b$ (lungo l'asse $y$), assumendo il sito di riferimento nell'origine $(0,0)$.
+\begin{itemize}
+    \item \textbf{Primi vicini (al centro delle celle adiacenti):} posizioni $\Rvec_1 = \left(\pm\frac{a}{2}, \pm\frac{b}{2}\right)$ 
+     $\rightarrow 
+ \bm{-4\gamma_1\cos\!\left(\frac{k_x a}{2}\right)\cos\!\left(\frac{k_y b}{2}\right)} $
+    \item \textbf{Secondi vicini (lungo l'asse $x$):} posizioni $\Rvec_2 = (\pm a, 0)$  $\rightarrow \bm{-2\gamma_2\cos(k_x a)} $
+    \item \textbf{Terzi vicini (lungo l'asse $y$):} posizioni $\Rvec_3 = (0, \pm b)$ $ \rightarrow \bm{-2\gamma_3\cos(k_y b)} $
+    \item \textbf{Masse efficaci al centro zona:}  $\bm{m_{xx} = \frac{\hbr^2}{(\gamma_1+2\gamma_2)a^2}}, \qquad \bm{m_{yy} = \frac{\hbr^2}{(\gamma_1+2\gamma_3)b^2}}$
+\end{itemize}
+
+\subsection{Reticolo rettangolare 2D con primi, secondi e terzi vicini}
+In un reticolo rettangolare bidimensionale dove i passi reticolari sono $a_1$ lungo $x$ e $a_2$ lungo $y$ (con $a_2 > a_1$) 
+\begin{enumerate}
+    \item \textbf{Primi vicini (asse $x$):} posizioni $\Rvec_1 = (\pm a_1, 0)$, distanza $a_1$ $ \rightarrow \bm{-2\gamma_1\cos(k_x a_1)} $ 
+    \item \textbf{Secondi vicini (asse $y$):} posizioni $\Rvec_2 = (0, \pm a_2)$, distanza $a_2$ $  \rightarrow \bm{-2\gamma_2\cos(k_y a_2)} $  
+    \item \textbf{Terzi vicini (diagonali):} posizioni $\Rvec_3 = (\pm a_1, \pm a_2)$, distanza $\sqrt{a_1^2+a_2^2}$ $  \rightarrow \bm{-4\gamma_3\cos(k_x a_1)\cos(k_y a_2)} $ 
+\end{enumerate}
+
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item \textbf{Legge di dispersione:} sommando i contributi e definendo $\tilde E^0 = E_s - \beta$ (dove $E_s$ è il livello del singolo orbitale atomico e $\beta$ è l'integrale di sovrapposizione sul posto $\gamma(\Rvec=0)$) 
+    \[ E(k_x,k_y) = \tilde E^0 - 2\gamma_1\cos(k_xa_1) - 2\gamma_2\cos(k_ya_2) - 4\gamma_3\cos(k_xa_1)\cos(k_ya_2) \] 
+    
+    \item \textbf{Espansione al centro zona ($\Gamma$) e masse efficaci:} 
+    Sviluppando in serie per $\kvec \to 0$ al secondo ordine 
+    \[ E(k_x,k_y) \approx E(\Gamma) + (2\gamma_1+4\gamma_3)\frac{a_1^2k_x^2}{2} + (2\gamma_2+4\gamma_3)\frac{a_2^2k_y^2}{2} \] 
+
+    \[ \bm{m_{xx} = \frac{\hbr^2}{2a_1^2(\gamma_1+2\gamma_3)}}, \qquad \bm{m_{yy} = \frac{\hbr^2}{2a_2^2(\gamma_2+2\gamma_3)}} \] 
+\end{itemize}
+
+
+\subsection{Reticolo esagonale / piano triangolare 2D (6 primi vicini nel piano basale)}
+Se gli atomi formano un reticolo esagonale/triangolare di passo $a$ nel piano $xy$ con 6 primi vicini in $\pm(a,0)$ e $\pm(a/2,\pm a\sqrt3/2)$, la somma degli esponenziali produce:
+\[ \sum_{6\,\text{NN}} \ee^{\ii\kvec\cdot\Rvec} = 2\cos(k_xa) + 4\cos\!\left(\frac{k_xa}{2}\right)\cos\!\left(\frac{\sqrt3 k_ya}{2}\right) \]
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item \textbf{Legge di dispersione} (es.\ orbitali $p_z$ o $s$, accoppiamento nel piano $\gamma_a$ e lungo l'asse $c$ con $\gamma_c$):
+    \[ E(\kvec) = \tilde E^0 - 2\gamma_a\left[\cos(k_xa) + 2\cos\!\left(\frac{k_xa}{2}\right)\cos\!\left(\frac{\sqrt3 k_ya}{2}\right)\right] - 2\gamma_c\cos(k_zc) \]
+    \item \textbf{Espansione al centro zona ($\Gamma$) e massa efficace nel piano:} sviluppando i coseni per $k\to0$ il termine in parentesi quadra diventa $3-\frac34 a^2(k_x^2+k_y^2)$. La dispersione è perfettamente isotropa nel piano:
+    \[ E(\kvec) \approx E(\Gamma) + \frac{3}{2}\gamma_a a^2(k_x^2+k_y^2)
+       \implies \bm{m_{xx}=m_{yy}=\frac{\hbr^2}{3\gamma_a a^2}}, \qquad m_{zz}=\frac{\hbr^2}{2\gamma_c c^2} \]
+    \item \textbf{Estremi:} il minimo è in $\Gamma$ con $E_{min}=\tilde E^0-6\gamma_a-2\gamma_c$; il massimo è nel punto $H$ (vertice dell'esagono a $k_z=\pi/c$), con $k_x = \frac{4\pi}{3a},\,k_y=0,\,k_z=\frac{\pi}{c}$ e $E_{max}=\tilde E^0+3\gamma_a+2\gamma_c$.
+    \[ \bm{W = E_{max}-E_{min} = 9\gamma_a + 4\gamma_c} \]
+    (in 2D puro: $E_{min}=-6\gamma$ in $\Gamma$, $E_{max}=+3\gamma$ nel punto K, $W=9\gamma$).
+    \item \textbf{Punti di sella:} i punti $M$ (centro-lato dell'esagono, es.\ $k_x=0,\,k_y=\frac{2\pi}{\sqrt3 a}$).
+    \item Se $\gamma_c<0$ (lobi $p_z$ discordi lungo $c$), il termine diventa $+2|\gamma_c|\cos(k_zc)$ e $\Gamma$ diventa un \textbf{punto di sella}: massimo lungo $z$, minimo nel piano.
+\end{itemize}
+
+\subsection{Hopping inequivalenti nel piano esagonale}
+Se i 6 vicini non sono equivalenti (2 con $\gamma_1$ lungo $\hat y$ e 4 con $\gamma_2$ obliqui), per esempio con orbitali $p_x$:
+\[ E(k_x,k_y) = \tilde E^0 - 2\gamma_1\cos(k_ya) + 4\gamma_2\cos\!\left(\frac{k_ya}{2}\right)\cos\!\left(\frac{\sqrt3 k_xa}{2}\right) \]
+Derivate seconde (utili per il tensore di massa nei punti M e K):
+\[ \frac{\partial^2E}{\partial k_x^2} = -3\gamma_2a^2\cos\!\left(\frac{k_ya}{2}\right)\cos\!\left(\frac{\sqrt3k_xa}{2}\right),\qquad
+   \frac{\partial^2E}{\partial k_x\partial k_y} = \sqrt3\,\gamma_2a^2\sin\!\left(\frac{k_ya}{2}\right)\sin\!\left(\frac{\sqrt3k_xa}{2}\right) \]
+\[ \frac{\partial^2E}{\partial k_y^2} = 2\gamma_1a^2\cos(k_ya) - 3\gamma_2a^2\cos\!\left(\frac{k_ya}{2}\right)\cos\!\left(\frac{\sqrt3k_xa}{2}\right) \]
+Punti notevoli della 1ZB esagonale: $\ M=\left(\frac{2\pi}{\sqrt3a},0\right)$, $\ K=\left(\frac{2\pi}{\sqrt3a},\frac{2\pi}{3a}\right)$, lato della 1ZB $b=\frac{4\pi}{3\sqrt3 a}$.
+
+
+
+
+\newpage
+
+\section{Reticoli Base di 2 atomi}
+Se la cella primitiva ospita due atomi (specie $A$ e $B$, oppure due orbitali diversi) in $\mathbf{d}_A$ e $\mathbf{d}_B$ con livelli atomici $\epsilon_A$ e $\epsilon_B$ e integrale di hopping $\gamma$ solo tra primi vicini $A$--$B$, i coefficienti della combinazione lineare degli orbitali sono dati da:
+\[
+\begin{cases}
+[\epsilon_A - E(\kvec)]\,b_A - g_{\kvec}\, b_B = 0 \\
+-g_{\kvec}^{*}\, b_A + [\epsilon_B - E(\kvec)]\,b_B = 0
+\end{cases}
+\quad\Longrightarrow\quad
+\boxed{E_\pm(\kvec) = \frac{\epsilon_A+\epsilon_B}{2} \pm \sqrt{\left(\frac{\epsilon_A-\epsilon_B}{2}\right)^{2} + |g_{\kvec}|^{2}}}
+\]
+dove $\displaystyle g_{\kvec} \equiv \gamma\sum_{\Rvec}\ee^{\ii\kvec\cdot\Rvec}$, con $\Rvec$ i vettori che collegano l'atomo $A$ ai suoi primi vicini $B$.
+\begin{itemize}
+  \item $E_+$ = banda di \textbf{conduzione} (superiore), $E_-$ = banda di \textbf{valenza} (inferiore).
+  \item Il massimo di $E_-$ e il minimo di $E_+$ si trovano \textbf{entrambi} dove $|g_\kvec|$ è \textbf{minimo}. Se $|g|$ può annullarsi, lì le energie degenerano nei livelli atomici puri:
+  \[ \bm{E_+ = \max(\epsilon_A,\epsilon_B)}, \qquad \bm{E_- = \min(\epsilon_A,\epsilon_B)}, \qquad \bm{E_g = |\epsilon_A-\epsilon_B|} \]
+  \item Il gap è sempre \textbf{diretto} (i due estremi cadono nello stesso $\kvec$).
+  \item Con 2 elettroni per cella la banda inferiore è piena e la superiore vuota: \textbf{isolante/semiconduttore}.
+\end{itemize}
+
+
+\begin{center}
+\renewcommand{\arraystretch}{1.8}
+{\small
+\begin{tabular}{p{5.2cm} p{5.4cm} p{5.4cm}}
+\toprule
+\textbf{Geometria} & $g_\kvec$ & $|g_\kvec|^2$ e punti notevoli \\
+\midrule
+\textbf{Quadrato/rettangolare 2D}, $B$ al centro cella: $\Rvec=\left(\pm\frac a2,\pm\frac b2\right)$
+& $4\gamma\cos\!\left(\frac{k_xa}{2}\right)\cos\!\left(\frac{k_yb}{2}\right)$
+& $16\gamma^2\cos^2\!\left(\frac{k_xa}{2}\right)\cos^2\!\left(\frac{k_yb}{2}\right)$. \newline
+  Max in $\Gamma$: $|g|=4\gamma$. \newline Zero sul bordo zona ($k_x=\pm\pi/a$ \emph{oppure} $k_y=\pm\pi/b$). \\
+\textbf{Honeycomb 2D} ($a$ = distanza A--B), 3 vicini
+& $\gamma\left[\ee^{\ii a k_y}\!+2\ee^{-\ii a k_y/2}\cos\!\left(\frac{\sqrt3 ak_x}{2}\right)\right]$
+& $\gamma^2\big[1+4C_x^2+4C_xC_y\big]$ \newline con $C_x=\cos\!\left(\frac{\sqrt3k_xa}{2}\right)$, $C_y=\cos\!\left(\frac{3k_ya}{2}\right)$ \newline
+  $\Gamma$: $9\gamma^2$; \ $M$: $\gamma^2$; \ $K$: $0$ (punto di Dirac). \\
+\textbf{Catena 1D con legami alternati} $\gamma_S$ (corto $a_S$), $\gamma_L$ (lungo $a_L$), $a_S+a_L=a$
+& $\gamma_S\ee^{\ii k a_S} + \gamma_L\ee^{-\ii k a_L}$
+& $\gamma_S^2+\gamma_L^2+2\gamma_S\gamma_L\cos(ka)$ \newline
+  Max in $k=0$: $(\gamma_S+\gamma_L)^2$; \ Min in $k=\pi/a$: $(\gamma_S-\gamma_L)^2$. \\
+\textbf{Catena 1D $s$--$p_x$} (hopping antisimmetrico)
+& $2\ii\gamma\sin\!\left(\frac{ka}{2}\right)$
+& $4\gamma^2\sin^2\!\left(\frac{ka}{2}\right)$ \newline
+  Zero in $k=0$ (gap \emph{minima} al centro zona!); max al bordo. \\
+\textbf{Quadrato 2D $p_x$(A)--$p_y$(B)}, $B$ in $\left(\frac a2,\frac a2\right)$, segni alternati
+& $4\gamma_0\sin\!\left(\frac{k_xa}{2}\right)\sin\!\left(\frac{k_ya}{2}\right)$
+& massimo ai vertici $\left(\pm\frac\pi a,\pm\frac\pi a\right)$: $|g|=4\gamma_0$ \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
+\subsection{Reticolo rettangolare/quadrato 2D con base AB}
+Atomo $A$ in $(0,0)$, $B$ al centro della cella $\left(\frac a2,\frac b2\right)$: i 4 primi vicini distano $\Rvec = \left(\pm\frac a2,\pm\frac b2\right)$.
+\[ g_{\kvec} = 4\gamma\cos\!\left(\frac{k_x a}{2}\right)\cos\!\left(\frac{k_y b}{2}\right)
+   \implies |g_{\kvec}|^2 = 16\gamma^2\cos^2\!\left(\frac{k_x a}{2}\right)\cos^2\!\left(\frac{k_y b}{2}\right) \]
+\begin{itemize}
+    \item Al centro zona $\Gamma=(0,0)$, $|g_\kvec|$ è massimo ($|g_\Gamma|=4\gamma$): la separazione tra le bande è massima,
+    $E_\pm(\Gamma)=\frac{\epsilon_A+\epsilon_B}{2}\pm\sqrt{\left(\frac{\epsilon_A-\epsilon_B}{2}\right)^2+16\gamma^2}$.
+    \item Ai bordi zona ($k_x=\pm\pi/a$ \textbf{oppure} $k_y=\pm\pi/b$) il coseno si annulla $\implies g_\kvec=0$: le energie degenerano nei livelli atomici puri e $\bm{E_g = |\epsilon_A-\epsilon_B|}$
+    \item \textbf{Masse efficaci al punto $\Gamma$.} Espandendo per $k\to0$:
+    $g_\kvec^2 \approx 16\gamma^2\left[1-\frac14(a^2k_x^2+b^2k_y^2)\right]$, e derivando due volte:
+    \[ \bm{m^*_{xx} = \pm\frac{\hbr^2\sqrt{(\epsilon_A-\epsilon_B)^2+64\gamma^2}}{8\gamma^2a^2}},\qquad
+       \bm{m^*_{yy} = \pm\frac{\hbr^2\sqrt{(\epsilon_A-\epsilon_B)^2+64\gamma^2}}{8\gamma^2b^2}} \]
+    \textit{segno $+$ per la banda di conduzione $E_+$, segno $-$ per la valenza $E_-$.}
+    
+    Forma equivalente compatta: $\displaystyle |m^*_{xx}| = \frac{\hbr^2}{\gamma a^2}\sqrt{1+\left(\frac{\epsilon_A-\epsilon_B}{8\gamma}\right)^2}$.
+    \item \textbf{Attenzione al segno delle curvature:} in $\Gamma$ la banda $E_+$ ha un \emph{massimo} e la $E_-$ un \emph{minimo} (perché $|g|$ è massimo lì). Quindi in $\Gamma$ la massa della banda di conduzione è \emph{negativa} e viceversa: il minimo di conduzione è al bordo zona.
+\end{itemize}
+
+\subsection{Reticolo honeycomb 2D con atomi inequivalenti (A e B)}
+
+Sia $a$ il passo reticolare (lato dell'esagono, ovvero la distanza tra i primi vicini A--B). Consideriamo energie atomiche $\epsilon_A \neq \epsilon_B$ e un termine di hopping $\gamma$ solo tra primi vicini A--B. Siano $\boldsymbol{h} \equiv a\left(\frac{\sqrt{3}}{2}, \frac{1}{2}\right), a\left(-\frac{\sqrt{3}}{2}, \frac{1}{2}\right), a(0, -1)$ i vettori che individuano i tre atomi B primi vicini di un atomo A preso come origine. 
+\begin{equation*}
+    \Gamma_{\boldsymbol{k}} \equiv \gamma \sum_{\boldsymbol{h}} e^{i\boldsymbol{k}\cdot\boldsymbol{h}} = 2\gamma e^{iak_y/2} \cos\left(\frac{\sqrt{3}ak_x}{2}\right) + \gamma e^{-iak_y}
+\end{equation*}
+con $\Gamma_{-\boldsymbol{k}} = \Gamma_{\boldsymbol{k}}^*$.  I coefficienti della combinazione lineare degli orbitali atomici (LCAO) degli atomi A e B che contribuiscono alla banda di valenza e di conduzione, $b_A$ e $b_B$, obbediscono al seguente sistema di equazioni:
+\begin{equation*}
+    \begin{cases}
+        (\epsilon_A - \epsilon_{\boldsymbol{k}}) b_A - \Gamma_{\boldsymbol{k}} b_B = 0 \\[1ex]
+        -\Gamma_{\boldsymbol{k}}^* b_A + (\epsilon_B - \epsilon_{\boldsymbol{k}}) b_B = 0
+    \end{cases}
+\end{equation*}
+Questo sistema ammette soluzioni non banali solo se l'energia $\epsilon_{\boldsymbol{k}}$ soddisfa l'equazione agli autovalori:
+\begin{equation*}
+    \epsilon_{\boldsymbol{k}}^2 - (\epsilon_A + \epsilon_B)\epsilon_{\boldsymbol{k}} + \epsilon_A\epsilon_B - |\Gamma_{\boldsymbol{k}}|^2 = 0
+\end{equation*}
+
+La dispersione si ricava quindi diagonalizzando il sistema (ovvero risolvendo l'equazione di secondo grado):
+\begin{equation*}
+    E_\pm(\boldsymbol{k}) = \epsilon_{\boldsymbol{k}} = \frac{\epsilon_A+\epsilon_B}{2} \pm \sqrt{\left(\frac{\epsilon_A-\epsilon_B}{2}\right)^2 + |\Gamma_{\boldsymbol{k}}|^2}
+\end{equation*}
+dove il fattore geometrico (calcolato con la scelta dei 3 vicini indicata sopra) vale:
+\begin{equation*}
+    |\Gamma_{\boldsymbol{k}}|^2 = \gamma^2\left[1 + 4\cos\left(\frac{\sqrt{3} k_xa}{2}\right)\cos\left(\frac{3k_ya}{2}\right) + 4\cos^2\left(\frac{\sqrt{3} k_xa}{2}\right)\right]
+\end{equation*} 
+
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item \textbf{Punti ad alta simmetria della 1ZB} (lato della ZB esagonale $b = \frac{4\pi}{3\sqrt3 a} = \frac{4\pi\sqrt3}{9a}$):
+    \[ \Gamma=(0,0), \qquad M = b\left(0,\frac{\sqrt3}{2}\right), \qquad K = b\left(\frac12,\frac{\sqrt3}{2}\right) \]
+    \begin{itemize}
+        \item Centro zona $\Gamma \implies |\Gamma|^2 = 9\gamma^2 \implies E_\pm(\Gamma)=\frac{\epsilon_A+\epsilon_B}{2}\pm\sqrt{\left(\frac{\epsilon_A-\epsilon_B}{2}\right)^2+9\gamma^2}$
+        \item Punto $M$ (centro-lato) $\implies |\Gamma|^2 = \gamma^2 \implies E_\pm(M)=\frac{\epsilon_A+\epsilon_B}{2}\pm\sqrt{\left(\frac{\epsilon_A-\epsilon_B}{2}\right)^2+\gamma^2}$
+        \item Vertice $K$ (punto di Dirac) $\implies |\Gamma|^2 = 0 \implies \bm{E_+(K)=\max(\epsilon_A,\epsilon_B)}$ e $\bm{E_-(K)=\min(\epsilon_A,\epsilon_B)}$
+    \end{itemize}
+    \item \textbf{Bandgap:} il massimo di valenza ($E_-$) e il minimo di conduzione ($E_+$) si trovano entrambi in $K$, perché sotto radice c'è la somma di due quadrati e quindi gli estremi corrispondono al \emph{minimo} di $|\Gamma(\kvec)|^2\ge0$. Il gap è diretto e vale
+    \[ \bm{E_g = |\epsilon_A-\epsilon_B|} \]
+    se $\epsilon_A=\epsilon_B$ il gap si chiude e si ha il Grafene semimetallico, con coni di Dirac lineari in $K$.
+\end{itemize}
+
+\subsection{Catena 1D biatomica con legami alternati (corto/lungo)}
+\label{sec:alternati}
+Passo $a$, atomi $A$ e $B$ alternati, legame corto $a_S$ con $\gamma_S$ e legame lungo $a_L$ con $\gamma_L$ ($a_S+a_L=a$). Posto
+\[ \Gamma_k \equiv \gamma_S\,\ee^{\ii k a_S} + \gamma_L\,\ee^{-\ii k a_L}
+   \quad\Longrightarrow\quad
+   \bm{|\Gamma_k|^2 = \gamma_S^2+\gamma_L^2+2\gamma_S\gamma_L\cos(ka)} \]
+\textit{notare: il risultato dipende solo da $a_S+a_L=a$, non dai singoli valori!}
+\[ \bm{\epsilon_\pm(k) = \frac{\epsilon_A+\epsilon_B}{2}\pm\sqrt{\left(\frac{\epsilon_A-\epsilon_B}{2}\right)^2+|\Gamma_k|^2}} \]
+\begin{itemize}
+  \item $|\Gamma_k|^2$ è \textbf{massimo} in $k=0$: $(\gamma_S+\gamma_L)^2$; \textbf{minimo} in $k=\pi/a$: $(\gamma_S-\gamma_L)^2$.
+  \item Il gap è quindi in $\bm{k=\pi/a}$ (bordo zona) e vale
+  \[ \bm{E_g = 2\sqrt{\left(\frac{\epsilon_A-\epsilon_B}{2}\right)^2 + (\gamma_S-\gamma_L)^2}} \]
+  Se $\gamma_S=\gamma_L$ e $\epsilon_A=\epsilon_B$ il gap si chiude (catena monoatomica).
+  \item \textbf{Velocità dell'elettrone} in banda di valenza:
+  \[ v_k = \frac{1}{\hbr}\frac{\partial\epsilon_-}{\partial k}
+        = \frac{a\,\gamma_S\gamma_L\sin(ka)}{\hbr\sqrt{\left(\frac{\epsilon_A-\epsilon_B}{2}\right)^2+|\Gamma_k|^2}} \]
+  In $k=\pi/(2a)$: $\ \displaystyle v = \frac{a\gamma_S\gamma_L}{\hbr\sqrt{\left(\frac{\epsilon_A-\epsilon_B}{2}\right)^2+\gamma_S^2+\gamma_L^2}}$.
+\end{itemize}
+
+\subsection{Catena 1D con orbitali $s$ e $p_x$ (hopping ANTISIMMETRICO)}
+\label{sec:sp}
+Cella di passo $a$, base $\mathbf{d}_1=0$ ($s$, energia $\epsilon_s$) e $\mathbf{d}_2=\frac a2$ ($p_x$, energia $\epsilon_p$). Poiché il $p_x$ cambia segno tra i due lobi:
+\[ \gamma_{sp}(+\tfrac a2) = -\gamma_{sp}(-\tfrac a2) \equiv -\gamma \quad(\text{con }\Delta U<0) \]
+Le somme di esponenziali producono \textbf{seni} anziché coseni:
+\[ g_k = 2\ii\gamma\sin\!\left(\frac{ka}{2}\right) \implies |g_k|^2 = 4\gamma^2\sin^2\!\left(\frac{ka}{2}\right) \]
+\[ \boxed{\epsilon_\pm(k) = \bar\epsilon \pm \sqrt{\Delta^2 + 4\gamma^2\sin^2\!\left(\frac{ka}{2}\right)}},
+   \qquad \bar\epsilon = \frac{\epsilon_s+\epsilon_p}{2},\quad \Delta = \frac{\epsilon_s-\epsilon_p}{2} \]
+\begin{itemize}
+  \item In $k=0$: $|g|=0$ $\Rightarrow$ $\epsilon_+ = \max(\epsilon_s,\epsilon_p)$, $\epsilon_- = \min(\epsilon_s,\epsilon_p)$: la \textbf{gap è al centro zona} ed è diretta, $E_g = |\epsilon_s-\epsilon_p|$.
+  \item Al bordo zona $k=\pm\pi/a$: $\epsilon_\pm = \bar\epsilon\pm\sqrt{\Delta^2+4\gamma^2}$ (massimo della conduzione, minimo della valenza).
+  \item Con un elettrone per orbitale (2 per cella) la banda inferiore è piena: $E_F = \min(\epsilon_s,\epsilon_p)$ (a $T=0$, sul bordo della banda) e il semiconduttore ha gap diretta in $\Gamma$.
+\end{itemize}
+\attenzione{È il caso ``rovesciato'' rispetto a tutti gli altri: qui la gap è al \textbf{centro} zona e non al bordo. Riconoscilo dal fatto che i due orbitali della base hanno \textbf{parità opposta} rispetto all'asse di legame ($s$ pari, $p_x$ dispari), quindi $\gamma(+R)=-\gamma(-R)$.}
+
+\subsection{Quadrato 2D con $p_x$ (A) e $p_y$ (B) al centro}
+Atomi $A$ ($p_x$) nei nodi, atomi $B$ ($p_y$) in $\left(\frac a2,\frac a2\right)$; $\epsilon_p$ uguale per entrambi; $|\gamma_{uv}|=\gamma_0$ con i segni determinati dai lobi: $\gamma_{++}<0,\ \gamma_{+-}>0,\ \gamma_{-+}>0,\ \gamma_{--}<0$. Allora
+\[ w_\kvec = \sum_{u,v=\pm}\gamma_{uv}\,\ee^{\ii \mathbf{r}_{uv}\cdot\kvec}
+  = 2\gamma_0\left\{\cos\!\left[\frac{a(k_x-k_y)}{2}\right]-\cos\!\left[\frac{a(k_x+k_y)}{2}\right]\right\}
+  = \bm{4\gamma_0\sin\!\left(\frac{k_xa}{2}\right)\sin\!\left(\frac{k_ya}{2}\right)} \]
+\[ \epsilon_\pm(\kvec) = \epsilon_p \pm |w_\kvec| \]
+\begin{itemize}
+  \item I minimi della banda inferiore sono dove $|w|$ è \textbf{massimo}: i 4 punti equivalenti $\left(\pm\frac\pi a,\pm\frac\pi a\right)$, dove $\epsilon_- = \epsilon_p-4\gamma_0$.
+  \item Espandendo intorno a tali punti: $\epsilon_-\approx-4\gamma_0+\frac12a^2\gamma_0(\delta k_x^2+\delta k_y^2)$, quindi
+  \[ \bm{m_{xx}=m_{yy}=\frac{\hbr^2}{a^2\gamma_0}}, \qquad m_{xy}=m_{yx}=0 \]
+\end{itemize}
+
+\section{Sistemi $3\times3$: bande piatte (non leganti)}
+Quando la cella contiene \textbf{tre} orbitali di cui due si accoppiano solo con il terzo (e non tra loro), si ottiene sempre una \textbf{banda piatta} (non dispersiva) più due bande simmetriche.
+Il sistema di equazioni per i coefficienti (ampiezze) degli orbitali, che rappresenta il problema agli autovalori $H\mathbf{c} = \epsilon\mathbf{c}$, assume la forma:
+\[ 
+\begin{pmatrix} 
+\epsilon_A & V_{1,\kvec} & V_{2,\kvec} \\ 
+V_{1,\kvec}^* & \epsilon_B & 0 \\ 
+V_{2,\kvec}^* & 0 & \epsilon_B 
+\end{pmatrix} 
+\begin{pmatrix} 
+c_A \\ c_{B1} \\ c_{B2} 
+\end{pmatrix} 
+= \epsilon 
+\begin{pmatrix} 
+c_A \\ c_{B1} \\ c_{B2} 
+\end{pmatrix} 
+\]
+dove $V_{1,\kvec}$ e $V_{2,\kvec}$ descrivono l'accoppiamento (hopping) tra l'orbitale $A$ e i due orbitali $B$. 
+
+L'equazione secolare si ottiene imponendo l'annullamento del determinante, $\det(H - \epsilon I) = 0$:
+\[ 
+(\epsilon_A - \epsilon)(\epsilon_B - \epsilon)^2 - \left(|V_{1,\kvec}|^2 + |V_{2,\kvec}|^2\right)(\epsilon_B - \epsilon) = 0 
+\]
+Raccogliendo il termine $(\epsilon_B - \epsilon)$, è evidente la presenza di un autovalore costante $\epsilon = \epsilon_B$. Identificando l'accoppiamento efficace con $|V_{1,\kvec}|^2 + |V_{2,\kvec}|^2 = 4\gamma^2 f_\kvec^2$ e risolvendo l'equazione di secondo grado residua, si ricavano le tre energie:
+
+\[ \epsilon_{1,\kvec} = \frac{\epsilon_A+\epsilon_B}{2}-\sqrt{\left(\frac{\epsilon_A-\epsilon_B}{2}\right)^2+4\gamma^2 f_\kvec^2},
+   \qquad \epsilon_{2,\kvec}=\epsilon_B\ (\text{piatta}), \]
+\[ \epsilon_{3,\kvec} = \frac{\epsilon_A+\epsilon_B}{2}+\sqrt{\left(\frac{\epsilon_A-\epsilon_B}{2}\right)^2+4\gamma^2 f_\kvec^2} \]
+dove $\epsilon_B$ è l'energia dei \emph{due} orbitali equivalenti (che formano la combinazione non legante) e $f_\kvec^2$ dipende dalla geometria.
+
+\subsection{Reticolo quadrato: $s$ nei nodi + $p_x, p_y$ a metà lato}
+Segni: il lobo $+$ di $p_x$ punta verso $+x$. L'hopping è antisimmetrico $\Rightarrow$ compaiono \textbf{seni}:
+\[ f_\kvec^2 \equiv s_\kvec^2 = \sin^2\!\left(\frac{ak_x}{2}\right)+\sin^2\!\left(\frac{ak_y}{2}\right) \]
+\begin{itemize}
+  \item $s_\kvec^2$ è \textbf{minimo (=0) in $\Gamma$}: lì $\epsilon_1 = \epsilon_s$ (massimo della valenza) e $\epsilon_3 = \epsilon_p$ (minimo della conduzione).
+  \item \textbf{Gap diretta in $\Gamma$:} $\bm{E_g = \epsilon_p-\epsilon_s}$.
+  \item Masse efficaci: espandendo $s^2_\kvec\approx \frac{a^2k^2}{4}$,
+  \[ \epsilon_{1}\approx\epsilon_s - \frac{2\gamma^2a^2}{\epsilon_p-\epsilon_s}\frac{k^2}{2}, \qquad
+     \epsilon_{3}\approx\epsilon_p + \frac{2\gamma^2a^2}{\epsilon_p-\epsilon_s}\frac{k^2}{2} \]
+  \[ \bm{|m_e| = |m_h| = \frac{\hbr^2(\epsilon_p-\epsilon_s)}{2\gamma^2a^2}} \]
+\end{itemize}
+
+\subsection{Reticolo quadrato AB$_2$: $d_{x^2-y^2}$ nei nodi + due $s$ a metà lato}
+I lobi di $d_{x^2-y^2}$ sono $+$ lungo $x$ e $-$ lungo $y$: quindi $\gamma>0$ lungo $x$ e $\gamma<0$ lungo $y$; l'hopping è \emph{simmetrico} $\Rightarrow$ compaiono \textbf{coseni}.
+Utilizzando i coefficienti $c_A, c_{B1}, c_{B2}$ introdotti nella struttura matriciale generale, il sistema omogeneo di tre equazioni lineari esplicito da risolvere diventa:
+\[
+\begin{cases}
+(\epsilon_A - \epsilon)c_A - \gamma\left(e^{i a k_x/2} + e^{-i a k_x/2}\right)c_{B1} + \gamma\left(e^{i a k_y/2} + e^{-i a k_y/2}\right)c_{B2} = 0 \\
+(\epsilon_B - \epsilon)c_{B1} - \gamma\left(e^{i a k_x/2} + e^{-i a k_x/2}\right)c_A = 0 \\
+(\epsilon_B - \epsilon)c_{B2} + \gamma\left(e^{i a k_y/2} + e^{-i a k_y/2}\right)c_A = 0
+\end{cases}
+\]
+che porta alla dipendenza spaziale:
+\[ f_\kvec^2 \equiv c_\kvec^2 = \cos^2\!\left(\frac{ak_x}{2}\right)+\cos^2\!\left(\frac{ak_y}{2}\right) \]
+\begin{itemize}
+  \item $c_\kvec^2$ è \textbf{minimo (=0) nel punto $M=\left(\frac\pi a,\frac\pi a\right)$}: lì $\epsilon_1 = \epsilon_B$ (max valenza) e $\epsilon_3=\epsilon_A$ (min conduzione).
+  \item \textbf{Gap diretta in $M$:} $\bm{E_g = \epsilon_A-\epsilon_B}$ (se $\epsilon_A>\epsilon_B$).
+  \item Espandendo intorno a $M$, con $\delta k^2 \equiv \delta k_x^2 + \delta k_y^2 \equiv \left(k_x - \frac{\pi}{a}\right)^2 + \left(k_y - \frac{\pi}{a}\right)^2$, si ha $c_\kvec^2\approx\frac{a^2\delta k^2}{4}$. Le bande si approssimano come:
+  \[ \epsilon_{1,\kvec} \approx \epsilon_B - \frac{4\gamma^2 c_\kvec^2}{\epsilon_A - \epsilon_B} \approx \epsilon_B - \frac{2\gamma^2a^2}{\epsilon_A - \epsilon_B}\frac{\delta k^2}{2} \]
+  \[ \epsilon_{3,\kvec} \approx \epsilon_A + \frac{4\gamma^2 c_\kvec^2}{\epsilon_A - \epsilon_B} \approx \epsilon_A + \frac{2\gamma^2a^2}{\epsilon_A - \epsilon_B}\frac{\delta k^2}{2} \]
+  ottenendo tensori di massa diagonali in $M$:
+  \[ \bm{m_e = m_h = \frac{\hbr^2(\epsilon_A-\epsilon_B)}{2\gamma^2 a^2}} \]
+  \item La banda piatta $\epsilon_2 = \epsilon_B$ corrisponde alla combinazione lineare degli orbitali $s$ che \textbf{non si lega} all'orbitale $d$ (per simmetria).
+\end{itemize}
+
+
+\newpage
+
+\section{Velocità di gruppo}
+\[ \boxed{\mathbf{v}(\kvec) = \frac{1}{\hbr}\nabla_\kvec E(\kvec)}, \qquad\text{in 1D:}\quad v(k)=\frac{1}{\hbr}\frac{\partial E}{\partial k} \]
+Per una banda tight-binding con dispersione a coseni (es.\ $-2\gamma_\alpha\cos(k_\alpha a_\alpha)$), la derivata produce seni: $\frac{2\gamma_\alpha a_\alpha}{\hbr}\sin(k_\alpha a_\alpha)$.
+\begin{itemize}
+    \item \textbf{Velocità nulla ($\mathbf{v}_g=\mathbf{0}$):} si annulla dove tutti gli argomenti dei seni valgono $0$ o $\pm\pi$: centro zona $\Gamma$ e bordi zona / punti ad alta simmetria ($k_\alpha=\pm\pi/a_\alpha$).
+    \item \textbf{Modulo massimo ($|\mathbf{v}_g|_{max}$):} nei punti di flesso della banda, dove $\sin(k_\alpha a_\alpha)=\pm1$, cioè a metà strada tra origine e bordo zona: $\bm{k_\alpha = \pm\frac{\pi}{2a_\alpha}}$, con
+    \[ \bm{|v|_{max} = \frac{2\gamma a}{\hbr}} \qquad\left(\text{per un termine } -2\gamma\cos(ka)\right) \]
+    \item \textbf{Attenzione, in 3D si chiede il LUOGO dei punti, non un punto.} Con
+    \[ \mathbf{v}(\kvec)=\frac{2}{\hbr}\Big(a\gamma_x\sin(k_xa),\ b\gamma_y\sin(k_yb),\ c\gamma_z\sin(k_zc)\Big) \]
+    \begin{itemize}
+      \item $\mathbf{v}=\mathbf{0}$ nelle 8 combinazioni $k_x\in\{0,\pm\frac\pi a\}$, $k_y\in\{0,\pm\frac\pi b\}$, $k_z\in\{0,\pm\frac\pi c\}$ (centro zona, centri delle facce, spigoli e vertici della 1ZB);
+      \item $|\mathbf{v}|$ è massimo nei punti $k_x=\pm\frac{\pi}{2a}$, $k_y=\pm\frac{\pi}{2b}$, $k_z=\pm\frac{\pi}{2c}$ presi \emph{simultaneamente} (gli 8 punti $\frac{\pi}{2}(\pm\frac1a,\pm\frac1b,\pm\frac1c)$), dove $|\mathbf{v}|_{max}=\frac{2}{\hbr}\sqrt{(a\gamma_x)^2+(b\gamma_y)^2+(c\gamma_z)^2}$.
+    \end{itemize}
+\end{itemize}
+
+\vspace{0.3cm}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{l l l}
+\toprule
+Dispersione & $v(k)=\frac1\hbr\partial_kE$ & $|v|_{max}$ e dove \\
+\midrule
+$E = -B\cos(ka)$ & $\frac{Ba}{\hbr}\sin(ka)$ & $\frac{Ba}{\hbr}$ in $k=\pm\frac{\pi}{2a}$ \\
+$E = B\left[\cos(ka)-1\right]$ & $-\frac{Ba}{\hbr}\sin(ka)$ & $\frac{Ba}{\hbr}$ in $k=\pm\frac{\pi}{2a}$ \\
+$E = A\left[1-\frac12\sin^2\!\left(\frac{ka}{2}\right)\right]$ & $-\frac{Aa}{4\hbr}\sin(ka)$ & $\frac{Aa}{4\hbr}$ in $k=\pm\frac{\pi}{2a}$ \\
+$E = A\left[2-\cos(ka)\right]$ & $\frac{Aa}{\hbr}\sin(ka)$ & $\frac{Aa}{\hbr}$ in $k=\pm\frac{\pi}{2a}$ \\
+$\epsilon_\pm=\bar\epsilon\pm\sqrt{\Delta^2+|g_k|^2}$ & $\pm\frac{1}{2\hbr}\frac{\partial_k|g_k|^2}{\sqrt{\Delta^2+|g_k|^2}}$ & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Tensore della massa efficace}
+\[ \boxed{\left(\frac{1}{m^*}\right)_{ij} = \frac{1}{\hbr^2}\frac{\partial^2 E(\kvec)}{\partial k_i\,\partial k_j}} \]
+Se gli assi cartesiani coincidono con gli assi principali (matrice diagonale): $ M_{\alpha\alpha} = \hbr^2\left(\frac{\partial^2 E(\kvec)}{\partial k_\alpha^2}\right)^{-1}$
+
+\noindent\textbf{Quando il tensore è diagonale:} Nei punti di massimo/minimo situati sugli assi cartesiani o ai bordi zona (es.\ $\kvec_0=(\pm\pi/a,0)$ oppure $(0,\pm\pi/a)$ oppure $\Gamma$), le derivate miste si annullano per simmetria perché contengono un prodotto $\sin\cdot\sin$ che si annulla. Il tensore è allora interamente diagonale e le masse si calcolano indipendentemente.
+
+\vspace{0.3cm}
+\noindent\textbf{Massa efficace 1D:} $ m^* = \hbr^2\left(\frac{\partial^2E(k)}{\partial k^2}\right)^{-1} $
+\begin{itemize}
+    \item \textbf{Elettroni ($m_c^*$):} derivata seconda nel \emph{minimo} della banda di conduzione ($k_c$): risultato \textbf{positivo}.
+    \item \textbf{Lacune ($m_v^*$):} derivata seconda nel \emph{massimo} della banda di valenza ($k_v$): risultato \textbf{negativo}. Nei calcoli termodinamici si usa sempre il valore assoluto $|m_v^*|$.
+\end{itemize}
+
+
+\subsection{Derivata seconda vs.\ sviluppo di Taylor}
+
+\begin{itemize}
+    \item \textbf{Derivata seconda (metodo generale).} Si usa quando si ha un'espressione analitica generica per $\epsilon(k)$ o quando NON ci si trova in $k=0$:
+\[ \frac{1}{m^*} = \frac{1}{\hbr^2}\frac{\partial^2\epsilon(k)}{\partial k^2} \implies m^*=\hbr^2\left(\frac{\partial^2\epsilon(k)}{\partial k^2}\right)^{-1} \]
+\item \textbf{Approssimazione di Taylor.} Se l'estremo di banda è in $\Gamma$ si sviluppa al secondo ordine:
+\[ \cos(x)\approx1-\frac{x^2}{2}, \qquad \sin(x)\approx x, \qquad \sin^2(x)\approx x^2, \qquad \sqrt{1+\epsilon}\approx1+\frac\epsilon2 \]
+e si confronta con le parabole dei portatori liberi: $\epsilon_c(k)\approx\epsilon_c(0)+\frac{\hbr^2k^2}{2m_c^*}, \qquad \epsilon_v(k)\approx\epsilon_v(0)-\frac{\hbr^2k^2}{2m_v^*} $
+
+Uguagliando i coefficienti dei termini in $k^2$ si ottengono direttamente $m_c^*$ e $m_v^*$.
+\end{itemize}
+
+\attenzione{Nei reticoli monoclini/obliqui (assi non ortogonali) le derivate miste NON si annullano nemmeno in $\Gamma$:
+
+\[ E(k) = E_s - \beta - 2\gamma_1\cos(ak_x) - 2\gamma_2\cos\big(b\cos\theta k_x + b\sin\theta k_y\big)\]
+   
+
+\[  \frac{\partial E}{\partial k_x} = 2\gamma_1 a \sin(ak_x) + 2\gamma_2 b\cos\theta \sin(u)  \quad , \quad 
+    \frac{\partial E}{\partial k_y} = 2\gamma_2 b\sin\theta \sin(u)\]
+con $u = b\cos\theta k_x + b\sin\theta k_y$. 
+
+\[\frac{\partial^2 E}{\partial k_x^2} = 2\gamma_1 a^2 \cos(ak_x) + 2\gamma_2 b^2\cos^2\theta \cos(u) \quad , \quad 
+    \frac{\partial^2 E}{\partial k_y^2} = 2\gamma_2 b^2\sin^2\theta \cos(u) \quad , \quad 
+    \frac{\partial^2 E}{\partial k_x \partial k_y} = 2\gamma_2 b^2\sin\theta\cos\theta \cos(u)\]
+    
+
+Nel punto $\Gamma$:
+\[
+   m^{-1}_{xx}=\frac{2}{\hbr^2}\left(\gamma_1a^2+\gamma_2b^2\cos^2\theta\right),\quad
+   m^{-1}_{yy}=\frac{2}{\hbr^2}\gamma_2b^2\sin^2\theta,\quad
+   m^{-1}_{xy}=\frac{2}{\hbr^2}\gamma_2b^2\sin\theta\cos\theta
+\]
+
+}
+
+
+
+\vspace{0.3cm}
+\begin{center}
+\renewcommand{\arraystretch}{1.7}
+\begin{tabular}{l l l}
+\toprule
+Dispersione (vicino all'estremo) & Sviluppo & Massa efficace \\
+\midrule
+$E = \text{cost} + C a^2 k^2$ (con $C$ in eV) & --- & $m^*=\dfrac{\hbr^2}{2Ca^2}$ \\
+$E = \text{cost} + C k^2$ (con $C$ in eV$\cdot$m$^2$) & --- & $m^*=\dfrac{\hbr^2}{2C}$ \\
+$E = E_g + C\left[\sin^2(ak_x)+\dots\right]$ & $\sin^2(ak)\approx a^2k^2$ & $m^*=\dfrac{\hbr^2}{2Ca^2}$ \\
+$E = A\left[2-\cos(ka)\right]$ & $+\frac{Aa^2k^2}{2}$ & $m^*=\dfrac{\hbr^2}{Aa^2}$ \\
+$E = B\left[\cos(ka)-1\right]$ & $-\frac{Ba^2k^2}{2}$ & $m^*=-\dfrac{\hbr^2}{Ba^2}$ \\
+$E = A\left[1-\frac12\sin^2\!\left(\frac{ka}{2}\right)\right]$ & attorno a $k=\pi/a$ & $m^*=\dfrac{4\hbr^2}{Aa^2}$ \\
+$E = -2\gamma\cos(ka)$ (min in $\Gamma$) & $+\gamma a^2k^2$ & $m^*=\dfrac{\hbr^2}{2\gamma a^2}$ \\
+$E = -8\gamma\prod_\alpha\cos\!\left(\frac{k_\alpha a_\alpha}{2}\right)$ & $+\gamma a^2k_\alpha^2$ & $m_{\alpha\alpha}=\dfrac{\hbr^2}{2\gamma a_\alpha^2}$ \\
+$E=-4\gamma\cos\frac{k_xa}{2}\cos\frac{k_yb}{2}-2\gamma_c\cos(k_zc)$ & --- & $m_{xx}=\frac{\hbr^2}{\gamma a^2},\ m_{yy}=\frac{\hbr^2}{\gamma b^2},\ m_{zz}=\frac{\hbr^2}{2\gamma_cc^2}$ \\
+$E=-2\gamma_1\!\left[\cos k_xa+\cos k_ya\right]-4\gamma_2\cos k_xa\cos k_ya$ & --- & $m_{xx}=m_{yy}=\dfrac{\hbr^2}{2a^2(\gamma_1+2\gamma_2)}$ \\
+$E=-4\gamma_1\cos\frac{k_xa}{2}\cos\frac{k_yb}{2}-2\gamma_2\cos k_xa-2\gamma_3\cos k_yb$ & --- & $m_{xx}=\frac{\hbr^2}{(\gamma_1+2\gamma_2)a^2}$, $m_{yy}=\frac{\hbr^2}{(\gamma_1+2\gamma_3)b^2}$ \\
+BCT: $-2\gamma_1[\cos k_xa+\cos k_ya]-8\gamma_2\prod\cos-2\gamma_3\cos k_zc$ & --- & $m_x=m_y=\frac{\hbr^2}{2a^2(\gamma_1+\gamma_2)}$, $m_z=\frac{\hbr^2}{2c^2(\gamma_2+\gamma_3)}$ \\
+Esagonale 2D, 6 vicini $\gamma_a$ & $+\frac32\gamma_aa^2k^2$ & $m_{xx}=m_{yy}=\dfrac{\hbr^2}{3\gamma_aa^2}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+
+\subsection{Massa efficace nei sistemi a due bande $E_\pm = \bar\epsilon\pm\sqrt{\Delta^2+|g_\kvec|^2}$}
+Sia $\kvec_0$ l'estremo e si sviluppi $|g_\kvec|^2 \approx g_0^2 - \sum_\alpha G_\alpha \delta k_\alpha^2$ (oppure $+$). Allora
+\[ E_\pm \approx \bar\epsilon \pm\sqrt{\Delta^2+g_0^2} \mp \frac{\sum_\alpha G_\alpha\delta k_\alpha^2}{2\sqrt{\Delta^2+g_0^2}}
+   \qquad\Longrightarrow\qquad
+   \bm{|m^*_{\alpha\alpha}| = \frac{\hbr^2\sqrt{\Delta^2+g_0^2}}{G_\alpha}} \]
+\textbf{Caso particolare $g_0=0$} (estremo dove $g$ si annulla, es.\ punto $K$ o bordo zona):
+\[ E_\pm \approx \bar\epsilon\pm\Delta \pm \frac{\sum_\alpha G_\alpha \delta k_\alpha^2}{2\Delta}
+   \qquad\Longrightarrow\qquad
+   \bm{|m^*_{\alpha\alpha}| = \frac{\hbr^2\,|\epsilon_A-\epsilon_B|}{2\,G_\alpha}} \]
+\textit{è la formula che dà $m_e=m_h=\frac{\hbr^2(\epsilon_A-\epsilon_B)}{2\gamma^2a^2}$ nei sistemi $3\times3$ e $\frac{\sqrt{65}\hbr^2}{8\gamma a^2}$ nel quadrato AB}
+
+\newpage
+
+\section{Struttura a bande e dinamica dei portatori}
+\begin{itemize}
+    \item \textbf{Banda di valenza:} risolvendo $\frac{\partial E_v}{\partial k}=0$, sia $k_v$ il punto di massimo; allora $E_{max}=E_v(k_v)$.
+    \item \textbf{Banda di conduzione:} risolvendo $\frac{\partial E_c}{\partial k}=0$, sia $k_c$ il punto di minimo; allora $E_{min}=E_c(k_c)$.
+\end{itemize}
+\[\text{\textbf{Energy gap:}} \quad \bm{E_g = E_{min}-E_{max}}\]
+\begin{itemize}
+    \item Se $k_c = k_v \implies$ \textbf{gap diretta} (le transizioni ottiche conservano l'impulso senza necessità di fononi).
+    \item Se $k_c \neq k_v \implies$ \textbf{gap indiretta} (serve un fonone per conservare l'impulso).
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Soglia di assorbimento ottico interbanda ($\Delta\kvec\approx0$):} Poiché i fotoni ottici hanno impulso trascurabile, le transizioni interbanda avvengono \textbf{verticalmente} nello spazio $\kvec$. L'energia di soglia dello spettro ottico è la differenza minima tra le due bande \emph{allo stesso} $\kvec$:
+\[ \boxed{\Delta E_{min} = \min_{\kvec\in1ZB}\left[E_c(\kvec)-E_v(\kvec)\right]} \]
+Per trovare istantaneamente dove avviene il minimo senza fare derivate: si valuta la differenza $\Delta E(\kvec)$ direttamente nei punti ad alta simmetria (centro zona $\Gamma$, bordi $X$, $M$, $R$, $K$, $H$). Il valore più piccolo trovato coincide con l'energia di soglia ottica misurata.
+
+\attenzione{\textbf{Il minimo può essere una linea, non un punto.} Se le due bande hanno lo \emph{stesso} termine in una certa direzione, quel termine si elide nella differenza. Esempio: $E_z-E_y = E_z^0-E_y^0-2(\gamma_2-\gamma_1)\cos(ak_y)$ non dipende da $k_x$: il minimo si ha per $\cos(ak_y)=1$, cioè su \textbf{tutta la retta $k_y=0$, qualunque sia $k_x$}. In questi casi rispondi indicando il luogo dei punti, non un singolo $\kvec$.}
+
+\attenzione{\textbf{Gap fondamentale $\neq$ soglia ottica.} Se la gap è indiretta, $E_g = E_c(k_c)-E_v(k_v)$ è più piccola della soglia ottica verticale $\Delta E_{min}$. Leggi bene cosa chiede il testo.}
+
+\ricetta{Bande disaccoppiate (due orbitali senza ibridizzazione)}{
+Se $\gamma_{ij}=0$ per simmetria, si hanno due bande pure. Esempio (cubico, $d_{xz}$ e $p_y$):
+$E_d(\kvec) = \tilde E_d + 2|\gamma^{xz}_{dd}|\left[\cos k_xa+\cos k_za\right] - 2\gamma^y_{dd}\cos k_ya$,
+$E_p(\kvec) = \tilde E_p - 2\gamma^{xz}_{pp}\left[\cos k_xa+\cos k_za\right] + 2|\gamma^{y}_{pp}|\cos k_ya$.\\
+Con $(\tilde E_d-\tilde E_p)\gg\gamma$ le bande non si sovrappongono; il minimo della banda alta e il massimo della banda bassa cadono \textbf{nello stesso punto} $\kvec = \frac\pi a(1,0,1)$ $\Rightarrow$ gap \textbf{diretta}:
+$E_g = (\tilde E_d-\tilde E_p) - 4|\gamma^{xz}_{dd}| - 2\gamma^y_{dd} - 4\gamma^{xz}_{pp} - 2|\gamma^y_{pp}|$.}
+
+\section{Densità degli stati elettronici}
+Per gli elettroni, $G(E)$ è il numero di stati elettronici permessi per unità di energia tra $E$ e $E+\dd E$. Rispetto ai fononi entra in gioco la \textbf{degenerazione di spin} (fattore 2). La densità intensiva $g(E)=G(E)/V$ in $d$ dimensioni:
+\[ g(E) = \frac{2}{(2\pi)^d}\int_{S(E)}\frac{\dd S}{|\nabla_\kvec E(\kvec)|} \]
+
+\subsection{Approssimazione parabolica (elettroni quasi liberi)}
+Vicino agli estremi delle bande:
+\[ E(\kvec) = E_c + \frac{\hbr^2k^2}{2m_c^*} \quad\text{(conduzione)}, \qquad
+   E(\kvec) = E_v - \frac{\hbr^2k^2}{2m_v^*} \quad\text{(valenza)} \]
+Il gradiente energetico risulta $|\nabla_\kvec E| = \hbr^2k/m^*$.
+
+\vspace{0.3cm}
+\textbf{Nota: di seguito all'interno della radice si sottintende il modulo $|E-E_0|$ così la formula vale sia per elettroni ($E\ge E_c$) sia per lacune ($E\le E_v$).}
+
+\begin{itemize}
+    \item \textbf{Caso 3D:} superficie sferica di area $4\pi k^2$, con $k=\sqrt{2m_c^*(E-E_c)/\hbr^2}$:
+\[ g_{3D}(E) = \frac{2}{(2\pi)^3}\frac{m_c^*}{\hbr^2k}(4\pi k^2) = \frac{m_c^*k}{\pi^2\hbr^2}
+   \implies \bm{g_{3D}(E)=\frac{1}{2\pi^2}\left(\frac{2m_c^*}{\hbr^2}\right)^{3/2}\sqrt{E-E_c}} \]
+\item \textbf{Caso 2D:} circonferenza di perimetro $2\pi k$:
+\[ g_{2D}(E) = \frac{2}{(2\pi)^2}\frac{m_c^*}{\hbr^2k}(2\pi k) \implies \bm{g_{2D}(E)=\frac{m_c^*}{\pi\hbr^2}\,\Theta(E-E_c)} \]
+\textit{In 2D la DOS è \textbf{costante} (funzione a gradino), indipendente dall'energia.}
+\\ \textit{Derivazione:} $\dd N_{2D} = 2\cdot\frac{2\pi k\,\dd k}{(2\pi/L)^2} = \frac{L^2}{\pi}k\,\dd k$ e, con $E=\frac{\hbr^2k^2}{2m}$, $\dd k = \frac{1}{\hbr}\sqrt{\frac{m}{2E}}\dd E$, da cui $g(E)=\frac{m}{\pi\hbr^2}$.
+
+\item \textbf{Caso 1D:} coppia di punti $\pm k$, $\int \dd S=2$:
+\[ g_{1D}(E) = \frac{2}{2\pi}\frac{m_c^*}{\hbr^2k}(2) \implies \bm{g^c_{1D}(E)=\frac{1}{\pi}\left(\frac{2m_c^*}{\hbr^2}\right)^{1/2}\frac{1}{\sqrt{E-E_c}} = \frac{1}{\pi\hbr}\sqrt{\frac{2m_c^*}{E-E_c}}} \qquad, \; E>E_c \]
+\[\bm{g^v_{1D}(E) = \frac{1}{\pi\hbr}\sqrt{\frac{2m_v^*}{E_v-E}}}  \qquad , \; E<E_v\]
+\textit{Presenta una singolarità di Van Hove per $E\to E_c$.}
+
+\item \textbf{Caso 3D anisotropo (masse efficaci distinte).} Se le masse lungo $x,y,z$ sono diverse, si sostituisce $(m^*)^{3/2}$ con la radice del prodotto delle tre masse:
+\[ \bm{g_{3D}(E)=\frac{\sqrt{2\,m_xm_ym_z}}{\pi^2\hbr^3}\sqrt{|E-E_0|}} \]
+Equivalentemente si definisce la \textbf{massa di densità degli stati}
+\[ \bm{m_{DOS} = (m_xm_ym_z)^{1/3}} \]
+da usare in tutte le formule isotrope ($N_c$, $n_i$, $\mu_i$).
+\end{itemize}
+
+\ricetta{Derivare la DOS vicino a un estremo di banda anisotropo}{
+Parti dalla banda tight-binding sviluppata attorno al suo estremo, ad esempio un \emph{massimo}:
+\[ E(\kvec) \approx E_{max} - \gamma_1a^2k_x^2 - \gamma_2a^2k_y^2 - \gamma_3b^2k_z^2
+   \;\equiv\; E_{max} - \frac{\hbr^2k_x^2}{2m_x}-\frac{\hbr^2k_y^2}{2m_y}-\frac{\hbr^2k_z^2}{2m_z} \]
+da cui $m_x^{-1}=\frac{2\gamma_1a^2}{\hbr^2}$, $m_y^{-1}=\frac{2\gamma_2a^2}{\hbr^2}$, $m_z^{-1}=\frac{2\gamma_3b^2}{\hbr^2}$.\\
+Poi scrivi $g(\epsilon)=\frac{2}{(2\pi)^3}\int\! \dd^3k\ \delta\!\left(\epsilon-E(\kvec)\right)$ e \textbf{riscala} le variabili
+$k_\alpha \to k'_\alpha = k_\alpha/\sqrt{m_\alpha}$: lo jacobiano tira fuori un fattore $\sqrt{m_xm_ym_z}$ e l'integrale che resta è quello isotropo con massa unitaria. Risultato:
+\[ \boxed{g(\epsilon) = \frac{\sqrt{2\,m_xm_ym_z}}{\pi^2\hbr^3}\,\sqrt{\left|\epsilon-E_{max}\right|}} \]
+valido per $\epsilon\le E_{max}$ (lacune). Per un \emph{minimo} vale la stessa formula con $\epsilon\ge E_{min}$.}
+
+
+\subsection{DOS costante (approssimazione rettangolare)}
+\begin{itemize}
+    \item \textbf{Capienza di banda e normalizzazione:} per degenerazione di spin, ogni banda spaziale $i$ ospita al massimo \textbf{2 elettroni per cella unitaria}. L'integrale di $g_i(E)$ sull'intera larghezza della banda deve restituire la capienza totale:
+    \[ \int_{E_i^{min}}^{E_i^{max}} g_i(E)\,\dd E = 2
+       \quad\xrightarrow{\text{se } g_i \text{ costante}}\quad
+       \bm{g_i = \frac{2}{E_i^{max}-E_i^{min}} = \frac{2}{W_i}} \]
+    (in unità di eV$^{-1}$ per cella).
+    \item \textbf{Energia di Fermi $E_F$:} energia del livello occupato più alto a $T=0$ K. Gli elettroni riempiono tutti gli stati dal minimo assoluto fino a $E_F$, senza ``salti''.
+\end{itemize}
+
+\subsection{Algoritmo operativo per $E_F$ a $T=0$ (con DOS costante)}
+Dato $n_{tot}$ (numero totale di elettroni per cella), si determina la banda attiva e il numero di elettroni residui $n^*$:
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item Se $n_{tot}\le 2 \implies$ si riempie solo la 1$^\circ$ banda; $E_F$ cade nella prima banda; $n^*=n_{tot}$.
+    \item Se $n_{tot}>2 \implies$ la 1$^\circ$ banda è satura (2 e$^-$); gli elettroni residui nella banda successiva sono $\bm{n^*=n_{tot}-2}$ (e così via: $n^* = n_{tot}-2(j-1)$ per la $j$-esima banda).
+\end{itemize}
+\begin{enumerate}
+    \item Equazione di riempimento parziale: $\displaystyle\int_{E_{min}}^{E_F} g\,\dd E = n^*$
+    \item Formula esplicita:
+    \[ \bm{E_F = E_{min} + \frac{n^*}{2}\left(E_{max}-E_{min}\right) = E_{min} + \frac{n^*}{2}W} \]
+\end{enumerate}
+
+\subsubsection*{Casi speciali (gap e bande simmetriche)}
+Questi casi si applicano quando le bande presentano particolari simmetrie (ad esempio trascurando i termini di secondi vicini), il che fissa massimi e minimi in specifici punti di alta simmetria.
+\begin{itemize}
+    \item \textbf{Caso $n_{tot}=2$ (banda satura e gap):} i 2 elettroni saturano completamente la prima banda, la seconda resta vuota. Il sistema è isolante/semiconduttore. A $T=0$ il potenziale chimico $\mu$ non cade dentro una banda ma si posiziona \textbf{a metà della gap}:
+    \[ \bm{E_F = \mu = \frac{E_1^{max}+E_2^{min}}{2}} \]
+    \item \textbf{Regola generale della banda mezza piena} (vale per $n^*=1$, quindi per $n_{tot}=1,\,3,\,5\dots$): se in una banda restano da sistemare esattamente $n^*=1$ elettroni, essa è piena al $50\%$; se la sua DOS è \textbf{simmetrica} rispetto al livello orbitale efficace $\tilde E^0$ (cosa che accade automaticamente quando si trascurano i secondi/terzi vicini, perché la dispersione è una somma di soli coseni), allora
+    \[ \boxed{E_F = \tilde E^0} \]
+    senza bisogno di calcolare nessun integrale.
+    \begin{itemize}
+      \item $n_{tot}=1$: prima banda mezza piena, $E_F=\tilde E_1^0$ (\textbf{metallo}).
+      \item $n_{tot}=3$: prima banda satura, seconda mezza piena, $E_F=\tilde E_2^0$ (\textbf{metallo}).
+    \end{itemize}
+    \textit{Perché la simmetria si perde:} i termini di primi vicini cambiano segno sotto la traslazione $\kvec\to\kvec+\mathbf{Q}$ con $\mathbf{Q}=\frac{\pi}{a}(1,1,\dots)$, mentre un termine di secondi vicini come $-4\gamma_2\cos(k_xa)\cos(k_ya)$ non cambia segno: è questo che rende la banda asimmetrica e sposta $E_F$ dal centro.
+    \item \textbf{Riempimenti quasi-estremi:}
+    \begin{itemize}
+        \item Se il riempimento di una banda è \textbf{vicinissimo a zero} (es.\ $n^*=0.0001$ e$^-$/cella): $\bm{E_F\approx E_{MIN}}$ della banda.
+        \item Se il riempimento è \textbf{quasi saturo} (es.\ $n^*=1.9999$): $\bm{E_F\approx E_{MAX}}$ della banda.
+    \end{itemize}
+    \item \textbf{Caso $n_{tot}$ appena sopra 2} (es.\ 2.00001): la prima banda è piena, la seconda quasi vuota $\Rightarrow$ $E_F \approx E_2^{min}$ (fondo della banda di conduzione).
+\end{itemize}
+
+\subsubsection*{Tabella riassuntiva dei riempimenti ``da esame''}
+Due bande, ciascuna capace di 2 elettroni/cella, larghezze $W_1$, $W_2$, livelli efficaci $\tilde E_1^0<\tilde E_2^0$, secondi vicini trascurabili (bande simmetriche):
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{c l l}
+\toprule
+$n_{tot}$ & Situazione & $E_F$ \\
+\midrule
+$\ll1$ & fondo della banda 1 & $\approx E_1^{min}=\tilde E_1^0-\frac{W_1}{2}$ \\
+$1$ & banda 1 mezza piena (metallo) & $\tilde E_1^0$ \\
+$1.5$ & banda 1 al $75\%$ & $E_1^{min}+\frac{n^*}{2}W_1$ \\
+$1.9999$ & banda 1 quasi satura & $\approx E_1^{max}=\tilde E_1^0+\frac{W_1}{2}$ \\
+$2$ (esatto) & banda 1 piena, banda 2 vuota (isolante) & $\frac{E_1^{max}+E_2^{min}}{2}$ (metà gap) \\
+$2.00001$ & banda 2 appena popolata & $\approx E_2^{min}=\tilde E_2^0-\frac{W_2}{2}$ \\
+$2.5$ & banda 2 al $25\%$ ($n^*=0.5$) & $E_2^{min}+\frac{n^*}{2}W_2$ \\
+$3$ & banda 2 mezza piena (metallo) & $\tilde E_2^0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\textit{Per una banda cubica a primi vicini $-2\gamma\left[\cos k_xa+\cos k_ya+\cos k_za\right]$ si ha $W=12\gamma$, quindi $E^{max/min}=\tilde E^0\pm6\gamma$; in 2D $W=8\gamma$ e $E^{max/min}=\tilde E^0\pm4\gamma$; in 1D $W=4\gamma$.}
+
+
+\subsection{Metallo o isolante?}
+\begin{itemize}
+  \item \textbf{Numero dispari} di elettroni per cella $\Rightarrow$ banda parzialmente piena $\Rightarrow$ \textbf{metallo}.
+  \item \textbf{Numero pari} di elettroni per cella:
+  \begin{itemize}
+    \item se $E_1^{max} < E_2^{min}$ (bande separate) $\Rightarrow$ \textbf{isolante/semiconduttore}, $E_F$ a metà gap;
+    \item se $E_1^{max} > E_2^{min}$ (\textbf{sovrapposizione} delle bande) $\Rightarrow$ \textbf{semimetallo/metallo}: parte degli elettroni di valenza si trasferisce nella banda superiore per raggiungere stati a energia minore, e a $T=0$ esistono sia lacune vicino al massimo di valenza sia elettroni vicino al minimo di conduzione, con un $E_F$ ben definito.
+  \end{itemize}
+\end{itemize}
+
+\newpage
+\section{Gas di elettroni liberi (metalli)}
+
+\subsection{Vettore ed energia di Fermi}
+\begin{center}
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{c c c}
+\toprule
+Dim. & $k_F$ & $E_F = \dfrac{\hbr^2k_F^2}{2m}$ \\
+\midrule
+3D & $\left(3\pi^2 n_v\right)^{1/3}$ & $\dfrac{\hbr^2}{2m}\left(3\pi^2n_v\right)^{2/3}$ \\
+2D & $\left(2\pi n_s\right)^{1/2}$ & $\dfrac{\pi\hbr^2 n_s}{m}$ \\
+1D & $\dfrac{\pi}{2}n_{el}$ & $\dfrac{\pi^2\hbr^2}{8m}n_{el}^2$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+dove $n_v$ = densità volumetrica di elettroni di conduzione, $n_s$ superficiale, $n_{el}$ lineare.
+
+\textbf{Densità di elettroni di conduzione:} $n_{el} = Z\cdot n_{at}$, con $Z$ = valenza del metallo e $n_{at}$ = densità atomica.
+
+\subsection{Termodinamica del gas di elettroni 1D (con degenerazione di spin)}
+Data una densità lineare di portatori liberi $n_{el}=N/L$ [m$^{-1}$] in un filo 1D:
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item \textbf{DOS al livello di Fermi:} sapendo che $g(E)=\frac{1}{\pi\hbr}\sqrt{\frac{2m}{E}}$, valutandola in $E_F$:
+    \[ \bm{g(E_F) = \frac{4m}{\pi^2\hbr^2}\frac{1}{n_{el}}} \]
+    \item \textbf{Calore specifico elettronico lineare} ($c_V^{el}$ a basse $T$). Dalla formula generale $u=\frac{\pi^2}{6}g(E_F)(\kB T)^2$, derivando rispetto a $T$:
+    \[ \bm{c_V^{el} = \frac{\pi^2}{3}\kB^2\,T\,g(E_F) = \frac{4m\kB^2}{3\hbr^2 n_{el}}T} \quad [\text{J}/(\text{K}\cdot\text{m})] \]
+    \item \textit{Variante:} se il testo fornisce l'approssimazione semplificata $u = g(E_F)(\kB T)^2$ (senza $\pi^2/6$), allora $c_V^{el}=2\kB^2Tg(E_F)$
+\end{itemize}
+
+\ricetta{Metallo completo: Elettroni liberi + Fononi (Schema di risoluzione)}{
+Negli esercizi in cui un metallo viene descritto sia tramite il gas di elettroni (valenza $Z$, $E_F$) sia tramite le vibrazioni ioniche (dispersione $\omega(q)$, $\Theta_D$), per calcolare il calore specifico totale $c_V = AT + BT^3$ procedi con questo ordine:
+
+\textbf{(1) Dalla densità elettronica al reticolo (Vai a \S1.2 e \S6.1)}
+\begin{itemize}
+    \item Ricava la densità atomica (punti reticolari): $n_{at} = n_{el}/Z$.
+    \item Trova il parametro di cella $a$ usando le formule inverse in \textbf{\S1.2} (es. per Cubico Semplice $a = n_{at}^{-1/3}$).
+    \item Calcola il vettore di Debye: $q_D = (6\pi^2 n_{at})^{1/3}$ (\textbf{\S6.1}).
+\end{itemize}
+
+\textbf{(2) Calcolo delle velocità del suono $v_L$ e $v_T$ (Vai a \S5.5)}
+\begin{itemize}
+    \item \textbf{Se hai la legge di dispersione} (es. $\omega = \omega^0 \sin(qa/2)$): valuta la pendenza a bassi $q$ derivando o sviluppando in serie, $v = \lim_{q\to0} \frac{d\omega}{dq}$ (\textbf{\S5.5b}).
+    \item \textbf{Se hai la Temperatura di Debye} ($\Theta_D$): ricava la velocità invertendo la definizione, $v = \frac{k_B \Theta_D}{\hbar q_D}$ (\textbf{\S5.5d}).
+\end{itemize}
+
+\textbf{(3) Coefficienti del Calore Specifico $c_V = AT + BT^3$ (Vai a \S14.3)}
+}
+
+\subsection{Calore specifico totale a bassa temperatura in 3D (metalli)}
+A temperature molto inferiori sia a $\Theta_D$ sia a $T_F$, il calore specifico di un metallo è la somma del contributo elettronico lineare ($AT$) e di quello fononico acustico cubico ($BT^3$):
+\[ \bm{c_V(T) = A\,T + B\,T^3} \]
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item \textbf{Coefficiente elettronico ($A$):} dipende dalla densità degli elettroni di conduzione $n_{el}=Z\cdot n_{at}$:
+    \[ \bm{A = \frac{\pi^2}{2}\frac{\kB^2}{E_F}n_{el}} \quad\left[\frac{\text{J}}{\text{m}^3\cdot\text{K}^2}\right] \]
+    (equivalente a $A=\frac{\pi^2}{3}\kB^2 g(E_F)$ con $g(E_F)=\frac{3n_{el}}{2E_F}$ in 3D).
+    \item \textbf{Coefficiente reticolare ($B$):} dipende dalle velocità del suono:
+    \[ \bm{B = \frac{2\pi^2}{15}\frac{\kB^4}{\hbr^3}\left(\frac{1}{v_L^3}+\frac{2}{v_T^3}\right) = \frac{12\pi^4}{5}\frac{n_{at}\kB}{\Theta_D^3}} \quad\left[\frac{\text{J}}{\text{m}^3\cdot\text{K}^4}\right] \]
+\end{itemize}
+\textit{Sperimentalmente si grafica $c_V/T$ vs $T^2$: intercetta $=A$, pendenza $=B$.}
+
+
+\section{Semiconduttori: statistica dei portatori}
+
+Nei semiconduttori la conduzione è governata dagli elettroni in banda di conduzione ($n$ o $n_c$) e dalle lacune in banda di valenza ($p$ o $p_v$). La probabilità di occupazione di uno stato a energia $E$ è la distribuzione di \textbf{Fermi--Dirac}:
+\[ f(E) = \left[\ee^{\frac{E-E_F}{\kB T}}+1\right]^{-1} \]
+dove $E_F$ è il livello di Fermi (potenziale chimico $\mu$).
+
+\subsection*{Condizione di non-degenerazione:}
+Quando il livello di Fermi si trova all'interno del gap e distante dagli estremi delle bande di almeno qualche $\kB T$ ($E_c-E_F\gg\kB T$ e $E_F-E_v\gg\kB T$), la statistica di Fermi--Dirac si approssima con quella classica di \textbf{Maxwell--Boltzmann}:
+\[ f(E)\approx\ee^{-\frac{E-E_F}{\kB T}}\ (E\ge E_c), \qquad 1-f(E)\approx\ee^{-\frac{E_F-E}{\kB T}}\ (E\le E_v) \]
+
+\subsection{Concentrazione dei portatori}
+Integrando il prodotto tra DOS e probabilità di occupazione nel regime non degenere:
+\[ n = \int_{E_c}^{\infty} g_c(E)f(E)\,\dd E \implies \bm{n = N_c\,\ee^{-\frac{E_c-E_F}{\kB T}}} \]
+\[ p = \int_{-\infty}^{E_v} g_v(E)\left[1-f(E)\right]\dd E \implies \bm{p = N_v\,\ee^{-\frac{E_F-E_v}{\kB T}}} \]
+dove $N_c$ e $N_v$ sono le \textbf{densità efficaci degli stati}.
+
+\vspace{0.3cm}
+Assumiamo l'approssimazione di massa efficace costante (bande paraboliche isotrope) e includiamo la degenerazione di spin ($g_s=2$). Le densità degli stati nei diversi regimi dimensionali assumono le seguenti forme per $E \ge E_c$ (per $N_v$ il procedimento è speculare ponendo l'energia cinetica come $E_v - E$ e sostituendo $m_c^*$ con $m_v^*$):
+
+\textbf{3D:} $\displaystyle g_c(E) = \frac{\sqrt{2}(m_c^*)^{3/2}}{\pi^2\hbr^3}\sqrt{E-E_c}$   \qquad , \qquad 
+ \textbf{2D:} $\displaystyle g_c(E) = \frac{m_c^*}{\pi\hbr^2}$  \qquad  , \qquad 
+  \textbf{1D:} $\displaystyle g_c(E) = \frac{\sqrt{2m_c^*}}{\pi\hbr}\frac{1}{\sqrt{E-E_c}}$
+
+
+Per risolvere gli integrali di $N_c$, effettuiamo il cambio di variabile adimensionale $x = \frac{E-E_c}{\kB T}$, da cui $\dd E = \kB T\,\dd x$ e $E-E_c = x\kB T$.
+\begin{itemize}
+    \item \textbf{Caso 3D:}
+\[ N_c = \int_{E_c}^{\infty} \frac{\sqrt{2}(m_c^*)^{3/2}}{\pi^2\hbr^3}\sqrt{E-E_c} \, \ee^{-\frac{E-E_c}{\kB T}}\,\dd E = \frac{\sqrt{2}(m_c^*)^{3/2}}{\pi^2\hbr^3} (\kB T)^{3/2} \int_0^\infty \sqrt{x}\, \ee^{-x}\,\dd x \]
+\[ \bm{N_c} = \frac{\sqrt{2}(m_c^*\kB T)^{3/2}}{\pi^2\hbr^3} \frac{\sqrt{\pi}}{2} = \bm{2 \left( \frac{m_c^*\kB T}{2\pi\hbr^2} \right)^{3/2}} \]
+
+\item \textbf{Caso 2D:}
+\[ N_c = \int_{E_c}^{\infty} \frac{m_c^*}{\pi\hbr^2} \ee^{-\frac{E-E_c}{\kB T}}\,\dd E = \frac{m_c^*\kB T}{\pi\hbr^2} \int_0^\infty \ee^{-x}\,\dd x  = \frac{m_c^*\kB T}{\pi\hbr^2} \]
+
+\item \textbf{Caso 1D:}
+\[ N_c = \int_{E_c}^{\infty} \frac{\sqrt{2m_c^*}}{\pi\hbr}\frac{1}{\sqrt{E-E_c}} \ee^{-\frac{E-E_c}{\kB T}}\,\dd E = \frac{\sqrt{2m_c^*}}{\pi\hbr} (\kB T)^{1/2} \int_0^\infty \frac{1}{\sqrt{x}} \ee^{-x}\,\dd x  \bm{\frac{\sqrt{2m_c^*\kB T}}{\hbr\sqrt{\pi}}} \]
+\end{itemize}
+
+
+\begin{center}
+\renewcommand{\arraystretch}{2.0}
+\begin{tabular}{c c c}
+\toprule
+Dim. & $N_c$ & $N_v$ \\
+\midrule
+\textbf{3D} & $2\left(\dfrac{m_c^*\kB T}{2\pi\hbr^2}\right)^{3/2} = \dfrac14\left(\dfrac{2m_c^*\kB T}{\pi\hbr^2}\right)^{3/2}$
+            & $2\left(\dfrac{m_v^*\kB T}{2\pi\hbr^2}\right)^{3/2}$ \\
+\textbf{2D} & $\dfrac{m_c^*\kB T}{\pi\hbr^2}$ & $\dfrac{m_v^*\kB T}{\pi\hbr^2}$ \\
+\textbf{1D} & $\dfrac{\sqrt{2m_c^*\kB T}}{\hbr\sqrt{\pi}}$ & $\dfrac{\sqrt{2m_v^*\kB T}}{\hbr\sqrt{\pi}}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\textit{integrali notevoli usati: $\int_0^\infty x^{1/2}\ee^{-x}\dd x=\frac{\sqrt\pi}{2}$ in 3D, $\int_0^\infty \ee^{-x}\dd x = 1$ in 2D, $\int_0^\infty x^{-1/2}\ee^{-x}\dd x=\sqrt\pi$ in 1D}
+
+
+
+\vspace{0.15cm}
+\noindent Valore numerico utile a $T=300$ K con $m^*=m_0$:
+\[ N_0 \equiv 2\left(\frac{m_0\kB\cdot300}{2\pi\hbr^2}\right)^{3/2} = 2.51\times10^{25}\ \text{m}^{-3} = 2.51\times10^{19}\ \text{cm}^{-3} \]
+\[ \bm{N_c(T) = N_0\left(\frac{m_c^*}{m_0}\right)^{3/2}\left(\frac{T}{300}\right)^{3/2}} \]
+
+\newpage
+
+\section{Trasporto di carica e conducibilità elettrica}
+La mobilità dipende dal tempo medio di rilassamento $\tau$ e dalla massa efficace:
+\[ \bm{\mu_n = \frac{e\,\tau_n}{m_c^*}}, \qquad \bm{\mu_p = \frac{e\,\tau_p}{m_v^*}} \]
+Formula generale per la \textbf{conducibilità elettrica}:
+\[ \bm{\sigma = e\left(n\mu_n + p\mu_p\right) = e^2\left(\frac{n\,\tau_n}{m_c^*} + \frac{p\,\tau_p}{m_v^*}\right)} \]
+La resistività è il reciproco: $\rho = 1/\sigma$.
+\begin{itemize}
+    \item \textbf{Semiconduttore intrinseco:} $n=p=n_i$
+    \[ \bm{\sigma_i = e\,n_i(\mu_n+\mu_p) = e^2 n_i\left(\frac{\tau_e}{m_c}+\frac{\tau_h}{m_v}\right)} \]
+    \item \textbf{Regime estrinseco tipo N} ($N_D\gg n_i$): $n\approx N_D$, $p\approx n_i^2/N_D\ll n$
+    \[ \bm{\sigma \approx e N_D\mu_n = \frac{N_De^2\tau_n}{m_c^*}} \]
+    \item \textbf{Regime estrinseco tipo P} ($N_A\gg n_i$): $p\approx N_A$
+    \[ \bm{\sigma \approx e N_A\mu_p = \frac{N_Ae^2\tau_p}{m_v^*}} \]
+    \item \textbf{Caso bidimensionale (2DEG):} con densità superficiale $n_s$ [m$^{-2}$] si ottiene una conducibilità di strato (\textit{sheet conductivity}):
+    \[ \bm{\sigma_{2D} = e\,n_s(\mu_n+\mu_p)} \qquad [\Omega^{-1}] = [\text{S}] \]
+    \item \textbf{Caso anisotropo:} con masse/mobilità diverse lungo gli assi principali, la conducibilità è un tensore diagonale:
+    \[ \sigma^x = e\left(n\mu_e^x + p\mu_h^x\right), \qquad \sigma^z = e\left(n\mu_e^z+p\mu_h^z\right) \]
+\end{itemize}
+
+\ricetta{Frazione di atomi sostituiti da droganti}{Se il testo dice ``una frazione $f=10^{-7}$ degli atomi è sostituita da accettori'', allora $N_A = f\cdot n_{at}$ con $n_{at}$ la densità \textbf{atomica} (non quella reticolare!).}
+
+\subsection{Dipendenza dalla temperatura $\sigma(T)$}
+La conducibilità dipende dalla temperatura attraverso due fattori in competizione, $\sigma(T)=e\,n(T)\,\mu(T)$:
+\begin{enumerate}
+\item \textbf{Andamento della concentrazione $n(T)$:} nel regime intrinseco domina la generazione termica di coppie elettrone-lacuna, regolata dall'esponenziale del bandgap: $n_i(T)\propto T^{3/2}\ee^{-E_g/2\kB T}$. All'aumentare di $T$, $\sigma$ cresce esponenzialmente.
+\item \textbf{Andamento della mobilità $\mu(T)$:} è limitata dai diversi meccanismi di collisione (\textit{regola di Matthiessen}: $\frac{1}{\mu}=\frac{1}{\mu_{ret}}+\frac{1}{\mu_{imp}}$):
+\begin{itemize}
+\item \textit{Scattering da fononi reticolari:} domina ad alte temperature per l'aumento delle vibrazioni termiche: $\mu_{ret}\propto T^{-3/2}$.
+\item \textit{Scattering da impurezze ionizzate:} domina a basse temperature, dove la minore velocità termica dei portatori amplifica la deflessione coulombiana attorno ai droganti carichi: $\mu_{imp}\propto T^{3/2}$.
+\end{itemize}
+\end{enumerate}
+
+
+\subsection{Statistica dei portatori in 1D (fili semiconduttori)}
+Nel regime di non-degenerazione, integrando la DOS unidimensionale $g(E)=\frac{1}{\pi\hbr}\sqrt{\frac{2m^*}{E-E_0}}$ si ricavano le concentrazioni \emph{lineari} $n(T)$ e $p(T)$ [m$^{-1}$]:
+\[ n(T) = N_{c,1D}\,\ee^{-\frac{E_c-\mu}{\kB T}}, \qquad p(T) = N_{v,1D}\,\ee^{-\frac{\mu-E_v}{\kB T}} \]
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item \textbf{Densità efficaci degli stati 1D:}
+    \[ \bm{N_{c,1D} = \frac{\sqrt{2m_c^*\kB T}}{\hbr\sqrt{\pi}}}, \qquad \bm{N_{v,1D} = \frac{\sqrt{2m_v^*\kB T}}{\hbr\sqrt{\pi}}} \]
+    \textit{(integrale notevole: $\int_0^\infty x^{-1/2}\ee^{-x}\dd x=\sqrt\pi$).}
+    \item \textbf{Livello di Fermi intrinseco 1D:} imponendo $n(T)=p(T)$:
+    \[ \bm{\mu_i^{(1D)} = \frac{E_c+E_v}{2}+\frac14\kB T\ln\!\left(\frac{m_v^*}{m_c^*}\right)} \]
+\end{itemize}
+
+
+
+
+\section{REGIME INTRINSECO}
+Il prodotto delle concentrazioni è indipendente dalla posizione del livello di Fermi (quindi dal drogaggio) e dipende solo da $T$ e dal bandgap $E_g=E_c-E_v$:
+\[ \bm{n\cdot p = n_i^2 = N_cN_v\,\ee^{-\frac{E_g}{\kB T}}} \]
+In un semiconduttore \textbf{intrinseco} la neutralità di carica impone $n=p=n_i$:
+\[ \bm{n_i = \sqrt{N_cN_v}\,\ee^{-\frac{E_g}{2\kB T}}} \]
+
+\begin{itemize}
+    \item \subsubsection*{Le tre forme equivalenti di $n_i$ in 3D:}
+\[ \bm{n_i = 2\left(\frac{\kB T}{2\pi\hbr^2}\right)^{3/2}(m_c m_v)^{3/4}\,\ee^{-\frac{E_g}{2\kB T}}} \]
+\[ \bm{n_i = \frac14\left(\frac{2\kB T}{\pi\hbr^2}\right)^{3/2}(m_cm_v)^{3/4}\,\ee^{-\frac{E_g}{2\kB T}}} \qquad\text{(identica alla precedente)} \]
+\[ \bm{n_i(T) = 2.5\times10^{19}\left(\frac{m_c^*}{m_0}\cdot\frac{|m_v^*|}{m_0}\right)^{3/4}\left(\frac{T}{300}\right)^{3/2}\ee^{-\frac{E_g}{2\kB T}}\ \text{cm}^{-3}} \]
+\[ \bm{n_i(T) = 2.5\times10^{25}\left(\frac{m_c^*m_v^*}{m_0^2}\right)^{3/4}\left(\frac{T}{300}\right)^{3/2}\ee^{-\frac{E_g}{2\kB T}}\ \text{m}^{-3}} \]
+\attenzione{Il prefattore vale $2.5\times10^{19}$ se lavori in \textbf{cm$^{-3}$} e $2.5\times10^{25}$ se lavori in \textbf{m$^{-3}$}}
+
+\item \subsubsection*{Caso 2D}
+\[ \bm{n_i^{(2D)} = \frac{\kB T\sqrt{m_cm_v}}{\pi\hbr^2}\,\ee^{-\frac{E_g}{2\kB T}}} \qquad [\text{m}^{-2}] \]
+\item \textbf{Caso 1D}
+\[ \bm{n_i^{(1D)} = \frac{\sqrt{2\kB T}}{\hbr\sqrt\pi}(m_cm_v)^{1/4}\,\ee^{-\frac{E_g}{2\kB T}}} \qquad [\text{m}^{-1}] \]
+\item \textbf{Caso generale con DOS costanti (2D):} se il testo dà direttamente le DOS $D_c$, $D_v$
+\[ n = \kB T\,D_c\,\ee^{-(\epsilon_c-\mu)/\kB T}, \qquad p = \kB T\,D_v\,\ee^{(\epsilon_v-\mu)/\kB T} \]
+\[ \bm{n_i = \kB T\sqrt{D_cD_v}\,\ee^{-\frac{\epsilon_c-\epsilon_v}{2\kB T}}}, \qquad
+   \bm{\mu = \frac12\left(\epsilon_v+\epsilon_c+\kB T\ln\frac{D_v}{D_c}\right)} \]
+\end{itemize}
+
+\subsection{Livello di Fermi intrinseco $\mu_i$}
+Uguagliando $n=p$:
+\begin{itemize}
+    \item \textbf{Caso 3D:} $\bm{\mu_i = \frac{E_c+E_v}{2} + \frac{3}{4}\kB T\ln\!\left(\frac{m_v^*}{m_c^*}\right)=E_v+\frac{E_g}{2} + \frac{3}{4}\kB T\ln\!\left(\frac{m_v^*}{m_c^*}\right)}$
+    \item \textbf{Caso 2D:} $\bm{\mu_i = \frac{E_c+E_v}{2} + \frac{1}{2}\kB T\ln\!\left(\frac{m_v^*}{m_c^*}\right)}$
+    \item \textbf{Caso 1D:} $\bm{\mu_i = \frac{E_c+E_v}{2} + \frac{1}{4}\kB T\ln\!\left(\frac{m_v^*}{m_c^*}\right)}$
+\end{itemize}
+\attenzione{Se il problema afferma (o se si deduce dai dati) che il potenziale chimico intrinseco $\mu_i$ \textbf{è indipendente dalla temperatura}, questo implica necessariamente che il termine logaritmico è nullo. Dunque, si ha sempre $\bm{m_c^* = m_v^*}$. A $T=0$ K oppure se $m_c^*=m_v^*$,  $\mu_i$ si posiziona esattamente a metà gap.}
+
+\ricetta{Esercizio tipico: ``$\mu$ è a $\delta$ dal centro gap, trova $T$ (o $m$)'' }{
+\textbf{(1)} Uguaglia la formula teorica con la condizione geometrica: $\mu_i(T) = \frac{E_c+E_v}{2}\pm\delta$.\\
+\textbf{(2)} Semplifica il termine di mid-gap (identico da ambo i lati): resta $\pm\delta = \frac34\kB T\ln\frac{m_v}{m_c}$.\\
+\textbf{(3)} Isola l'incognita: $\ T = \dfrac{4\delta}{3\kB\ln(m_v/m_c)}\ $ oppure $\ m_c = m_v\,\ee^{-4\delta/(3\kB T)}$.\\
+\textbf{(4)} \textbf{Conversione:} se $\delta$ è in eV va convertito in Joule ($\times1.602\times10^{-19}$) oppure usa $\kB=8.617\times10^{-5}$ eV/K.\\
+\textbf{(5)} La variazione di $\mu$ tra due temperature: $\mu(T_2)-\mu(T_1) = \frac{3}{4}\kB(T_2-T_1)\ln\frac{m_v}{m_c}$ (3D), con $\frac12$ in 2D e $\frac14$ in 1D.}
+
+\ricetta{(1D) ``$\mu$ è a $\Delta E$ da $E_v$ (o $E_c$), trova il band gap $E_g$''}{
+utilizza la formula del livello di Fermi intrinseco $\mu_i$ in 1D: $ \mu_i = \frac{E_v+E_c}{2} + \frac{\kB T}{4}\ln\!\left(\frac{m_v^*}{m_c^*}\right) = E_v + \frac{E_g}{2} + \frac{\kB T}{4}\ln\!\left(\frac{m_v^*}{m_c^*}\right)$
+
+Se il testo fornisce la distanza di $\mu$ dal tetto della banda di valenza ($\Delta E = \mu - E_v$), sostituisci 
+\[ \mu - E_v = \frac{E_g}{2} + \frac{\kB T}{4}\ln\!\left(\frac{m_v^*}{m_c^*}\right) \] 
+ Isola l'incognita $E_g$ :  $ E_g = 2\left[ (\mu - E_v) - \frac{\kB T}{4}\ln\!\left(\frac{m_v^*}{m_c^*}\right) \right] $
+ 
+}
+
+\ricetta{Trovare $m_c$ e $m_v$ separatamente da $n_i$ e $\mu_i$}{
+Sistema di 2 equazioni in 2 incognite (poni $\tilde m = m/m_0$):
+\[ \tilde m_c\tilde m_v = \left[\frac{4n_i\,\ee^{E_g/2\kB T}}{\left(\frac{2m_0\kB T}{\pi\hbr^2}\right)^{3/2}}\right]^{4/3}, \qquad
+   \frac{\tilde m_v}{\tilde m_c} = \exp\!\left[\frac{4\mu_i-2E_g}{3\kB T}\right] \]
+(la seconda con $E_v=0$, $E_c=E_g$). Moltiplicando e dividendo si ricavano $\tilde m_c$ e $\tilde m_v$.}
+
+\subsection{Dipendenza termica del bandgap (formula di Varshni)}
+L'energy gap diminuisce all'aumentare della temperatura per dilatazione termica del reticolo e interazione elettrone-fonone:
+\[ \bm{E_g(T) = E_g(0) - \frac{\alpha T^2}{T+\beta}} \]
+dove $\alpha$ [eV/K] e $\beta$ [K] (prossima alla temperatura di Debye) sono costanti empiriche del materiale.
+\attenzione{Prima di calcolare $n_i(T)$ a una certa $T\neq300$ K, \textbf{aggiorna sempre} il valore di $E_g$ con questa formula, se i parametri $\alpha$ e $\beta$ sono forniti dal testo!}
+
+\subsection{Determinare $E_g$ da due misure di $n_i$ (o $n_c$) a temperature diverse}
+Dalla legge di azione di massa, $n_i\propto T^{3/2}\ee^{-E_g/2\kB T}$ (3D). Quindi:
+\[ \textbf{Metodo esatto:}\quad \bm{E_g = \frac{2\kB}{\frac{1}{T_2}-\frac{1}{T_1}}\,\ln\!\left[\left(\frac{T_2}{T_1}\right)^{3/2}\frac{n_i(T_1)}{n_i(T_2)}\right]} \]
+\[ \textbf{Metodo approssimato}\ (\text{trascurando } T^{3/2}):\quad
+   \bm{E_g = \frac{2\kB}{\frac{1}{T_2}-\frac{1}{T_1}}\,\ln\!\frac{n_i(T_1)}{n_i(T_2)}} \]
+\textit{(in 2D il prefattore è $T^1$ anziché $T^{3/2}$; in 1D è $T^{1/2}$.)}
+Se invece è nota $n_i$ a una sola $T$: $\ E_g = 2\kB T\ln\left(\sqrt{N_cN_v}/n_i\right)$.
+
+\newpage
+\section{SEMICONDUTTORI DROGATI}
+Con densità di donori $N_d$ e accettori $N_a$ \textbf{completamente ionizzati}, la neutralità di carica impone
+\[ \bm{n - p = N_d - N_a \equiv \Delta N} \qquad\text{insieme a}\qquad \bm{np = n_i^2} \]
+\[ \bm{n = \frac{\Delta N}{2} + \sqrt{\left(\frac{\Delta N}{2}\right)^{2}+n_i^{2}}
+      = \frac12\left[\sqrt{(\Delta N)^2+4n_i^2}+\Delta N\right]} \]
+\[ \bm{p = -\frac{\Delta N}{2} + \sqrt{\left(\frac{\Delta N}{2}\right)^{2}+n_i^{2}}
+      = \frac12\left[\sqrt{(\Delta N)^2+4n_i^2}-\Delta N\right]} \]
+\attenzione{Usa \textbf{sempre} questa formula quando la condizione $n_i\ll|\Delta N|$ \emph{non} è verificata. 
+\begin{itemize}
+\item $\Delta N \gg n_i$ (tipo n estrinseco): $n\approx\Delta N = N_d-N_a$, \quad $p\approx n_i^2/\Delta N$.
+\item $-\Delta N \gg n_i$ (tipo p estrinseco): $p\approx N_a-N_d$, \quad $n\approx n_i^2/(N_a-N_d)$.
+\item $|\Delta N|\ll n_i$ (regime intrinseco ad alta $T$): $n\approx p\approx n_i$.
+\end{itemize}
+Sviluppo utile per il caso quasi-estrinseco: $\ n \approx \Delta N\left(1+\frac{n_i^2}{(\Delta N)^2}\right)$, $\ p\approx \frac{n_i^2}{\Delta N}$.}
+
+\ricetta{Drogaggio espresso come fattore moltiplicativo rispetto al caso intrinseco}{
+Quando il problema richiede di aumentare la densità dei portatori di maggioranza di un fattore $f$ (es. $10^3$) rispetto al caso intrinseco:
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item \textbf{Densità dei maggioritari e dei droganti:} L'aumento per un fattore $f$ significa che la nuova densità (es. di elettroni) è $n_c = f \cdot n_i$. Se i donori sono completamente ionizzati e $f \gg 1$, si è in forte regime estrinseco, quindi la densità di droganti necessaria coincide con questa concentrazione: $\bm{N_d \approx n_c = f \cdot n_i}$. Il discorso è speculare per accettori e lacune: $N_a \approx p_v = f \cdot n_i$
+    \item \textbf{Densità dei minoritari:} Sfrutta la legge dell'azione di massa ($n_c p_v = n_i^2$). La concentrazione dei minoritari risulterà ridotta esattamente dello stesso fattore $f$: $ \bm{p_v = \frac{n_i^2}{n_c} = \frac{n_i^2}{f \cdot n_i} = \frac{1}{f} n_i = f^{-1} n_i}$
+    \item \textit{Esempio numerico:} Se viene richiesto di aumentare $n_c$ di un fattore $10^3$, si avrà $N_d = 10^3 n_i$ e la densità di lacune diventerà la frazione inversa $p_v = 10^{-3} n_i$.
+\end{itemize}
+}
+
+\ricetta{Drogaggio espresso come frazione degli atomi del reticolo}{
+Quando il problema indica che una frazione $f$ (es. $10^{-8}$) degli atomi del semiconduttore è sostituita da impurezze droganti:
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item \textbf{Densità atomica del cristallo ($n$):} Attenzione a non confondere la densità fisica degli atomi $n$ con la concentrazione intrinseca $n_i$. La densità atomica si ricava dal parametro reticolare $a$ in base alla struttura cristallina: $n = \frac{N_{atomi}}{a^3}$ ($N_{atomi}$ è il numero di atomi per cella convenzionale, ad es. 4 per FCC).
+    \item \textbf{Densità dei droganti:} Il numero di impurezze per unità di volume si ottiene applicando la frazione $f$ alla densità atomica totale appena calcolata: $\bm{N_d = f \cdot n}$ (oppure $N_a = f \cdot n$).
+    \item \textbf{Verifica del regime:} Solo a questo punto si calcola la concentrazione intrinseca $n_i$ per verificare in che regime ci si trova. Se $\bm{N_d \gg n_i}$, il semiconduttore è in forte regime estrinseco. Sotto l'ipotesi di completa ionizzazione, la densità dei portatori maggioritari è dettata dal drogaggio ($\bm{n_c \approx N_d}$), mentre i minoritari si ricavano con la legge dell'azione di massa: $\bm{p_v = \frac{n_i^2}{N_d}}$.
+\end{itemize}
+}
+
+
+\subsection{Posizione del potenziale chimico $\mu(T)$}
+\subsubsection*{Forma universale (rispetto al livello intrinseco)}
+\[ \bm{n = n_i\,\ee^{(\mu-\mu_i)/\kB T}}, \qquad \bm{p = n_i\,\ee^{-(\mu-\mu_i)/\kB T}} \]
+\[ \bm{\Delta N = n-p = 2n_i\sinh\!\left(\frac{\mu-\mu_i}{\kB T}\right)}
+   \quad\Longrightarrow\quad
+   \boxed{\mu-\mu_i = \kB T\,\mathrm{arcsinh}\!\left(\frac{\Delta N}{2n_i}\right)
+   = \kB T\ln\!\frac{n}{n_i} = -\kB T\ln\!\frac{p}{n_i}} \]
+Con $\Delta N<0$, cioè tipo p, si ottiene $\mu<\mu_i$: il potenziale chimico scende verso la banda di valenza. Con $\Delta N>0$, tipo n, sale verso la conduzione.
+
+\subsubsection*{Formule dirette (riferimento $E_v=0$, quindi $E_c=E_g$)}
+\begin{itemize}
+    \item \textbf{Tipo N, donori tutti ionizzati ($n\approx N_d\gg n_i$):}
+    \[ \bm{\mu = E_g - \kB T\ln\!\left(\frac{N_c}{N_d}\right) = E_c - \kB T\ln\!\left(\frac{N_c}{n}\right)} \]
+    \item \textbf{Tipo P, accettori tutti ionizzati ($p\approx N_a\gg n_i$):}
+    \[ \bm{\mu = \kB T\ln\!\left(\frac{N_v}{N_a}\right) = E_v + \kB T\ln\!\left(\frac{N_v}{p}\right)} \]
+    misurato \emph{sopra} il massimo della banda di valenza; risulta un numero positivo piccolo se $N_a\ll N_v$
+    \item \textbf{Metodo esatto} (se $N_d$ non è trascurabile rispetto a $n_i$): usa la relazione iperbolica sopra, con
+    $\mu_i = \frac{E_g}{2}+\frac34\kB T\ln\frac{m_v^*}{m_c^*}$.
+    \item \textbf{Limite $T\to0$ K (freeze-out):} quando $\kB T\ll E_b$ gli elettroni ricadono sui livelli donatori e il potenziale chimico si ``congela'' a metà strada tra il fondo della banda di conduzione $E_c$ e il livello donatore $E_d=E_c-|E_b|$:
+    \[ \bm{\mu(T\to0) = E_c - \frac{|E_b|}{2} = E_g - \frac{|E_b|}{2}} \]
+    analogamente, per tipo p: $\mu(T\to0) = E_v + \frac{|E_a|}{2}$
+\end{itemize}
+
+\subsection{Modello idrogenoide per le impurezze (donatori e accettori)}
+Un atomo drogante si comporta come un atomo di idrogeno immerso in un mezzo con costante dielettrica relativa $\epsilon_r$ e massa efficace $m^*$:
+\begin{itemize}
+    \item \textbf{Energia dell'impurezza ($E_b$ o $E_d$):} 
+    \[\bm{|E_b| = \frac{13.6\ \text{eV}}{\epsilon_r^2}\left(\frac{m_c^*}{m_0}\right)}\]
+    \begin{itemize}
+        \item \textbf{Segno $+$:} Se il problema parla di \textbf{energia di legame} o \textbf{energia di ionizzazione}. Indica quanta energia fisica devi \emph{fornire} per liberare la carica.
+        \item \textbf{Segno $-$:} Se il problema parla di \textbf{livello energetico} (es. $E_d$). Indica la posizione nello schema a bande: lo stato è legato in una buca di potenziale, quindi il livello del donore si trova \emph{sotto} $E_c$ (per l'accettore \emph{sopra} $E_v$).
+    \end{itemize}
+    Problema inverso: $\ \bm{m_c^* = m_0\,\epsilon_r^2\,\frac{|E_b|}{13.6\ \text{eV}}}$.
+    \item \textbf{Raggio di Bohr efficace:} $\ \bm{a_B^* = a_0\,\frac{\epsilon_r}{m_c^*/m_0} = 0.0529\ \text{nm}\cdot\frac{\epsilon_r}{m_c^*/m_0}}$
+    \item Per gli accettori si usa $m_v^*$ al posto di $m_c^*$.
+\end{itemize}
+
+
+\subsection{Regime di freeze-out (basse temperature)}
+Quando $\kB T\ll E_b$ i donori non sono più tutti ionizzati e la concentrazione di elettroni liberi decade esponenzialmente:
+\[ \bm{n_{extr} = \sqrt{\frac{N_c\,N_d}{2}}\ \ee^{-\frac{E_b}{2\kB T}}} \]
+con $N_c = 2\left(\frac{m_c^*\kB T}{2\pi\hbr^2}\right)^{3/2}$ calcolata \textbf{alla temperatura criogenica}.
+\attenzione{Il fattore $2$ sotto radice deriva dalla degenerazione di spin del livello donatore. Alcuni testi lo scrivono senza il $2$: usa la formula che il testo fornisce.}
+
+\ricetta{Discutere l'andamento di $n_{extr}(T)$ al variare di $T$}{
+$n_{extr}=\sqrt{N_cN_d/2}\;\ee^{-E_b/2\kB T}$ è il prodotto di due fattori:
+\begin{itemize}
+\item il prefattore $\sqrt{N_cN_d/2}\propto T^{3/4}$ varia \emph{lentamente} (potenza);
+\item l'esponenziale $\ee^{-E_b/2\kB T}$ varia \emph{violentemente}.
+\end{itemize}
+Abbassando $T$ (es.\ da 100 K a 1 K) il prefattore cala di poche decine di volte, l'esponenziale di ordini di grandezza: \textbf{domina sempre il fattore esponenziale}.}
+
+\ricetta{Risolvere esercizi su Drogaggio, $T$ variabile e formula di Varshni}{
+\textbf{1. Aggiornamento del Bandgap (Varshni):} 
+Se la temperatura è diversa da $300$ K e il testo fornisce i parametri empirici $\alpha$ e $\beta$, ricalcola immediatamente $E_g$:  $E_g(T) = E_g(0) - \frac{\alpha T^2}{T+\beta} $
+
+\textbf{2. Calcolo dell'energia di ionizzazione ($E_d$):}
+Se non è fornita, individuala tramite il modello idrogenoide: $E_d = \frac{13.6\ \text{eV}}{\epsilon_r^2}\left(\frac{m_c^*}{m_0}\right) $
+\textit{Nota pratica:} per semiconduttori standard, $E_d$ è spesso dell'ordine di $1 \sim 10$ meV.
+
+\textbf{3. Test del regime termico} (Cruciale per trovare $n_{extr}$!):
+Confronta sempre l'energia termica $\kB T$ con l'energia di ionizzazione $E_d$.
+\begin{itemize}
+    \item \textbf{Completa ionizzazione ($\kB T \gg E_d$)} 
+    $\implies$ \textbf{Tutti i droganti sono attivi:} $\bm{n_{extr} \approx N_D}$ (oppure $p_{extr} \approx N_A$)
+    \item \textbf{Freeze-out / Ionizzazione parziale ($\kB T \ll E_d$):} Avviene a temperature criogeniche (es. 1 K). L'agitazione termica non basta a staccare gli elettroni dalle impurezze.
+    $\implies$  $\displaystyle n_{extr}(T) = \sqrt{\frac{N_c(T) N_D}{2}}\,\ee^{-\frac{E_d}{2\kB T}}$
+    \textit{(Ricorda di ricalcolare $N_c$ per la nuova $T$ prima di inserirlo nella radice!)}
+\end{itemize}
+
+\textbf{4. Concentrazione totale e Conducibilità finale:}
+Ora calcola la concentrazione dei portatori intrinseci $n_i(T)$ e confrontala con il tuo $n_{extr}$:
+\begin{itemize}
+    \item Se $n_{extr} \gg n_i(T)$ $\implies$ \textbf{Regime estrinseco}: domina il drogaggio. $\sigma \approx e\, n_{extr}\, \mu_{maggioritari}$.
+    \item Se $n_{extr} \ll n_i(T)$ $\implies$ \textbf{Regime intrinseco}: il drogaggio è ininfluente  $\sigma \approx e\, n_i(T) (\mu_e + \mu_h)$.
+\end{itemize}
+}
+
+
+\vspace{0.3cm}
+
+% =====================================================================
+%  ALGORITMO MASTER --- SEMICONDUTTORI: COME AFFRONTARE L'ESERCIZIO
+% =====================================================================
+\section{Algoritmo Master per gli esercizi sui semiconduttori}
+
+\textbf{PASSO 0 --- Di che gap dispongo?}
+\begin{itemize}
+  \item Il testo dà $E_g$ direttamente a una certa $T$? Usalo così com'è.
+  \item Dà i parametri di Varshni $\alpha,\beta$? Allora \textbf{aggiorna sempre} $E_g(T)=E_g(0)-\dfrac{\alpha T^2}{T+\beta}$ prima di qualunque altro calcolo.
+  \item Dà $n_i$ (o $n_c$) a \textbf{due} temperature diverse? Ricava $E_g$ con il metodo esatto o approssimato pi\`u sotto).
+  \item Dà uno spettro di assorbimento con una soglia $E_2$? Quella soglia \emph{è} $E_g$ (o $E_g\pm\hbr\omega_{fon}$ se indiretta).
+\end{itemize}
+
+\textbf{PASSO 1 --- Di che masse efficaci dispongo?}
+\begin{itemize}
+  \item Date esplicitamente ($m_c^*,m_v^*$ in unità di $m_0$)? Usale.
+  \item Data una dispersione $E(\kvec)=\text{cost}+C\,\kvec^2$ (o $Ak^2$, $Ca^2k^2$, $C\sin^2(ak)$...)? Ricava $m^*=\hbr^2/(2C)$ (occhio alle unità: se $C$ è in eV$\cdot$m$^2$, converti in J$\cdot$m$^2$ moltiplicando per $1.602\times10^{-19}$ PRIMA di dividere).
+  \item Più bande/valli con masse diverse ($m_{c1}^*\neq m_{c2}^*$)? Vai al paragrafo sul multibanda.
+\end{itemize}
+
+\textbf{PASSO 2 --- Che tipo di semiconduttore è?}
+\begin{itemize}
+  \item \textbf{Intrinseco} (nessun drogante menzionato): $n=p=n_i$.
+  \item \textbf{Drogato con un solo tipo} (solo $N_D$ o solo $N_A$): regime N o P puro.
+  \item \textbf{Drogato compensato} ($N_D$ \emph{e} $N_A$ insieme, oppure il testo dice ``non è detto che $n_i\ll N_d$''): usa SEMPRE la formula generale con la radice, $\Delta N=N_D-N_A$.
+\end{itemize}
+
+\textbf{PASSO 3 --- A questa $T$, i droganti sono ionizzati?}
+Calcola l'energia di legame (se non data) col modello idrogenoide $E_b=\dfrac{13.6\text{ eV}}{\epsilon_r^2}\dfrac{m^*}{m_0}$, poi confronta $\kB T$ con $E_b$:
+\begin{itemize}
+  \item $\kB T\gg E_b$ (quasi sempre a $T\ge 77$ K, dato che $E_b\sim$ meV) $\implies$ \textbf{ionizzazione completa}: $n\approx N_D$ (o $p\approx N_A$).
+  \item $\kB T\ll E_b$ (tipicamente $T\lesssim$ 10 K) $\implies$ \textbf{freeze-out}: $n_{extr}=\sqrt{N_c(T)N_D/2}\,\ee^{-E_b/2\kB T}$ (ricalcola $N_c$ alla nuova $T$!).
+\end{itemize}
+
+\textbf{PASSO 4 --- Confronta con $n_i(T)$: che regime di conduzione è?}
+Calcola sempre $n_i(T)$ numericamente a quella $T$ e confronta con $n_{extr}$ (o con $\Delta N$):
+\begin{itemize}
+  \item $n_{extr}\gg n_i(T)$ (o $|\Delta N|\gg n_i$) $\implies$ \textbf{regime estrinseco}: $\sigma\approx e\,n_{extr}\,\mu_{magg}$.
+  \item $n_{extr}\ll n_i(T)$ (o $|\Delta N|\ll n_i$) $\implies$ \textbf{regime intrinseco}: $\sigma\approx e\,n_i(T)(\mu_e+\mu_h)$.
+  \item Confrontabili $\implies$ usa la formula generale con la radice per $n,p$.
+\end{itemize}
+
+\textbf{PASSO 5 --- Quante bande/valli sono coinvolte?}
+Una sola banda per tipo di portatore $\implies$ formule standard. Più bande di conduzione a energie diverse ($E_{c1}\neq E_{c2}$) $\implies$ regime di saturazione multibanda, $R=(m_{c2}^*/m_{c1}^*)^{3/2}e^{-A/\kB T}$ 
+
+\textbf{PASSO 6 --- Cosa chiede la domanda finale?}
+\begin{itemize}
+  \item \textbf{Concentrazione} $n$, $p$, $n_i$, $n_{extr}$: usa le formule dei Passi 0--4.
+  \item \textbf{Posizione di $\mu$}: scegli la formula giusta in base a
+  (a) intrinseco $\to\mu_i$ con il coefficiente corretto per la dimensionalità (Tabella \ref{tab:dim});
+  (b) drogato in saturazione $\to\mu=E_c-\kB T\ln(N_c/n)$ oppure $\mu=E_v+\kB T\ln(N_v/p)$;
+  (c) drogaggio compensato/generico $\to\mu-\mu_i=\kB T\,\mathrm{arcsinh}\!\left(\frac{\Delta N}{2n_i}\right)=\kB T\ln(n/n_i)$.
+  \item \textbf{Conducibilità}: $\sigma=e(n\mu_n+p\mu_p)=e^2\!\left(\dfrac{n\tau_n}{m_c^*}+\dfrac{p\tau_p}{m_v^*}\right)$; se multibanda, somma i contributi banda per banda.
+\end{itemize}
+
+
+
+\subsection{Esempio completo svolto passo-passo}
+\ricetta{Traccia guida (basata su un tipico esercizio d'esame)}{
+\textbf{Dati:} semiconduttore intrinseco cubico, $m_c^*=0.03\,m_0$, $m_v^*=0.40\,m_0$, $\epsilon_r=15$, $E_g=0.90$ eV, drogato con $N_D$ tale che il fattore di drogaggio sia $10^{-8}$ della densità atomica $n=2.5\times10^{22}$ cm$^{-3}$ (quindi $N_D=2.5\times10^{14}$ cm$^{-3}$), $\tau=0.05$ ps per entrambi i portatori, $T=300$ K.
+
+\textbf{Passo 0:} $E_g=0.90$ eV, dato direttamente (T-indipendente per ipotesi).
+
+\textbf{Passo 1:} masse date: $m_c^*=0.03\,m_0$, $m_v^*=0.40\,m_0$.
+
+\textbf{Passo 2:} drogato con un solo tipo (donatori), quindi regime N.
+
+\textbf{Passo 3:} $E_b=\dfrac{13.6}{15^2}\times0.03=1.8\times10^{-3}$ eV $=1.8$ meV. A $T=300$ K, $\kB T\approx25.9$ meV $\gg E_b$: \textbf{ionizzazione completa}, $n_c\approx N_D=2.5\times10^{14}$ cm$^{-3}$.
+
+\textbf{Passo 4:} calcola $n_i(300\text{ K})$ con la formula 3D della Tabella \ref{tab:dim}: risulta $n_i\approx2.5\times10^{10}$ cm$^{-3}\ll N_D$. Conferma: \textbf{regime estrinseco}, $p_v=n_i^2/n_c$ trascurabile.
+
+\textbf{Passo 5:} una sola banda di conduzione, niente multivalle.
+
+\textbf{Passo 6a (conducibilità):} $\sigma=\dfrac{n_ce^2\tau}{m_c^*}+\dfrac{p_ve^2\tau}{m_v^*}\approx\dfrac{n_ce^2\tau}{m_c^*}$ (il contributo delle lacune è trascurabile per $p_v\ll n_c$).
+
+\textbf{Passo 6b ($\mu$):} regime estrinseco saturo $\implies\ \mu=E_g-\kB T\ln(N_c/N_D)$, con $N_c$ calcolato dalla Tabella con $m_c^*$ a $T=300$ K.
+
+}
+
+
+\section{Diagramma di Arrhenius: $\log n_c$ vs $1/T$}
+Il grafico di $n_c$ in funzione di $1/T$ (scala semilogaritmica) presenta \textbf{tre regioni}, da destra (bassa $T$) a sinistra (alta $T$):
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+{\small
+\begin{tabular}{p{4.2cm} p{5.0cm} p{7.0cm}}
+\toprule
+\textbf{Regione} & \textbf{Comportamento} & \textbf{Cosa ricavi} \\
+\midrule
+\textbf{Freeze-out} (destra, $1/T$ grande) & pendenza $-E_b/2\kB$ & Energia di legame del donatore $E_b$ (o $\epsilon_d$) \\
+\textbf{Saturazione} (plateau centrale) & $n_c\approx N_d$ costante & Concentrazione di droganti $N_d$ \\
+\textbf{Intrinseco} (sinistra, $1/T$ piccolo) & pendenza ripida $-E_g/2\kB$ & Energy gap $E_g$ \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
+\subsubsection*{Formule operative}
+Presi due punti $A=(1/T_A,\,n_{cA})$ e $B=(1/T_B,\,n_{cB})$ sulla retta considerata:
+\[ \textbf{Regime intrinseco:}\quad \bm{E_g = \frac{2\kB}{\frac{1}{T_B}-\frac{1}{T_A}}\,\ln\!\left(\frac{n_{cA}}{n_{cB}}\right)}
+   \qquad (T_A>T_B) \]
+\[ \textbf{Con prefattore } T^{3/2}:\quad \bm{E_g = \frac{2\kB}{\frac{1}{T_B}-\frac{1}{T_A}}\,\ln\!\left[\frac{n_{cA}}{n_{cB}}\left(\frac{T_B}{T_A}\right)^{3/2}\right]} \]
+\[ \textbf{Regime di freeze-out:}\quad \bm{E_b = \frac{2\kB}{\frac{1}{T_4}-\frac{1}{T_3}}\,\ln\!\left(\frac{n_{c3}}{n_{c4}}\right)}
+   \qquad (T_3>T_4) \]
+\textit{Attenzione: nel regime di freeze-out compare anch'esso un fattore 2 al denominatore dell'esponente ($\ee^{-E_b/2\kB T}$), quindi la formula ha la stessa struttura di quella per $E_g$.}
+
+\subsubsection*{Uso del grafico per altre grandezze}
+\begin{enumerate}
+    \item \textbf{Conducibilità a una data $T$:} calcola $1/T$, leggi $n_c$ sul grafico, converti da cm$^{-3}$ a m$^{-3}$ ($\times10^6$), poi $\sigma = n_ce^2\tau/m_c^*$.
+    \item \textbf{Densità di lacune $p_v$ in regime estrinseco:} leggi $n_c(T)$ sulla curva reale; \textbf{estrapola} la retta ripida del regime intrinseco (linea tratteggiata) fino all'ascissa $1/T$ di interesse per ottenere $n_i(T)$; poi
+    \[ \bm{p_v(T) = \frac{n_i^2(T)}{n_c(T)}} \]
+    \item \textbf{Massa efficace:} se la dispersione è del tipo $E(\kvec)=E_g+C\left[\sin^2(ak_x)+\sin^2(ak_y)+\sin^2(ak_z)\right]$, in prossimità del minimo $\sin^2(ak_i)\approx a^2k_i^2$ e
+    \[ \bm{m_c^* = \frac{\hbr^2}{2Ca^2}} \]
+    (ricorda di convertire $C$ da eV a Joule e $a$ in metri).
+\end{enumerate}
+
+
+\section{Tracciamento del regime di conduzione al variare di $T$}
+Dato un semiconduttore drogato (es.\ tipo N con densità $N_D$ ed energia di ionizzazione $E_b$), per valutare $\sigma(T)$ a una generica temperatura $T$ seguire \textbf{tassativamente} questo ordine:
+\begin{enumerate}
+    \setlength{\itemsep}{2pt}
+    \item \textbf{Verificare lo stato di ionizzazione dei droganti.} Calcolare l'energia termica $\kB T$ (a 300 K vale $25.9$ meV; a 100 K $8.6$ meV; a 4.2 K $0.36$ meV).
+    \begin{itemize}
+        \item Se $\kB T\gg E_b$ (es.\ per $E_b\sim5$ meV basta $T>100$ K): i donori sono \textbf{completamente ionizzati}, gli elettroni rilasciati sono $N_D$.
+        \item Se $\kB T\ll E_b$ (regime criogenico / freeze-out): usare la formula radice $n_{extr}=\sqrt{N_cN_D/2}\;\ee^{-E_b/2\kB T}$.
+    \end{itemize}
+    \item \textbf{Confrontare i portatori intrinseci con i droganti ($n_i$ vs $N_D$).} Calcolare \emph{sempre} il valore numerico di $n_i(T)$ alla temperatura richiesta.
+    \begin{itemize}
+        \item \textbf{Regime estrinseco ($n_i(T)\ll N_D$):} la generazione termica interbanda è trascurabile; $n\approx N_D$ e $p\approx n_i^2/N_D$. Conducibilità: $\bm{\sigma\approx eN_D\mu_e}$.
+        \item \textbf{Regime intrinseco ($n_i(T)\gg N_D$):} a temperature elevate le coppie generate termicamente superano la densità di impurezze; il drogaggio diventa ininfluente ($n\approx p\approx n_i$) e $\bm{\sigma = e\,n_i(\mu_e+\mu_h)}$.
+        \item \textbf{Regime intermedio ($n_i \sim N_D$):} usa la formula generale di neutralità con la radice.
+    \end{itemize}
+    \item \textbf{Calcolare la conducibilità} con i valori di $n$, $p$, $\tau$ (che può dipendere da $T$: usa quello dato dal testo per quella temperatura).
+\end{enumerate}
+
+\section{Semiconduttori multibanda drogati N}
+Quando il problema fornisce una struttura cristallina con densità atomica $n$, relazioni di dispersione $E(\kvec)$ quadratiche per \emph{più} bande di conduzione e concentrazioni di droganti $N_D$ a diverse temperature.
+
+\begin{enumerate}
+\item \textbf{Ricavare la costante di reticolo dalla densità atomica.}
+Se è data la densità atomica $n$ [at/m$^3$]:
+\begin{itemize}
+    \item Struttura Diamante (8 atomi per cella convenzionale): $n=\frac{8}{a^3}\implies \bm{a=\left(\frac8n\right)^{1/3}=\frac{2}{\sqrt[3]{n}}}$
+    \item \textit{FCC} (4 atomi): $a=(4/n)^{1/3}$; \quad \textit{BCC} (2 atomi): $a=(2/n)^{1/3}$; \quad \textit{SC} (1 atomo): $a=(1/n)^{1/3}$.
+\end{itemize}
+
+\item \textbf{Masse efficaci.} Data la dispersione parabolica al punto $\Gamma$ nella forma standard
+\[ E_{c,i}(\kvec)=\text{costante}+C_i\,a^2\left(k_x^2+k_y^2+k_z^2\right) \]
+la massa efficace è
+\[ \bm{m_i^* = \frac{\hbr^2}{2C_ia^2}} \]
+\begin{itemize}
+    \item Trasformare sempre $C_i$ da eV a Joule: $C_i[\text{J}]=C_i[\text{eV}]\times1.602\times10^{-19}$.
+    \item Il risultato sarà in [kg]: per confrontarlo con $m_0=9.11\times10^{-31}$ kg, dividere.
+\end{itemize}
+
+\item \textbf{Conducibilità multibanda in saturazione} (es.\ $T=150$ K o $T=900$ K).
+Se tutti i donatori sono ionizzati (\textbf{regime di piena saturazione}), la concentrazione totale di elettroni nelle bande di conduzione eguaglia la densità dei donori: $n_{tot}=n_{c1}+n_{c2}=N_D$.
+\textit{(Ricorda di convertire $N_D$ da cm$^{-3}$ a m$^{-3}$ moltiplicando per $10^6$!)}
+\begin{enumerate}
+    \item \textbf{Rapporto di riempimento tra le bande ($R$).} Date due bande di conduzione separate da un dislivello $A=E_{c2}(\Gamma)-E_{c1}(\Gamma)$:
+    \[ \bm{R\equiv\frac{n_{c2}}{n_{c1}} = \left(\frac{m_{c2}^*}{m_{c1}^*}\right)^{3/2}\ee^{-\frac{A}{\kB T}}} \]
+    \item \textbf{Sistemare i portatori nelle due bande:}
+    \begin{itemize}
+        \item Se $R\ll1$ (bassa/media $T$): la seconda banda è quasi vuota, $\bm{n_{c1}\approx N_D}$ e $n_{c2}\approx0$.
+        \item Se $R$ non è trascurabile (alta $T$): $\ \bm{n_{c1}=\frac{N_D}{1+R}}, \quad \bm{n_{c2}=\frac{N_D\,R}{1+R}}$
+    \end{itemize}
+    \item \textbf{Conducibilità elettrica totale:} si sommano i contributi indipendenti delle bande attive (con $\tau$ in secondi, es.\ $0.10$ ps $=10^{-13}$ s):
+    \[ \bm{\sigma = \sigma_1+\sigma_2 = e^2\tau\left(\frac{n_{c1}}{m_{c1}^*}+\frac{n_{c2}}{m_{c2}^*}\right)}\quad [\Omega^{-1}\text{m}^{-1}\ \text{ossia S/m}] \]
+\end{enumerate}
+
+\item \textbf{Stima delle lacune minoritarie ad alta temperatura ($p_v$).}
+In un semiconduttore di tipo N, ad altissime temperature si generano coppie elettrone-lacuna termiche. Se il gap $E_g$ è molto grande la conduzione resta estrinseca ($n\approx N_D$), ma la concentrazione di lacune si stima con la legge di azione di massa:
+\[ \bm{p_v = \frac{n_i^2}{N_D}}, \qquad
+   \bm{n_i^2 = N_cN_v\,\ee^{-\frac{E_g}{\kB T}} = 4\left(\frac{\kB T}{2\pi\hbr^2}\right)^{3}\left(m_{c1}^*m_v^*\right)^{3/2}\ee^{-\frac{E_g}{\kB T}}} \]
+Se sono attive più bande di conduzione, si usa la massa efficace della banda dominante (quella inferiore, $m_{c1}^*$).
+
+\item \textbf{Conducibilità a temperature criogeniche / freeze-out.}
+A bassissime temperature (es.\ $T=4.2$ K) l'energia termica è insufficiente a ionizzare tutti i donatori ($\kB T\ll E_d$, es.\ $E_d=3.0$ meV). Il sistema entra nel regime di \textbf{freeze-out}:
+\begin{enumerate}
+    \item La seconda banda di conduzione è rigorosamente vuota ($R\to0$).
+    \item La concentrazione di elettroni liberi nella prima banda decade esponenzialmente:
+    \[ \bm{n_{c1}=\sqrt{\frac{N_c\,N_D}{2}}\ \ee^{-\frac{E_d}{2\kB T}}} \]
+    \item Calcolare preventivamente la densità efficace degli stati alla temperatura criogenica:
+    \[ \bm{N_c = 2\left(\frac{m_{c1}^*\kB T}{2\pi\hbr^2}\right)^{3/2}} \]
+    \item Conducibilità finale con il nuovo valore di $n_{c1}$ e il $\tau$ specifico per quella temperatura:
+    \[ \bm{\sigma = \frac{n_{c1}e^2\tau}{m_{c1}^*}} \]
+\end{enumerate}
+\end{enumerate}
+
+
+\vspace{0.5cm}
+\section{Massa efficace di valenza con bande degeneri (pesante + leggera)}
+Quando il massimo della banda di valenza è formato da due sotto-bande degeneri in $\Gamma$
+con momento angolare totale $j=3/2$ (lacuna \textbf{pesante}, $m_{v,h}$) e $j=1/2$
+(lacuna \textbf{leggera}, $m_{v,l}$), la massa efficace di valenza "media" da usare
+nelle formule di $N_v$, $n_i$, $\mu_i$, ecc. si ottiene pesando ciascuna massa con la
+propria \textbf{molteplicità} $(2j+1)$:
+\[ \bm{m_v = \frac{m_{v,h}\,(2\cdot\tfrac32+1) + m_{v,l}\,(2\cdot\tfrac12+1)}{(2\cdot\tfrac32+1)+(2\cdot\tfrac12+1)}
+        = \frac{4\,m_{v,h} + 2\,m_{v,l}}{6}} \]
+\attenzione{Questa è la convenzione usata in questi esami (media aritmetica pesata sulla
+degenerazione). \textbf{Non} confonderla con la formula "fisicamente corretta" per la
+massa di DOS di due bande paraboliche indipendenti, che sarebbe
+$m_{v,DOS}=\left(m_{v,h}^{3/2}+m_{v,l}^{3/2}\right)^{2/3}$: quest'ultima NON è quella
+richiesta/usata nelle soluzioni del corso, quindi in sede d'esame usa sempre la media
+pesata con $(2j+1)$ salvo indicazione esplicita contraria.}
+\textit{Esempio (GaAs):} $m_{v,h}=0.51\,m_e$, $m_{v,l}=0.082\,m_e$ $\Rightarrow$
+$m_v = \dfrac{0.51\times4+0.082\times2}{6}\,m_e = 0.367\,m_e$.
+
+\section{Mobilità, tempo di rilassamento, cammino libero medio e velocità}
+Catena di relazioni che gli esami percorrono in \emph{entrambi} i versi:
+\[ \bm{\mu = \frac{e\tau}{m^*}} \quad\Longleftrightarrow\quad
+   \bm{\tau = \frac{\mu\,m^*}{e}} \quad\Longleftrightarrow\quad
+   \bm{m^* = \frac{e\tau}{\mu}} \]
+\[ \bm{\lambda = v\,\tau} \quad\Longleftrightarrow\quad \bm{v = \frac{\lambda}{\tau}} \]
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \item \textbf{Semiconduttore:} $v$ è la velocità termica media dei portatori; se il testo
+  fornisce $\mu$ e $\lambda$, si ricava prima $\tau=\mu m^*/e$ e poi $v=\lambda/\tau$.
+  \textit{(Alcuni testi la chiamano impropriamente ``velocità di deriva'': usa comunque $v=\lambda/\tau$.)}
+  \item \textbf{Metallo / gas di elettroni degenere:} la velocità rilevante è quella di Fermi,
+$v_F=\hbr k_F/m^*$, quindi $\lambda = v_F\tau = \dfrac{\hbr k_F}{m^*}\cdot\dfrac{\mu m^*}{e}
+= \dfrac{\hbr k_F \mu}{e}$ (la massa si semplifica!).
+  \item \textbf{Conversioni:} $\mu$ spesso è dato in cm$^2/(\text{V}\cdot$s$)$:
+  $1\ \text{cm}^2/(\text{V s}) = 10^{-4}\ \text{m}^2/(\text{V s})$.
+\end{itemize}
+\textit{Esempio:} $\mu_v=460$ cm$^2$/(Vs)$=0.046$ m$^2$/(Vs), $m_v=0.39\,m_e$
+$\Rightarrow \tau=0.102$ ps; con $\lambda_v=30$ nm $\Rightarrow v=2.9\times10^5$ m/s.
+
+\vspace{0.3cm}
+
+\ricetta{A quale $T$ il potenziale chimico raggiunge il bordo di banda?}{
+È il caso particolare $\delta=E_g/2$. Imponendo
+$\mu_i(T)=E_c=E_v+E_g$ nella formula 3D
+$\mu_i = E_v+\frac{E_g}{2}+\frac34\kB T\ln\frac{m_v^*}{m_c^*}$:
+\[ \frac{E_g}{2} = \frac34\kB T\ln\!\frac{m_v^*}{m_c^*}
+   \qquad\Longrightarrow\qquad
+   \bm{T_{(\mu=E_c)} = \frac{2E_g}{3\kB\ln\!\left(m_v^*/m_c^*\right)}} \]
+Specularmente, $\mu_i$ tocca $E_v$ alla stessa temperatura se $m_c^*>m_v^*$
+(logaritmo negativo).
+\attenzione{La formula ha senso solo se $m_v^*>m_c^*$: se $m_v^*<m_c^*$ il potenziale
+chimico \emph{scende} allontanandosi da $E_c$ e non lo raggiunge mai.
+In 2D il fattore $\frac34$ diventa $\frac12$ ($T=E_g/[\kB\ln(m_v/m_c)]$),
+in 1D $\frac14$ ($T=2E_g/[\kB\ln(m_v/m_c)]$).}}
+
+\attenzione{\textbf{Lettura qualitativa immediata della posizione di $\mu_i$.}
+Il segno dello scostamento di $\mu_i$ da metà gap determina \textbf{univocamente}
+l'ordinamento delle masse efficaci (e viceversa), perché l'unico termine che rompe la
+simmetria è $\frac34\kB T\ln(m_v^*/m_c^*)$:
+\[ \mu_i > \text{metà gap} \iff \bm{m_v^* > m_c^*}, \qquad
+   \mu_i < \text{metà gap} \iff \bm{m_v^* < m_c^*}, \qquad
+   \mu_i = \text{metà gap} \iff \bm{m_v^* = m_c^*} \]
+Quindi, se un esercizio chiede ``come cambierebbero $m_v$ e $m_c$ se $\mu$ stesse
+$\delta$ \emph{sopra} anziché \emph{sotto} metà gap?'', la risposta qualitativa è:
+si \textbf{inverte} l'ordinamento delle masse, e quantitativamente basta cambiare segno
+a $\delta$ nella relazione $m_c = m_v\,\ee^{-4\delta/(3\kB T)}$.
+Attenzione: dedurre ``$\mu$ a metà gap $\Rightarrow m_c=m_v$'' è spesso il primo passo
+\emph{nascosto} di esercizi che poi chiedono massa efficace e tempi di rilassamento.}
+
+\vspace{0.3cm}
+\ricetta{Calore specifico elettronico in un SEMICONDUTTORE drogato ($n$ dipende da $T$!)}{
+In un \textbf{metallo} $n$ è costante e $c_v^{el}=\frac{\pi^2}{2}\frac{\kB^2}{E_F}n\,T \propto T$.
+In un \textbf{semiconduttore} la densità di portatori liberi è essa stessa funzione di $T$
+(freeze-out), quindi il contributo elettronico \textbf{non è lineare}:
+\[ c_v^{el}(T) = \frac{\pi^2}{2}\,\kB\left(\frac{T}{T_F}\right) n(T),
+   \qquad n(T)=\sqrt{N_c(T)N_d}\ \ee^{-E_d/2\kB T} \propto T^{3/4}\ee^{-E_d/2\kB T} \]
+\textbf{Metodo dei rapporti} (evita di conoscere $T_F$ e $N_d$): fra due temperature
+\[ \bm{\frac{n(T_2)}{n(T_1)} = \left(\frac{T_2}{T_1}\right)^{3/4}
+   \exp\!\left[-\frac{E_d}{2\kB T_1}\left(\frac{T_1}{T_2}-1\right)\right]},
+   \qquad
+   \bm{\frac{c_v^{el}(T_2)}{c_v^{el}(T_1)} = \frac{T_2}{T_1}\cdot\frac{n(T_2)}{n(T_1)}} \]
+\textit(Se il testo fornisce $E_d/\kB$ direttamente in kelvin, l'esponente si scrive
+$-\frac{E_d/\kB}{2}\left(\frac1{T_2}-\frac1{T_1}\right)$ senza convertire nulla.)
+\attenzione{Ipotesi implicita richiesta dal testo: si assume $\mu$ (quindi $T_F$)
+\textbf{indipendente da $T$}, altrimenti il rapporto non si chiuderebbe. Ricorda di
+giustificarlo: in un semiconduttore $\mu$ dipende in realtà da $n(T)$, cosa che
+\emph{non} accade nei metalli, dove $n$ è fissata dalla valenza.}
+\textbf{Separare i due contributi $c_v = c_v^{el}+c_v^{latt}$:} sfrutta le diverse potenze.
+Se a una certa $T_0$ i due contributi sono confrontabili, abbassando $T$ il reticolare
+($\propto T^3$) crolla molto più in fretta $\Rightarrow$ a $T\ll T_0$ resta \textbf{solo}
+l'elettronico; alzando $T$ verso $\Theta_D$ domina il reticolare, e a $T\gg\Theta_D$
+si usa Dulong--Petit ($c_v=3n_{at}\kB$), da cui si ricava $n_{at}$.}
+
+
+
+\newpage
+\section*{Appendice: dimensioni, costanti e conversioni}
+
+\begin{table}[htpb]
+\centering
+\renewcommand{\arraystretch}{1.3}
+{\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{5.5cm} >{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}p{6.5cm}}
+\toprule
+\textbf{Grandezza Fisica} & \textbf{Simbolo} & \textbf{Unità di Misura (SI / Pratica)} \\
+\midrule
+Densità numerica reticolare / celle & $n, N/V$ & [m$^{-d}$] \quad (es.\ m$^{-3}$ in 3D) \\
+Densità di massa & $\rho$ & [kg$\cdot$m$^{-3}$] \quad (g/cm$^3$) \\
+Integrale di hopping / Energia & $\gamma, t, E, E_F, \mu, \kB T$ & [J] \quad (pratica: eV o meV) \\
+Pulsazione e frequenza fononica & $\omega, \nu, \tilde\nu$ & [rad$\cdot$s$^{-1}$], [Hz] \quad (spesso cm$^{-1}$ o meV) \\
+Costante elastica interatomica & $C, K, \beta$ & [N$\cdot$m$^{-1}$] = [kg$\cdot$s$^{-2}$] \\
+Calore specifico intensivo & $C_V$ (3D), $c_v$ (2D), $c_L$ (1D) & [J$\cdot$K$^{-1}\cdot$m$^{-d}$] \\
+Densità degli Stati (totale) & $G(E), G(\omega)$ & [J$^{-1}$] (elettroni) / [s] (fononi) \\
+Densità degli Stati (intensiva) & $g_{3D}(E), g_{3D}(\omega)$ & [J$^{-1}\cdot$m$^{-3}$] / [s$\cdot$m$^{-3}$] \\
+Concentrazione portatori liberi & $n, p, N_c, N_v, N_D, N_A$ & [m$^{-3}$] \quad (pratica: cm$^{-3}$) \\
+Concentrazione superficiale (2D) & $n_s, p_s$ & [m$^{-2}$] \quad (pratica: cm$^{-2}$) \\
+Concentrazione lineare (1D) & $n_{el}$, $\lambda_{lin}$ & [m$^{-1}$], [kg$\cdot$m$^{-1}$] \\
+Mobilità elettrica & $\mu_n, \mu_p$ & [m$^2\cdot$V$^{-1}\cdot$s$^{-1}$] \quad (cm$^2$/V$\cdot$s) \\
+Conducibilità elettrica (3D) & $\sigma$ & [$\Omega^{-1}\cdot$m$^{-1}$] = [S$\cdot$m$^{-1}$] \quad ($(\Omega\cdot$cm$)^{-1}$) \\
+Conducibilità superficiale (2D) & $\sigma_{2D}$ & [$\Omega^{-1}$] = [S] \quad (\textit{o S/square}) \\
+Resistività elettrica & $\rho$ & [$\Omega\cdot$m] \quad ($\Omega\cdot$cm) \\
+Coefficiente di diffusione & $D_n, D_p$ & [m$^2\cdot$s$^{-1}$] \quad (cm$^2$/s) \\
+Tempo di rilassamento & $\tau$ & [s] \quad (ps $=10^{-12}$ s, fs $=10^{-15}$ s) \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\vspace{0.3cm}
+\begin{table}[htpb]
+\centering
+\renewcommand{\arraystretch}{1.2}
+{\small
+\begin{tabular}{l l l}
+\toprule
+\textbf{Costante} & \textbf{Simbolo} & \textbf{Valore SI e Pratico} \\
+\midrule
+Carica elementare & $e$ (o $q$) & $1.60218\times10^{-19}$ C \\
+Massa dell'elettrone libero & $m_0$ & $9.10938\times10^{-31}$ kg \\
+Costante di Planck ridotta & $\hbr = h/(2\pi)$ & $1.05457\times10^{-34}$ J$\cdot$s $= 6.58212\times10^{-16}$ eV$\cdot$s \\
+Costante di Planck & $h$ & $6.62607\times10^{-34}$ J$\cdot$s $= 4.13567\times10^{-15}$ eV$\cdot$s \\
+Costante di Boltzmann & $\kB$ & $1.38065\times10^{-23}$ J/K $= 8.61733\times10^{-5}$ eV/K \\
+Velocità della luce nel vuoto & $c$ & $2.99792\times10^{8}$ m/s $\approx 3.00\times10^{10}$ cm/s \\
+Unità di massa atomica & $1$ u.m.a.\ ($u$) & $1.66054\times10^{-27}$ kg $\approx 931.5$ MeV$/c^2$ \\
+Massa del neutrone & $m_n$ & $1.67493\times10^{-27}$ kg \\
+Numero di Avogadro & $N_A$ & $6.02214\times10^{23}$ mol$^{-1}$ \\
+Permettività elettrica del vuoto & $\epsilon_0$ & $8.85419\times10^{-12}$ F/m \\
+Raggio di Bohr & $a_0 = \frac{4\pi\epsilon_0\hbr^2}{m_0e^2}$ & $0.52918\times10^{-10}$ m $= 0.529$ \AA \\
+Energia di Rydberg & $\text{Ry} = \frac{m_0e^4}{8\epsilon_0^2h^2}$ & $2.17987\times10^{-18}$ J $= 13.6057$ eV \\
+$\kB T$ a 300 K & --- & $4.14\times10^{-21}$ J $= 25.85$ meV \\
+$N_0 = 2\left(\frac{m_0\kB\cdot300}{2\pi\hbr^2}\right)^{3/2}$ & --- & $2.51\times10^{25}$ m$^{-3}$ $= 2.51\times10^{19}$ cm$^{-3}$ \\
+$\hbr^2/(2\,\text{eV}\cdot\text{\AA}^2)$ & --- & $3.81\,m_0$ \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\vspace{0.3cm}
+\begin{multicols}{2}
+{\small
+\begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \item $1$ eV $= 1.60218\times10^{-19}$ J
+    \item $1$ J $= 6.24151\times10^{18}$ eV
+    \item $1$ meV $= 10^{-3}$ eV $= 1.602\times10^{-22}$ J
+    \item $\omega = 2\pi\nu = 2\pi c\tilde\nu$ \quad ($\tilde\nu$ in m$^{-1}$)
+    \item $1$ cm$^{-1} \iff \nu\approx29.98$ GHz $\iff \omega\approx1.884\times10^{11}$ rad/s
+    \item $1$ cm$^{-1} \iff E = h\nu \approx 0.12398$ meV
+    \item $1$ cm$^{-1} \iff T = 1.4388$ K
+    \item $1$ THz $\iff 4.136$ meV $\iff 33.36$ cm$^{-1}$
+    \item $1$ eV $\iff 8065.5$ cm$^{-1}$
+    \item $1$ \AA\ $= 10^{-10}$ m $= 0.1$ nm
+    \item $1$ cm$^{-3} = 10^{6}$ m$^{-3}$
+    \item $1$ cm$^{-2} = 10^{4}$ m$^{-2}$
+    \item $1$ g/cm$^3 = 10^{3}$ kg/m$^3$
+    \item $1\,(\Omega\cdot$cm$)^{-1} = 100\,(\Omega\cdot$m$)^{-1} = 100$ S/m
+    \item $1$ cm$^2/($V$\cdot$s$) = 10^{-4}$ m$^2/($V$\cdot$s$)$
+    \item Equivalenza temperatura-energia: \\ $1$ eV$/\kB \approx 11604.5$ K
+    \item $\kB T$ a 300 K $= 25.85$ meV; a 100 K $= 8.62$ meV; \\ a 4.2 K $= 0.362$ meV
+    \item $(6\pi^2)^{1/3}=3.898$; \ $(12\pi^2)^{1/3}=4.911$; \\ $(24\pi^2)^{1/3}=6.187$
+\end{itemize}}
+\end{multicols}
+
+\newpage
+\section{Indice rapido}
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+{\small
+\begin{tabular}{p{7.4cm} p{9.6cm}}
+\toprule
+\textbf{Il testo ti dà\dots} & \textbf{Vai a\dots} \\
+\midrule
+Vettori primitivi $\mathbf{a}_i$, chiede $\mathbf{b}_i$, volume WS, 1ZB & §1.2 (formule generali 3D e 2D)  \\
+Elenco di angoli $2\vartheta$ e $\lambda$, reticolo cubico & §2.2 (rapporti $\sin^2$) + tabella riflessi  \\
+Elenco di angoli, reticolo NON cubico & §2.3 (metodo $N_{hkl}$)  \\
+``Quali picchi scompaiono se aggiungo un atomo in\dots'' & §2.4 (fattore di struttura, casistica)  \\
+``Quali picchi sono più intensi'' con $f=Z$ & §2.5 (intensità NaCl / CsCl / zincoblenda)  \\
+Densità di massa o massa molare $\to a$ & §1.1  \\
+Neutroni al posto dei raggi X & §2.10 ($\lambda = h/mv$)  \\
+$c_V$ classico $\to$ struttura, $d_1$, $v_s$ & Ricetta in §10  \\
+Grafico $E$ vs $q$ dei fononi & §3.2 (lettura) + media di Debye §5.5  \\
+$\omega_{ac}=A|\sin(qa/2)|$, $\omega_{opt}$ costante & §5.1 + Debye §7 + Einstein §11  \\
+Catena 1D con 2 masse e/o 2 molle & §4.2 (formula maestra + 3 casi)  \\
+Picco IR $\Omega$ $\to$ costante elastica o massa & §11.1 e §4.2  \\
+DOS fononica $\mathcal{D}$ o $g(\omega_D)$ & §6.1/6.2 (problemi inversi)  \\
+$c_V$ a $T\ll\Theta_D$ in 1D/2D/3D, oscillazioni in $d$ dim.\ & §9 (tutti i casi)  \\
+$c_V$ ad alta $T$ & §10 (Dulong--Petit)  \\
+Metallo, $c_V = AT+BT^3$ & §21.3  \\
+\midrule
+Orbitali disegnati con i lobi, chiede il segno di $\gamma$ & §12 (tabella segni)  \\
+``Scrivi $E(\kvec)$ tight-binding'' & §13 (ricettario geometrie)  \\
+Massimo/minimo di banda, larghezza $W$ & §13.1  \\
+``Perché è rilevante $\gamma_1/2\gamma_2$?'' & §13.2  \\
+Cella con 2 atomi/orbitali diversi (AB, honeycomb, 1D) & §15 (sistema $2\times2$)  \\
+Tre orbitali per cella, banda piatta & §16 (sistema $3\times3$)  \\
+Tensore di massa efficace & §18 (tabella pronta)  \\
+Velocità massima dell'elettrone & §17  \\
+DOS rettangolare, $E_F$ con $n$ elettroni/cella & §20.2--20.3  \\
+``È un metallo o un isolante?'' & §20.4  \\
+Simmetrie di $E(\kvec)\to$ famiglia cristallina & §14 (analisi delle simmetrie)  \\
+Elenco di numeri da assegnare ai vari $\gamma$ & §12.2 ($\sigma>\pi>\delta$, distanze, percentuali)  \\
+``Quali $\gamma$ si annullano per simmetria?'' & §12.1 (tabella completa, incluse le diagonali)  \\
+Larghezze di banda note $\to$ ricavare i $\gamma$ & §12.3 (sistema di equazioni)  \\
+``Dove $|\mathbf{v}|$ è massima / si annulla?'' (luogo) & §17  \\
+DOS vicino a un estremo con masse anisotrope & §20.1 (riscalamento delle $k$)  \\
+$E_F$ con $1$, $1.9999$, $2.00001$, $3$ elettroni/cella & §20.3 (tabella dei riempimenti)  \\
+\midrule
+$n_i$, $\mu_i$, gap: semiconduttore intrinseco & §24  \\
+$\mu$ spostato di $\delta$ dal mid-gap $\to$ trova $T$ o $m$ & Ricetta in §24.1  \\
+Due valori di $n_i$ (o $n_c$) a due $T$ $\to$ $E_g$ & §24.3  \\
+$N_d$ e/o $N_a$, ``non è detto che $n_i\ll N_d$'' & §25 (formula generale con radice)  \\
+Posizione di $\mu$ in un semiconduttore drogato & §25.1  \\
+$\epsilon_r$ e $m^*$ $\to$ energia di legame del donatore & §25.2 (idrogenoide)  \\
+$T=4.2$ K, 1 K: freeze-out & §25.3  \\
+Grafico $\log n_c$ vs $1/T$ & §26 (tre regimi)  \\
+$\tau$, $\mu$, $\sigma$ & §23  \\
+Due bande di conduzione con dislivello $A$ & §28 (multibanda, rapporto $R$)  \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
+\newpage
+
+
+% --- CASO 1 ---
+\noindent\begin{minipage}[c]{0.68\textwidth}
+\small\textbf{1. Coseno: $E(k)\propto-\cos(ka)$} \hfill \textit{Elettroni Tight-Binding 1D} \\
+Centro Zona ($\Gamma$, $k=0$): minimo parabolico. Sviluppo di Taylor: $E\propto k^2$. Curvatura positiva: $m^*>0$. Velocità di gruppo $v_g=0$.\\
+Bordo Zona ($k=\pm\pi/a$): massimo parabolico. Arrivo piatto sulla zona boundary, derivata nulla ($v_g=0$). Curvatura negativa $m^*<0$.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.3\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.72]
+    \draw[->, thick] (-3.8,0) -- (3.8,0) node[right] { $k$};
+    \draw[->, thick] (0,-1.2) -- (0,1.6) node[above] { $E(k)$};
+    \draw[thick] (-3.14, 0.1) -- (-3.14, -0.1) node[below=-2pt] { $-\frac{\pi}{a}$};
+    \draw[thick] (3.14, 0.1) -- (3.14, -0.1) node[below=-2pt] { $\frac{\pi}{a}$};
+    \draw[domain=-3.14:3.14, smooth, variable=\x, blue, very thick] plot ({\x}, {-cos(deg(\x))});
+    \draw[dashed, gray] (-3.14,0) -- (-3.14, 1); \draw[dashed, gray] (3.14,0) -- (3.14, 1);
+\end{tikzpicture}
+\end{minipage}
+
+\vspace{0.15cm}
+% --- CASO 2 ---
+\noindent\begin{minipage}[c]{0.68\textwidth}
+\small\textbf{2. Seno in modulo: $\omega(k)\propto|\sin(ka/2)|$} \hfill \textit{Fononi Acustici 1D} \\
+Centro Zona ($\Gamma$, $k=0$): $\omega=0$. Sviluppo lineare per piccoli $k$ ($\omega\propto|k|$). Forma una cuspide a ``V'': la pendenza corrisponde alla velocità del suono $v_s$ (massima).\\
+Bordo Zona ($k=\pm\pi/a$): massimo della branca. Arrivo piatto al bordo con derivata nulla $\rightarrow v_g=0$ (condizione di onda stazionaria).
+\end{minipage}\hfill
+\begin{minipage}[c]{0.3\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.72]
+    \draw[->, thick] (-3.8,0) -- (3.8,0) node[right] { $k$};
+    \draw[->, thick] (0,-0.3) -- (0,1.8) node[above] { $\omega(k)$};
+    \draw[thick] (-3.14, 0.1) -- (-3.14, -0.1) node[below=-2pt] {$-\frac{\pi}{a}$};
+    \draw[thick] (3.14, 0.1) -- (3.14, -0.1) node[below=-2pt] { $\frac{\pi}{a}$};
+    \draw[domain=-3.14:3.14, smooth, variable=\x, red, very thick] plot ({\x}, {1.4*abs(sin(deg(\x/2)))});
+    \draw[dashed, gray] (-3.14,0) -- (-3.14, 1.4); \draw[dashed, gray] (3.14,0) -- (3.14, 1.4);
+\end{tikzpicture}
+\end{minipage}
+
+\vspace{0.15cm}
+% --- CASO 3 ---
+\noindent\begin{minipage}[c]{0.68\textwidth}
+\small\textbf{3. Seno quadro: $f(k)\propto\sin^2(ka/2)=\frac{1-\cos(ka)}{2}$} \hfill \textit{Energia fononica $\omega^2$} \\
+Centro Zona ($\Gamma$, $k=0$): andamento parabolico ($\propto k^2$), non lineare. Arriva a zero dolcemente con derivata nulla ($v_g=0$). Topologicamente è un coseno ribaltato e traslato.\\
+Bordo Zona ($k=\pm\pi/a$): punto di massimo locale. Raggiunto orizzontalmente con derivata e pendenza nulle.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.3\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.72]
+    \draw[->, thick] (-3.8,0) -- (3.8,0) node[right] { $k$};
+    \draw[->, thick] (0,-0.3) -- (0,1.8) node[above] { $\omega^2(k)$};
+    \draw[thick] (-3.14, 0.1) -- (-3.14, -0.1) node[below=-2pt] { $-\frac{\pi}{a}$};
+    \draw[thick] (3.14, 0.1) -- (3.14, -0.1) node[below=-2pt] { $\frac{\pi}{a}$};
+    \draw[domain=-3.14:3.14, smooth, variable=\x, violet, very thick] plot ({\x}, {1.4*(sin(deg(\x/2)))^2});
+    \draw[dashed, gray] (-3.14,0) -- (-3.14, 1.4); \draw[dashed, gray] (3.14,0) -- (3.14, 1.4);
+\end{tikzpicture}
+\end{minipage}
+
+\vspace{0.15cm}
+% --- CASO 4 ---
+\noindent\begin{minipage}[c]{0.68\textwidth}
+\small\textbf{4. Coseno invertito: $\omega(k)\propto\sqrt{A+B\cos(ka)}$} \hfill \textit{Fononi Ottici / Catena Diatomica} \\
+Centro Zona ($\Gamma$, $k=0$): punto di massimo della branca ottica ($\omega_0\neq0$). Arrivo piatto con derivata nulla ($v_g=0$).\\
+Bordo Zona ($k=\pm\pi/a$): punto di minimo ($\omega\neq0$). Curvatura parabolica verso l'alto, derivata nulla ($v_g=0$). Tra la branca acustica e quella ottica si apre un \textbf{gap proibito}.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.3\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.72]
+    \draw[->, thick] (-3.8,0) -- (3.8,0) node[right] { $k$};
+    \draw[->, thick] (0,-0.3) -- (0,1.8) node[above] { $\omega(k)$};
+    \draw[thick] (-3.14, 0.1) -- (-3.14, -0.1) node[below=-2pt] { $-\frac{\pi}{a}$};
+    \draw[thick] (3.14, 0.1) -- (3.14, -0.1) node[below=-2pt] {$\frac{\pi}{a}$};
+    \draw[domain=-3.14:3.14, smooth, variable=\x, orange, very thick] plot ({\x}, {1.1 + 0.35*cos(deg(\x))});
+    \draw[dashed, gray] (-3.14,0) -- (-3.14, 1.45); \draw[dashed, gray] (3.14,0) -- (3.14, 1.45);
+\end{tikzpicture}
+\end{minipage}
+
+\vspace{0.25cm}
+% --- CASO 5 ---
+\noindent\begin{minipage}[c]{0.68\textwidth}
+\small\textbf{5. Gap indiretta: $E_c\propto -\sin^2(ka/2)$, $E_v\propto\cos(ka)-1$} \hfill \textit{Semiconduttore a gap indiretta} \\
+
+\end{minipage}\hfill
+\begin{minipage}[c]{0.3\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.72]
+    \draw[->, thick] (-3.6,0) -- (3.6,0) node[right] {$k$};
+    \draw[->, thick] (0,-1.6) -- (0,1.7) node[above] {$E$};
+    \draw[thick] (-3.14, 0.06) -- (-3.14, -0.06) node[below=-2pt] {\tiny $-\frac{\pi}{a}$};
+    \draw[thick] (3.14, 0.06) -- (3.14, -0.06) node[below=-2pt] {\tiny $\frac{\pi}{a}$};
+    \draw[domain=-3.14:3.14, smooth, variable=\x, blue, very thick] plot ({\x}, {1.4*(1-0.5*(sin(deg(\x/2)))^2)});
+    \draw[domain=-3.14:3.14, smooth, variable=\x, red, very thick] plot ({\x}, {0.7*(cos(deg(\x))-1)});
+    \node[blue] at (2.2,1.35) {\tiny CB}; \node[red] at (2.2,-1.5) {\tiny VB};
+\end{tikzpicture}
+\end{minipage}
+
+\ricetta{Disegno della 1ZB e analisi dei punti notevoli (Reticolo Rettangolare 2D)}{
+
+\begin{minipage}[c]{0.55\textwidth}
+Dato un reticolo diretto rettangolare con passi $a$ (lungo $x$) e $b$ (lungo $y$) con $a < b$ 
+\begin{itemize}
+    \setlength{\itemsep}{0pt}
+    \item I vettori del reticolo reciproco sono $\mathbf{b}_1 = \frac{2\pi}{a}\hat{x}$ e $\mathbf{b}_2 = \frac{2\pi}{b}\hat{y}$.
+    \item La 1ZB è un rettangolo centrato in $(0,0)$ delimitato da $k_x \in \left[-\frac{\pi}{a}, \frac{\pi}{a}\right]$ e $k_y \in \left[-\frac{\pi}{b}, \frac{\pi}{b}\right]$.
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Calcolo dell'energia e classificazione dei punti:}\\
+Sostituire le coordinate $(\pm\frac{\pi}{a},0)$, $(0,\pm\frac{\pi}{b})$ e $(0,0)$ nella legge di dispersione $E(\kvec)$.
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.42\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.65, >=stealth]
+    % Assi coordinati
+    \draw[->] (-2.8, 0) -- (3.0, 0) node[below] {$k_x$};
+    \draw[->] (0, -1.8) -- (0, 2.0) node[left] {$k_y$};
+
+    % Contorno 1ZB: [-pi/a, pi/a] x [-pi/b, pi/b]
+    % con pi/a = 2.2 cm e pi/b = 1.3 cm (rapporto coerente a < b)
+    \draw[very thick, purple!80!black] (-2.2, -1.3) rectangle (2.2, 1.3);
+
+    % Punti notevoli evidenziati
+    \filldraw[blue!70!black] (0, 0) circle (2.2pt) node[below right=1pt, text=black] {\footnotesize $(0,0)$};
+    \filldraw[blue!70!black] (2.2, 0) circle (2.2pt) node[above right=1pt, text=black] {\footnotesize $\left(\frac{\pi}{a}, 0\right)$};
+    \filldraw[blue!70!black] (0, 1.3) circle (2.2pt) node[above right=1pt, text=black] {\footnotesize $\left(0, \frac{\pi}{b}\right)$};
+    \filldraw[blue!70!black] (-2.2, 0) circle (1.5pt);
+    \filldraw[blue!70!black] (0, -1.3) circle (1.5pt);
+\end{tikzpicture}
+\end{minipage}
+}
+
+\ricetta{Percorsi e grafico di dispersione $E(\kvec)$ nel reticolo quadrato 2D}{
+
+\begin{minipage}[c]{0.53\textwidth}
+Punti: $\Gamma=(0,0)$, \ $X=\left(\frac\pi a,0\right)$, \ $M=\left(\frac\pi a,\frac\pi a\right)$.
+\begin{itemize}
+    \setlength{\itemsep}{2pt}
+    \item \textbf{$X \to M$:} fissa $k_x=\frac\pi a$, varia $k_y \in \left[0, \frac\pi a\right]$:
+    \[ E = \tilde E^0 - 2\left[-\gamma_x + \gamma_y\cos(k_y a)\right] \]
+    \item \textbf{$M \to \Gamma$:} varia lungo la diagonale $k_x=k_y$:
+    \[ E = \tilde E^0 - 2(\gamma_x+\gamma_y)\cos(k_\parallel a) \]
+    \item \textbf{$\Gamma \to X$:} fissa $k_y=0$, varia $k_x \in \left[0, \frac\pi a\right]$:
+    \[ E = \tilde E^0 - 2\left[\gamma_x\cos(k_x a) + \gamma_y\right] \]
+\end{itemize}
+
+
+Calcola prima i valori numerici di $E$ nei punti $\Gamma, X, M$ sostituendo $\cos = \pm 1$. Congiungi i punti con profili cosinusoidali a \textbf{derivata nulla} ($\frac{\dd E}{\dd k} = 0$) in corrispondenza di tutti i punti ad alta simmetria.
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.45\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.92, every node/.style={font=\scriptsize}]
+    % Riquadro esterno del grafico
+    \draw[thick] (0,0) rectangle (4.2, 3.8);
+
+    % Linee divisorie verticali tra le zone
+    \draw[gray!70] (1.3, 0) -- (1.3, 3.8);
+    \draw[gray!70] (2.8, 0) -- (2.8, 3.8);
+
+    % Curve di dispersione
+    % 1) Tratto X -> M (blu)
+    \draw[domain=0:1.3, smooth, variable=\x, blue, thick] 
+        plot ({\x}, {0.3 + 1.6*(1 + cos(deg(pi*\x/1.3)))});
+
+    % 2) Tratto M -> Gamma (rosso)
+    \draw[domain=1.3:2.8, smooth, variable=\x, red, thick] 
+        plot ({\x}, {0.3 + 0.45*(1 - cos(deg(pi*(\x-1.3)/1.5)))});
+
+    % 3) Tratto Gamma -> X (nero)
+    \draw[domain=2.8:4.2, smooth, variable=\x, black, thick] 
+        plot ({\x}, {1.2 + 1.15*(1 - cos(deg(pi*(\x-2.8)/1.4)))});
+
+    % Tacche asse X
+    \draw (0,0) -- (0, -0.1) node[below=2pt] {\textbf{X}};
+    \draw (1.3,0) -- (1.3, -0.1) node[below=2pt] {\textbf{M}};
+    \draw (2.8,0) -- (2.8, -0.1) node[below=2pt] {$\bm{\Gamma}$};
+    \draw (4.2,0) -- (4.2, -0.1) node[below=2pt] {\textbf{X}};
+
+    % Tacche asse Y
+    \foreach \y/\val in {0.3/4.5, 1.2/5.4, 2.3/6.5, 3.5/7.8} {
+        \draw (0, \y) -- (-0.1, \y) node[left] {\val};
+        \draw (4.2, \y) -- (4.1, \y);
+    }
+    
+    % Label assi
+    \node[rotate=90] at (-0.75, 1.9) {Energy (eV)};
+    \node at (2.1, -0.6) {$k\ (\pi/a)$};
+
+    % Legenda interna
+    \begin{scope}[shift={(1.45, 2.7)}]
+        \draw[fill=white, draw=gray!80] (0,0) rectangle (1.2, 0.9);
+        \draw[blue, thick] (0.1, 0.7) -- (0.35, 0.7) node[right=1pt, black] {\tiny M--X};
+        \draw[red, thick]  (0.1, 0.45) -- (0.35, 0.45) node[right=1pt, black] {\tiny $\Gamma$--M};
+        \draw[black, thick] (0.1, 0.2) -- (0.35, 0.2) node[right=1pt, black] {\tiny $\Gamma$--X};
+    \end{scope}
+\end{tikzpicture}
+\end{minipage}
+}
