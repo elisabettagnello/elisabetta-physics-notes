@@ -1,0 +1,83 @@
+% =====================================================================
+%  FORMULARIO COMPLETO DI FISICA DELLA MATERIA CONDENSATA (CMP)
+%  Sapienza - Profs. Grilli / Caprara / Polimeni / Mariani
+%
+%  Compilare con:  pdflatex main.tex   (due volte, per l'indice)
+%  File:  main.tex  +  01.tex (Parte I)  +  02.tex (Parte II)
+% =====================================================================
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+
+\usepackage{amsmath, amssymb, amsfonts, bm}
+\usepackage[margin=1.4cm]{geometry}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tikz}
+\usepackage{multicol}
+\usepackage{pdflscape}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+% ---------------------------------------------------------------------
+%  Comandi abbreviati
+% ---------------------------------------------------------------------
+\newcommand{\kB}{k_{\mathrm{B}}}
+\newcommand{\hbr}{\hbar}
+\newcommand{\vs}{v_s}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Gvec}{\mathbf{G}}
+\newcommand{\kvec}{\mathbf{k}}
+\newcommand{\Rvec}{\mathbf{R}}
+
+% ---------------------------------------------------------------------
+%  Box "RICETTA": procedura operativa passo-passo
+% ---------------------------------------------------------------------
+\newcommand{\ricetta}[2]{%
+  \par\vspace{0.20cm}\noindent
+  \fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+    \textcolor{blue!60!black}{\textbf{\small RICETTA --- #1}}\par\vspace{2pt}#2}}%
+  \par\vspace{0.20cm}}
+
+% ---------------------------------------------------------------------
+%  Box "ATTENZIONE": trappole tipiche d'esame
+% ---------------------------------------------------------------------
+\newcommand{\attenzione}[1]{%
+  \par\vspace{0.18cm}\noindent
+  \fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+    \textcolor{red!65!black}{\textbf{\small ATTENZIONE}}\par\vspace{2pt}#1}}%
+  \par\vspace{0.18cm}}
+
+\setlength{\parindent}{0pt}
+\setlist{topsep=2pt,itemsep=1pt,parsep=0pt}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+\title{\textbf{\Large Formulario Completo di Fisica della Materia Condensata}\\[2pt]
+       \normalsize Reticoli \textbullet\ Diffrazione \textbullet\ Fononi \textbullet\
+       Elettroni di Bloch \textbullet\ Semiconduttori}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+\vspace{-1.2cm}
+
+{\small
+\tableofcontents
+}
+
+\newpage
+
+\include{parte01}
+\include{parte02}
+
+\end{document}
