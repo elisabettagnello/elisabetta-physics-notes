@@ -36,12 +36,47 @@ Il rapporto degli autovalori per il modello di Ising 1D  è:
 \frac{\lambda_1}{ \lambda_2}=\frac{\cosh(\beta h) + \sqrt{\sinh^2(\beta h) + e^{-4\beta J}}}{\cosh(\beta h) - \sqrt{\sinh^2(\beta h) + e^{-4\beta J}}}
 \end{equation}
 
-Se $T<<1$ si ha:
+Se $T \ll 1$ e $h \neq 0$ (più precisamente $\sinh^2(\beta h) \gg e^{-4\beta J}$) si ha $\lambda_1/\lambda_2 \simeq e^{2\beta h}$, quindi:
 \begin{equation}
     \xi \approx \frac{1}{2 \beta h}
 \end{equation}
 
-La lunghezza di correlazione $\xi$ diverge (indicando una transizione di fase) solo se $h=0$ e $T \to 0$. Se $h \neq 0$, la lunghezza di correlazione è sempre finita e dipende dal campo esterno. La presenza di un campo esterno pone un cut-off sulla correlazione: il sistema è meno correlato. 
+La lunghezza di correlazione $\xi$ diverge (indicando una transizione di fase) solo se $h=0$ e $T \to 0$. Se $h \neq 0$, la lunghezza di correlazione è sempre finita e dipende dal campo esterno. La presenza di un campo esterno pone un cut-off sulla correlazione: il sistema è meno correlato.
+
+\subsection{Ferromagnete e Antiferromagnete in Campo}
+
+Le formule per gli autovalori valgono per qualunque segno di $J$. Confrontiamo il caso ferromagnetico ($J=1$) e antiferromagnetico ($J=-1$) usando i grafici del materiale del corso (\texttt{transferMatrix.pdf}), cioè $f(T,h) = -T\log\lambda_1$, il rapporto $|\lambda_2/\lambda_1|$ e le marginali di singolo spin.
+
+\begin{itemize}
+    \item \textbf{Ferromagnete ($J=1$):} $f$ ha una singolarità nella derivata prima in $h$ solo a $T=0$ e $h=0$. Solo lì $\lambda_2/\lambda_1 \to 1$ e la correlazione è a lungo raggio. Le marginali passano da "tutti $+$" per $h>0$ a "tutti $-$" per $h<0$.
+    \item \textbf{Antiferromagnete ($J=-1$):} a $T=0$ ci sono singolarità in $h = \pm 2$. Lo si capisce dalle energie per spin degli stati fondamentali candidati:
+    \begin{equation}
+        e_{AF} = -1 \quad (\text{stato di Néel, } m=0), \qquad e_{F} = 1 - |h| \quad (\text{tutti allineati al campo})
+    \end{equation}
+    che si incrociano a $|h| = 2$. Per $|h| < 2$ e $T \to 0$ si ha $|\lambda_2/\lambda_1| \to 1$ (con $\lambda_2 < 0$): c'è ordine a lungo raggio. Eppure le marginali di singolo spin sono uniformi, $p(+) = p(-) = 1/2$, perché i due stati di Néel sono degeneri e la marginale li media.
+\end{itemize}
+
+\noindent Le marginali di singolo spin non bastano quindi a vedere che tipo di ordine c'è. Per rivelarlo servono le supervariabili.
+
+\subsection{Supervariabili}
+
+\textbf{Trasformazione di gauge.} Cambiamo segno agli spin dei siti pari: $\sigma_i = (-1)^i S_i$. L'antiferromagnete in campo uniforme diventa un ferromagnete in \textbf{campo alternato} (staggered):
+\begin{equation}
+    H = \sum_i S_i S_{i+1} - h\sum_i S_i \quad \longrightarrow \quad H = -\sum_i \sigma_i \sigma_{i+1} - h\sum_i (-1)^i \sigma_i
+\end{equation}
+Il campo alternato è frustrante: spinge spin vicini in direzioni opposte, mentre l'accoppiamento li vuole allineati.
+
+\noindent\textbf{Blocchi di due spin.} Il nuovo modello è invariante solo per traslazioni di due siti. Definiamo allora una \textbf{supervariabile} per ogni coppia di siti, $\tau_k = (\sigma_{2k}, \sigma_{2k+1}) \in \{++, +-, -+, --\}$, che assume 4 valori. In queste variabili il modello è di nuovo invariante per traslazioni e si risolve con una matrice di trasferimento $4 \times 4$:
+\begin{equation}
+    T_2(\tau_k, \tau_{k+1}) = \exp\Big\{ \beta \big[ \sigma_{2k}\sigma_{2k+1} + \sigma_{2k+1}\sigma_{2k+2} + h(\sigma_{2k} - \sigma_{2k+1}) \big] \Big\}
+\end{equation}
+Le marginali della coppia, date dagli autovettori principali di $T_2$, mostrano l'ordine:
+\begin{itemize}
+    \item per $|h| < 2$ (a $T \to 0$) dominano le coppie $++$ e $--$: ordine ferromagnetico in $\sigma$, cioè \textbf{ordine antiferromagnetico} negli spin originali;
+    \item per $|h| > 2$ domina la coppia allineata al campo alternato: negli spin originali, tutti gli spin \textbf{allineati al campo} uniforme.
+\end{itemize}
+
+\noindent\textbf{Striscia infinita.} La stessa idea permette di risolvere il modello di Ising su una striscia infinitamente lunga di larghezza $W$: si prende come supervariabile un'intera colonna di $W$ spin ($2^W$ valori) e si risolve il problema come una catena 1D con una matrice di trasferimento $2^W \times 2^W$. Per $W$ finito il sistema resta unidimensionale (niente transizione a $T>0$, $\xi$ finita); la transizione dell'Ising 2D emerge solo nel limite $W \to \infty$, che è la strada seguita da Onsager.
 
 
 
@@ -55,17 +90,18 @@ H(S) = -J \sum_{i<j} s_i s_j - h \sum_i s_i
 \end{equation}
 
 
-\noindent Per garantire che l'energia sia estensiva, poniamo $J = 1/N$. In questa approssimazione, ogni spin interagisce con la media di tutti gli altri.
+\noindent Per garantire che l'energia sia estensiva, poniamo $J = 1/N$. Ogni spin interagisce con la media di tutti gli altri: su un grafo completo il campo medio non è un'approssimazione, è esatto.
 
-Possiamo approssimare il termine di interazione:
+Il termine di interazione si riscrive esattamente:
 \begin{equation*}
-   \sum_{i<j} s_i s_j \approx \frac{1}{2} (\sum_i s_i) (\sum_j s_j) = \frac{1}{2} (\sum_i s_i)^2 
+   \sum_{i<j} s_i s_j = \frac{1}{2} \Big[ \big(\sum_i s_i\big)^2 - N \Big] \simeq \frac{1}{2} \big(\sum_i s_i\big)^2
 \end{equation*}
+dove il termine $-N/2$ è una costante che si può trascurare.
 
 \noindent Definendo la magnetizzazione totale $M = \sum_i s_i$ e la magnetizzazione per spin $m = M/N$, l'Hamiltoniana (in questa approssimazione di campo medio) diventa:
 
 \begin{equation}
-H(S) \approx -\frac{1}{2N} (\sum_i s_i)^2 - h \sum_i s_i = -\frac{1}{2N} M^2 - hM
+H(S) \simeq -\frac{1}{2N} (\sum_i s_i)^2 - h \sum_i s_i = -\frac{1}{2N} M^2 - hM
 \end{equation}
 
 \noindent Riscrivendo in termini di $m$, l'Hamiltoniana dipende solo da $m$:
@@ -166,9 +202,15 @@ Per $h=0$: L'equazione diventa $m = \tanh(\beta m)$. Questa equazione può avere
     \item Se $T < T_c$ (bassa temperatura):  Ci sono tre soluzioni: $m=0$ (massimo locale, instabile) e due soluzioni simmetriche $\pm m^* \neq 0$. Queste sono i minimi di $f(m)$ e rappresentano uno stato con magnetizzazione spontanea.
 \end{itemize}
 
+\noindent \textbf{Temperatura critica.} Sviluppando per $m$ piccolo, $\tanh(\beta m) \simeq \beta m - (\beta m)^3/3$, l'equazione diventa $m = \beta m - \beta^3 m^3/3$. Oltre a $m=0$ ha le soluzioni
+\begin{equation}
+    m^2 = \frac{3(\beta - 1)}{\beta^3} \simeq 3(1-T) \qquad (T \to 1^-)
+\end{equation}
+che esistono solo per $\beta > 1$. Quindi $T_c = 1$ (in unità di $J$) e vicino a $T_c$ si ha $m \sim (T_c - T)^{1/2}$, cioè l'esponente di campo medio $\beta = 1/2$. Equivalentemente, $T_c$ è dove $f''(0) = -1 + T = 0$.
+
 \noindent Questo fenomeno, per cui il sistema sceglie una delle due soluzioni $\pm m^*$ per $T < T_c$, è la \textbf{rottura spontanea della simmetria}.
 
-\noindent Nel punto di transizione del secondo ordine (per $h=0, T=T_c$), si osservano una serie di fenomeni concomitanti (metastabilità, transizione di fase, divergenza della suscettività, ecc.).
+\noindent Nel punto di transizione del secondo ordine (per $h=0, T=T_c$) si osservano insieme transizione di fase, rottura spontanea della simmetria e criticità (divergenza della suscettività, $f''(0) = 0$). Non c'è invece metastabilità, che compare solo sotto $T_c$ con $h \neq 0$. Il diagramma di fase completo nel piano $(T,h)$, che dipende dalla forma di $f(m)$, è discusso nella lezione successiva.
 
 
 

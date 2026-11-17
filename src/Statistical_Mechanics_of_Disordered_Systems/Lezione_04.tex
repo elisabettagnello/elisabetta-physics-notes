@@ -57,7 +57,7 @@ L'utilità della funzione di partizione parziale risiede nella possibilità di s
 Z_{i,j+1}(S_i, S_{j+1}) = \sum_{S_j} Z_{i,j}(S_i, S_j) e^{\beta J S_j S_{j+1} + \beta h S_{j+1}}
 \end{equation}
 
-Questo passaggio definisce implicitamente una "matrice" che trasferisce l'informazione dal passo $j$ al passo $j+1$. Tuttavia, l'espressione $e^{\beta J S_j S_{j+1} + \beta h S_{j+1}}$ non è simmetrica rispetto allo scambio degli indici $j$ e $j+1$, il che potrebbe portare ad autovalori complessi, complicando l'analisi.
+Questo passaggio definisce implicitamente una "matrice" che trasferisce l'informazione dal passo $j$ al passo $j+1$. Tuttavia, l'espressione $e^{\beta J S_j S_{j+1} + \beta h S_{j+1}}$ non è simmetrica rispetto allo scambio degli indici $j$ e $j+1$. Gli autovalori non cambiano (la matrice ha elementi positivi, quindi per il teorema di Perron-Frobenius l'autovalore massimo è reale e non degenere; inoltre traccia e determinante, e quindi gli autovalori, sono gli stessi qualunque sia lo spin su cui mettiamo il campo). Una matrice non simmetrica però ha autovettori sinistri e destri diversi, e le marginali vanno scritte come $p(s) = v_L(s)\,v_R(s)/(v_L \cdot v_R)$. Conviene quindi simmetrizzarla, così da avere autovettori ortonormali.
 
 \subsubsection{Simmetrizzazione della Matrice di Trasferimento}
 
@@ -173,11 +173,17 @@ Dato che la funzione di correlazione per il modello di Ising 1D decade esponenzi
 \sum_r C(r) \propto \int_{-\infty}^{+\infty} dr \, e^{-|r|/\xi} = 2 \int_{0}^{+\infty} dr \, e^{-r/\xi} = 2\xi
 \end{equation}
 
-Questo mostra che la d suscettività è direttamente proporzionale alla lunghezza di correlazione. Dai calcoli espliciti si trova che la lunghezza di correlazione è $\xi = \frac{1}{2} e^{2\beta J}$, che, inserita nella relazione precedente, ci porta a:
+Questo mostra che la suscettività è direttamente proporzionale alla lunghezza di correlazione. Dai calcoli espliciti si trova che, a bassa temperatura, la lunghezza di correlazione è $\xi \simeq \frac{1}{2} e^{2\beta J}$, che, inserita nella relazione precedente, ci porta a:
 
 \begin{equation}
 \chi_m \propto \beta (2\xi) = \beta \left(2 \cdot \frac{1}{2} e^{2\beta J}\right) = \beta e^{2\beta J}
 \end{equation}
+
+\noindent A $h=0$ la somma si può fare anche esattamente, senza approssimazioni: con $C(r) = t^{|r|}$ e $t = \tanh(\beta J)$,
+\begin{equation}
+\sum_{r=-\infty}^{+\infty} t^{|r|} = \frac{1+t}{1-t} = e^{2\beta J} \quad \implies \quad \chi_m = \beta e^{2\beta J}
+\end{equation}
+in accordo con il risultato ottenuto derivando $m(h)$.
 
 Questo spiega perché $\chi_m$ diverge esponenzialmente a basse temperature: è un riflesso del fatto che la lunghezza di correlazione $\xi$ sta divergendo.
 
@@ -268,11 +274,14 @@ S_r \left( \lambda_1^{N-r} v_1(S_r)v_1(S_0) + \lambda_2^{N-r} v_2(S_r)v_2(S_0) \
 \end{split}
 \end{equation}
 
-Nel limite termodinamico ($N \to \infty$), consideriamo che $Z \approx \lambda_1^N$. I termini dominanti nella somma sono quelli che contengono $\lambda_1^N$. Si hanno due contributi principali:
+Nel limite termodinamico ($N \to \infty$), consideriamo che $Z \approx \lambda_1^N$. Dei quattro prodotti, dividendo per $\lambda_1^N$:
 \begin{enumerate}
-    \item Il prodotto dei termini con $\lambda_1$ da entrambe le parentesi.
-    \item I prodotti "incrociati" che combinano $\lambda_1^r$ con $\lambda_2^{N-r}$ e $\lambda_2^r$ con $\lambda_1^{N-r}$.
+    \item $\lambda_1^r \lambda_1^{N-r}$: contributo di ordine 1;
+    \item $\lambda_2^r \lambda_1^{N-r}$: contributo $(\lambda_2/\lambda_1)^r$, che sopravvive per $r$ finito;
+    \item $\lambda_1^r \lambda_2^{N-r}$: contributo $(\lambda_2/\lambda_1)^{N-r} \to 0$ per $N \to \infty$ a $r$ fissato;
+    \item $\lambda_2^r \lambda_2^{N-r}$: contributo $(\lambda_2/\lambda_1)^{N} \to 0$.
 \end{enumerate}
+Sopravvivono quindi solo i primi due.
 
 Analizziamo il primo contributo:
 \begin{equation}
@@ -280,7 +289,7 @@ Z^{-1} \lambda_1^r \lambda_1^{N-r} \left( \sum_{S_0} S_0 v_1(S_0)^2 \right) \lef
 \end{equation}
 Poiché $Z \approx \lambda_1^N$, il fattore $\lambda_1^N$ si cancella. Ricordando che $v_1(S)^2 = p(S)$, le somme non sono altro che il valore medio dello spin, $\langle S \rangle = m$. Questo termine è quindi $m^2$, ovvero $\langle S_0 \rangle \langle S_r \rangle$.
 
-Analizziamo ora uno dei termini incrociati (l'altro è identico):
+Analizziamo ora il termine incrociato che sopravvive:
 \begin{equation}
 Z^{-1} \lambda_2^r \lambda_1^{N-r} \left( \sum_{S_0} S_0 v_2(S_0) v_1(S_0) \right) \left( \sum_{S_r} S_r v_2(S_r) v_1(S_r) \right)
 \end{equation}

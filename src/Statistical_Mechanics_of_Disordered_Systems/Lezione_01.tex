@@ -33,7 +33,7 @@ Un neurone decide se sparare o meno in base ai segnali che riceve dagli altri ne
 I termini $J_{ij}$ sono i \textbf{pesi sinaptici} e rappresentano l'intensità e la natura della connessione tra il neurone $j$ e il neurone $i$. Queste connessioni possono essere di due tipi:
 \begin{itemize}
 \item \textbf{Eccitatorie ($J_{ij} > 0$):} se il neurone $j$ spara, induce il neurone $i$ a sparare.
-\item \textbf{Inibitorie ($J_{ij} < 0$):} se il neurone $j$ spara, induce il neurone $i$ a non sparare, depolarizzandolo.
+\item \textbf{Inibitorie ($J_{ij} < 0$):} se il neurone $j$ spara, induce il neurone $i$ a non sparare, iperpolarizzandolo.
 \end{itemize}
 La dinamica del sistema è definita da una semplice regola di aggiornamento. Lo stato del neurone $i$ al tempo successivo, $t+1$, è determinato dal segno del segnale totale che riceve. Se il segnale supera una soglia (che per semplicità poniamo a zero), il neurone sparerà; altrimenti, non sparerà. Matematicamente:
 
@@ -51,6 +51,8 @@ S_i^{t+1} = \text{sign}\left(\sum_{j \neq i} J_{ij} S_j^t\right)
 
 
 Questa è una dinamica deterministica e parallela: dato uno stato iniziale della rete $S^0$, l'evoluzione del sistema è completamente definita.
+
+\noindent\textit{Nota:} con l'aggiornamento parallelo (tutti i neuroni insieme) la dinamica può finire in cicli di periodo 2. Il legame con la minimizzazione di un'energia (vedi sotto) è rigoroso per l'aggiornamento \textbf{sequenziale} (asincrono, un neurone alla volta) con $J_{ij}=J_{ji}$ e $J_{ii}=0$: in quel caso l'energia non aumenta mai e la dinamica termina sempre in un punto fisso.
 
 \subsection{Memoria Associativa e Punti Fissi}
 L'evoluzione di uno stato $S$ della rete può essere vista come una traiettoria nello spazio delle configurazioni: $S^0 \rightarrow S^1 \rightarrow S^2 \rightarrow \dots \rightarrow S^*$. 
@@ -131,7 +133,12 @@ Per caratterizzare le fasi, si usano parametri d'ordine come la sovrapposizione 
 \begin{itemize}
 \item \textbf{Fase Paramagnetica (P):} Ad alta temperatura, l'agitazione termica domina e gli spin sono orientati casualmente. Non c'è correlazione né con le memorie ($m=0$) né tra configurazioni diverse ($q=0$).
 
-\item \textbf{Fase di Recupero (R - Retrieval):} A bassa temperatura e per un basso carico di rete ($\alpha < \alpha_c$), il sistema può recuperare le memorie. In questa fase, esistono stati termodinamicamente stabili in cui la sovrapposizione con una delle memorie è non nulla ($m \neq 0$). Il valore critico del carico a $T=0$ è $\alpha_c \approx 0.138$. Una rete di $N$ neuroni può memorizzare in modo affidabile al massimo circa il 14\% di $N$ pattern.
+\item \textbf{Fase di Recupero (R - Retrieval):} A bassa temperatura e per un basso carico di rete ($\alpha < \alpha_c$), il sistema può recuperare le memorie. In questa fase esistono stati in cui la sovrapposizione con una delle memorie è non nulla ($m \neq 0$). Bisogna però distinguere due regioni:
+\begin{itemize}
+    \item per carichi molto bassi ($\alpha \lesssim 0.05$ a $T=0$) gli stati di memoria sono i minimi globali dell'energia libera: sono \textbf{stabili};
+    \item per $0.05 \lesssim \alpha < \alpha_c$ gli stati di memoria esistono ancora ma sono \textbf{metastabili}: il minimo globale è uno stato di spin glass, però la dinamica che parte vicino a una memoria resta intrappolata lì e la memoria viene comunque recuperata.
+\end{itemize}
+Il valore critico del carico a $T=0$, oltre il quale gli stati di memoria scompaiono, è $\alpha_c \approx 0.138$. Una rete di $N$ neuroni può memorizzare in modo affidabile al massimo circa il 14\% di $N$ pattern.
 
 \item \textbf{Fase di Spin Glass (S):} Se il carico della rete supera la soglia critica ($\alpha > \alpha_c$), il sistema entra in una fase di spin glass. La sovrapposizione con le memorie è nulla ($m=0$), ma l'overlap tra repliche è non nullo ($q \neq 0$). Il paesaggio energetico diventa estremamente complesso, con un numero esponenziale di minimi locali ("stati spuri") che non corrispondono a nessuna delle memorie originali. La dinamica si blocca in questi stati spuri e il recupero fallisce.
 \end{itemize}
@@ -195,7 +202,7 @@ Possiamo definire un'Hamiltoniana tale che il suo stato fondamentale (energia mi
 H = M - \sum_{(i,j,k)} S_i S_j S_k
 \end{equation}
 
-Lo stato fondamentale ha energia $H=0$ e si raggiunge quando tutti i vincoli sono soddisfatti. Il disordine in questo modello non risiede negli accoppiamenti (che sono tutti uguali a -1), ma nella struttura del \textbf{grafo} di interazione, che è random poiché le triplette $(i,j,k)$ sono scelte a caso. 
+Lo stato fondamentale ha energia $H=0$ e si raggiunge quando tutti i vincoli sono soddisfatti. Il disordine in questo modello non risiede negli accoppiamenti (che sono tutti uguali a $+1$; nel caso generale con $c_a \neq 0$ si avrebbe $H = M - \sum_a J_a S_i S_j S_k$ con $J_a = (-1)^{c_a}$), ma nella struttura del \textbf{grafo} di interazione, che è random poiché le triplette $(i,j,k)$ sono scelte a caso. 
 
 \subsubsection{La Transizione di Fase e la Struttura delle Soluzioni}
 
@@ -203,16 +210,16 @@ Un calcolo semplice suggerisce che il numero di soluzioni dovrebbe essere $2^{N-
 
 L'entropia (il logaritmo del numero di soluzioni) per spin sarebbe 
 \begin{equation}
-   S = \frac{1}{N} \log_2(2^{N-M}) = (1-\alpha)\log_2(1) 
+   S = \frac{1}{N} \log_2(2^{N-M}) = 1-\alpha \quad \text{(bit per spin)}, \qquad \text{ovvero } S = (1-\alpha)\log 2 \text{ in nat}
 \end{equation}
 
 implicando che le soluzioni scompaiano solo per $\alpha_s = 1$. 
 
 Tuttavia, sperimentalmente e teoricamente si trova che la soglia di soddisfacibilità è $\alpha_s \approx 0.918$. 
 La discrepanza nasce dal fatto che il calcolo precedente assume che tutti i vincoli siano linearmente indipendenti, il che cessa di essere vero quando iniziano a formarsi dipendenze lineari. 
-Ad un certo punto, si forma un sottoinsieme di variabili, chiamato \textbf{core}, che riceve un numero di vincoli così alto che diventa localmente insoddisfacibile, rendendo l'intero problema UNSAT anche se $\alpha < 1$. 
+Ad un certo punto si forma un sottoinsieme di variabili, chiamato \textbf{core}, in cui ogni variabile compare in almeno due vincoli del core stesso. Quando nel core il numero di equazioni supera il numero di variabili, il sottosistema diventa insoddisfacibile e rende UNSAT l'intero problema anche se $\alpha < 1$: questo fissa $\alpha_s \approx 0.918$.
 
-La transizione verso la fase HARD a $\alpha_d < \alpha_s$ è spiegata da un cambiamento topologico nello spazio delle soluzioni. 
+La transizione verso la fase HARD a $\alpha_d < \alpha_s$ è spiegata da un cambiamento topologico nello spazio delle soluzioni. Per 3-XORSAT, $\alpha_d \approx 0.818$: è il punto in cui compare il core.
 \begin{itemize}
     \item \textbf{Fase EASY-SAT ($\alpha < \alpha_d$)}: Lo spazio delle soluzioni è un unico grande "cluster" connesso. È facile muoversi da una soluzione all'altra con piccole modifiche, e gli algoritmi locali possono esplorare questo spazio in modo efficiente. 
     

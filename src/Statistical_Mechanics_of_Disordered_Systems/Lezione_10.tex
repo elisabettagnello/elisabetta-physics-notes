@@ -141,24 +141,25 @@ Si distinguono due casi per l'indice di sommatoria:
     \item \textbf{Se $\mathbf{i = 0}$ o $\mathbf{i = r}$:} il flip coinvolge direttamente uno degli spin dell'osservabile, invertendone il segno. Questo cambio di segno fa sì che i termini di entrata e uscita non si cancellino.
 \end{itemize}
 
-La sommatoria spaziale su tutti gli $N$ siti del reticolo si riduce quindi ai soli due contributi non nulli nei siti $i = 0$ e $i = r$. Poiché il modello in assenza di campo esterno è invariante per traslazioni spaziali, l'effetto statistico del flip nel sito $0$ è equivalente a quello nel sito $r$. Sfruttando questa simmetria, è sufficiente calcolare il termine per $i = r$ e moltiplicarlo per 2, ottenendo:
+La sommatoria spaziale su tutti gli $N$ siti del reticolo si riduce quindi ai soli due contributi non nulli nei siti $i = 0$ e $i = r$. Il flip dello spin $r$ cambia $S_0 S_r$ in $-S_0 S_r$ e avviene con rate $w_r = \frac{1 - S_r \tanh(\beta h_r)}{2}$, quindi il suo contributo è
 \begin{equation}
-    \frac{d}{dt} G(r, t) = - \sum_{\vec{s}} S_0 S_r P(\vec{s}, t) \left( 1 - S_r \tanh(\beta h_r) \right)
+    \sum_{\vec{s}} P(\vec{s}, t)\, w_r(\vec{s}) \left[ (-S_0 S_r) - S_0 S_r \right] = - \sum_{\vec{s}} S_0 S_r P(\vec{s}, t) \left( 1 - S_r \tanh(\beta h_r) \right)
 \end{equation}
+e il contributo del flip dello spin $0$ è identico con $S_0 \tanh(\beta h_0)$ al posto di $S_r \tanh(\beta h_r)$.
 
 Nel modello di Ising unidimensionale, il campo locale $h_r = S_{r-1} + S_{r+1}$ assume solo i valori $0, \pm 2$. Questa peculiarità permette di linearizzare esattamente la tangente iperbolica sul reticolo:
 \begin{equation}
     \tanh(\beta(S_{r-1} + S_{r+1})) = \frac{S_{r-1} + S_{r+1}}{2} \tanh(2\beta)
 \end{equation}
-Sostituendo tale espressione e ricordando che $S_r^2 = 1$, l'equazione diventa:
+Sostituendo tale espressione e ricordando che $S_r^2 = 1$, il contributo del sito $r$ diventa
 \begin{equation}
-    \frac{d}{dt} G(r, t) = - \sum_{\vec{s}} P(\vec{s}, t) S_0 S_r + \frac{\tanh(2\beta)}{2} \left[ \sum_{\vec{s}} P(\vec{s}, t) S_0 S_{r-1} + \sum_{\vec{s}} P(\vec{s}, t) S_0 S_{r+1} \right]
+    - G(r, t) + \frac{\tanh(2\beta)}{2} \left[ G(r-1, t) + G(r+1, t) \right]
 \end{equation}
-Riconoscendo le definizioni delle funzioni di correlazione e riordinando i termini in modo da evidenziare la struttura alle differenze finite spaziali, giungiamo all'equazione esatta sul reticolo:
+Per invarianza traslazionale il sito $0$ dà lo stesso contributo, quindi l'equazione completa ha il \textbf{doppio} di questi termini. Riordinando in modo da evidenziare la struttura alle differenze finite spaziali, e ponendo $\gamma \equiv \tanh(2\beta)$, giungiamo all'equazione esatta sul reticolo:
 \begin{equation}
-    \frac{dG(r, t)}{dt} = -(1 - \tanh(2\beta)) G(r, t) + \frac{\tanh(2\beta)}{2} \left[ G(r-1, t) - 2G(r, t) + G(r+1, t) \right]
+    \frac{dG(r, t)}{dt} = -2G(r,t) + \gamma\left[G(r-1,t) + G(r+1,t)\right] = -2(1 - \gamma)\, G(r, t) + \gamma \left[ G(r-1, t) - 2G(r, t) + G(r+1, t) \right]
 \end{equation}
-Nel limite del continuo (per distanze $r$ sufficientemente grandi), il termine in parentesi quadra corrisponde alla derivata seconda spaziale $\frac{\partial^2 G(r,t)}{\partial r^2}$.
+con la condizione al bordo $G(0,t) = 1$. Nel limite del continuo (per distanze $r$ sufficientemente grandi), il termine in parentesi quadra corrisponde alla derivata seconda spaziale $\frac{\partial^2 G(r,t)}{\partial r^2}$.
 
 \subsubsection{Limiti Fisici e Scaling di Porod}
 Possiamo estrarre informazioni cruciali studiando i limiti asintotici di questa equazione:
@@ -166,33 +167,34 @@ Possiamo estrarre informazioni cruciali studiando i limiti asintotici di questa 
     \item \textbf{Regime stazionario all'equilibrio ($t \to \infty, T > 0$):}\\
      Il sistema stazionarizza e la derivata temporale si annulla ($\frac{\partial G}{\partial t} = 0$). Sostituendo nella versione continua, si ottiene:
     \begin{equation}
-        (1 - \tanh(2\beta)) G_{eq}(r) = \frac{\tanh(2\beta)}{2} \frac{\partial^2 G_{eq}}{\partial r^2}
+        2(1 - \gamma)\, G_{eq}(r) = \gamma\, \frac{\partial^2 G_{eq}}{\partial r^2}
     \end{equation}
-    Dall'analisi dimensionale di questa equazione differenziale ricaviamo la lunghezza di correlazione all'equilibrio $\xi_{eq}$:
+    che ha soluzione $G_{eq}(r) = e^{-r/\xi_{eq}}$ con
     \begin{equation}
-        \xi_{eq}^2 \propto \frac{\tanh(2\beta)}{1 - \tanh(2\beta)} \sim e^{4\beta} \quad \text{per } T \ll 1
+        \xi_{eq}^2 = \frac{\gamma}{2(1 - \gamma)} \simeq \frac{e^{4\beta}}{4} \quad \Longrightarrow \quad \xi_{eq} \simeq \frac{1}{2} e^{2\beta} \quad \text{per } T \ll 1
     \end{equation}
-    Questo risultato coincide perfettamente con la divergenza nota della lunghezza di correlazione per il modello di Ising unidimensionale, confermando l'esattezza dell'approccio.
-    
+    (si usa $1 - \tanh(2\beta) \simeq 2e^{-4\beta}$). Questo risultato coincide con la lunghezza di correlazione esatta del modello di Ising unidimensionale trovata nella Lezione 3. Anzi, l'equazione sul reticolo è risolta esattamente da $G_{eq}(r) = \tanh^r(\beta)$: basta usare l'identità $\gamma = 2\eta/(1+\eta^2)$ con $\eta = \tanh\beta$.
+
+    Dalla stessa equazione si legge anche il tempo di rilassamento: il modo più lento ha $\tau = 1/(1-\gamma) \simeq \frac{1}{2}e^{4\beta} \propto \xi_{eq}^2$, quindi $z=2$ anche all'equilibrio.
 
     \item \textbf{Dinamica fuori dall'equilibrio ($T = 0$):}\\
-    A temperatura nulla il sistema non raggiunge mai l'equilibrio perché $\xi_{eq} \to \infty$. Sostituendo $\tanh(2\beta) = 1$, il termine di decadimento lineare si annulla e ci ritroviamo con una pura \textbf{equazione della diffusione}:
+    A temperatura nulla il sistema non raggiunge mai l'equilibrio perché $\xi_{eq} \to \infty$. Sostituendo $\gamma = \tanh(2\beta) = 1$, il termine di decadimento lineare si annulla e ci ritroviamo con una pura \textbf{equazione della diffusione}:
     \begin{equation}
-        \frac{d G(r, t)}{dt} = \frac{1}{2} \frac{\partial^2 G(r, t)}{\partial r^2}
+        \frac{\partial G(r, t)}{\partial t} = \frac{\partial^2 G(r, t)}{\partial r^2}
     \end{equation}
-    Dimensionalmente, affinché $r^2$ scali come $t$, dobbiamo avere un andamento per la lunghezza di correlazione $\xi(t) \sim t^{1/2}$. Questo identifica l'esponente critico dinamico $z = 2$. Inserendo una forma di scaling $\tilde{G}(r / t^{1/2})$ nell'equazione, la soluzione analitica esatta restituisce la \textbf{Legge di Porod}:
+    Dimensionalmente, affinché $r^2$ scali come $t$, dobbiamo avere un andamento per la lunghezza di correlazione $\xi(t) \sim t^{1/2}$. Questo identifica l'esponente critico dinamico $z = 2$. Inserendo una forma di scaling $\tilde{G}(r / t^{1/2})$ nell'equazione, con $G(0,t)=1$ e $G(r>0, 0) = 0$ (condizione iniziale disordinata), la soluzione analitica esatta restituisce la \textbf{Legge di Porod}:
     \begin{equation}
         G(r, t) = 1 - \text{erf}\left( \frac{r}{2\sqrt{t}} \right) \quad \implies \quad \tilde{G}(z) = 1 - \text{erf}\left(\frac{z}{2}\right)
     \end{equation}
     
-   Sviluppando in serie di Taylor la funzione di errore per argomenti piccoli, la funzione di correlazione esibisce una dipendenza strettamente lineare: $G(r, t) \approx 1 - \frac{r}{\sqrt{\pi t}}$
+   Sviluppando in serie di Taylor la funzione di errore per argomenti piccoli, la funzione di correlazione esibisce una dipendenza strettamente lineare: $G(r, t) \approx 1 - \frac{r}{\sqrt{\pi t}}$. In particolare la densità di pareti di dominio, $\rho(t) = \frac{1 - G(1,t)}{2}$, decade come $\rho(t) \simeq 1/\sqrt{4\pi t}$.
 
 Di conseguenza, la derivata spaziale all'origine è finita e \textbf{non nulla}: $\left. \frac{\partial G}{\partial r} \right|_{r \to 0} \neq 0$
 
 Graficamente, questo andamento si traduce in una \textbf{cuspide} in $r=0$.
 
 \begin{itemize}
-    \item \textbf{Modelli continui (es. teoria di Ginzburg-Landau):} Il parametro d'ordine varia nello spazio in modo differenziabile (``liscio''). La correlazione all'origine ha un andamento parabolico, il che impone una derivata rigorosamente nulla in $r=0$.
+    \item \textbf{Campo liscio senza pareti:} se il parametro d'ordine varia nello spazio in modo differenziabile e non ci sono pareti di dominio nette (è il caso del modello $O(n)$ con $n \to \infty$ della prossima lezione, o di una teoria gaussiana), la correlazione all'origine ha un andamento parabolico e la derivata in $r=0$ è nulla. Attenzione: in una teoria di Ginzburg-Landau per un campo \textit{scalare} ($n=1$) le pareti hanno uno spessore finito $w$, molto più piccolo della taglia dei domini $L(t)$; per $w \ll r \ll L(t)$ la legge di Porod (lineare) vale ugualmente.
     
     \item \textbf{Modello di Ising (discreto):} Le variabili di spin sono rigorosamente discrete ($S_i = \pm 1$). Il passaggio tra domini di spin opposti è istantaneo (avviene in un singolo passo reticolare) e genera un'\textbf{interfaccia netta} (\textit{sharp interface}) priva di spessore, che costituisce fisicamente il \textbf{Domain Wall}.
 \end{itemize}
@@ -340,9 +342,9 @@ Risolvendo rispetto a $n_{eq}$ si ricava la formula esatta per la densità di eq
 
 Esplicitando la tangente iperbolica e semplificando:
 \begin{equation}
-    m_{eq} = \left( 1 + \sqrt{e^{4\beta}} \right)^{-1} = \frac{1}{1 + e^{2\beta}} \sim e^{-2\beta} \sim \frac{1}{\xi_{eq}}
+    n_{eq} = \left( 1 + \sqrt{e^{4\beta}} \right)^{-1} = \frac{1}{1 + e^{2\beta}} \sim e^{-2\beta} \sim \frac{1}{\xi_{eq}}
 \end{equation}
-Poiché a basse temperature la lunghezza di correlazione all'equilibrio si comporta come $\xi_{eq} \sim e^{2\beta}$, l'approssimazione di campo medio restituisce lo scaling termodinamico corretto per la densità dei difetti.
+Questo è esattamente il valore vero: all'equilibrio in 1D i legami sono indipendenti e ciascuno è insoddisfatto con probabilità $e^{-\beta}/(e^{\beta}+e^{-\beta}) = 1/(1+e^{2\beta})$. All'equilibrio l'approssimazione di caos molecolare è quindi esatta, e restituisce anche lo scaling corretto $n_{eq} \sim e^{-2\beta} \sim 1/\xi_{eq}$ a basse temperature.
 
 \subsubsection*{Analisi della dinamica fuori dall'equilibrio a $T=0$}
 A temperatura zero ($T = 0$, ovvero $\beta \to \infty$), la creazione di difetti è impossibile e si ha $\tanh(2\beta) = 1$. 
@@ -421,9 +423,9 @@ Per evidenziare le proprietà universali di invarianza di scala, riorganizziamo 
 \end{equation}
 
 
-Affinché gli argomenti della funzione $f$ siano quantitativamente adimensionali, la frequenza $\omega$ deve necessariamante scalare con il quadrato del vettore d'onda $k$. Questo dimostra in modo universale, indipendente dalla dimensionalità del sistema, che per modelli ordinati analizzabili in campo medio (teoria gaussiana) l'esponente critico dinamico è rigidamente \textbf{$z = 2$}.
+Affinché gli argomenti della funzione $f$ siano quantitativamente adimensionali, la frequenza $\omega$ deve necessariamente scalare con il quadrato del vettore d'onda $k$. Questo dimostra in modo universale, indipendente dalla dimensionalità del sistema, che per modelli ordinati analizzabili in campo medio (teoria gaussiana) l'esponente critico dinamico è rigidamente \textbf{$z = 2$}.
 
-In sistemi reali al punto critico, l'integrazione delle fluttuazioni (gruppo di rinormalizzazione) induce lievi correzioni all'esponente (es. $z \approx 2.15$ in 3D). Tali dinamiche si distinguono in modo diametrale dalla classe di universalità dei sistemi disordinati (\textit{Spin Glasses}), nei quali la frustrazione topologica del panorama energetico eleva l'esponente dinamico a scale di gran lunga superiori ($z \approx 6 \div 7$), rallentando drasticamente il rilassamento del sistema.
+In sistemi reali al punto critico, l'integrazione delle fluttuazioni (gruppo di rinormalizzazione) induce lievi correzioni all'esponente (per Ising con dinamica senza leggi di conservazione: $z \approx 2.17$ in 2D, $z \approx 2.02$ in 3D). Tali dinamiche si distinguono in modo diametrale dalla classe di universalità dei sistemi disordinati (\textit{Spin Glasses}), nei quali la frustrazione topologica del panorama energetico eleva l'esponente dinamico a scale di gran lunga superiori ($z \approx 6 \div 7$), rallentando drasticamente il rilassamento del sistema.
 
 
 

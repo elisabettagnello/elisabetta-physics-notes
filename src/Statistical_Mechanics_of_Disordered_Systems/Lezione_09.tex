@@ -55,16 +55,17 @@ t^{\nu a - 2} & , a < D
 
 Possiamo riscrivere gli esponenti usando la relazione di iperscaling $\alpha = 2 - D\nu$:
 \begin{itemize}
-    \item Caso $a > D$ \textbf{(Harris Standard):} L'esponente diventa $\frac{2 - D\nu}{\nu} = \frac{\alpha}{\nu}$.
-    Il disordine è \textbf{irrilevante} se $\Delta^2/t^2 \to 0$, ovvero se l'esponente è negativo. Questo implica $\alpha < 0$.
+    \item Caso $a > D$ \textbf{(Harris Standard):} $\Delta^2/t^2 \propto t^{\nu D - 2} = t^{-\alpha}$, ovvero, in funzione di $\xi$, $\Delta^2/t^2 \propto \xi^{(2 - D\nu)/\nu} = \xi^{\alpha/\nu}$.
+    Il disordine è \textbf{irrilevante} se $\Delta^2/t^2 \to 0$ per $t \to 0$ ($\xi \to \infty$). Questo implica $\alpha < 0$.
     \item Caso $a < D$ \textbf{(Weinrib-Halperin):} L'esponente è $\frac{2}{\nu} - a$. La condizione di stabilità richiede $a > 2/\nu$, ovvero $a\nu > 2$.
 \end{itemize}
 
 \begin{tcolorbox}[colback=colorD!10, colframe=colorD!60!colorE, , coltitle=white, title=\textbf{Conclusione sulla Rilevanza}]
-Il disordine è \textbf{irrilevante} se il calore specifico del sistema puro non diverge (o diverge debolmente).
+Il disordine (a corto raggio) è \textbf{irrilevante} se il calore specifico del sistema puro non diverge al punto critico.
 \begin{itemize}
-    \item Se $\alpha < 0$, il disordine è \textbf{irrilevante}. Il sistema mantiene gli esponenti critici del caso puro.
-    \item Se $\alpha > 0$, il disordine è \textbf{rilevante}. Il punto fisso puro è instabile.
+    \item Se $\alpha < 0$ (cuspide), il disordine è \textbf{irrilevante}. Il sistema mantiene gli esponenti critici del caso puro.
+    \item Se $\alpha > 0$ (divergenza), il disordine è \textbf{rilevante}. Il punto fisso puro è instabile.
+    \item Se $\alpha = 0$ (divergenza logaritmica) il caso è marginale e il criterio non decide.
 \end{itemize}
 \end{tcolorbox}
 
@@ -72,8 +73,10 @@ Il disordine è \textbf{irrilevante} se il calore specifico del sistema puro non
 
 Analizziamo alcuni casi specifici del modello di Ising:
 \begin{itemize}
-    \item \textbf{Ising 2D:} Sappiamo che $\alpha = 0$ (divergenza logaritmica, $\alpha_{2D} = 0_{\log}$). Questo è un caso marginale.
+    \item \textbf{Ising 2D:} Sappiamo che $\alpha = 0$ (divergenza logaritmica, $\alpha_{2D} = 0_{\log}$). Questo è un caso marginale: il criterio di Harris non decide. Diversi metodi indicano che nel sistema diluito la singolarità diventa ancora più debole, $C \sim \ln|\ln|t||$.
     \item \textbf{Ising 3D:} Si ha $\alpha > 0$ ($\alpha \approx 0.11$). In tre dimensioni, il punto fisso puro è instabile rispetto all'introduzione di disordine (anche a corto raggio).
+    \item \textbf{Ising 4D:} di nuovo $\alpha = 0$ (campo medio con correzioni logaritmiche): caso marginale.
+    \item \textbf{XY e Heisenberg 3D:} $\alpha < 0$, quindi il disordine è irrilevante.
 \end{itemize}
 
 \noindent La Figura \ref{fig:fixed_points} mostra come (nel caso 3D) il punto fisso puro, situato al limite di assenza di disordine ($p = 1$), sia instabile a causa della rilevanza del disordine ($\alpha > 0$). Le traiettorie del flusso RG si allontanano da esso. Tuttavia, non si dirigono verso il punto fisso di percolazione a $T = 0$ (che è a sua volta instabile lungo la linea critica), ma convergono verso un nuovo punto fisso stabile situato a temperatura finita, detto \textit{Random Fixed Point}. Questo punto fisso controlla il comportamento critico lungo l'intera linea di transizione di fase per $p_c < p < 1$, imponendo una nuova classe di universalità caratterizzata da esponenti critici diversi sia da quelli del modello puro che da quelli della percolazione. 
@@ -164,7 +167,7 @@ Analizziamo alcuni casi specifici del modello di Ising:
 
 \section{Fase di Griffiths e Zeri di Lee-Yang}
 
-Consideriamo la regione del diagramma di fase sotto la temperatura critica del modello puro ($T < T_c^{pure}$), ma sopra la temperatura critica del sistema diluito ($T > T_c(p)$). Questa regione è chiamata \textbf{Fase di Griffiths}.
+Consideriamo la regione del diagramma di fase sotto la temperatura critica del modello puro ($T < T_c^{pure}$), ma sopra la temperatura critica del sistema diluito ($T > T_c(p)$). Questa regione è chiamata \textbf{Fase di Griffiths}. Esiste per ogni $p<1$: per $p < p_c$, dove $T_c(p)=0$, occupa tutto l'intervallo $0 < T < T_c^{pure}$ (Bray, PRL 60, 720).
 In questa fase non c'è ordine magnetico a lungo raggio ($m=0$), ma la dinamica e le proprietà analitiche sono peculiari.
 
 \begin{figure}[H]
@@ -182,26 +185,26 @@ In questa fase non c'è ordine magnetico a lungo raggio ($m=0$), ma la dinamica 
         % Definizione area Fase di Griffiths (Senza pattern problematici)
         % Riempiamo l'area compresa tra la curva critica T_c(p) e la retta T_c_pure
         % Usiamo 'opacity' per evitare blocchi neri e vedere le linee sotto
-        \fill[cyan, opacity=0.2] (Pc) to[out=80, in=190] (Pure) -- (1.5, 4) -- cycle;
+        \fill[cyan, opacity=0.2] (Zero) -- (Pc) to[out=80, in=190] (Pure) -- (0, 4) -- cycle;
 
         % Linee guida e curve (disegnate SOPRA il riempimento)
         
         % Linea T_c pure (orizzontale tratteggiata)
         \draw[dashed, thick, gray] (0, 4) node[left, black] {$T_c^{pure}$} -- (Pure);
         \draw[dashed, thick, gray] (Pure) -- (5.5, 0) node[below, black] {$1$};
-        \draw[dashed, thick, gray] (Pc) node[below, black] {$p_c$} -- (1.5, 4); % Linea verticale pc per chiudere la regione
+        \node[below, black] at (Pc) {$p_c$};
 
         % Curva critica T_c(p)
         \draw[line width=2pt, red] (Pc) to[out=80, in=190] (Pure);
         \node[red, below right] at (3.5, 3.3) {$T_c(p)$};
 
         % Etichette Fasi
-        \node[align=center, font=\bfseries, color=cyan!50!black] at (2.3, 3.5) {Fase di\\Griffiths};
+        \node[align=center, font=\bfseries, color=cyan!50!black] at (1.6, 2.6) {Fase di\\Griffiths};
         \node[align=center, color=black] at (3, 0.7) {Fase\\Ferromagnetica};
-        \node[align=center, color=black] at (0.8, 2.4) {Fase\\Paramag};
+        \node[align=center, color=black] at (3, 4.6) {Fase Paramagnetica};
 
     \end{tikzpicture}
-    \caption{Diagramma di fase schematico. La Fase di Griffiths in azzurro è la regione in cui la temperatura è inferiore alla temperatura critica del sistema puro ($T < T_c^{pure}$) ma superiore alla temperatura critica effettiva del sistema diluito ($T > T_c(p)$). Qui il sistema è globalmente paramagnetico ma contiene cluster localmente ordinati.}
+    \caption{Diagramma di fase schematico. La Fase di Griffiths in azzurro è la regione in cui la temperatura è inferiore alla temperatura critica del sistema puro ($T < T_c^{pure}$) ma superiore alla temperatura critica effettiva del sistema diluito ($T > T_c(p)$). Per $p < p_c$, dove $T_c(p) = 0$, è tutta la striscia $0 < T < T_c^{pure}$. Qui il sistema è globalmente paramagnetico ma contiene cluster localmente ordinati.}
     \label{fig:griffiths_phase_fixed}
 \end{figure}
 
@@ -357,7 +360,7 @@ L'effetto più evidente della Fase di Griffiths non è nella termodinamica stati
 
 \noindent Consideriamo l'Hamiltoniana di Ising:
 \begin{equation}
-H(\vec{S}) = - \sum_{i,j} J_{ij} S_i S_j - \sum_i h_i S_i
+H(\vec{S}) = - \sum_{\langle i,j \rangle} J_{ij} S_i S_j - \sum_i h_i S_i
 \end{equation}
 
 \noindent Definiamo il \textbf{campo locale} $b_i(t)$ che agisce sullo spin $i$-esimo al tempo $t$:
@@ -393,8 +396,9 @@ C(t, t') = \frac{1}{N} \sum_i \langle S_i(t) S_i(t') \rangle
 \textbf{2. Correlazione Spaziale a tempi uguali:}
 Misura la formazione di domini ordinati al tempo $t$:
 \begin{equation}
-G(r, t) = \frac{1}{N} \sum_{|i-j|=r} \langle S_i(t) S_j(t) \rangle
+G(r, t) = \frac{1}{N_r} \sum_{|i-j|=r} \langle S_i(t) S_j(t) \rangle
 \end{equation}
+dove $N_r$ è il numero di coppie di spin a distanza $r$.
 
 \noindent Tipicamente ci aspettiamo un decadimento esponenziale che definisce la lunghezza di correlazione dinamica $\xi(t)$:
 \begin{equation}

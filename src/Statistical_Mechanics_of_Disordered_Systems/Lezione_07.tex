@@ -16,9 +16,11 @@ Tuttavia, quando studiamo sistemi reali o simulazioni, dobbiamo confrontarci con
     \item \textbf{Tempo ergodico ($t_{erg}$):} Il tempo caratteristico necessario al sistema per esplorare l'intero spazio delle fasi, superando eventuali barriere di potenziale.
 \end{enumerate}
 
-\noindent Un sistema si definisce ergodico, quindi, quando il tempo ergodico è comparabile con il tempo di osservazione.
+\noindent In pratica, quindi, un sistema si comporta da ergodico quando il tempo ergodico è molto più breve del tempo di osservazione, $t_{erg} \ll t_{obs}$.
 
-\noindent Se $t_{obs} \ll t_{erg}$, il sistema si trova in una condizione di \textbf{rottura dell'ergodicità} (o ergodicità rotta). Il sistema rimane confinato ("intrappolato") in una sottoregione dello spazio delle fasi (uno stato metastabile) e le medie misurate non corrisponderanno a quelle termodinamiche di equilibrio. Questo fenomeno è noto come \textit{critical slowing down} quando ci si avvicina a una transizione di fase.
+\noindent Se $t_{obs} \ll t_{erg}$, il sistema si trova in una condizione di \textbf{rottura dell'ergodicità} (o ergodicità rotta). Il sistema rimane confinato ("intrappolato") in una sottoregione dello spazio delle fasi (uno stato, eventualmente metastabile) e le medie misurate non corrisponderanno a quelle termodinamiche di equilibrio. Nei modelli fully connected le barriere tra gli stati crescono come $N$, quindi nel limite termodinamico l'ergodicità è rotta in senso stretto: è quello che succede in Curie-Weiss per $T<T_c$.
+
+\noindent Da non confondere con il \textbf{critical slowing down}: è la divergenza del tempo di rilassamento \textit{al punto critico} ($T=T_c$, $h=0$), dovuta al fatto che $f(m)$ diventa piatta ($f''=0$) e la forza di richiamo verso il minimo si annulla. Lì l'ergodicità non è (ancora) rotta: c'è un solo minimo, ma ci si arriva sempre più lentamente. Sotto $T_c$, invece, l'ergodicità si rompe perché il minimo si sdoppia in due stati separati da una barriera.
 
 \subsection{Barriere Energetiche ed Entropiche}
 
@@ -56,6 +58,14 @@ Confrontiamo la dinamica di rilassamento verso il minimo (ferromagnetico, $m=1$)
 
 Nel caso a 3-spin, vicino a $m=0$, la forza è nulla al primo ordine (la funzione è estremamente piatta). Il sistema, trovandosi in $m=0$, non percepisce alcuna spinta verso $m=1$. Anche se lo stato ordinato esiste ed è energeticamente favorevole, il sistema rimane bloccato in $m=0$ a causa della barriera entropica: non sa in che direzione muoversi perché il paesaggio è localmente piatto.
 
+\begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Il paramagnete del 3-spin è stabile a ogni $T>0$}]
+Sviluppiamo l'energia libera $f(m) = -\frac{m^3}{6} - T s(m)$ attorno a $m=0$, usando $s(m) \simeq \log 2 - \frac{m^2}{2}$:
+\begin{equation}
+f(m) \simeq -T\log 2 + \frac{T}{2} m^2 - \frac{m^3}{6}, \qquad f''(0) = T > 0
+\end{equation}
+Per ogni $T > 0$ lo stato $m=0$ è un minimo locale: allontanandosi da $m=0$ l'energia guadagna solo $O(m^3)$, mentre l'entropia fa perdere $O(T m^2)$, che vince per $m$ piccolo. La barriera che separa il paramagnete dallo stato ordinato è quindi di origine \textbf{entropica}, e c'è a qualunque temperatura positiva: non esiste una spinodale paramagnetica a $T>0$ (a differenza del Potts).
+\end{tcolorbox}
+
 \subsection{Modello di Potts}
 
 Il modello di Potts è una generalizzazione del modello di Ising in cui ogni spin $S_i$ può assumere $q$ valori discreti (chiamati spesso "colori"): $S_i \in \{1, 2, \dots, q\}$.
@@ -71,22 +81,31 @@ dove $\delta$ è la delta di Kronecker (l'energia diminuisce se due spin vicini 
 L'ordine della transizione di fase nel modello di Potts dipende dal numero di stati $q$:
 \begin{itemize}
     \item Per $q=2$: Il modello è isomorfo al modello di Ising. La transizione è del \textbf{secondo ordine} (continua).
-    \item Per $q > 2$: La transizione diventa del \textbf{primo ordine} (discontinua).
+    \item Per $q > 2$: nella versione fully connected la transizione diventa del \textbf{primo ordine} (discontinua). Su reticolo la soglia dipende dalla dimensione (in 2D: primo ordine solo per $q>4$).
 \end{itemize}
 
-\noindent Consideriamo il caso $q=3$ (o superiore). Analizzando l'energia libera in funzione del parametro d'ordine $m$ (che misura quanto un colore prevale sugli altri), si osserva un fenomeno di coesistenza di fasi.
-Esistono due temperature critiche "locali" chiamate \textbf{punti spinodali}, oltre alla temperatura di transizione termodinamica $T_c$:
+\noindent Consideriamo il caso $q=3$ (o superiore) fully connected. Usiamo come parametro d'ordine la frazione $\rho$ di spin nel colore che prevale: $\rho = 1/q$ nella fase paramagnetica, $\rho > 1/q$ in quella ferromagnetica. Oltre alla temperatura di transizione termodinamica $T_c$ esistono due \textbf{punti spinodali}:
 
 \begin{enumerate}
-    \item \textbf{Spinodale Paramagnetica ($T_{sp}^+$):} Raffreddando il sistema, a questa temperatura appare per la prima volta un minimo locale (metastabile) corrispondente alla fase ordinata (ferromagnetica), mentre il minimo globale è ancora quello disordinato ($m=0$).
-    \item \textbf{Spinodale Ferromagnetica ($T_{sp}^-$):} Riscaldando il sistema, a questa temperatura il minimo ferromagnetico diventa instabile e scompare.
+    \item \textbf{Spinodale ferromagnetica ($T_{sp}^{F} > T_c$):} è il limite di esistenza dello stato ordinato. Raffreddando, a questa temperatura compare il minimo ferromagnetico (inizialmente metastabile, perché il minimo globale è ancora $\rho = 1/q$); riscaldando, è dove il minimo ferromagnetico scompare.
+    \item \textbf{Spinodale paramagnetica ($T_{sp}^{P} < T_c$):} è il limite di stabilità dello stato disordinato. Raffreddando, sotto $T_c$ il paramagnete resta metastabile e a $T_{sp}^{P}$ il minimo $\rho = 1/q$ diventa instabile.
 \end{enumerate}
 
-Tra queste due temperature, il sistema mostra \textbf{isteresi} e metastabilità. La transizione avviene "a salto" quando l'energia libera dei due minimi si incrocia a $T_c$.
+Tra $T_{sp}^{P}$ e $T_{sp}^{F}$ coesistono due minimi: il sistema mostra \textbf{isteresi} e metastabilità. La transizione termodinamica avviene "a salto" a $T_c$, dove le energie libere dei due minimi si incrociano. Come sempre nelle transizioni del primo ordine, $T_c$ non è un punto critico: lo sono le due spinodali.
+
+\subsubsection*{Conseguenze per gli algoritmi}
+Questa struttura ha conseguenze dirette sugli algoritmi che cercano i minimi dell'energia libera (ad esempio in problemi di inferenza). Un algoritmo \textbf{locale} che parte dalla fase disordinata, per $T_{sp}^{P} < T < T_c$, resta nel minimo paramagnetico metastabile e non riesce a superare la barriera. Anche sotto $T_c$, dove la soluzione ordinata è quella vera (termodinamicamente dominante), l'algoritmo non la trova finché non si arriva alla spinodale paramagnetica. La soluzione esiste ma l'algoritmo non la vede: la difficoltà è dinamica, non termodinamica.
 
 \subsection{Nucleazione in Sistemi a Taglia Finita}
 
 Nei modelli di campo medio ($N \to \infty$), le barriere di energia libera tra stati metastabili e stabili scalano con $N$ ($\Delta F \propto N$). Questo implica che il tempo di vita dello stato metastabile diverge ($\tau \sim e^N$), rendendo la metastabilità eterna: l'ergodicità è rotta rigorosamente.
+
+\subsubsection*{Pareti di dominio in dimensione finita}
+In dimensione finita le cose cambiano già a $h=0$. Consideriamo un sistema di lato $L$ (volume $L^d$) sotto $T_c$, con metà del volume nello stato $+$ e metà nello stato $-$. Le due regioni sono separate da una parete di dominio di area $L^{d-1}$, che costa in energia libera
+\begin{equation}
+    \Delta F_{DW} \sim \sigma L^{d-1}, \qquad \frac{\Delta F_{DW}}{L^d} \sim \frac{\sigma}{L} \xrightarrow{L \to \infty} 0
+\end{equation}
+Per spin, il costo della parete sparisce nel limite termodinamico. Quindi tutte le magnetizzazioni intermedie $-m^* < m < m^*$ si realizzano con coesistenza delle due fasi separate da pareti, e la $f(m)$ vera è \textbf{piatta} tra $-m^*$ e $+m^*$ (costruzione di Maxwell), non a doppia buca come in campo medio. La barriera tra $+m^*$ e $-m^*$ non è più $\propto N$ ma $\propto L^{d-1}$.
 
 Nei sistemi reali a dimensione finita $d$ (Finite Size Systems), la barriera è finita e il sistema può "scappare" dallo stato metastabile tramite il meccanismo della \textbf{nucleazione}.
 Immaginiamo di formare una "goccia" (droplet) di raggio $R$ della fase stabile all'interno della fase metastabile. La variazione di energia libera ha due contributi:
@@ -118,7 +137,7 @@ L'Hamiltoniana generica è:
     H(\vec{S}) = - \sum_{\langle i,j \rangle} J_{ij} S_i S_j - \sum_i h_i S_i
 \end{equation}
 
-Nei sistemi disordinati l'Hamiltoniana non è unica, ma esiste un ensamble di Hamiltoniane a causa delle variabili casuali.
+Nei sistemi disordinati l'Hamiltoniana non è unica, ma esiste un ensemble di Hamiltoniane a causa delle variabili casuali. Un esperimento (o una simulazione) riguarda sempre un \textbf{campione} dato, cioè una realizzazione fissata del disordine; la teoria invece calcola medie sull'\textbf{ensemble} dei campioni. Le due cose coincidono per le grandezze \textbf{self-averaging}, che nel limite termodinamico assumono lo stesso valore in quasi tutti i campioni.
 
 Il disordine può manifestarsi in:
 \begin{itemize}
@@ -202,8 +221,18 @@ Tuttavia, l'energia libera del sistema fisico "vero" (quella che misureremmo in 
     F_{typ} \propto -\ln Z_{typ} \sim -Nb
 \end{equation}
 
-Poiché $a-c > b$, otteniamo che $F_{ann} \neq F_{typ}$. La media annealed è dominata da eventi statisticamente irrilevanti (fluttuazioni giganti di $Z$) e non descrive lo stato termodinamico del sistema fisico.
+Poiché $a-c > b$, otteniamo che $F_{ann} \neq F_{typ}$. La media annealed è dominata da eventi statisticamente irrilevanti (fluttuazioni giganti di $Z$) e non descrive lo stato termodinamico del sistema fisico. Se invece $a - c < b$, la media annealed dà il risultato giusto.
 Questo dimostra la necessità di calcolare la media del logaritmo (Quenched) e non il logaritmo della media.
+
+\noindent\textbf{Criterio del secondo momento.} Per capire se la media annealed è affidabile si guardano le fluttuazioni relative di $Z_J$:
+\begin{equation}
+\frac{\overline{Z_J^2} - \overline{Z_J}^{\,2}}{\overline{Z_J}^{\,2}} \;\to\;
+\begin{cases}
+0 \text{ o } O(1) & \Rightarrow \; Z_J \text{ è concentrata attorno alla media: } \overline{\log Z} \simeq \log \overline{Z} \\
+e^{\,O(N)} & \Rightarrow \; \text{la media è dominata da campioni rari: annealed sbagliata}
+\end{cases}
+\end{equation}
+Si noti che la distribuzione di $Z_J$ è tipicamente molto larga (su scala logaritmica), quindi media, moda e mediana di $Z_J$ possono essere molto lontane.
 
 
 \subsubsection{Media Quenched}

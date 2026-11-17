@@ -67,7 +67,7 @@ Costruiamo il diagramma di fase.
     \centering
     \includegraphics[width=0.6\textwidth]{pics/18.png}
     \caption{Diagramma di fase nel piano $(p, T)$  per il modello di Ising diluito. La linea rossa è la temperatura critica $T_c(p)$ che separa la fase P da quella F. La linea tratteggiata è la temperatura critica del modello omogeneizzato $T_c^{homo}(p)$, che funge da limite superiore (bound) per la temperatura critica reale.}
-    \label{fig: fase ferromag}
+    \label{fig:fase_ferromag}
 \end{figure}
 
 
@@ -113,6 +113,11 @@ Le disuguaglianze fondamentali sono due:
     \begin{equation}
     \langle S_i S_j \rangle_c = \langle S_i S_j \rangle - \langle S_i \rangle \langle S_j \rangle \ge 0 \quad \forall i, j \subset \{1, \dots, N\}
     \end{equation}
+    e più in generale, indicando con $S_A = \prod_{i \in A} S_i$ il prodotto degli spin in un sottoinsieme $A$:
+    \begin{equation}
+    \langle S_A S_B \rangle - \langle S_A \rangle \langle S_B \rangle \ge 0 \quad \forall A, B \subseteq \{1, \dots, N\}
+    \end{equation}
+    Questa forma generale serve più avanti, ad esempio per $\langle S_0 S_i S_j \rangle - \langle S_0 \rangle \langle S_i S_j \rangle \ge 0$ (con $A = \{0\}$, $B = \{i,j\}$).
 \end{enumerate}
 
 \subsection{Dimostrazione della Prima Disuguaglianza}
@@ -220,9 +225,11 @@ Pertanto, l'intera somma è una somma di termini non negativi.
 \implies \langle S_i S_j \rangle - \langle S_i \rangle \langle S_j \rangle \ge 0
 \end{equation}
 
+\noindent La stessa dimostrazione vale identica per $\langle S_A S_B \rangle - \langle S_A \rangle \langle S_B \rangle$: basta sostituire $S_i S_j - S_i T_j$ con $S_A S_B - S_A T_B$, che dopo il cambio di variabili diventa $S_A S_B (1 - \sigma_B)$ con $\sigma_B = \prod_{k \in B} \sigma_k$, e anche $(1-\sigma_B) \in \{0, 2\}$ è non negativo.
+
 \section{Bound sulla Temperatura Critica}
 
-Usiamo le disuguaglianze di Griffiths per confrontare il modello disordinato con un modello "omogeneizzato" (tipo campo medio o annealed), dove ogni accoppiamento $J_{ij}$ è sostituito dal suo valor medio:
+Usiamo le disuguaglianze di Griffiths per confrontare il modello disordinato con un modello "omogeneizzato", dove ogni accoppiamento $J_{ij}$ è sostituito dal suo valor medio:
 
 \begin{equation}
 J_{homo} = \overline{J_{ij}} = 1 \cdot p + 0 \cdot (1-p) = p
@@ -234,7 +241,7 @@ J_{homo} = \overline{J_{ij}} = 1 \cdot p + 0 \cdot (1-p) = p
 T_c^{homo}(p) = J_{homo} \cdot T_c(p=1) = p \cdot T_c(p=1)
 \end{equation}
 
-\noindent Questa relazione descrive la bisettrice nel piano $(T, p)$ della Figura \ref{fig: fase ferromag}.
+\noindent Questa relazione descrive la retta tratteggiata (la "bisettrice", in unità $T/T_c(1)$) nel piano $(T, p)$ della Figura \ref{fig:fase_ferromag}.
 
 \begin{tcolorbox}[colback=yellow!10, colframe=yellow!60!colorG, , coltitle=black, title=\textbf{Teorema}]
 La temperatura critica del modello disordinato è sempre inferiore o uguale a quella del modello omogeneizzato:
@@ -243,24 +250,30 @@ T_c(p) \le T_c^{homo}(p) = p \cdot T_c(p=1)
 \end{equation}
 \end{tcolorbox}
 
-\subsubsection*{Classificazione del Disordine: Modello Puro, Annealed e Quenched}
+\subsubsection*{Modello Puro, Omogeneizzato e Quenched}
 
 Per comprendere l'origine di questo bound, è fondamentale distinguere come il disordine viene trattato statisticamente all'interno della funzione di partizione del sistema:
 \begin{itemize}
     \item \textbf{Modello Puro ($p=1$):} Rappresenta il sistema ideale, perfettamente ordinato e traslazionalmente invariante. Tutti gli accoppiamenti sono presenti con la massima intensità ($J_{ij} = 1$). Le uniche fluttuazioni presenti nel sistema sono quelle di natura esclusivamente termica.
     \item \textbf{Modello Quenched (Disordine Congelato):} Descrive il sistema fisico reale diluito. Le variabili di disordine $\{J_{ij}\}$ sono variabili casuali fisse nel tempo, i cui tempi di rilassamento sono infinitamente più lunghi di quelli degli spin. La media statistica viene effettuata sull'energia libera (ovvero sul logaritmo della funzione di partizione): $\overline{F} = -k_B T \overline{\ln Z(\{J_{ij}\})}$. Questo approccio preserva l'identità geometrica di ogni singola configurazione del disordine, mantenendo intatte le fluttuazioni spaziali.
-    \item \textbf{Modello Annealed (Omogeneizzato):} È un'approssimazione in cui si assume che le variabili di disordine $\{J_{ij}\}$ fluttuino liberamente sui medesimi tempi scala degli spin, adattandosi termodinamicamente ad essi. La media viene eseguita direttamente sulla funzione di partizione: $F_{ann} = -k_B T \ln \overline{Z(\{J_{ij}\})}$. Ciò equivale a trascurare ogni vincolo geometrico locale, riducendo microscopicamente il sistema a un modello omogeneo con accoppiamenti indeboliti ma uniformi, pari al valore medio $J_{homo} = p$.
+    \item \textbf{Modello Omogeneizzato:} Ogni accoppiamento è sostituito dal suo valor medio, $J_{ij} \to \overline{J_{ij}} = p$. Non ci sono più fluttuazioni spaziali del disordine: è un modello puro con accoppiamenti indeboliti ma uniformi. È con questo modello che il teorema confronta il sistema diluito.
 \end{itemize}
+
+\noindent\textbf{Attenzione: omogeneizzato $\neq$ annealed.} Nella media annealed il disordine fluttua sugli stessi tempi degli spin e si media la funzione di partizione, $F_{ann} = -k_B T \ln \overline{Z}$. Per la diluizione dei legami il conto si fa esattamente, legame per legame:
+\begin{equation}
+\overline{e^{\beta J_{ij} S_i S_j}} = p\, e^{\beta S_i S_j} + (1-p) \;\propto\; 1 + S_i S_j \tanh(\beta J_{eff}), \qquad \tanh(\beta J_{eff}) = \frac{p \sinh \beta}{p \cosh \beta + 1 - p}
+\end{equation}
+Anche il modello annealed è un modello puro, ma con un accoppiamento efficace $J_{eff}$ che dipende dalla temperatura e non coincide con $J_{homo} = p$. Sono due modelli diversi; il bound di Griffiths riguarda quello omogeneizzato.
 
 \subsubsection*{Interpretazione Fisica e Geometrica del Bound}
 
-La disuguaglianza $T_c(p) \le T_c^{homo}(p)$ mostra che l'approssimazione omogenea (annealed) sovrastima sistematicamente la stabilità della fase ordinata. 
+La disuguaglianza $T_c(p) \le T_c^{homo}(p)$ mostra che il modello omogeneizzato sovrastima sistematicamente la stabilità della fase ordinata: a parità di legami in media, un sistema disordinato è più difficile da ordinare.
 
 Nel modello omogeneizzato, la rimozione delle fluttuazioni spaziali fa sì che il reticolo rimanga perfettamente connesso a qualsiasi valore di $p > 0$: le interazioni sono semplicemente indebolite uniformemente, consentendo la propagazione dell'ordine a lungo raggio fino a temperature positive, con una transizione lineare $T_c^{homo} \propto p$. 
 
 Nel modello reale (quenched), invece, la diluizione casuale introduce una forte disomogeneità spaziale. Si formano inevitabilmente regioni isolate ad alta densità di legami ("isole" ferromagnetiche) separate da ampi vuoti geometrici che agiscono come veri e propri colli di bottiglia termodinamici. Al diminuire di $p$, queste fluttuazioni geometriche frammentano il reticolo fino a raggiungere la soglia di percolazione $p_c$, al di sotto della quale la connettività globale svanisce e la temperatura critica crolla bruscamente a zero ($T_c = 0$ per $p < p_c$). 
 
-Le disomogeneità spaziali del disordine quenched offrono quindi alle fluttuazioni termiche delle "linee di frattura" preferenziali lungo cui rompere l'ordine globale, abbassando drasticamente la temperatura critica reale $T_c(p)$ rispetto al limite omogeneo. Dal punto di vista formale, la seconda disuguaglianza di Griffiths ($\partial \langle \sigma_i \sigma_j \rangle / \partial J_{kl} \ge 0$) garantisce matematicamente che qualsiasi fluttuazione locale che indebolisce o rimuove un legame non può che ridurre le correlazioni globali degli spin, traducendosi rigorosamente nel limite superiore espresso dal teorema.
+Le disomogeneità spaziali del disordine quenched offrono quindi alle fluttuazioni termiche delle "linee di frattura" preferenziali lungo cui rompere l'ordine globale, abbassando drasticamente la temperatura critica reale $T_c(p)$ rispetto al limite omogeneo. Dal punto di vista formale servono due ingredienti, entrambi conseguenza delle disuguaglianze di Griffiths: la magnetizzazione cresce con ogni accoppiamento ($\partial \langle S_0 \rangle / \partial J_{kl} \ge 0$) ed è una funzione \textbf{concava} di ciascun accoppiamento. È la concavità, tramite la disuguaglianza di Jensen, a dire che le fluttuazioni dei $J_{ij}$ attorno alla media $p$ abbassano in media la magnetizzazione: lo dimostriamo qui sotto.
 
 
 \subsection{Dimostrazione:}
@@ -350,7 +363,7 @@ Questo dimostra che, a parità di temperatura, l'ordine nel sistema disordinato 
     \centering
     \includegraphics[width=0.55\textwidth]{pics/19.png}
     \caption{Confronto tra le magnetizzazioni in funzione della temperatura per $p_c~<~p~<~1$.}
-    \label{fig: fase ferromag}
+    \label{fig:magn_confronto}
 \end{figure}
 
 
@@ -462,7 +475,7 @@ Ovvero, l'esponente con cui decade $\Delta$ deve essere maggiore di $1/\nu$.
 \begin{itemize}
     \item Per $a > D$ (Criterio di Harris Standard):
     Richiediamo $D/2 > 1/\nu \implies D\nu > 2$.
-    Usando la relazione di iperscaling $\alpha = 2 - D\nu$, questa condizione equivale a richiedere $\alpha < 0$. Se il calore specifico del sistema puro non diverge (o diverge molto debolmente), il disordine è irrilevante.
+    Usando la relazione di iperscaling $\alpha = 2 - D\nu$, questa condizione equivale a richiedere $\alpha < 0$. Se il calore specifico del sistema puro non diverge (cioè ha al più una cuspide), il disordine è irrilevante.
     
     \item Per $a < D$ (Criterio di Weinrib-Halperin):
     Richiediamo $a/2 > 1/\nu \implies a\nu > 2$.

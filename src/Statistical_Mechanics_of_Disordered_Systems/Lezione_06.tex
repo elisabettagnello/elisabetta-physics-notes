@@ -160,7 +160,7 @@ Se $\Delta$ è la differenza di energia libera tra lo stato instabile e lo stato
 Nei modelli a campo medio, il tempo per superare la barriera scala esponenzialmente con $N$, diventando infinito nel limite termodinamico.
 Questo è fondamentale per capire sistemi come i vetri (che sono sistemi metastabili che evolvono su tempi lunghissimi).
 
-Le transizioni del primo ordine (acqua-ghiaccio) sono più comuni e mostrano coesistenza di stati (stabile e metastabile), i due minimi hanno esattamente la stessa energia libera.
+Le transizioni del primo ordine (acqua-ghiaccio) sono più comuni e mostrano coesistenza di stati: sulla linea di transizione ($h=0$, $T<T_c$) i due minimi hanno esattamente la stessa energia libera e sono entrambi stabili. Appena ci si sposta dalla linea ($h \neq 0$), uno dei due diventa il minimo globale (stabile) e l'altro resta un minimo locale (metastabile).
 
 \newpage
 \section{Ciclo di Isteresi e Punti Spinodali}
@@ -212,11 +212,12 @@ Le condizioni analitiche per il punto spinodale sono:
 
 \noindent La derivata seconda è proporzionale all'inverso della suscettività locale; quando $\frac{\partial^2 f}{\partial m^2} \to 0$ la suscettività diverge: il sistema è estremamente piatto e suscettibile alle fluttuazioni.
 
-%\begin{figure}[h!]
-    %\centering
-    % Sostituire 'path/to/image7.png' con il percorso del file immagine
-    % \includegraphics[width=0.6\textwidth]{path/to/image7.png}\caption{Energia libera $f(m)$ al punto spinodale. Il minimo locale (metastabile) e il massimo locale (instabile) si fondono in un flesso a tangente orizzontale, caratterizzato da $\partial f / \partial m = 0$ e $\partial^2 f / \partial m^2 = 0$.} \label{fig:flesso_spinodale}
-%\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.55\textwidth]{pics/11.jpeg}
+    \caption{Energia libera $f(m)$ per $T<T_c$ al crescere di $h$. Il minimo locale (metastabile) a $m<0$ e il massimo (instabile) si avvicinano e al punto spinodale si fondono in un flesso a tangente orizzontale, con $\partial f / \partial m = 0$ e $\partial^2 f / \partial m^2 = 0$. Oltre, resta solo il minimo a $m>0$.}
+    \label{fig:flesso_spinodale}
+\end{figure}
 
 \section{Punti Critici in una Transizione del Secondo Ordine}
 
@@ -246,7 +247,7 @@ In una transizione del secondo ordine i concetti di criticità, transizione term
 \end{figure}
 
 
-\section{Critictà nel Modello XY}
+\section{Criticità nel Modello XY}
 
 Si tende a pensare che, una volta rotta la simmetria ($T < T_c$), il sistema non sia più critico (infatti nei minimi $m \neq 0$ del modello di Ising, $\frac{\partial^2 f }{ \partial m^2} > 0$). Questa è una semplificazione dovuta alla simmetria $Z_2$. Consideriamo un modello con simmetria più ricca, come il \textbf{Modello XY}, dove $m \in \mathbb{R}^2$.
 \begin{itemize}
@@ -310,7 +311,29 @@ L'Hamiltoniana è:
 
 \begin{itemize}
     \item Per $q=2$, si recupera il modello di Ising (transizione del secondo ordine).
-    \item Per $q>2$, il modello presenta una \textbf{transizione del primo ordine} in temperatura.
+    \item Per $q>2$, il modello fully connected presenta una \textbf{transizione del primo ordine} in temperatura. (Su reticolo il risultato dipende dalla dimensione: in 2D la transizione è del primo ordine solo per $q>4$.)
 \end{itemize}
-Questo modello presenta \textbf{due} punti spinodali in temperatura: un punto spinodale per lo stato ferromagnetico ed uno per lo stato paramagnetico (lo stato $m=0$ stesso diventa instabile sotto una certa $T$).
+Questo modello presenta \textbf{due} punti spinodali in temperatura: un punto spinodale per lo stato ferromagnetico ed uno per lo stato paramagnetico (lo stato $m=0$ stesso diventa instabile sotto una certa $T$). Più interazioni (come nel 3-spin) e più stati per variabile (come nel Potts) favoriscono transizioni del primo ordine.
+
+\section{Riepilogo: Rottura di Simmetria, Transizione, Criticità}
+
+Questi tre concetti spesso compaiono insieme (come nel punto critico di Curie-Weiss), ma sono indipendenti. Gli esempi della lezione li separano:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Situazione} & \textbf{Transizione} & \textbf{SSB} & \textbf{Criticità} \\
+\hline
+CW, $h=0$, $T=T_c$ (II ordine) & sì & sì & sì \\
+CW, $h=0$, $T<T_c$ (linea del I ordine) & sì & sì & no \\
+CW, punto spinodale ($h \neq 0$) & no & no & sì \\
+3-spin a $T_1$ (I ordine in $T$) & sì & no (non c'è $Z_2$) & no \\
+3-spin / Potts alla spinodale & no & no & sì \\
+XY, $T<T_c$ (modi di Goldstone) & --- & sì & sì \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent \textbf{Transizione}: non analiticità di $f_{th}$ (nasce dal $\min$ su più rami). \textbf{SSB}: lo stato scelto ha meno simmetria dell'Hamiltoniana. \textbf{Criticità}: risposta divergente a una piccola perturbazione, cioè $\partial^2 f / \partial m^2 = 0$ in qualche direzione.
 

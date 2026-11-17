@@ -174,6 +174,41 @@ Il comportamento del modello dipende crucialmente dalla \textbf{topologia} del g
     \item \textbf{Upper Critical Dimension (UCD)}: È la dimensione al di sopra della quale il comportamento critico del sistema diventa indipendente dalla dimensione e viene descritto correttamente dalla teoria di campo medio. Per il modello di Ising,~$UCD~=~4$.
 \end{itemize}
 
+\subsection{Transizione di Fase e Magnetizzazione Residua}
+
+Sperimentalmente, un ferromagnete messo in un campo $h$ si magnetizza nella direzione del campo e, una volta spento il campo, conserva una \textbf{magnetizzazione residua} (o rimanente). È questa la manifestazione macroscopica della transizione di fase.
+
+\noindent A taglia finita, però, la misura di Gibbs-Boltzmann a $h=0$ è simmetrica per $S_i \to -S_i$, quindi $\langle S_i \rangle = 0$ sempre. La magnetizzazione spontanea va definita con l'ordine giusto dei limiti:
+\begin{equation}
+m_{sp} = \lim_{h \to 0^+} \lim_{N \to \infty} \frac{1}{N}\sum_i \langle S_i \rangle_h
+\end{equation}
+Prima si prende il limite termodinamico, poi si spegne il campo. Con l'ordine opposto ($N \to \infty$ dopo $h \to 0$) si trova sempre $m = 0$.
+
+\begin{tcolorbox}[colback=yellow!25, colframe=yellow!75!orange, coltitle=black, title=\textbf{Transizione di fase}]
+C'è una transizione di fase (con rottura spontanea della simmetria) se esiste una temperatura $T_c > 0$ sotto la quale $m_{sp} \neq 0$: il sistema "ricorda" il segno del campo anche dopo averlo spento. Equivalentemente, l'energia libera $f(h)$ nel limite termodinamico ha una cuspide in $h=0$ e la magnetizzazione $m = -\partial f / \partial h$ salta da $-m_{sp}$ a $+m_{sp}$.
+\end{tcolorbox}
+
+\subsection{Ruolo della Topologia: LCD e UCD}
+
+\textbf{Domain wall e LCD.} Consideriamo un sistema ordinato (tutti gli spin $+1$) di lato $L$ e chiediamoci quanto costa creare una parete di dominio (domain wall, DW) che lo divida in due regioni di segno opposto. Il costo è proporzionale al numero di legami tagliati, cioè alla superficie della parete:
+\begin{equation}
+\Delta E_{DW} \sim J L^{d-1}
+\end{equation}
+\begin{itemize}
+    \item In $d = 1$ il costo è $2J$, \textbf{indipendente da $L$}, mentre il guadagno entropico (le $\sim L$ posizioni possibili della parete) cresce: $\Delta F = 2J - T \log L < 0$ per $L$ grande a qualunque $T>0$. Le pareti proliferano e distruggono l'ordine: niente transizione a $T>0$.
+    \item In $d \geq 2$ il costo cresce come $L^{d-1}$ e a bassa temperatura vince l'energia: l'ordine può sopravvivere.
+\end{itemize}
+
+\noindent\textbf{Argomento di Peierls ($d=2$).} Per dimostrare che in $d=2$ l'ordine sopravvive davvero, si fissano gli spin del bordo a $+1$ e si stima la probabilità che lo spin centrale $S_0$ valga $-1$. Perché accada, $S_0$ deve essere racchiuso da un contorno chiuso di DW. Un contorno di lunghezza $b$ costa $2Jb$, quindi ha probabilità al più $e^{-2\beta J b}$; il numero di contorni di lunghezza $b$ che racchiudono l'origine è limitato da quello dei cammini che non tornano indietro, $\lesssim b^2\, 3^{b}$. Allora
+\begin{equation}
+P[S_0 = -1] \le \sum_{b \ge 4} b^2\, 3^{b}\, e^{-2\beta J b} \xrightarrow{\beta \to \infty} 0
+\end{equation}
+e per $T$ abbastanza bassa $P[S_0=-1] < 1/2$: la simmetria è rotta anche nel limite $L \to \infty$. Quindi per Ising $d=1$ è senza transizione e $d=2$ ce l'ha: $LCD = 1$.
+
+\noindent\textbf{Non conta solo la dimensione.} Ciò che decide l'esistenza della transizione è la struttura del grafo, cioè quanto costa sconnettere una regione dal resto. Il triangolo di Sierpiński ha dimensione frattale $\log 3/\log 2 > 1$ ma non ha transizione a $T>0$, perché si separa una regione tagliando un numero finito di legami; il tappeto di Sierpiński invece ce l'ha. Su strutture omogenee la dimensione è un buon indicatore, su strutture eterogenee no.
+
+\noindent\textbf{UCD.} Sopra la UCD le fluttuazioni sono irrilevanti e gli esponenti critici sono quelli di campo medio. Per Ising la UCD è 4: è la dimensione sotto la quale il primo diagramma con il vertice quartico, $\int d^d k \, (k^2+r)^{-2}$, diverge nell'infrarosso per $r \to 0$ (lo stesso conto si rifà per il RFIM, dove la UCD diventa 6).
+
 \subsection{Il Modello di Ising Unidimensionale (1D)}
 
 Ising, nella sua tesi, risolse il modello su una catena lineare ($D=1$), trovando che non presenta una transizione di fase a $T>0$, un risultato deludente che lo portò a concludere erroneamente che il modello non potesse descrivere il ferromagnetismo e ad abbandonare la fisica.
@@ -311,6 +346,6 @@ dove la \textbf{lunghezza di correlazione} $\xi(T)$ è:
 
 Quando $T \to 0$ ($\beta \to \infty$), $\tanh(\beta J) \to 1$, $\log(\tanh(\beta J)) \to 0^-$, e quindi $\xi(T) \to \infty$. La lunghezza di correlazione \textbf{diverge a temperatura nulla}. Per $T \ll J$, si ha:
 \begin{equation}
-\xi(T) \approx \frac{1}{Z} e^{2\beta J}
+\xi(T) \approx \frac{1}{2} e^{2\beta J}
 \end{equation}
 Questa divergenza esponenziale significa che, a temperature molto basse, il sistema sviluppa correlazioni su distanze macroscopiche, avvicinandosi allo stato ordinato del ferromagnete. La dinamica di rilassamento verso questo stato diventa infinitamente lenta, un fenomeno noto come "rallentamento critico".

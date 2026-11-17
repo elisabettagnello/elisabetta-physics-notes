@@ -152,7 +152,7 @@ Questo significa che $S_N$ è approssimativamente distribuita come una Gaussiana
 
 \subsection{Teoria delle Grandi Deviazioni}
 Il terzo livello si occupa di eventi rari, le "grandi deviazioni". Siamo interessati alla probabilità che la somma $S_N$ assuma un valore che si discosta dal suo valore medio di una quantità di ordine $N$, non $\sqrt{N}$. Vogliamo calcolare la probabilità di un evento del tipo $S_N = \lambda N$, con $\lambda \neq \mu$.
-È ragionevole aspettarsi che questa probabilità sia esponenzialmente piccola in $N$. Perché un evento così raro accada, è necessario che molte delle variabili $x_i$ assumano valori atipici. Se ogni variabile lo fa con una probabilità leggermente inferiore a 1, la probabilità congiunta per $N$ variabili sarà una potenza di $N$.
+È ragionevole aspettarsi che questa probabilità sia esponenzialmente piccola in $N$. Perché un evento così raro accada, è necessario che molte delle variabili $x_i$ assumano valori atipici. Se ogni variabile lo fa con una probabilità $q<1$, la probabilità congiunta per $N$ variabili sarà $q^N = e^{N\log q}$, cioè esponenzialmente piccola in $N$.
 La teoria postula che:
 
 \begin{tcolorbox}[colback=yellow!30,  
@@ -280,5 +280,7 @@ Utilizzando l'approssimazione di Stirling per i fattoriali per $N$ grande, si pu
  P(\{q_j\} | \{p_j\}) &\sim \exp\left\{-N \sum_j q_j \log\left(\frac{q_j}{p_j}\right)\right\} \\
  &= \exp\left\{-N D_{KL}(q || p)\right\}
 \end{align}
-Questo risultato fondamentale mostra che la probabilità di osservare una distribuzione empirica $q$ quando la vera distribuzione è $p$, è esponenzialmente piccola in $N$ con una rate function data esattamente dalla divergenza di Kullback-Leibler tra le due distribuzioni. Questo principio è alla base di molti metodi moderni di inferenza statistica e machine learning, dove si cerca di minimizzare la divergenza tra un modello generativo e la distribuzione dei dati osservati.
+Questo risultato fondamentale (\textbf{teorema di Sanov}) mostra che la probabilità di osservare una distribuzione empirica $q$ quando la vera distribuzione è $p$, è esponenzialmente piccola in $N$ con una rate function data esattamente dalla divergenza di Kullback-Leibler tra le due distribuzioni.
+
+\noindent Risponde quindi alla domanda \textit{quanto è atipica una sequenza?}: le sequenze tipiche hanno $q \simeq p$ (a meno di fluttuazioni $O(1/\sqrt{N})$, che recuperano il TLC), mentre una sequenza con frequenze empiriche $q \neq p$ è soppressa come $e^{-N D_{KL}(q||p)}$. Se $q$ dà peso a un valore $x_j$ per cui $p_j = 0$, la divergenza è infinita: quella sequenza è semplicemente impossibile. Questo principio è alla base di molti metodi moderni di inferenza statistica e machine learning, dove si cerca di minimizzare la divergenza tra un modello generativo e la distribuzione dei dati osservati.
 
